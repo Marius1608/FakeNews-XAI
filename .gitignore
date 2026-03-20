@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+venv/
+.venv/
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# Datas
+data/datasets/*
+data/cache/*
+!data/datasets/.gitkeep
+!data/cache/.gitkeep
+
+# Notebooks checkpoints
+.ipynb_checkpoints/
+
+# Frontend
+frontend/node_modules/
+frontend/build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# spaCy models
+en_core_web_trf/
