@@ -9,7 +9,6 @@ Aceste dataclasses definesc structurile de date care circula prin toate cele 4 c
 """
 
 from __future__ import annotations
-
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -40,12 +39,12 @@ class RelationType(str, Enum):
     CAUSED = "caused"                       # ex: "X caused Y"
     PRECEDED = "preceded"                   # ex: "X happened before Y"
     FOLLOWED = "followed"                   # ex: "X happened after Y"
-    GENERIC = "generic"                     # fallback cand nu se potriveste nimic
+    GENERIC = "generic"                     # fallback
 
 
 class InconsistencyType(str, Enum):
     """Tipuri de inconsistente temporale detectabile."""
-    TEMPORAL_CYCLE = "temporal_cycle"               # A inainte de B inainte de A
+    TEMPORAL_CYCLE = "temporal_cycle"                # A inainte de B inainte de A
     CAUSAL_VIOLATION = "causal_violation"            # efect inainte de cauza
     ORDERING_ERROR = "ordering_error"                # ordine cronologica gresita
     DATE_MISMATCH = "date_mismatch"                  # data contrazice fapte cunoscute
@@ -208,10 +207,28 @@ class TCSResult:
 
     @property
     def label(self) -> str:
-        """Eticheta de consistenta lizibila."""
-        if self.score >= 0.8:
-            return "High Consistency"
-        elif self.score >= 0.4:
-            return "Medium Consistency"
+        """
+        Eticheta de consistenta lizibila.
+
+        TCS e un scor de consistenta: mare = bun, mic = suspect.
+            1.0 = zero inconsistente detectate → articol consistent
+            0.0 = toate faptele inconsistente  → articol suspect
+
+        Formula: TCS = 1 - (inconsist_detected / claims_temporal) × score_coherence
+
+        Praguri conform sectiunii Score Interpretation:
+            0.8–1.0: Highly consistent (likely true)
+            0.5–0.7: Moderately consistent
+            0.2–0.4: Multiple inconsistencies (suspicious)
+            0.0–0.2: Severe violations (likely fake)
+        """
+        if self.n_temporal_claims == 0:
+            return "Insufficient Temporal Data"
+        elif self.score >= 0.8:
+            return "Highly Consistent (Likely True)"
+        elif self.score >= 0.5:
+            return "Moderately Consistent"
+        elif self.score >= 0.2:
+            return "Multiple Inconsistencies (Suspicious)"
         else:
-            return "Low Consistency (Suspicious)"
+            return "Severe Violations (Likely Fake)"
