@@ -15,7 +15,7 @@ from enum import Enum
 from typing import Optional
 
 
-# ─── Enums ────────────────────────────────────────────────
+#Enums
 class EntityType(str, Enum):
     """Tipuri de entitati relevante pentru fact-checking temporal."""
     PERSON = "PERSON"
@@ -60,7 +60,7 @@ class Severity(str, Enum):
     CRITICAL = "critical"
 
 
-# ─── Extraction Output ───────────────────────────────────
+#Extraction Output
 @dataclass
 class Entity:
     """O entitate extrasa din text (persoana, organizatie, loc, etc.)."""
@@ -134,7 +134,7 @@ class TemporalFact:
         )
 
 
-# ─── Article Input ────────────────────────────────────────
+#Article Input
 @dataclass
 class Article:
     """Un articol care va fi analizat de pipeline-ul TCS."""
@@ -149,7 +149,7 @@ class Article:
     dataset: Optional[str] = None          # "LIAR", "FakeNewsNet", etc.
 
 
-# ─── Verification Output ─────────────────────────────────
+#Verification Output
 @dataclass
 class Inconsistency:
     """
@@ -175,7 +175,7 @@ class Inconsistency:
         )
 
 
-# ─── Scoring Output ──────────────────────────────────────
+#Scoring Output
 @dataclass
 class TCSResult:
     """

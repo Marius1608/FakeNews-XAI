@@ -11,6 +11,8 @@ Formatele dataseturilor:
 """
 
 from __future__ import annotations
+from backend.pipeline.graph.models import Article
+from backend.config import DATASETS_DIR
 
 import csv
 import json
@@ -18,9 +20,6 @@ import logging
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
-
-from backend.pipeline.graph.models import Article
-from backend.config import DATASETS_DIR
 
 logger = logging.getLogger(__name__)
 
