@@ -1,12 +1,4 @@
-"""
-Data models pentru pipeline-ul TCS.
-
-Aceste dataclasses definesc structurile de date care circula prin toate cele 4 componente:
-  1. Extraction → TemporalFact, TemporalExpression
-  2. Graph Construction → foloseste TemporalFact ca sa construiasca TKG
-  3. Verification → Inconsistency
-  4. Scoring → TCSResult
-"""
+"""Structuri de date partajate de toate cele 4 componente TCS."""
 
 from __future__ import annotations
 from dataclasses import dataclass, field
@@ -15,9 +7,8 @@ from enum import Enum
 from typing import Optional
 
 
-#Enums
+# ── Enums ──
 class EntityType(str, Enum):
-    """Tipuri de entitati relevante pentru fact-checking temporal."""
     PERSON = "PERSON"
     ORGANIZATION = "ORG"
     LOCATION = "GPE"
@@ -29,47 +20,44 @@ class EntityType(str, Enum):
 
 
 class RelationType(str, Enum):
-    """Tipuri de relatii temporale intre entitati."""
-    HOLDS_POSITION = "holds_position"       # ex: "X is president of Y"
-    MEMBER_OF = "member_of"                 # ex: "X is member of Y"
-    LOCATED_IN = "located_in"               # ex: "X happened in Y"
-    OCCURRED_ON = "occurred_on"             # ex: "Event X on date Y"
-    STARTED = "started"                     # ex: "X started in Y"
-    ENDED = "ended"                         # ex: "X ended in Y"
-    CAUSED = "caused"                       # ex: "X caused Y"
-    PRECEDED = "preceded"                   # ex: "X happened before Y"
-    FOLLOWED = "followed"                   # ex: "X happened after Y"
-    GENERIC = "generic"                     # fallback
+    HOLDS_POSITION = "holds_position"
+    MEMBER_OF = "member_of"
+    LOCATED_IN = "located_in"
+    OCCURRED_ON = "occurred_on"
+    STARTED = "started"
+    ENDED = "ended"
+    CAUSED = "caused"
+    PRECEDED = "preceded"
+    FOLLOWED = "followed"
+    GENERIC = "generic"
 
 
 class InconsistencyType(str, Enum):
-    """Tipuri de inconsistente temporale detectabile."""
-    TEMPORAL_CYCLE = "temporal_cycle"                # A inainte de B inainte de A
-    CAUSAL_VIOLATION = "causal_violation"            # efect inainte de cauza
-    ORDERING_ERROR = "ordering_error"                # ordine cronologica gresita
-    DATE_MISMATCH = "date_mismatch"                  # data contrazice fapte cunoscute
-    ANACHRONISM = "anachronism"                      # entitate nu exista la data mentionata
-    DURATION_IMPLAUSIBLE = "duration_implausible"    # interval de timp nerealist
+    TEMPORAL_CYCLE = "temporal_cycle"
+    CAUSAL_VIOLATION = "causal_violation"
+    ORDERING_ERROR = "ordering_error"
+    DATE_MISMATCH = "date_mismatch"
+    ANACHRONISM = "anachronism"
+    DURATION_IMPLAUSIBLE = "duration_implausible"
 
 
 class Severity(str, Enum):
-    """Cat de grava e o inconsistenta pentru credibilitate."""
     LOW = "low"
     MEDIUM = "medium"
     HIGH = "high"
     CRITICAL = "critical"
 
 
-#Extraction Output
+# ── C1: Extraction output ──
 @dataclass
 class Entity:
-    """O entitate extrasa din text (persoana, organizatie, loc, etc.)."""
-    text: str                              # forma din text: "Barack Obama"
-    entity_type: EntityType                # PERSON, ORG, etc.
-    start_char: int                        # offset caracter in textul sursa
+    """O entitate extrasa din text."""
+    text: str
+    entity_type: EntityType
+    start_char: int
     end_char: int
-    wikidata_id: Optional[str] = None      # ex: Q76 pentru Barack Obama
-    normalized: Optional[str] = None       # forma canonica dupa rezolutie
+    wikidata_id: Optional[str] = None
+    normalized: Optional[str] = None
 
     def __repr__(self) -> str:
         return f"Entity({self.text!r}, {self.entity_type.value})"
@@ -77,15 +65,15 @@ class Entity:
 
 @dataclass
 class TemporalExpression:
-    """O expresie temporala extrasa si normalizata din text."""
-    raw_text: str                          # "last January", "in 2019"
-    normalized_date: Optional[datetime] = None  # datetime parsat
-    date_string: Optional[str] = None      # "2019-01-01" (format ISO)
+    """O expresie temporala normalizata (output dateparser)."""
+    raw_text: str
+    normalized_date: Optional[datetime] = None
+    date_string: Optional[str] = None
     start_char: int = 0
     end_char: int = 0
-    is_relative: bool = False              # "yesterday", "last week"
-    is_approximate: bool = False           # "around 2015", "early 2000s"
-    confidence: float = 1.0                # cat de sigur e parserul
+    is_relative: bool = False
+    is_approximate: bool = False
+    confidence: float = 1.0
 
     def __repr__(self) -> str:
         date_str = self.date_string or "unparsed"
@@ -95,30 +83,20 @@ class TemporalExpression:
 @dataclass
 class TemporalFact:
     """
-    Un fapt temporal extras din text — unitatea de baza a pipeline-ului.
-
-    Circula de la Componenta 1 (Extraction) la Componenta 2 (Graph).
-
-    Exemplu:
-        "Barack Obama served as president from 2009 to 2017"
-        -> subject: Entity("Barack Obama", PERSON)
-           predicate: RelationType.HOLDS_POSITION
-           object: Entity("president", OTHER)
-           time_start: 2009-01-20
-           time_end: 2017-01-20
+    Un fapt temporal — unitatea de baza a pipeline-ului.
+    Circula de la C1 (Extraction) la C2 (Graph).
     """
     subject: Entity
     predicate: RelationType
     object: Entity
     time_start: Optional[TemporalExpression] = None
     time_end: Optional[TemporalExpression] = None
-    time_point: Optional[TemporalExpression] = None  # pentru evenimente punctuale
+    time_point: Optional[TemporalExpression] = None
 
-    # Provenienta — din ce propozitie si cu ce extractor
     source_sentence: str = ""
     source_sentence_idx: int = 0
     extraction_confidence: float = 1.0
-    extractor: str = "spacy"               # "spacy" sau "llm"
+    extractor: str = "spacy"
 
     def __repr__(self) -> str:
         time_info = ""
@@ -134,39 +112,30 @@ class TemporalFact:
         )
 
 
-#Article Input
+# ── Input ──
 @dataclass
 class Article:
-    """Un articol care va fi analizat de pipeline-ul TCS."""
+    """Un articol de analizat."""
     text: str
     title: str = ""
     publication_date: Optional[datetime] = None
-    source: str = ""                       # "reuters", "liar-dataset", etc.
+    source: str = ""
     url: str = ""
-
-    # Ground truth (pentru evaluare)
-    label: Optional[str] = None            # "true", "false", "half-true", etc.
-    dataset: Optional[str] = None          # "LIAR", "FakeNewsNet", etc.
+    label: Optional[str] = None       # ground truth: "true", "false", etc.
+    dataset: Optional[str] = None
 
 
-#Verification Output
+# ── C3: Verification output ──
 @dataclass
 class Inconsistency:
-    """
-    O inconsistenta temporala detectata de Componenta 3 (Verification).
-    Fiecare inconsistenta contribuie la scaderea scorului TCS.
-    """
+    """O inconsistenta temporala detectata de C3 (Verification)."""
     inconsistency_type: InconsistencyType
     severity: Severity
-    description: str                       # explicatie lizibila
+    description: str
     facts_involved: list[TemporalFact] = field(default_factory=list)
-
-    # Pentru highlight in UI
     sentence_indices: list[int] = field(default_factory=list)
-
-    # Sursa verificarii
-    verified_by: str = "internal"          # "internal", "wikidata", "reference_kg"
-    evidence: Optional[str] = None         # ex: proprietatea Wikidata care contrazice
+    verified_by: str = "internal"      # "internal", "wikidata", "reference_kg"
+    evidence: Optional[str] = None
 
     def __repr__(self) -> str:
         return (
@@ -175,53 +144,31 @@ class Inconsistency:
         )
 
 
-#Scoring Output
+# ── C4: Scoring output ──
 @dataclass
 class TCSResult:
     """
-    Rezultatul final al pipeline-ului TCS (Componenta 4).
-
-    Formula: TCS = (N_inconsist / C_temporal) x S_coherence
-    Normalizat la [0, 1] unde:
-        1.0 = complet consistent (fara inconsistente)
-        0.0 = foarte inconsistent
+    Rezultatul final al pipeline-ului.
+    TCS = 1 - (inconsist_detected / claims_temporal) x score_coherence
     """
-    score: float                           # scor TCS [0, 1]
+    score: float                       # [0, 1] — 1.0 = consistent, 0.0 = suspect
 
-    # Componentele scorului
-    n_inconsistencies: int                 # cate inconsistente s-au gasit
-    n_temporal_claims: int                 # cate afirmatii temporale s-au extras
-    coherence_factor: float                # multiplicator S_coherence
+    n_inconsistencies: int
+    n_temporal_claims: int
+    coherence_factor: float
 
-    # Detalii
     inconsistencies: list[Inconsistency] = field(default_factory=list)
     facts: list[TemporalFact] = field(default_factory=list)
 
-    # Explicatie
-    explanation_text: str = ""             # explicatie in limbaj natural
-    timeline: list[dict] = field(default_factory=list)  # pentru vizualizare UI
+    explanation_text: str = ""
+    timeline: list[dict] = field(default_factory=list)
 
-    # Metadata
-    pipeline_variant: str = "spacy"        # "spacy" sau "llm"
+    pipeline_variant: str = "spacy"
     processing_time_ms: float = 0.0
 
     @property
     def label(self) -> str:
-        """
-        Eticheta de consistenta lizibila.
-
-        TCS e un scor de consistenta: mare = bun, mic = suspect.
-            1.0 = zero inconsistente detectate → articol consistent
-            0.0 = toate faptele inconsistente  → articol suspect
-
-        Formula: TCS = 1 - (inconsist_detected / claims_temporal) × score_coherence
-
-        Praguri conform sectiunii Score Interpretation:
-            0.8–1.0: Highly consistent (likely true)
-            0.5–0.7: Moderately consistent
-            0.2–0.4: Multiple inconsistencies (suspicious)
-            0.0–0.2: Severe violations (likely fake)
-        """
+        """Eticheta de consistenta conform Score Interpretation."""
         if self.n_temporal_claims == 0:
             return "Insufficient Temporal Data"
         elif self.score >= 0.8:

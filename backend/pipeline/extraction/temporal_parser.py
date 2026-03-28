@@ -1,17 +1,4 @@
-"""
-Parser pentru expresii temporale — wrapper peste dateparser.
-
-Transforma expresii temporale gasite in articole de stiri
-in date concrete (datetime).
-
-Folosit de ambele pipeline-uri (A: spaCy si B: LLM).
-
-Exemple:
-    "January 2019"       -> 2019-01-01
-    "last Tuesday"       -> rezolvat relativ la publication_date
-    "early 2000s"        -> 2000-01-01 (aproximativ)
-    "three days ago"     -> rezolvat relativ la publication_date
-"""
+"""C1 — Parser expresii temporale (wrapper dateparser)."""
 
 from __future__ import annotations
 
@@ -24,7 +11,6 @@ import dateparser
 from backend.pipeline.graph.models import TemporalExpression
 
 
-# Pattern-uri care indica date relative (depind de un moment de referinta)
 RELATIVE_PATTERNS = re.compile(
     r"\b(yesterday|today|tomorrow|ago|last|next|previous|"
     r"this\s+(week|month|year)|"
@@ -32,17 +18,13 @@ RELATIVE_PATTERNS = re.compile(
     re.IGNORECASE,
 )
 
-# Pattern-uri care indica date aproximative (nu sunt precise)
 APPROXIMATE_PATTERNS = re.compile(
     r"\b(around|approximately|circa|roughly|about|early|late|mid|"
-    r"\d{3}0s)\b",  # ex: "2000s", "1990s"
+    r"\d{3}0s)\b",
     re.IGNORECASE,
 )
 
-# Pattern-uri pentru expresii aproximative pe care dateparser nu le intelege.
-# Grupuri de captare:
-#   1 → modificatorul (early/mid/late)
-#   2 → decada (ex: "2000", "1990") — se extrage din "2000s" sau "1990s"
+# "early 2000s", "mid-1990s", "late 1980s"
 DECADE_PATTERN = re.compile(
     r"\b(?:(early|mid|late)[- ])?((?:1[0-9]|20)\d{2})s\b",
     re.IGNORECASE,
@@ -50,14 +32,7 @@ DECADE_PATTERN = re.compile(
 
 
 class TemporalParser:
-    """
-    Parseaza si normalizeaza expresii temporale din text.
-
-    Foloseste dateparser ca motor principal
-
-    Datele relative se rezolva fata de o data de referinta
-    (de obicei publication_date al articolului).
-    """
+    """Normalizeaza expresii temporale in datetime folosind dateparser."""
 
     def __init__(
         self,
@@ -67,7 +42,7 @@ class TemporalParser:
         self.settings = {
             "PREFER_DATES_FROM": prefer_dates_from,
             "RETURN_AS_TIMEZONE_AWARE": False,
-            "REQUIRE_PARTS": ["year"],  # minim anul trebuie sa existe
+            "REQUIRE_PARTS": ["year"],
         }
         self.languages = languages or ["en"]
 
@@ -78,19 +53,7 @@ class TemporalParser:
         start_char: int = 0,
         end_char: int = 0,
     ) -> Optional[TemporalExpression]:
-        """
-        Parseaza o expresie temporala intr-un TemporalExpression.
-
-        Args:
-            text: textul brut ("January 2019", "last week")
-            reference_date: data fata de care se rezolva expresiile relative.
-                           De obicei publication_date al articolului.
-            start_char: offset caracter in textul sursa
-            end_char: offset caracter sfarsit
-
-        Returns:
-            TemporalExpression daca parsarea reuseste, None daca textul e gol.
-        """
+        """Parseaza o expresie temporala. reference_date = publication_date al articolului."""
         if not text or not text.strip():
             return None
 
@@ -98,13 +61,11 @@ class TemporalParser:
         is_relative = bool(RELATIVE_PATTERNS.search(clean_text))
         is_approximate = bool(APPROXIMATE_PATTERNS.search(clean_text))
 
-        # Configurez dateparser
         settings = {**self.settings}
         if reference_date:
             settings["RELATIVE_BASE"] = reference_date
 
-        # Pre-procesare: inlocuieste expresii aproximative pe care
-        # dateparser nu le intelege (ex: "early 2000s" -> "2000")
+        # Pre-procesare decade patterns ("early 2000s" -> "2000")
         normalized_text, was_normalized = self._normalize_approximate(clean_text)
 
         parsed_date = dateparser.parse(
@@ -114,19 +75,13 @@ class TemporalParser:
         )
 
         if parsed_date is None:
-            # Parsarea a esuat — returnez expresia cu confidence 0
             return TemporalExpression(
-                raw_text=clean_text,
-                normalized_date=None,
-                date_string=None,
-                start_char=start_char,
-                end_char=end_char,
-                is_relative=is_relative,
-                is_approximate=is_approximate,
+                raw_text=clean_text, normalized_date=None, date_string=None,
+                start_char=start_char, end_char=end_char,
+                is_relative=is_relative, is_approximate=is_approximate,
                 confidence=0.0,
             )
 
-        # Daca a fost normalizata, marcheaza ca aproximativa indiferent
         if was_normalized:
             is_approximate = True
 
@@ -136,10 +91,8 @@ class TemporalParser:
             raw_text=clean_text,
             normalized_date=parsed_date,
             date_string=parsed_date.strftime("%Y-%m-%d"),
-            start_char=start_char,
-            end_char=end_char,
-            is_relative=is_relative,
-            is_approximate=is_approximate,
+            start_char=start_char, end_char=end_char,
+            is_relative=is_relative, is_approximate=is_approximate,
             confidence=confidence,
         )
 
@@ -149,18 +102,7 @@ class TemporalParser:
         date_spans: list[tuple[int, int, str]],
         reference_date: Optional[datetime] = None,
     ) -> list[TemporalExpression]:
-        """
-        Parseaza mai multe expresii temporale dintr-o propozitie.
-
-        Args:
-            sentence: textul complet al propozitiei
-            date_spans: lista de (start_char, end_char, text) — de obicei
-                       de la spaCy NER sau regex extraction
-            reference_date: pentru rezolvare date relative
-
-        Returns:
-            Lista de TemporalExpression parsate.
-        """
+        """Parseaza mai multe expresii temporale dintr-o propozitie."""
         results = []
         for start, end, text in date_spans:
             expr = self.parse(text, reference_date, start, end)
@@ -169,22 +111,7 @@ class TemporalParser:
         return results
 
     def _normalize_approximate(self, text: str) -> tuple[str, bool]:
-        """
-        Pre-proceseaza expresii aproximative pe care dateparser nu le rezolva.
-
-        Recunoaste pattern-uri de tipul "early 2000s", "mid-1990s", "late 1980s"
-        si le transforma intr-un an concret pe care dateparser il poate parsa.
-
-        Logica de conversie:
-          - early Xs  → primul an al deceniului    (ex: early 2000s → 2000)
-          - mid Xs    → mijlocul deceniului + 5    (ex: mid 1990s   → 1995)
-          - late Xs   → ultimul an al deceniului   (ex: late 1980s  → 1989)
-          - (fara mod) → primul an al deceniului   (ex: 1960s       → 1960)
-
-        Returns:
-            (text_normalizat, a_fost_normalizat)
-            Daca nu se gaseste un pattern, returneaza (text_original, False).
-        """
+        """Converteste decade patterns: early 2000s->2000, mid 1990s->1995, late 1980s->1989."""
         match = DECADE_PATTERN.search(text)
         if not match:
             return text, False
@@ -197,24 +124,12 @@ class TemporalParser:
         elif modifier == "late":
             year = decade_start + 9
         else:
-            # "early" sau fara modificator → inceputul deceniului
             year = decade_start
 
         return str(year), True
 
-    def _estimate_confidence(
-        self,
-        text: str,
-        is_relative: bool,
-        is_approximate: bool,
-    ) -> float:
-        """
-        Estimeaza cat de sigura e parsarea pe baza tipului expresiei.
-
-        Date complete ("January 20, 2009") -> confidence high
-        Date relative ("last week") -> confidence medium
-        Date aproximative ("early 2000s") -> confidence low
-        """
+    def _estimate_confidence(self, text: str, is_relative: bool, is_approximate: bool) -> float:
+        """Estimeaza confidence: date complete=high, relative=medium, aproximative=low."""
         confidence = 1.0
 
         if is_approximate:
@@ -222,13 +137,13 @@ class TemporalParser:
         if is_relative:
             confidence -= 0.2
 
-        # Pentru date specifice (au zi + luna + an)
+        # Date complete (zi + luna + an)
         if re.search(r"\d{1,2}\s+\w+\s+\d{4}", text) or re.search(
             r"\w+\s+\d{1,2},?\s+\d{4}", text
         ):
             confidence = min(confidence + 0.1, 1.0)
 
-        # Doar anul — mai putin precis
+        # Doar anul
         if re.fullmatch(r"\d{4}", text.strip()):
             confidence = min(confidence, 0.6)
 
