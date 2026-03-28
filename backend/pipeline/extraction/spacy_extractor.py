@@ -53,9 +53,21 @@ SUBJECT_DEPS = {"nsubj", "nsubjpass", "agent"}
 OBJECT_DEPS = {"dobj", "attr", "pobj", "oprd", "appos"}
 
 # Verbe asociate cu diferite tipuri de relatii temporale
-POSITION_VERBS = {"serve", "elect", "appoint", "become", "lead", "head", "chair"}
-MEMBERSHIP_VERBS = {"join", "belong", "member", "found", "establish"}
-EVENT_VERBS = {"occur", "happen", "take", "hold", "begin", "start", "end", "sign"}
+POSITION_VERBS = {
+    "serve", "elect", "appoint", "become", "lead", "head", "chair",
+    "run", "name", "install", "retain",
+}
+
+MEMBERSHIP_VERBS = {
+    "join", "belong", "member", "found", "establish",
+    "leave", "resign", "quit", "exit",
+}
+
+EVENT_VERBS = {
+    "occur", "happen", "take", "hold", "begin", "start", "end", "sign",
+    "win", "announce", "publish", "launch", "release", "open", "close", "award",
+}
+
 CAUSAL_VERBS = {"cause", "lead", "result", "trigger", "spark"}
 
 
@@ -64,7 +76,7 @@ class SpacyExtractor(AbstractExtractor):
     Extractor deterministic de fapte temporale folosind spaCy NLP.
 
     Acesta e Pipeline A — extractorul baseline care foloseste
-    NLP pur statistic/rule-based, fara LLM.
+    NLP pur statistic/rule-based.
     """
 
     def __init__(self, model_name: str = "en_core_web_trf"):
@@ -211,30 +223,45 @@ class SpacyExtractor(AbstractExtractor):
         dep_labels: set[str],
         entities: list[Entity],
     ) -> list[Entity]:
-        """Gaseste entitatile legate de radacina prin dependency labels specifice."""
+
+        """
+        Gaseste entitatile legate de radacina prin dependency labels specifice.
+
+        Parcurge mai intai copiii directi ai verbului radacina (match precis),
+        apoi sub-arborii lor (pentru fraze prepozitionale complexe).
+
+        Deduplicare: o entitate nu poate aparea de doua ori in rezultat,
+        chiar daca e acoperita de mai multi tokeni din arbore.
+        """
         matched = []
+        seen_spans = set()  # retine (start_char, end_char) pentru deduplicare
+
+        def _try_add(entity: Entity) -> None:
+            """Adauga entitatea doar daca nu a fost deja adaugata."""
+            key = (entity.start_char, entity.end_char)
+            if key not in seen_spans:
+                seen_spans.add(key)
+                matched.append(entity)
+
         for child in root.children:
             if child.dep_ in dep_labels:
                 # Verifica daca vreo entitate acopera acest token
                 for entity in entities:
                     if (
-                        child.idx >= entity.start_char
-                        and child.idx < entity.end_char
+                            entity.start_char <= child.idx < entity.end_char
                     ) or (
                         entity.start_char <= child.idx + len(child.text)
                         and entity.end_char >= child.idx
                     ):
-                        matched.append(entity)
+                        _try_add(entity)
                         break
                 # Verifica si sub-arborele (pentru fraze prepozitionale)
                 for desc in child.subtree:
                     for entity in entities:
                         if (
-                            desc.idx >= entity.start_char
-                            and desc.idx < entity.end_char
-                            and entity not in matched
+                                entity.start_char <= desc.idx < entity.end_char
                         ):
-                            matched.append(entity)
+                            _try_add(entity)
         return matched
 
     def _classify_relation(self, verb: Token) -> RelationType:
