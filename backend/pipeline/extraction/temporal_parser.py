@@ -39,6 +39,15 @@ APPROXIMATE_PATTERNS = re.compile(
     re.IGNORECASE,
 )
 
+# Pattern-uri pentru expresii aproximative pe care dateparser nu le intelege.
+# Grupuri de captare:
+#   1 → modificatorul (early/mid/late)
+#   2 → decada (ex: "2000", "1990") — se extrage din "2000s" sau "1990s"
+DECADE_PATTERN = re.compile(
+    r"\b(?:(early|mid|late)[- ])?((?:1[0-9]|20)\d{2})s\b",
+    re.IGNORECASE,
+)
+
 
 class TemporalParser:
     """
@@ -94,8 +103,12 @@ class TemporalParser:
         if reference_date:
             settings["RELATIVE_BASE"] = reference_date
 
+        # Pre-procesare: inlocuieste expresii aproximative pe care
+        # dateparser nu le intelege (ex: "early 2000s" -> "2000")
+        normalized_text, was_normalized = self._normalize_approximate(clean_text)
+
         parsed_date = dateparser.parse(
-            clean_text,
+            normalized_text,
             languages=self.languages,
             settings=settings,
         )
@@ -112,6 +125,10 @@ class TemporalParser:
                 is_approximate=is_approximate,
                 confidence=0.0,
             )
+
+        # Daca a fost normalizata, marcheaza ca aproximativa indiferent
+        if was_normalized:
+            is_approximate = True
 
         confidence = self._estimate_confidence(clean_text, is_relative, is_approximate)
 
@@ -150,6 +167,40 @@ class TemporalParser:
             if expr is not None:
                 results.append(expr)
         return results
+
+    def _normalize_approximate(self, text: str) -> tuple[str, bool]:
+        """
+        Pre-proceseaza expresii aproximative pe care dateparser nu le rezolva.
+
+        Recunoaste pattern-uri de tipul "early 2000s", "mid-1990s", "late 1980s"
+        si le transforma intr-un an concret pe care dateparser il poate parsa.
+
+        Logica de conversie:
+          - early Xs  → primul an al deceniului    (ex: early 2000s → 2000)
+          - mid Xs    → mijlocul deceniului + 5    (ex: mid 1990s   → 1995)
+          - late Xs   → ultimul an al deceniului   (ex: late 1980s  → 1989)
+          - (fara mod) → primul an al deceniului   (ex: 1960s       → 1960)
+
+        Returns:
+            (text_normalizat, a_fost_normalizat)
+            Daca nu se gaseste un pattern, returneaza (text_original, False).
+        """
+        match = DECADE_PATTERN.search(text)
+        if not match:
+            return text, False
+
+        modifier = (match.group(1) or "").lower()
+        decade_start = int(match.group(2))
+
+        if modifier == "mid":
+            year = decade_start + 5
+        elif modifier == "late":
+            year = decade_start + 9
+        else:
+            # "early" sau fara modificator → inceputul deceniului
+            year = decade_start
+
+        return str(year), True
 
     def _estimate_confidence(
         self,
