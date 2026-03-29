@@ -1,0 +1,243 @@
+{
+  "_meta": {
+    "description": "Reference Knowledge Graph — evenimente verificate manual pentru verificarea externa TCS.",
+    "format": "Cheile sunt numele entitatilor (lowercase). Valorile sunt liste de fapte temporale verificate.",
+    "fields": {
+      "relation": "tipul relatiei (holds_position, member_of, occurred_on)",
+      "value": "valoarea obiectului (pozitia detinuta, organizatia, evenimentul)",
+      "time_start": "data de inceput ISO 8601 (YYYY-MM-DD)",
+      "time_end": "data de sfarsit ISO 8601 (YYYY-MM-DD)",
+      "time_point": "moment punctual ISO 8601 (YYYY-MM-DD) — alternativa la start/end",
+      "source": "sursa verificarii (wikidata Q-ID sau URL)"
+    },
+    "last_updated": "2026-03-27",
+    "version": "1.0"
+  },
+
+  "barack obama": [
+    {
+      "relation": "holds_position",
+      "value": "President of the United States",
+      "time_start": "2009-01-20",
+      "time_end": "2017-01-20",
+      "source": "Q76"
+    },
+    {
+      "relation": "holds_position",
+      "value": "Senator from Illinois",
+      "time_start": "2005-01-03",
+      "time_end": "2008-11-16",
+      "source": "Q76"
+    },
+    {
+      "relation": "member_of",
+      "value": "Democratic Party",
+      "time_start": "1996-01-01",
+      "time_end": null,
+      "source": "Q76"
+    }
+  ],
+
+  "donald trump": [
+    {
+      "relation": "holds_position",
+      "value": "President of the United States",
+      "time_start": "2017-01-20",
+      "time_end": "2021-01-20",
+      "source": "Q22686"
+    },
+    {
+      "relation": "member_of",
+      "value": "Republican Party",
+      "time_start": "2009-01-01",
+      "time_end": null,
+      "source": "Q22686"
+    }
+  ],
+
+  "joe biden": [
+    {
+      "relation": "holds_position",
+      "value": "President of the United States",
+      "time_start": "2021-01-20",
+      "time_end": "2025-01-20",
+      "source": "Q6279"
+    },
+    {
+      "relation": "holds_position",
+      "value": "Vice President of the United States",
+      "time_start": "2009-01-20",
+      "time_end": "2017-01-20",
+      "source": "Q6279"
+    },
+    {
+      "relation": "holds_position",
+      "value": "Senator from Delaware",
+      "time_start": "1973-01-03",
+      "time_end": "2009-01-15",
+      "source": "Q6279"
+    }
+  ],
+
+  "george w. bush": [
+    {
+      "relation": "holds_position",
+      "value": "President of the United States",
+      "time_start": "2001-01-20",
+      "time_end": "2009-01-20",
+      "source": "Q207"
+    }
+  ],
+
+  "bill clinton": [
+    {
+      "relation": "holds_position",
+      "value": "President of the United States",
+      "time_start": "1993-01-20",
+      "time_end": "2001-01-20",
+      "source": "Q1124"
+    }
+  ],
+
+  "hillary clinton": [
+    {
+      "relation": "holds_position",
+      "value": "Secretary of State",
+      "time_start": "2009-01-21",
+      "time_end": "2013-02-01",
+      "source": "Q6294"
+    },
+    {
+      "relation": "holds_position",
+      "value": "Senator from New York",
+      "time_start": "2001-01-03",
+      "time_end": "2009-01-21",
+      "source": "Q6294"
+    }
+  ],
+
+  "angela merkel": [
+    {
+      "relation": "holds_position",
+      "value": "Chancellor of Germany",
+      "time_start": "2005-11-22",
+      "time_end": "2021-12-08",
+      "source": "Q567"
+    },
+    {
+      "relation": "member_of",
+      "value": "Christian Democratic Union",
+      "time_start": "1990-01-01",
+      "time_end": null,
+      "source": "Q567"
+    }
+  ],
+
+  "vladimir putin": [
+    {
+      "relation": "holds_position",
+      "value": "President of Russia",
+      "time_start": "2000-05-07",
+      "time_end": "2008-05-07",
+      "source": "Q7747"
+    },
+    {
+      "relation": "holds_position",
+      "value": "Prime Minister of Russia",
+      "time_start": "2008-05-08",
+      "time_end": "2012-05-07",
+      "source": "Q7747"
+    },
+    {
+      "relation": "holds_position",
+      "value": "President of Russia",
+      "time_start": "2012-05-07",
+      "time_end": null,
+      "source": "Q7747"
+    }
+  ],
+
+  "elon musk": [
+    {
+      "relation": "holds_position",
+      "value": "CEO of Tesla",
+      "time_start": "2008-10-01",
+      "time_end": null,
+      "source": "Q317521"
+    },
+    {
+      "relation": "holds_position",
+      "value": "CEO of SpaceX",
+      "time_start": "2002-05-06",
+      "time_end": null,
+      "source": "Q317521"
+    },
+    {
+      "relation": "holds_position",
+      "value": "CEO of Twitter",
+      "time_start": "2022-10-27",
+      "time_end": null,
+      "source": "Q317521"
+    }
+  ],
+
+  "apple": [
+    {
+      "relation": "occurred_on",
+      "value": "founded",
+      "time_point": "1976-04-01",
+      "source": "Q312"
+    }
+  ],
+
+  "google": [
+    {
+      "relation": "occurred_on",
+      "value": "founded",
+      "time_point": "1998-09-04",
+      "source": "Q95"
+    }
+  ],
+
+  "microsoft": [
+    {
+      "relation": "occurred_on",
+      "value": "founded",
+      "time_point": "1975-04-04",
+      "source": "Q2283"
+    }
+  ],
+
+  "world war ii": [
+    {
+      "relation": "occurred_on",
+      "value": "started",
+      "time_point": "1939-09-01",
+      "source": "Q362"
+    },
+    {
+      "relation": "occurred_on",
+      "value": "ended",
+      "time_point": "1945-09-02",
+      "source": "Q362"
+    }
+  ],
+
+  "covid-19 pandemic": [
+    {
+      "relation": "occurred_on",
+      "value": "declared pandemic by WHO",
+      "time_point": "2020-03-11",
+      "source": "Q81068910"
+    }
+  ],
+
+  "affordable care act": [
+    {
+      "relation": "occurred_on",
+      "value": "signed into law",
+      "time_point": "2010-03-23",
+      "source": "Q744507"
+    }
+  ]
+}
