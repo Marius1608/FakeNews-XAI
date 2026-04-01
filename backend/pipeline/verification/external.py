@@ -82,19 +82,20 @@ class ExternalVerifier:
         return []
 
     def _fetch_from_wikidata(self, fact: TemporalFact, result: ExternalVerificationResult) -> list[WikidataFact]:
-        candidates = self.client.search_entity(fact.subject.text)
+        """Cauta entitatea pe Wikidata si obtine faptele temporale."""
+        # search_entity returneaza QID string (ex. "Q76") sau None
+        entity_id = self.client.search_entity(fact.subject.text)
         result.wikidata_queries += 1
-        if not candidates:
+        if not entity_id:
             return []
 
-        entity_id = candidates[0]["id"]
-        entity_label = candidates[0]["label"]
         props = RELATION_TO_WIKIDATA_PROPS.get(fact.predicate, [])
         wikidata_facts = self.client.get_temporal_facts(entity_id, props)
         result.wikidata_queries += 1
 
+        # Seteaza label pe fapte (pentru evidenta in Inconsistency)
         for wf in wikidata_facts:
-            wf.entity_label = entity_label
+            wf.entity_label = fact.subject.text
         return wikidata_facts
 
     def _compare_with_reference(self, fact: TemporalFact, ref_facts: list[dict]) -> list[Inconsistency]:
@@ -146,7 +147,7 @@ class ExternalVerifier:
             return {}
 
 
-# ── Helpers ──
+#Helpers
 def _compare_temporal_intervals(
     fact: TemporalFact, ext_start: Optional[datetime], ext_end: Optional[datetime],
     ext_point: Optional[datetime], source: str, evidence: str,
