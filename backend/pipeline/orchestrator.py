@@ -6,7 +6,7 @@ import logging
 import time
 from typing import Optional
 
-from backend.pipeline.extraction.spacy_extractor import SpacyExtractor
+from backend.pipeline.extraction.base import AbstractExtractor
 from backend.pipeline.graph.builder import TKGBuilder
 from backend.pipeline.graph.models import Article, TCSResult
 from backend.pipeline.graph.store import TemporalKnowledgeGraph
@@ -16,29 +16,43 @@ from backend.pipeline.verification.internal import InternalVerifier
 
 logger = logging.getLogger(__name__)
 
+_EXTRACTOR_FACTORIES: dict[str, type] = {}
+
+def _get_extractor_class(name: str) -> type:
+    """Import lazy: incarca clasa extractorului doar cand e cerut."""
+    if not _EXTRACTOR_FACTORIES:
+        from backend.pipeline.extraction.spacy_extractor import SpacyExtractor
+        from backend.pipeline.extraction.llm_extractor import LLMExtractor
+        _EXTRACTOR_FACTORIES["spacy"] = SpacyExtractor
+        _EXTRACTOR_FACTORIES["llm"] = LLMExtractor
+    if name not in _EXTRACTOR_FACTORIES:
+        raise ValueError(f"Extractor necunoscut: '{name}'. Optiuni: {list(_EXTRACTOR_FACTORIES)}")
+    return _EXTRACTOR_FACTORIES[name]
+
 
 class PipelineOrchestrator:
     """
     Orchestreaza pipeline-ul TCS complet:
-      C1 (SpacyExtractor) → C2 (TKGBuilder) → C3 (Internal+External) → C4 (TCSCalculator)
+      C1 (SpacyExtractor | LLMExtractor) → C2 (TKGBuilder) → C3 (Verificare) → C4 (TCSCalculator)
     """
 
     def __init__(self, use_wikidata: bool = True, extractor_name: str = "spacy"):
         self.use_wikidata = use_wikidata
         self.extractor_name = extractor_name
 
-        self._extractor: Optional[SpacyExtractor] = None
+        self._extractor: Optional[AbstractExtractor] = None
         self._builder = TKGBuilder()
         self._internal_verifier = InternalVerifier()
         self._external_verifier: Optional[ExternalVerifier] = None
         self._calculator = TCSCalculator()
 
     @property
-    def extractor(self) -> SpacyExtractor:
-        """Lazy-load: modelul spaCy trf (~500MB) se incarca o singura data."""
+    def extractor(self) -> AbstractExtractor:
+        """Lazy-load: instantiaza extractorul ales (spacy sau llm) o singura data."""
         if self._extractor is None:
-            logger.info("Orchestrator: initializare SpacyExtractor...")
-            self._extractor = SpacyExtractor()
+            cls = _get_extractor_class(self.extractor_name)
+            logger.info(f"Orchestrator: initializare {cls.__name__}...")
+            self._extractor = cls()
         return self._extractor
 
     @property
@@ -50,11 +64,11 @@ class PipelineOrchestrator:
     def run(self, article: Article) -> TCSResult:
         """Ruleaza pipeline-ul complet pe un articol."""
         start_ms = time.monotonic() * 1000
-        logger.info(f"Pipeline START: '{article.title[:60]}' ({len(article.text)} chars)")
+        logger.info(f"Pipeline START [{self.extractor_name}]: '{article.title[:60]}' ({len(article.text)} chars)")
 
         # C1: Extractie
         facts = self.extractor.extract(article)
-        logger.info(f"C1 ✓ — {len(facts)} fapte extrase")
+        logger.info(f"C1 ✓ — {len(facts)} fapte extrase ({self.extractor_name})")
 
         # C2: Constructie TKG
         tkg: TemporalKnowledgeGraph = self._builder.build(facts)
@@ -84,7 +98,7 @@ class PipelineOrchestrator:
         """Ruleaza pipeline-ul pe o lista de articole (pentru evaluare dataset)."""
         results = []
         for i, article in enumerate(articles):
-            logger.info(f"Batch {i + 1}/{len(articles)}: {article.title[:50]}")
+            logger.info(f"Batch [{self.extractor_name}] {i + 1}/{len(articles)}: {article.title[:50]}")
             try:
                 result = self.run(article)
             except Exception as e:
@@ -93,7 +107,7 @@ class PipelineOrchestrator:
             results.append(result)
 
         avg = sum(r.score for r in results) / len(results) if results else 0
-        logger.info(f"Batch complet: {len(results)} articole, TCS mediu: {avg:.3f}")
+        logger.info(f"Batch complet [{self.extractor_name}]: {len(results)} articole, TCS mediu: {avg:.3f}")
         return results
 
 
