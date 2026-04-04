@@ -39,6 +39,7 @@ For each fact, return a JSON object with:
 - "time_start": start date if it's a range (ISO format YYYY-MM-DD or null)
 - "time_end": end date if it's a range (ISO format YYYY-MM-DD or null)
 - "time_point": specific date if it's a single point (ISO format or null)
+- "source_sentence": the original sentence from the article that contains this fact
 - "confidence": your confidence 0.0–1.0
 
 Return ONLY a JSON array. No explanations, no markdown fences.\
@@ -254,6 +255,11 @@ class LLMExtractor(AbstractExtractor):
         confidence = float(raw.get("confidence", 0.7))
         confidence = max(0.0, min(1.0, confidence))
 
+        # Propozitia sursa: preferabil din LLM, fallback la time_expression
+        source_sent = raw.get("source_sentence", "").strip()
+        if not source_sent:
+            source_sent = raw.get("time_expression", "")
+
         return TemporalFact(
             subject=subject,
             predicate=predicate,
@@ -261,7 +267,7 @@ class LLMExtractor(AbstractExtractor):
             time_start=time_start,
             time_end=time_end,
             time_point=time_point if not time_start else None,
-            source_sentence=raw.get("time_expression", ""),
+            source_sentence=source_sent,
             source_sentence_idx=idx,
             extraction_confidence=confidence,
             extractor="llm",

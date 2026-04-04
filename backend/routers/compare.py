@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 
 from backend.pipeline.graph.models import Article
 from backend.pipeline.orchestrator import PipelineOrchestrator
-from backend.pipeline.scoring.explainer import TCSExplainer
+from backend.routers.dependencies import get_orchestrator, explainer
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["compare"])
@@ -48,17 +48,7 @@ class CompareResponse(BaseModel):
     agreement: str = Field(description="Concordanta intre pipeline-uri")
 
 
-# Singleton-uri
-_orchestrators: dict[str, PipelineOrchestrator] = {}
-_explainer = TCSExplainer()
-
-
-def _get_orchestrator(pipeline: str) -> PipelineOrchestrator:
-    if pipeline not in _orchestrators:
-        _orchestrators[pipeline] = PipelineOrchestrator(
-            use_wikidata=True, extractor_name=pipeline,
-        )
-    return _orchestrators[pipeline]
+_explainer = explainer
 
 
 # Endpoint
@@ -83,7 +73,7 @@ async def compare_pipelines(req: CompareRequest) -> CompareResponse:
     results = {}
     for pipeline_name in ("spacy", "llm"):
         try:
-            orchestrator = _get_orchestrator(pipeline_name)
+            orchestrator = get_orchestrator(pipeline_name)
             results[pipeline_name] = orchestrator.run(article)
         except Exception as e:
             logger.error(f"/compare: eroare {pipeline_name} — {e}", exc_info=True)

@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 
 from backend.pipeline.graph.models import Article
 from backend.pipeline.orchestrator import PipelineOrchestrator
-from backend.pipeline.scoring.explainer import TCSExplainer
+from backend.routers.dependencies import get_orchestrator, explainer
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["analyze"])
@@ -65,18 +65,7 @@ class AnalyzeResponse(BaseModel):
     processing_time_ms: float
 
 
-# Singleton-uri (lazy init)
-_orchestrators: dict[str, PipelineOrchestrator] = {}
-_explainer = TCSExplainer()
-
-
-def _get_orchestrator(pipeline: str) -> PipelineOrchestrator:
-    """Un orchestrator per pipeline variant, reutilizat intre request-uri."""
-    if pipeline not in _orchestrators:
-        _orchestrators[pipeline] = PipelineOrchestrator(
-            use_wikidata=True, extractor_name=pipeline,
-        )
-    return _orchestrators[pipeline]
+_explainer = explainer
 
 
 # Endpoint
@@ -103,7 +92,7 @@ async def analyze_article(req: AnalyzeRequest) -> AnalyzeResponse:
     logger.info(f"/analyze: '{article.title[:50]}' ({len(article.text)} chars, pipeline={req.pipeline})")
 
     try:
-        orchestrator = _get_orchestrator(req.pipeline)
+        orchestrator = get_orchestrator(req.pipeline)
         result = orchestrator.run(article)
     except Exception as e:
         logger.error(f"/analyze: eroare pipeline — {e}", exc_info=True)
