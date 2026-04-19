@@ -1,7 +1,9 @@
 # Python
 __pycache__/
 *.py[cod]
+*.pyc
 *.egg-info/
+.mypy_cache/
 dist/
 build/
 venv/
@@ -24,8 +26,11 @@ data/cache/*
 .ipynb_checkpoints/
 
 # Frontend
+node_modules/
 frontend/node_modules/
 frontend/build/
+frontend/.env
+frontend/.env.local
 
 # OS
 .DS_Store
