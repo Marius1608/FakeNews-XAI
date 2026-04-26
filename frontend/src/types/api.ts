@@ -75,8 +75,8 @@ export interface PipelineResult {
   n_claims: number;
   n_inconsistencies: number;
   coherence_factor: number;
-  inconsistency_details: Record<string, unknown>[];
-  fact_annotations: Record<string, unknown>[];
+  inconsistency_details: InconsistencyResponse[];
+  fact_annotations: FactAnnotationResponse[];
   timeline: TimelineEvent[];
   processing_time_ms: number;
 }
