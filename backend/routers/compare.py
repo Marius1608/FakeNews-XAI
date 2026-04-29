@@ -1,4 +1,4 @@
-"""Router — POST /compare: Pipeline A vs Pipeline B side-by-side."""
+"""Router — POST /compare: any-2-model comparison side-by-side."""
 
 from __future__ import annotations
 
@@ -10,24 +10,28 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from backend.pipeline.graph.models import Article
-from backend.pipeline.orchestrator import PipelineOrchestrator
 from backend.routers.dependencies import get_orchestrator, explainer
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["compare"])
 
-# Pydantic schemas
+
 class CompareRequest(BaseModel):
-    """Input: articol de comparat pe ambele pipeline-uri."""
+    """Input: articol de comparat pe orice 2 modele."""
     text: str = Field(..., min_length=20, description="Textul articolului")
     title: str = Field(default="", description="Titlul articolului")
     publication_date: Optional[str] = Field(default=None, description="Data publicarii (YYYY-MM-DD)")
     source: str = Field(default="", description="Sursa articolului")
+    pipeline_a: str = Field(default="spacy", description="Pipeline model A: 'spacy' sau 'llm'")
+    model_a: Optional[str] = Field(default=None, description="Model specific A (None = default)")
+    pipeline_b: str = Field(default="llm", description="Pipeline model B: 'spacy' sau 'llm'")
+    model_b: Optional[str] = Field(default=None, description="Model specific B (None = default)")
 
 
 class PipelineResult(BaseModel):
     """Rezultatul unui singur pipeline."""
     pipeline: str
+    model: str
     score: float
     label: str
     summary: str
@@ -46,6 +50,8 @@ class CompareResponse(BaseModel):
     pipeline_b: PipelineResult
     score_delta: float = Field(description="pipeline_a.score - pipeline_b.score")
     agreement: str = Field(description="Concordanta intre pipeline-uri")
+    model_a: str = Field(description="Model A folosit")
+    model_b: str = Field(description="Model B folosit")
 
 
 _explainer = explainer
@@ -54,7 +60,29 @@ _explainer = explainer
 # Endpoint
 @router.post("/compare", response_model=CompareResponse)
 async def compare_pipelines(req: CompareRequest) -> CompareResponse:
-    """Ruleaza Pipeline A (spaCy) si Pipeline B (LLM) pe acelasi articol."""
+    """Ruleaza doua pipeline/model combinate pe acelasi articol si le compara."""
+    from backend.config import AVAILABLE_MODELS
+
+    # Valideaza pipeline_a
+    if req.pipeline_a not in ("spacy", "llm"):
+        raise HTTPException(status_code=400, detail=f"pipeline_a necunoscut: '{req.pipeline_a}'. Optiuni: 'spacy', 'llm'.")
+
+    # Valideaza pipeline_b
+    if req.pipeline_b not in ("spacy", "llm"):
+        raise HTTPException(status_code=400, detail=f"pipeline_b necunoscut: '{req.pipeline_b}'. Optiuni: 'spacy', 'llm'.")
+
+    # Valideaza model_a
+    if req.model_a:
+        available_a = AVAILABLE_MODELS.get(req.pipeline_a, {}).get("models", [])
+        if req.model_a not in available_a:
+            raise HTTPException(status_code=400, detail=f"Model A '{req.model_a}' nu e disponibil pentru pipeline '{req.pipeline_a}'. Optiuni: {available_a}")
+
+    # Valideaza model_b
+    if req.model_b:
+        available_b = AVAILABLE_MODELS.get(req.pipeline_b, {}).get("models", [])
+        if req.model_b not in available_b:
+            raise HTTPException(status_code=400, detail=f"Model B '{req.model_b}' nu e disponibil pentru pipeline '{req.pipeline_b}'. Optiuni: {available_b}")
+
     pub_date = None
     if req.publication_date:
         try:
@@ -67,28 +95,37 @@ async def compare_pipelines(req: CompareRequest) -> CompareResponse:
         publication_date=pub_date, source=req.source,
     )
 
-    logger.info(f"/compare: '{article.title[:50]}' ({len(article.text)} chars)")
+    resolved_model_a = req.model_a or AVAILABLE_MODELS[req.pipeline_a]["default"]
+    resolved_model_b = req.model_b or AVAILABLE_MODELS[req.pipeline_b]["default"]
 
-    # Ruleaza ambele pipeline-uri
-    results = {}
-    for pipeline_name in ("spacy", "llm"):
-        try:
-            orchestrator = get_orchestrator(pipeline_name)
-            results[pipeline_name] = orchestrator.run(article)
-        except Exception as e:
-            logger.error(f"/compare: eroare {pipeline_name} — {e}", exc_info=True)
-            raise HTTPException(
-                status_code=500,
-                detail=f"Eroare la pipeline '{pipeline_name}': {e}",
-            )
+    logger.info(
+        f"/compare: '{article.title[:50]}' ({len(article.text)} chars) | "
+        f"A={req.pipeline_a}:{resolved_model_a} vs B={req.pipeline_b}:{resolved_model_b}"
+    )
 
-    # Genereaza explicatii
-    expl_a = _explainer.explain_structured(results["spacy"])
-    expl_b = _explainer.explain_structured(results["llm"])
+    # Ruleaza pipeline A
+    try:
+        orch_a = get_orchestrator(req.pipeline_a, req.model_a)
+        result_a = orch_a.run(article)
+    except Exception as e:
+        logger.error(f"/compare: eroare pipeline A ({req.pipeline_a}:{resolved_model_a}) — {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Eroare la pipeline A '{req.pipeline_a}:{resolved_model_a}': {e}")
 
-    def _to_pipeline_result(result, explanation, name) -> PipelineResult:
+    # Ruleaza pipeline B
+    try:
+        orch_b = get_orchestrator(req.pipeline_b, req.model_b)
+        result_b = orch_b.run(article)
+    except Exception as e:
+        logger.error(f"/compare: eroare pipeline B ({req.pipeline_b}:{resolved_model_b}) — {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Eroare la pipeline B '{req.pipeline_b}:{resolved_model_b}': {e}")
+
+    expl_a = _explainer.explain_structured(result_a)
+    expl_b = _explainer.explain_structured(result_b)
+
+    def _to_pipeline_result(result, explanation, pipeline_name, model_name) -> PipelineResult:
         return PipelineResult(
-            pipeline=name,
+            pipeline=f"{pipeline_name}:{model_name}",
+            model=model_name,
             score=result.score,
             label=result.label,
             summary=explanation["summary"],
@@ -101,17 +138,19 @@ async def compare_pipelines(req: CompareRequest) -> CompareResponse:
             processing_time_ms=result.processing_time_ms,
         )
 
-    res_a = _to_pipeline_result(results["spacy"], expl_a, "spacy")
-    res_b = _to_pipeline_result(results["llm"], expl_b, "llm")
+    res_a = _to_pipeline_result(result_a, expl_a, req.pipeline_a, resolved_model_a)
+    res_b = _to_pipeline_result(result_b, expl_b, req.pipeline_b, resolved_model_b)
 
     delta = res_a.score - res_b.score
-    agreement = _compute_agreement(results["spacy"].score, results["llm"].score)
+    agreement = _compute_agreement(result_a.score, result_b.score)
 
     return CompareResponse(
         pipeline_a=res_a,
         pipeline_b=res_b,
         score_delta=round(delta, 4),
         agreement=agreement,
+        model_a=resolved_model_a,
+        model_b=resolved_model_b,
     )
 
 

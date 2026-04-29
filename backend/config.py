@@ -57,6 +57,18 @@ NEWSAPI_BASE_URL = "https://newsapi.org/v2"
 # Se activeaza doar cand implementam Pipeline B
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3")
+OLLAMA_TIMEOUT_SECONDS = int(os.getenv("OLLAMA_TIMEOUT_SECONDS", "120"))
+
+AVAILABLE_MODELS = {
+    "spacy": {
+        "default": SPACY_MODEL,
+        "models": ["en_core_web_trf", "en_core_web_lg", "en_core_web_sm"],
+    },
+    "llm": {
+        "default": OLLAMA_MODEL,
+        "models": ["llama3", "mistral", "sciphi/triplex"],
+    },
+}
 
 
 # TCS Thresholds — praguri de interpretare scor

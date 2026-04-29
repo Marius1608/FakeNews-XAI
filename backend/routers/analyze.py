@@ -25,6 +25,7 @@ class AnalyzeRequest(BaseModel):
     publication_date: Optional[str] = Field(default=None, description="Data publicarii (YYYY-MM-DD)")
     source: str = Field(default="", description="Sursa articolului")
     pipeline: str = Field(default="spacy", description="Pipeline: 'spacy' sau 'llm'")
+    model: Optional[str] = Field(default=None, description="Model specific: en_core_web_trf, llama3, mistral, etc. None = default per pipeline")
 
 
 class InconsistencyResponse(BaseModel):
@@ -62,6 +63,7 @@ class AnalyzeResponse(BaseModel):
     fact_annotations: list[FactAnnotationResponse]
     timeline: list[dict]
     pipeline: str
+    model: str = Field(default="", description="Model folosit")
     processing_time_ms: float
 
 
@@ -72,9 +74,17 @@ _explainer = explainer
 @router.post("/analyze", response_model=AnalyzeResponse)
 async def analyze_article(req: AnalyzeRequest) -> AnalyzeResponse:
     """Analizeaza un articol si returneaza scorul TCS cu explicatii."""
+    from backend.config import AVAILABLE_MODELS
+
     # Valideaza pipeline
     if req.pipeline not in ("spacy", "llm"):
         raise HTTPException(status_code=400, detail=f"Pipeline necunoscut: '{req.pipeline}'. Optiuni: 'spacy', 'llm'.")
+
+    # Valideaza model (daca e furnizat)
+    if req.model:
+        available = AVAILABLE_MODELS.get(req.pipeline, {}).get("models", [])
+        if req.model not in available:
+            raise HTTPException(status_code=400, detail=f"Model '{req.model}' nu e disponibil pentru pipeline '{req.pipeline}'. Optiuni: {available}")
 
     # Parseaza data publicarii
     pub_date = None
@@ -89,10 +99,10 @@ async def analyze_article(req: AnalyzeRequest) -> AnalyzeResponse:
         publication_date=pub_date, source=req.source,
     )
 
-    logger.info(f"/analyze: '{article.title[:50]}' ({len(article.text)} chars, pipeline={req.pipeline})")
+    logger.info(f"/analyze: '{article.title[:50]}' ({len(article.text)} chars, pipeline={req.pipeline}, model={req.model or 'default'})")
 
     try:
-        orchestrator = get_orchestrator(req.pipeline)
+        orchestrator = get_orchestrator(req.pipeline, req.model)
         result = orchestrator.run(article)
     except Exception as e:
         logger.error(f"/analyze: eroare pipeline — {e}", exc_info=True)
@@ -112,5 +122,6 @@ async def analyze_article(req: AnalyzeRequest) -> AnalyzeResponse:
         fact_annotations=explanation["fact_annotations"],
         timeline=result.timeline,
         pipeline=result.pipeline_variant,
+        model=req.model or AVAILABLE_MODELS[req.pipeline]["default"],
         processing_time_ms=result.processing_time_ms,
     )

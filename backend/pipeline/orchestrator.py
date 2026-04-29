@@ -36,9 +36,10 @@ class PipelineOrchestrator:
       C1 (SpacyExtractor | LLMExtractor) → C2 (TKGBuilder) → C3 (Verificare) → C4 (TCSCalculator)
     """
 
-    def __init__(self, use_wikidata: bool = True, extractor_name: str = "spacy"):
+    def __init__(self, use_wikidata: bool = True, extractor_name: str = "spacy", model_name: str | None = None):
         self.use_wikidata = use_wikidata
         self.extractor_name = extractor_name
+        self.model_name = model_name
 
         self._extractor: Optional[AbstractExtractor] = None
         self._builder = TKGBuilder()
@@ -51,8 +52,14 @@ class PipelineOrchestrator:
         """Lazy-load: instantiaza extractorul ales (spacy sau llm) o singura data."""
         if self._extractor is None:
             cls = _get_extractor_class(self.extractor_name)
-            logger.info(f"Orchestrator: initializare {cls.__name__}...")
-            self._extractor = cls()
+            kwargs = {}
+            if self.model_name:
+                if self.extractor_name == "spacy":
+                    kwargs["model_name"] = self.model_name
+                elif self.extractor_name == "llm":
+                    kwargs["model"] = self.model_name
+            logger.info(f"Orchestrator: initializare {cls.__name__} ({self.model_name or 'default'})...")
+            self._extractor = cls(**kwargs)
         return self._extractor
 
     @property

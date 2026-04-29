@@ -13,10 +13,11 @@ _orchestrators: dict[str, PipelineOrchestrator] = {}
 explainer = TCSExplainer()
 
 
-def get_orchestrator(pipeline: str) -> PipelineOrchestrator:
-    """Returneaza orchestratorul pentru pipeline-ul cerut. Creeaza la prima invocare."""
-    if pipeline not in _orchestrators:
-        _orchestrators[pipeline] = PipelineOrchestrator(
-            use_wikidata=True, extractor_name=pipeline,
+def get_orchestrator(pipeline: str, model: str | None = None) -> PipelineOrchestrator:
+    """Returneaza orchestratorul pentru pipeline+model cerut. Creeaza la prima invocare."""
+    key = f"{pipeline}:{model}" if model else pipeline
+    if key not in _orchestrators:
+        _orchestrators[key] = PipelineOrchestrator(
+            use_wikidata=True, extractor_name=pipeline, model_name=model,
         )
-    return _orchestrators[pipeline]
+    return _orchestrators[key]
