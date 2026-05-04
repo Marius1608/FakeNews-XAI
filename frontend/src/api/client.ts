@@ -1,7 +1,7 @@
 /* client.ts — Axios instance and typed API functions */
 
 import axios from "axios";
-import type { AnalyzeRequest, AnalyzeResponse, CompareRequest, CompareResponse, HealthResponse } from "../types";
+import type { AnalyzeRequest, AnalyzeResponse, CompareRequest, CompareResponse, HealthResponse, ModelsResponse } from "../types";
 
 // axios instance
 const apiClient = axios.create({
@@ -25,6 +25,11 @@ export async function comparePipelines(req: CompareRequest): Promise<CompareResp
 
 export async function checkHealth(): Promise<HealthResponse> {
   const { data } = await apiClient.get<HealthResponse>("/health");
+  return data;
+}
+
+export async function getModels(): Promise<ModelsResponse> {
+  const { data } = await apiClient.get<ModelsResponse>("/models");
   return data;
 }
 

@@ -1,12 +1,19 @@
 /* api.ts — TypeScript interfaces mirroring backend Pydantic schemas 1:1 */
 
-//analyze schemas
+// models schema
+export interface ModelsResponse {
+  spacy: { default: string; models: string[] };
+  llm: { default: string; models: string[] };
+}
+
+// analyze schemas
 export interface AnalyzeRequest {
   text: string;
   title?: string;
   publication_date?: string | null;
   source?: string;
   pipeline?: "spacy" | "llm";
+  model?: string;
 }
 
 export interface InconsistencyResponse {
@@ -56,19 +63,25 @@ export interface AnalyzeResponse {
   fact_annotations: FactAnnotationResponse[];
   timeline: TimelineEvent[];
   pipeline: string;
+  model: string;
   processing_time_ms: number;
 }
 
-//compare schemas
+// compare schemas
 export interface CompareRequest {
   text: string;
   title?: string;
   publication_date?: string | null;
   source?: string;
+  pipeline_a: string;
+  model_a?: string;
+  pipeline_b: string;
+  model_b?: string;
 }
 
 export interface PipelineResult {
   pipeline: string;
+  model: string;
   score: number;
   label: string;
   summary: string;
@@ -86,9 +99,11 @@ export interface CompareResponse {
   pipeline_b: PipelineResult;
   score_delta: number;
   agreement: string;
+  model_a: string;
+  model_b: string;
 }
 
-//health schema
+// health schema
 export interface PipelineAComponent {
   model: string;
   type: "spacy";

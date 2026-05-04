@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -9,26 +9,42 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
+  InputLabel,
+  MenuItem,
   Radio,
   RadioGroup,
+  Select,
   TextField,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
+import type { SelectChangeEvent } from "@mui/material";
 import { Clear, ExpandMore, PlayArrow, Upload } from "@mui/icons-material";
-import type { AnalyzeRequest } from "../types";
+import type { AnalyzeRequest, ModelsResponse } from "../types";
+import { getModelLabel } from "../utils/modelLabels";
+
+// Fields that ArticleInput owns (text, metadata — no pipeline/model)
+type ArticleFields = Omit<AnalyzeRequest, "pipeline" | "model">;
 
 interface ArticleInputProps {
-  onSubmit: (request: AnalyzeRequest) => void;
+  onSubmit?: (request: AnalyzeRequest) => void;
   isLoading: boolean;
   showPipelineSelector?: boolean;
+  availableModels?: ModelsResponse;
+  // When true, hide the submit button (CompareTab renders its own button)
+  hideSubmitButton?: boolean;
+  // Fires on every text/metadata change so parent can track current content
+  onRequestChange?: (request: ArticleFields) => void;
 }
 
 function ArticleInput({
   onSubmit,
   isLoading,
   showPipelineSelector = true,
+  availableModels,
+  hideSubmitButton = false,
+  onRequestChange,
 }: ArticleInputProps): React.ReactElement {
   const [inputMode, setInputMode] = useState<"text" | "file" | "url">("text");
   const [textValue, setTextValue] = useState<string>("");
@@ -37,8 +53,29 @@ function ArticleInput({
   const [publicationDate, setPublicationDate] = useState<string>("");
   const [source, setSource] = useState<string>("");
   const [pipeline, setPipeline] = useState<"spacy" | "llm">("spacy");
+  const [model, setModel] = useState<string>("");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Sync model default when pipeline changes or availableModels first loads
+  useEffect(() => {
+    if (availableModels) {
+      setModel(availableModels[pipeline].default);
+    }
+  }, [availableModels, pipeline]);
+
+  // Notify parent whenever article content changes (used by CompareTab)
+  const onRequestChangeRef = useRef(onRequestChange);
+  onRequestChangeRef.current = onRequestChange;
+
+  useEffect(() => {
+    onRequestChangeRef.current?.({
+      text: textValue,
+      title: title || undefined,
+      publication_date: publicationDate || null,
+      source: source || undefined,
+    });
+  }, [textValue, title, publicationDate, source]);
 
   const handleModeChange = (
     _: React.MouseEvent<HTMLElement>,
@@ -83,12 +120,14 @@ function ArticleInput({
   };
 
   const handleSubmit = (): void => {
+    if (!onSubmit) return;
     const request: AnalyzeRequest = {
       text: textValue,
       title: title || undefined,
       publication_date: publicationDate || null,
       source: source || undefined,
       pipeline: showPipelineSelector ? pipeline : undefined,
+      model: showPipelineSelector && model ? model : undefined,
     };
     onSubmit(request);
   };
@@ -219,44 +258,65 @@ function ArticleInput({
       </Accordion>
 
       {showPipelineSelector && (
-        <FormControl>
-          <FormLabel>Pipeline</FormLabel>
-          <RadioGroup
-            value={pipeline}
-            onChange={(e) => setPipeline(e.target.value as "spacy" | "llm")}
-            row
-          >
-            <FormControlLabel
-              value="spacy"
-              control={<Radio size="small" />}
-              label="Pipeline A — spaCy (deterministic)"
-            />
-            <FormControlLabel
-              value="llm"
-              control={<Radio size="small" />}
-              label="Pipeline B — LLM (Ollama/Llama 3)"
-            />
-          </RadioGroup>
-        </FormControl>
+        <>
+          <FormControl>
+            <FormLabel>Pipeline</FormLabel>
+            <RadioGroup
+              value={pipeline}
+              onChange={(e) => setPipeline(e.target.value as "spacy" | "llm")}
+              row
+            >
+              <FormControlLabel
+                value="spacy"
+                control={<Radio size="small" />}
+                label="Pipeline A — spaCy (deterministic)"
+              />
+              <FormControlLabel
+                value="llm"
+                control={<Radio size="small" />}
+                label="Pipeline B — LLM (Ollama/Llama 3)"
+              />
+            </RadioGroup>
+          </FormControl>
+
+          {availableModels && (
+            <FormControl size="small" sx={{ maxWidth: 360 }}>
+              <InputLabel>Model</InputLabel>
+              <Select
+                value={model}
+                label="Model"
+                onChange={(e: SelectChangeEvent<string>) => setModel(e.target.value)}
+              >
+                {availableModels[pipeline].models.map((m) => (
+                  <MenuItem key={m} value={m}>
+                    {getModelLabel(m)}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+        </>
       )}
 
-      <Box>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={
-            isLoading ? (
-              <CircularProgress size={20} color="inherit" />
-            ) : (
-              <PlayArrow />
-            )
-          }
-          disabled={textValue.length < 20 || isLoading}
-          onClick={handleSubmit}
-        >
-          {isLoading ? "Analyzing..." : "Analyze"}
-        </Button>
-      </Box>
+      {!hideSubmitButton && (
+        <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={
+              isLoading ? (
+                <CircularProgress size={20} color="inherit" />
+              ) : (
+                <PlayArrow />
+              )
+            }
+            disabled={textValue.length < 20 || isLoading}
+            onClick={handleSubmit}
+          >
+            {isLoading ? "Analyzing..." : "Analyze"}
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 }

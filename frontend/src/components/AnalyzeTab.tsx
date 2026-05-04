@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Stack } from "@mui/material";
 import axios from "axios";
-import type { AnalyzeRequest, AnalyzeResponse } from "../types";
-import { analyzeArticle } from "../api/client";
+import type { AnalyzeRequest, AnalyzeResponse, ModelsResponse } from "../types";
+import { analyzeArticle, getModels } from "../api/client";
 import ArticleInput from "./ArticleInput";
 import TCSScoreDisplay from "./TCSScoreDisplay";
 import TextHighlight from "./TextHighlight";
@@ -15,6 +15,13 @@ function AnalyzeTab(): React.ReactElement {
   const [articleText, setArticleText] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [availableModels, setAvailableModels] = useState<ModelsResponse | undefined>(undefined);
+
+  useEffect(() => {
+    getModels()
+      .then(setAvailableModels)
+      .catch(() => undefined);
+  }, []);
 
   const handleSubmit = async (request: AnalyzeRequest): Promise<void> => {
     setIsLoading(true);
@@ -39,7 +46,12 @@ function AnalyzeTab(): React.ReactElement {
 
   return (
     <Stack spacing={3}>
-      <ArticleInput onSubmit={handleSubmit} isLoading={isLoading} showPipelineSelector={true} />
+      <ArticleInput
+        onSubmit={handleSubmit}
+        isLoading={isLoading}
+        showPipelineSelector={true}
+        availableModels={availableModels}
+      />
 
       {error && (
         <Alert severity="error" onClose={() => setError(null)}>
