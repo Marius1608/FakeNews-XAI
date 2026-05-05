@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Usage: bash start.sh
-# Starts Ollama, backend (FastAPI on :8000), and frontend (React on :3000)
+# Starts Ollama, pulls required models, verifies spaCy models,
+# then launches the backend (FastAPI :8000) and frontend (React :3000).
 
 set -euo pipefail
 
@@ -10,18 +11,16 @@ CYAN="\033[0;36m"
 RED="\033[0;31m"
 RESET="\033[0m"
 
-REQUIRED_MODELS=("llama3" "mistral" "sciphi/triplex")
 BACKEND_URL="http://localhost:8000"
 FRONTEND_URL="http://localhost:3000"
-OLLAMA_URL="http://localhost:11434"
 
 BACKEND_PID=""
 FRONTEND_PID=""
 
-step()  { echo -e "${CYAN}[*] $*${RESET}"; }
-ok()    { echo -e "${GREEN}[OK] $*${RESET}"; }
-warn()  { echo -e "${YELLOW}[!] $*${RESET}"; }
-err()   { echo -e "${RED}[ERR] $*${RESET}"; }
+step() { echo -e "${CYAN}[*] $*${RESET}"; }
+ok()   { echo -e "${GREEN}[OK] $*${RESET}"; }
+warn() { echo -e "${YELLOW}[!] $*${RESET}"; }
+err()  { echo -e "${RED}[ERR] $*${RESET}"; }
 
 cleanup() {
     echo ""
@@ -31,13 +30,31 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
+# Load .env into the current shell environment
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENV_FILE="$REPO_ROOT/.env"
+if [[ -f "$ENV_FILE" ]]; then
+    # shellcheck disable=SC2046
+    export $(grep -v '^\s*#' "$ENV_FILE" | grep '=' | xargs)
+fi
+
+# Resolve values from env with fallbacks
+OLLAMA_URL="${OLLAMA_HOST:-http://localhost:11434}"
+
+IFS=',' read -ra LLM_MODELS   <<< "${LLM_MODELS:-sciphi/triplex}"
+IFS=',' read -ra SPACY_MODELS <<< "${SPACY_MODELS:-en_core_web_trf}"
+
+# Trim whitespace from each element
+for i in "${!LLM_MODELS[@]}";   do LLM_MODELS[$i]="${LLM_MODELS[$i]// /}";   done
+for i in "${!SPACY_MODELS[@]}"; do SPACY_MODELS[$i]="${SPACY_MODELS[$i]// /}"; done
+
 # Check if a URL responds with HTTP 200
 check_http() {
     curl -sf -o /dev/null --max-time 5 "$1"
 }
 
-# --- Ollama ---
-step "Checking Ollama..."
+# [1/5] Ollama daemon
+step "[1/5] Checking Ollama..."
 if ! check_http "$OLLAMA_URL/api/tags"; then
     warn "Ollama not running — starting ollama serve"
     ollama serve &>/dev/null &
@@ -49,16 +66,20 @@ if ! check_http "$OLLAMA_URL/api/tags"; then
 fi
 ok "Ollama is running"
 
-# --- Pull missing models ---
-step "Checking required models..."
-PULLED_MODELS=$(curl -sf "$OLLAMA_URL/api/tags" | grep -o '"name":"[^"]*"' | sed 's/"name":"//;s/"//' | sed 's/:latest//' || true)
+# [2/5] Ollama LLM models
+step "[2/5] Checking Ollama LLM models..."
+PULLED_MODELS=$(curl -sf "$OLLAMA_URL/api/tags" \
+    | grep -o '"name":"[^"]*"' \
+    | sed 's/"name":"//;s/"//' \
+    | sed 's/:latest//' \
+    || true)
 
-for model in "${REQUIRED_MODELS[@]}"; do
+for model in "${LLM_MODELS[@]}"; do
     short="${model%%:*}"
     if echo "$PULLED_MODELS" | grep -qxF "$short"; then
-        ok "Model present: $model"
+        ok "LLM model present: $model"
     else
-        warn "Pulling model: $model"
+        warn "Pulling LLM model: $model"
         if ! ollama pull "$model"; then
             err "Failed to pull $model"
             exit 1
@@ -67,12 +88,24 @@ for model in "${REQUIRED_MODELS[@]}"; do
     fi
 done
 
-# --- Activate venv ---
-step "Activating Python venv..."
-REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# [3/5] spaCy NLP models
+step "[3/5] Checking spaCy models..."
+for model in "${SPACY_MODELS[@]}"; do
+    if python -c "import spacy; spacy.load('$model')" 2>/dev/null; then
+        ok "spaCy model present: $model"
+    else
+        warn "spaCy model not found: $model — downloading..."
+        if ! python -m spacy download "$model"; then
+            err "Failed to download spaCy model: $model"
+            exit 1
+        fi
+        ok "Downloaded spaCy model: $model"
+    fi
+done
 
+# [4/5] Backend
+step "[4/5] Activating Python venv..."
 if [[ -f "$REPO_ROOT/venv/Scripts/activate" ]]; then
-    # Windows Git Bash
     source "$REPO_ROOT/venv/Scripts/activate"
 elif [[ -f "$REPO_ROOT/venv/bin/activate" ]]; then
     source "$REPO_ROOT/venv/bin/activate"
@@ -82,8 +115,7 @@ else
 fi
 ok "venv activated"
 
-# --- Backend ---
-step "Starting backend (uvicorn on :8000)..."
+step "[4/5] Starting backend (uvicorn on :8000)..."
 cd "$REPO_ROOT"
 uvicorn backend.main:app --host 0.0.0.0 --port 8000 2>&1 | sed 's/^/[backend]  /' &
 BACKEND_PID=$!
@@ -95,15 +127,15 @@ else
     warn "Backend did not respond in time — check output above"
 fi
 
-# --- Frontend ---
-step "Starting frontend (npm start on :3000)..."
+# [5/5] Frontend
+step "[5/5] Starting frontend (npm start on :3000)..."
 cd "$REPO_ROOT/frontend"
 npm start 2>&1 | sed 's/^/[frontend] /' &
 FRONTEND_PID=$!
 
 cd "$REPO_ROOT"
 
-# --- Summary ---
+# Summary
 echo ""
 echo -e "${CYAN}======================================${RESET}"
 echo -e "${GREEN}  Backend   $BACKEND_URL${RESET}"
