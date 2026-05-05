@@ -8,6 +8,7 @@ import {
   CircularProgress,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   FormLabel,
   InputLabel,
   MenuItem,
@@ -22,7 +23,7 @@ import {
 import type { SelectChangeEvent } from "@mui/material";
 import { Clear, ExpandMore, PlayArrow, Upload } from "@mui/icons-material";
 import type { AnalyzeRequest, ModelsResponse } from "../types";
-import { getModelLabel } from "../utils/modelLabels";
+import { getModelDescription, getModelLabel } from "../utils/modelLabels";
 
 // Fields that ArticleInput owns (text, metadata — no pipeline/model)
 type ArticleFields = Omit<AnalyzeRequest, "pipeline" | "model">;
@@ -269,12 +270,12 @@ function ArticleInput({
               <FormControlLabel
                 value="spacy"
                 control={<Radio size="small" />}
-                label="Pipeline A — spaCy (deterministic)"
+                label="Pipeline A — spaCy"
               />
               <FormControlLabel
                 value="llm"
                 control={<Radio size="small" />}
-                label="Pipeline B — LLM (Ollama/Llama 3)"
+                label="Pipeline B — LLM"
               />
             </RadioGroup>
           </FormControl>
@@ -293,6 +294,9 @@ function ArticleInput({
                   </MenuItem>
                 ))}
               </Select>
+              {model && (
+                <FormHelperText>{getModelDescription(model)}</FormHelperText>
+              )}
             </FormControl>
           )}
         </>

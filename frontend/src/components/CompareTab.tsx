@@ -6,6 +6,7 @@ import {
   Chip,
   CircularProgress,
   FormControl,
+  FormHelperText,
   Grid,
   InputLabel,
   MenuItem,
@@ -24,7 +25,7 @@ import TCSScoreDisplay from "./TCSScoreDisplay";
 import TextHighlight from "./TextHighlight";
 import InconsistencyList from "./InconsistencyList";
 import Timeline from "./Timeline";
-import { getModelLabel } from "../utils/modelLabels";
+import { getModelDescription, getModelLabel } from "../utils/modelLabels";
 
 type ArticleContent = Omit<AnalyzeRequest, "pipeline" | "model">;
 
@@ -36,8 +37,8 @@ function getPipelineMeta(
 }
 
 const PIPELINE_OPTIONS = [
-  { value: "spacy", label: "spaCy (deterministic)" },
-  { value: "llm", label: "LLM (Ollama)" },
+  { value: "spacy", label: "spaCy" },
+  { value: "llm", label: "LLM" },
 ];
 
 function CompareTab(): React.ReactElement {
@@ -151,12 +152,10 @@ function CompareTab(): React.ReactElement {
                       </MenuItem>
                     ))}
                   </Select>
+                  {modelA && (
+                    <FormHelperText>{getModelDescription(modelA)}</FormHelperText>
+                  )}
                 </FormControl>
-              )}
-              {modelA && (
-                <Typography variant="caption" color="text.secondary">
-                  {pipelineA}:{modelA}
-                </Typography>
               )}
             </Stack>
           </Grid>
@@ -190,12 +189,10 @@ function CompareTab(): React.ReactElement {
                       </MenuItem>
                     ))}
                   </Select>
+                  {modelB && (
+                    <FormHelperText>{getModelDescription(modelB)}</FormHelperText>
+                  )}
                 </FormControl>
-              )}
-              {modelB && (
-                <Typography variant="caption" color="text.secondary">
-                  {pipelineB}:{modelB}
-                </Typography>
               )}
             </Stack>
           </Grid>
@@ -231,13 +228,13 @@ function CompareTab(): React.ReactElement {
           <Paper sx={{ p: 2 }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5, flexWrap: "wrap" }}>
               <Typography variant="body2">
-                Model A: <strong>{compareResult.pipeline_a.pipeline}:{compareResult.model_a}</strong>
+                <strong>{getModelLabel(compareResult.model_a)}</strong>
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 vs
               </Typography>
               <Typography variant="body2">
-                Model B: <strong>{compareResult.pipeline_b.pipeline}:{compareResult.model_b}</strong>
+                <strong>{getModelLabel(compareResult.model_b)}</strong>
               </Typography>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 1 }}>
@@ -261,7 +258,7 @@ function CompareTab(): React.ReactElement {
             <Grid size={{ xs: 12, md: 6 }}>
               <Stack spacing={3}>
                 <Typography variant="h6">
-                  Model A — {compareResult.pipeline_a.pipeline}:{compareResult.model_a}
+                  Model A — {getModelLabel(compareResult.model_a)}
                 </Typography>
                 <TCSScoreDisplay
                   score={compareResult.pipeline_a.score}
@@ -271,6 +268,7 @@ function CompareTab(): React.ReactElement {
                   nInconsistencies={compareResult.pipeline_a.n_inconsistencies}
                   coherenceFactor={compareResult.pipeline_a.coherence_factor}
                   pipeline={compareResult.pipeline_a.pipeline}
+                  model={compareResult.model_a}
                   processingTimeMs={compareResult.pipeline_a.processing_time_ms}
                 />
                 <TextHighlight
@@ -290,7 +288,7 @@ function CompareTab(): React.ReactElement {
             <Grid size={{ xs: 12, md: 6 }}>
               <Stack spacing={3}>
                 <Typography variant="h6">
-                  Model B — {compareResult.pipeline_b.pipeline}:{compareResult.model_b}
+                  Model B — {getModelLabel(compareResult.model_b)}
                 </Typography>
                 <TCSScoreDisplay
                   score={compareResult.pipeline_b.score}
@@ -300,6 +298,7 @@ function CompareTab(): React.ReactElement {
                   nInconsistencies={compareResult.pipeline_b.n_inconsistencies}
                   coherenceFactor={compareResult.pipeline_b.coherence_factor}
                   pipeline={compareResult.pipeline_b.pipeline}
+                  model={compareResult.model_b}
                   processingTimeMs={compareResult.pipeline_b.processing_time_ms}
                 />
                 <TextHighlight

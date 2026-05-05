@@ -69,6 +69,7 @@ function AnalyzeTab(): React.ReactElement {
             nInconsistencies={analyzeResult.n_inconsistencies}
             coherenceFactor={analyzeResult.coherence_factor}
             pipeline={analyzeResult.pipeline}
+            model={analyzeResult.model}
             processingTimeMs={analyzeResult.processing_time_ms}
           />
           <TextHighlight

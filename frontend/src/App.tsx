@@ -112,7 +112,7 @@ function App(): React.ReactElement {
         }}
       >
         <Typography variant="caption" color="text.secondary">
-          Bachelor Thesis — UTCN 2025 — Marius Pantea
+          Bachelor Thesis — UTCN 2026 — Marius Pantea
         </Typography>
       </Box>
     </Box>

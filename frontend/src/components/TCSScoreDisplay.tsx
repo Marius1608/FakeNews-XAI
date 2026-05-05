@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Chip, Paper, Typography } from "@mui/material";
+import { getModelLabel } from "../utils/modelLabels";
 
 interface TCSScoreDisplayProps {
   score: number;
@@ -9,6 +10,7 @@ interface TCSScoreDisplayProps {
   nInconsistencies: number;
   coherenceFactor: number;
   pipeline: string;
+  model?: string;
   processingTimeMs: number;
 }
 
@@ -45,6 +47,13 @@ function scoreToPoint(score: number): { x: number; y: number } {
   };
 }
 
+function formatPipeline(pipeline: string, model?: string): string {
+  if (model) return getModelLabel(model);
+  if (pipeline === "spacy") return "SpaCy";
+  if (pipeline === "llm") return "LLM";
+  return pipeline;
+}
+
 function TCSScoreDisplay({
   score,
   label,
@@ -53,6 +62,7 @@ function TCSScoreDisplay({
   nInconsistencies,
   coherenceFactor,
   pipeline,
+  model,
   processingTimeMs,
 }: TCSScoreDisplayProps): React.ReactElement {
   const [animatedScore, setAnimatedScore] = useState<number>(0);
@@ -141,8 +151,8 @@ function TCSScoreDisplay({
       >
         <Chip label={`${nClaims} claims`} size="small" />
         <Chip label={`${nInconsistencies} inconsistencies`} size="small" />
-        <Chip label={`Coherence: ${coherenceFactor.toFixed(2)}`} size="small" />
-        <Chip label={`Pipeline: ${pipeline}`} size="small" />
+        <Chip label={`Coherence Factor: ${coherenceFactor.toFixed(2)}`} size="small" />
+        <Chip label={formatPipeline(pipeline, model)} size="small" />
         <Chip label={`${Math.round(processingTimeMs)}ms`} size="small" />
       </Box>
 
