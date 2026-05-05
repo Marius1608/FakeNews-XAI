@@ -10,7 +10,7 @@ from typing import Any, Optional
 
 import requests
 
-from backend.config import OLLAMA_HOST, OLLAMA_MODEL
+from backend.config import OLLAMA_HOST, OLLAMA_MODEL, OLLAMA_TIMEOUT_SECONDS
 from backend.pipeline.extraction.base import AbstractExtractor
 from backend.pipeline.extraction.temporal_parser import TemporalParser
 from backend.pipeline.graph.models import (
@@ -41,6 +41,17 @@ For each fact, return a JSON object with:
 - "time_point": specific date if it's a single point (ISO format or null)
 - "source_sentence": the original sentence from the article that contains this fact
 - "confidence": your confidence 0.0–1.0
+
+Examples:
+
+Input: "Barack Obama served as the 44th President of the United States from January 2009 to January 2017."
+Output:
+[{"subject": "Barack Obama", "subject_type": "PERSON", "predicate": "holds_position", "object": "44th President of the United States", "object_type": "ORG", "time_expression": "from January 2009 to January 2017", "time_start": "2009-01-20", "time_end": "2017-01-20", "time_point": null, "source_sentence": "Barack Obama served as the 44th President of the United States from January 2009 to January 2017.", "confidence": 0.95}]
+
+Input: "The Affordable Care Act was signed into law on March 23, 2010 by President Obama."
+Output:
+[{"subject": "Affordable Care Act", "subject_type": "EVENT", "predicate": "occurred_on", "object": "signed into law", "object_type": "EVENT", "time_expression": "March 23, 2010", "time_start": null, "time_end": null, "time_point": "2010-03-23", "source_sentence": "The Affordable Care Act was signed into law on March 23, 2010 by President Obama.", "confidence": 0.92},
+{"subject": "President Obama", "subject_type": "PERSON", "predicate": "generic", "object": "Affordable Care Act", "object_type": "EVENT", "time_expression": "March 23, 2010", "time_start": null, "time_end": null, "time_point": "2010-03-23", "source_sentence": "The Affordable Care Act was signed into law on March 23, 2010 by President Obama.", "confidence": 0.88}]
 
 Return ONLY a JSON array. No explanations, no markdown fences.\
 """
@@ -79,8 +90,7 @@ _RELATION_TYPE_MAP: dict[str, RelationType] = {
     "followed": RelationType.FOLLOWED,
 }
 
-# Timeout si retry
-OLLAMA_TIMEOUT_SECONDS = 120
+# Retry count (timeout comes from config)
 MAX_RETRIES = 2
 
 
