@@ -1,0 +1,8 @@
+unsloth[colab-new]
+torch>=2.1.0
+peft
+bitsandbytes
+transformers
+trl
+datasets
+accelerate
