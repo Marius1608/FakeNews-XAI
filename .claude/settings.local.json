@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//mnt/c/Users/pante/Desktop/**)",
+      "Bash(pip install *)"
+    ]
+  }
+}

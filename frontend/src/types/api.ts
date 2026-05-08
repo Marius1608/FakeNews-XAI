@@ -14,6 +14,7 @@ export interface AnalyzeRequest {
   source?: string;
   pipeline?: "spacy" | "llm";
   model?: string;
+  persist?: boolean;
 }
 
 export interface InconsistencyResponse {
@@ -65,6 +66,60 @@ export interface AnalyzeResponse {
   pipeline: string;
   model: string;
   processing_time_ms: number;
+  article_id?: string | null;
+  cross_article_inconsistencies?: InconsistencyResponse[];
+}
+
+// batch schemas
+export interface BatchArticle {
+  text: string;
+  title?: string;
+  publication_date?: string;
+  source?: string;
+}
+
+export interface BatchRequest {
+  articles: BatchArticle[];
+  pipeline: string;
+  model?: string;
+  persist: boolean;
+}
+
+export interface BatchArticleResult {
+  article_id: string;
+  title: string;
+  score: number;
+  label: string;
+  summary: string;
+  n_claims: number;
+  n_inconsistencies: number;
+  n_cross_article_inconsistencies: number;
+  cross_article_conflicts: InconsistencyResponse[];
+  processing_time_ms: number;
+  error?: string | null;
+}
+
+export interface BatchResponse {
+  results: BatchArticleResult[];
+  total_articles: number;
+  total_cross_article_conflicts: number;
+  avg_score: number;
+  neo4j_enabled: boolean;
+  persisted: boolean;
+}
+
+// article history schemas
+export interface StoredArticle {
+  article_id: string;
+  title: string | null;
+  source: string | null;
+  analyzed_at: string | null;
+  fact_count: number;
+}
+
+export interface ArticlesResponse {
+  articles: StoredArticle[];
+  neo4j_enabled: boolean;
 }
 
 // compare schemas

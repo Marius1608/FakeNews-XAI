@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 import logging
+import uuid
 from datetime import datetime
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
-from backend.pipeline.graph.models import Article
+from backend.pipeline.graph.models import Article, Inconsistency
 from backend.pipeline.orchestrator import PipelineOrchestrator
 from backend.routers.dependencies import get_orchestrator, explainer
 
@@ -26,6 +27,7 @@ class AnalyzeRequest(BaseModel):
     source: str = Field(default="", description="Sursa articolului")
     pipeline: str = Field(default="spacy", description="Pipeline: 'spacy' sau 'llm'")
     model: Optional[str] = Field(default=None, description="Model specific: en_core_web_trf, llama3, mistral, etc. None = default per pipeline")
+    persist: bool = Field(default=False, description="Save facts to Neo4j for cross-article analysis")
 
 
 class InconsistencyResponse(BaseModel):
@@ -65,9 +67,24 @@ class AnalyzeResponse(BaseModel):
     pipeline: str
     model: str = Field(default="", description="Model folosit")
     processing_time_ms: float
+    article_id: Optional[str] = Field(default=None, description="Neo4j article ID (set when persist=True)")
+    cross_article_inconsistencies: list[InconsistencyResponse] = Field(default_factory=list)
 
 
 _explainer = explainer
+
+
+def _to_inconsistency_response(inc: Inconsistency) -> InconsistencyResponse:
+    """Serialize an Inconsistency dataclass to the API response model."""
+    return InconsistencyResponse(
+        type=inc.inconsistency_type.value,
+        severity=inc.severity.value,
+        severity_label=inc.severity.value.title(),
+        description=inc.description,
+        evidence=inc.evidence,
+        verified_by=inc.verified_by,
+        sentence_indices=inc.sentence_indices,
+    )
 
 
 # Endpoint
@@ -108,6 +125,37 @@ async def analyze_article(req: AnalyzeRequest) -> AnalyzeResponse:
         logger.error(f"/analyze: eroare pipeline — {e}", exc_info=True)
         raise HTTPException(status_code=500, detail="Eroare interna la procesare.")
 
+    # optional: persist to Neo4j and run cross-article verification
+    article_id: Optional[str] = None
+    cross_article_inconsistencies: list[InconsistencyResponse] = []
+
+    if req.persist:
+        from backend.config import NEO4J_ENABLED
+        if NEO4J_ENABLED:
+            from backend.pipeline.graph.factory import create_persistent_store
+            from backend.pipeline.verification.cross_article import CrossArticleVerifier
+
+            article_id = str(uuid.uuid4())
+            store = create_persistent_store()
+            if store is not None:
+                try:
+                    verifier = CrossArticleVerifier(store)
+                    cross_incs = verifier.verify(result.facts, article_id)
+                    store.add_facts(result.facts, article_id=article_id)
+                    cross_article_inconsistencies = [
+                        _to_inconsistency_response(c) for c in cross_incs
+                    ]
+                    logger.info(
+                        f"/analyze: persisted {len(result.facts)} facts as {article_id}, "
+                        f"{len(cross_incs)} cross-article conflicts"
+                    )
+                except Exception as e:
+                    logger.error(f"/analyze: persistence error — {e}", exc_info=True)
+                finally:
+                    store.close()
+        else:
+            logger.warning("/analyze: persist=True but NEO4J_ENABLED=false — skipping")
+
     # Genereaza explicatii structurate
     explanation = _explainer.explain_structured(result)
 
@@ -124,4 +172,6 @@ async def analyze_article(req: AnalyzeRequest) -> AnalyzeResponse:
         pipeline=result.pipeline_variant,
         model=req.model or AVAILABLE_MODELS[req.pipeline]["default"],
         processing_time_ms=result.processing_time_ms,
+        article_id=article_id,
+        cross_article_inconsistencies=cross_article_inconsistencies,
     )

@@ -5,6 +5,7 @@ import {
   AccordionSummary,
   Box,
   Button,
+  Chip,
   CircularProgress,
   FormControl,
   FormControlLabel,
@@ -24,6 +25,7 @@ import type { SelectChangeEvent } from "@mui/material";
 import { Clear, ExpandMore, PlayArrow, Upload } from "@mui/icons-material";
 import type { AnalyzeRequest, ModelsResponse } from "../types";
 import { getModelDescription, getModelLabel } from "../utils/modelLabels";
+import { uploadFile } from "../api/client";
 
 // Fields that ArticleInput owns (text, metadata — no pipeline/model)
 type ArticleFields = Omit<AnalyzeRequest, "pipeline" | "model">;
@@ -47,9 +49,11 @@ function ArticleInput({
   hideSubmitButton = false,
   onRequestChange,
 }: ArticleInputProps): React.ReactElement {
-  const [inputMode, setInputMode] = useState<"text" | "file" | "url">("text");
+  const [inputMode, setInputMode] = useState<"text" | "file">("text");
   const [textValue, setTextValue] = useState<string>("");
-  const [fileName, setFileName] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [extractedInfo, setExtractedInfo] = useState<{ filename: string; char_count: number } | null>(null);
   const [title, setTitle] = useState<string>("");
   const [publicationDate, setPublicationDate] = useState<string>("");
   const [source, setSource] = useState<string>("");
@@ -83,41 +87,37 @@ function ArticleInput({
     newMode: string | null,
   ): void => {
     if (newMode !== null) {
-      setInputMode(newMode as "text" | "file" | "url");
+      setInputMode(newMode as "text" | "file");
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setFileName(file.name);
-    const reader = new FileReader();
-    reader.onload = (event): void => {
-      const content = event.target?.result as string;
-      if (file.name.endsWith(".json")) {
-        try {
-          const parsed = JSON.parse(content) as Record<string, unknown>;
-          if (typeof parsed.text === "string") setTextValue(parsed.text);
-          if (typeof parsed.title === "string") setTitle(parsed.title);
-          if (typeof parsed.source === "string") setSource(parsed.source);
-          if (typeof parsed.publication_date === "string")
-            setPublicationDate(parsed.publication_date);
-        } catch {
-          setTextValue(content);
-        }
-      } else {
-        setTextValue(content);
-      }
-    };
-    reader.readAsText(file);
+    setUploadError(null);
+    setExtractedInfo(null);
+    setIsUploading(true);
+    try {
+      const result = await uploadFile(file);
+      setTextValue(result.text);
+      setExtractedInfo({ filename: result.filename, char_count: result.char_count });
+      setInputMode("text");
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail ??
+        "Upload failed";
+      setUploadError(msg);
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
   };
 
   const handleClearFile = (): void => {
-    setFileName(null);
+    setExtractedInfo(null);
+    setUploadError(null);
     setTextValue("");
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const handleSubmit = (): void => {
@@ -143,7 +143,6 @@ function ArticleInput({
       >
         <ToggleButton value="text">Paste Text</ToggleButton>
         <ToggleButton value="file">Upload File</ToggleButton>
-        <ToggleButton value="url">URL</ToggleButton>
       </ToggleButtonGroup>
 
       {inputMode === "text" && (
@@ -157,13 +156,20 @@ function ArticleInput({
             onChange={(e) => setTextValue(e.target.value)}
             sx={{ "& .MuiInputBase-input": { fontFamily: "IBM Plex Mono, monospace" } }}
           />
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            sx={{ mt: 0.5, display: "block" }}
-          >
-            {textValue.length} characters
-          </Typography>
+          <Box sx={{ mt: 0.5, display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
+            <Typography variant="caption" color="text.secondary">
+              {textValue.length} characters
+            </Typography>
+            {extractedInfo && (
+              <Chip
+                size="small"
+                label={`Extracted from: ${extractedInfo.filename} (${extractedInfo.char_count} chars)`}
+                onDelete={handleClearFile}
+                color="info"
+                variant="outlined"
+              />
+            )}
+          </Box>
         </Box>
       )}
 
@@ -171,7 +177,7 @@ function ArticleInput({
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
           <input
             type="file"
-            accept=".txt,.json"
+            accept=".txt,.pdf,.docx,.doc"
             ref={fileInputRef}
             onChange={handleFileChange}
             style={{ display: "none" }}
@@ -179,42 +185,32 @@ function ArticleInput({
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
             <Button
               variant="outlined"
-              startIcon={<Upload />}
-              onClick={() => fileInputRef.current?.click()}
+              startIcon={isUploading ? <CircularProgress size={18} color="inherit" /> : <Upload />}
+              onClick={() => !isUploading && fileInputRef.current?.click()}
+              disabled={isUploading}
             >
-              Choose File
+              {isUploading ? "Extracting..." : "Choose File"}
             </Button>
-            {fileName && (
-              <>
-                <Typography variant="body2" sx={{ flex: 1 }}>
-                  {fileName}
-                </Typography>
-                <Button
-                  size="small"
-                  color="inherit"
-                  startIcon={<Clear />}
-                  onClick={handleClearFile}
-                >
-                  Clear
-                </Button>
-              </>
+            {!isUploading && extractedInfo && (
+              <Button
+                size="small"
+                color="inherit"
+                startIcon={<Clear />}
+                onClick={handleClearFile}
+              >
+                Clear
+              </Button>
             )}
           </Box>
-          {textValue && (
-            <Typography variant="caption" color="text.secondary">
-              {textValue.length} characters loaded
+          {uploadError && (
+            <Typography variant="caption" color="error">
+              {uploadError}
             </Typography>
           )}
+          <Typography variant="caption" color="text.secondary">
+            Supported formats: .txt, .pdf, .docx
+          </Typography>
         </Box>
-      )}
-
-      {inputMode === "url" && (
-        <TextField
-          fullWidth
-          disabled
-          placeholder="https://..."
-          helperText="Coming soon — requires RSS/API integration"
-        />
       )}
 
       <Accordion

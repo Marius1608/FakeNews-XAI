@@ -66,6 +66,13 @@ TCS_THRESHOLDS = {
 }
 
 
+# Neo4j — optional persistent store for cross-article analysis
+NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+NEO4J_USER = os.getenv("NEO4J_USER", "neo4j")
+NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "password")
+NEO4J_ENABLED = os.getenv("NEO4J_ENABLED", "false").lower() == "true"
+
+
 # FastAPI settings
 API_TITLE = "TCS - Temporal Coherence Score API"
 API_VERSION = "0.1.0"

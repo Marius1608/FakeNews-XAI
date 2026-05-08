@@ -8,6 +8,7 @@ from typing import Optional
 
 import networkx as nx
 
+from backend.pipeline.graph.base_store import AbstractTKGStore
 from backend.pipeline.graph.models import (
     Entity, EntityType, RelationType, TemporalExpression, TemporalFact,
 )
@@ -15,7 +16,7 @@ from backend.pipeline.graph.models import (
 logger = logging.getLogger(__name__)
 
 
-class TemporalKnowledgeGraph:
+class TemporalKnowledgeGraph(AbstractTKGStore):
     """
     Graf temporal conform Cai et al. (2024): G = (E, R, T, F).
     Noduri = entitati, Muchii = relatii cu metadata temporala.
@@ -26,8 +27,8 @@ class TemporalKnowledgeGraph:
         self._facts: list[TemporalFact] = []
 
     # ── Adaugare ──
-    def add_fact(self, fact: TemporalFact) -> None:
-        """Adauga un TemporalFact ca nod+muchie in graf."""
+    def add_fact(self, fact: TemporalFact, article_id: str | None = None) -> None:
+        """Adauga un TemporalFact ca nod+muchie in graf. article_id ignorat (in-memory)."""
         subj_id = _entity_id(fact.subject)
         obj_id = _entity_id(fact.object)
 
@@ -40,9 +41,9 @@ class TemporalKnowledgeGraph:
         self._graph.add_edge(subj_id, obj_id, **edge_attrs)
         self._facts.append(fact)
 
-    def add_facts(self, facts: list[TemporalFact]) -> None:
+    def add_facts(self, facts: list[TemporalFact], article_id: str | None = None) -> None:
         for fact in facts:
-            self.add_fact(fact)
+            self.add_fact(fact, article_id)
         logger.info(f"TKG: {len(facts)} fapte adaugate. Noduri: {self.node_count}, Muchii: {self.edge_count}")
 
     # ── Interogare noduri ──
@@ -53,13 +54,22 @@ class TemporalKnowledgeGraph:
         return dict(self._graph.nodes.get(entity_id, {}))
 
     # ── Interogare fapte ──
-    def get_all_facts(self) -> list[TemporalFact]:
+    def get_all_facts(self, article_id: str | None = None) -> list[TemporalFact]:
+        # article_id ignored — in-memory store holds one article at a time
         return list(self._facts)
 
     def get_facts_for_entity(self, entity_name: str) -> list[TemporalFact]:
         """Faptele in care entitatea apare ca subiect sau obiect."""
         entity_id = entity_name.lower().strip()
         return [f for f in self._facts if _entity_id(f.subject) == entity_id or _entity_id(f.object) == entity_id]
+
+    def get_articles(self) -> list[dict]:
+        # in-memory store has no persistence; articles are not tracked
+        return []
+
+    def delete_article(self, article_id: str) -> bool:
+        # in-memory store has no persistence
+        return False
 
     def get_edges_in_interval(self, t_start: datetime, t_end: datetime) -> list[dict]:
         """Muchiile active in intervalul [t_start, t_end]."""
