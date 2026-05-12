@@ -158,7 +158,8 @@ class LLMExtractor(AbstractExtractor):
         
         parsed_count = len(facts)
         rejected_count = len(raw_facts) - parsed_count
-        logger.info(f"LLMExtractor: Extrase {parsed_count} fapte valide, {rejected_count} respinse.")
+        logger.info(f"LLMExtractor: {parsed_count} fapte valide din {len(raw_facts)} extrase "
+                    f"({rejected_count} respinse)")
         
         return facts
 
@@ -251,7 +252,7 @@ class LLMExtractor(AbstractExtractor):
         obj_text = raw.get("object", "").strip()
         
         if not subj_text:
-            logger.debug(f"LLMExtractor: Fapt respins. Lipsă subiect: {raw}")
+            logger.debug(f"LLM fact #{idx}: REJECT — subiect gol")
             return None
 
         subject = Entity(
@@ -279,7 +280,7 @@ class LLMExtractor(AbstractExtractor):
                 time_point = self._parse_raw_expression(raw_expr, pub_date)
 
         if not any([time_point, time_start, time_end]):
-            logger.debug(f"LLMExtractor: Fapt respins. Lipsă ancoră temporală: {raw}")
+            logger.debug(f"LLM fact #{idx}: REJECT — zero ancore temporale pentru '{subj_text}'")
             return None
 
         confidence = float(raw.get("confidence", 0.7))
