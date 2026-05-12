@@ -262,8 +262,6 @@ print(f"  TKG inconsistent: {tkg_incons.node_count} noduri, {tkg_incons.edge_cou
 # %%
 section("C2b — TemporalKnowledgeGraph (store)")
 
-from backend.pipeline.graph.store import TemporalKnowledgeGraph
-
 # Interogari pe TKG consistent
 all_facts = tkg_cons.get_all_facts()
 check("get_all_facts() returneaza lista", isinstance(all_facts, list) and len(all_facts) > 0)
@@ -559,7 +557,7 @@ except ValueError:
 section("PYDANTIC SCHEMAS")
 
 from backend.routers.analyze import AnalyzeRequest, AnalyzeResponse
-from backend.routers.compare import CompareRequest, CompareResponse
+from backend.routers.compare import CompareRequest
 
 # AnalyzeRequest valid
 req = AnalyzeRequest(text="A" * 30, title="Test", pipeline="spacy")
@@ -592,7 +590,7 @@ check("AnalyzeResponse valid cu date reale", resp.score == result_a_cons.score)
 # %%
 section("DEPENDENCIES (shared singletons)")
 
-from backend.routers.dependencies import get_orchestrator, explainer as shared_explainer
+from backend.dependencies import get_orchestrator, explainer as shared_explainer
 
 orch1 = get_orchestrator("spacy")
 orch2 = get_orchestrator("spacy")

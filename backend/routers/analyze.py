@@ -11,8 +11,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from backend.pipeline.graph.models import Article, Inconsistency
-from backend.pipeline.orchestrator import PipelineOrchestrator
-from backend.routers.dependencies import get_orchestrator, explainer
+from backend.dependencies import get_orchestrator, explainer
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["analyze"])

@@ -12,7 +12,7 @@ from pydantic import BaseModel, Field
 
 from backend.pipeline.graph.models import Article
 from backend.routers.analyze import InconsistencyResponse, _to_inconsistency_response
-from backend.routers.dependencies import explainer, get_orchestrator
+from backend.dependencies import explainer, get_orchestrator
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["batch"])
