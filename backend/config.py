@@ -27,8 +27,8 @@ SPACY_MODEL = SPACY_DEFAULT
 
 
 # Ollama / LLM models
-LLM_MODELS_LIST = [m.strip() for m in os.getenv("LLM_MODELS", "sciphi/triplex").split(",")]
-LLM_DEFAULT = os.getenv("LLM_DEFAULT_MODEL", "sciphi/triplex")
+LLM_MODELS_LIST = [m.strip() for m in os.getenv("LLM_MODELS", "llama3").split(",")]
+LLM_DEFAULT = os.getenv("LLM_DEFAULT_MODEL", "llama3")
 
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
 OLLAMA_TIMEOUT_SECONDS = int(os.getenv("OLLAMA_TIMEOUT_SECONDS", "120"))
