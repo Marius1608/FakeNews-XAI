@@ -248,10 +248,19 @@ class SpacyExtractor(AbstractExtractor):
 
     # Relation classification
     def _classify_relation(self, verb: Token) -> RelationType:
-        """Determine the relation type based on the verb lemma."""
+        """Determine the relation type based on the verb lemma and compound phrases."""
         lemma = verb.lemma_.lower()
 
+        # Compound verb phrases take priority over single-lemma lookup
+        phrase = " ".join(t.lemma_.lower() for t in verb.subtree if t.dep_ in {"aux", "prt", "compound"} or t == verb)
+        if any(p in phrase for p in ("swear in", "take office", "be elect", "be appoint", "be inaugurate", "step down", "take over")):
+            return RelationType.HOLDS_POSITION
+        if any(p in phrase for p in ("win election", "win race", "defeat opponent")):
+            return RelationType.HOLDS_POSITION
+
         if lemma in POSITION_VERBS:
+            return RelationType.HOLDS_POSITION
+        elif lemma in {"win", "defeat", "beat"}:
             return RelationType.HOLDS_POSITION
         elif lemma in MEMBERSHIP_VERBS:
             return RelationType.MEMBER_OF

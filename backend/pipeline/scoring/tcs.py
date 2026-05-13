@@ -42,10 +42,10 @@ class TCSCalculator:
 
         # Severity weights
         SEVERITY_WEIGHTS = {
+            Severity.LOW: 0.2,
+            Severity.MEDIUM: 0.5,
             Severity.HIGH: 1.0,
-            Severity.MEDIUM: 0.6,
-            Severity.LOW: 0.3,
-            Severity.CRITICAL: 1.0
+            Severity.CRITICAL: 1.5,
         }
 
         # Weighted penalty
@@ -53,19 +53,21 @@ class TCSCalculator:
         # Worst-case: every claim has a critical inconsistency
         max_possible_penalty = n_claims * max(SEVERITY_WEIGHTS.values())
 
-        # Coverage factor: proportion of facts verified; clamped to min 0.3
+        # Coverage factor: sqrt-softened ratio; higher coverage amplifies the raw signal
         if facts_total > 0:
-            coverage_factor = max(0.3, facts_verified / facts_total)
+            raw_coverage = facts_verified / facts_total
+            coverage_factor = max(0.5, raw_coverage ** 0.5)
         else:
-            # Default when verification coverage is unknown
-            coverage_factor = 0.5
+            coverage_factor = 0.7
 
         # Main formula
         penalty_ratio = min(1.0, weighted_penalty / max_possible_penalty) if max_possible_penalty > 0 else 0.0
         raw_tcs = (1.0 - penalty_ratio) * score_coherence
 
-        # Blend with neutral 0.5 on the unverified portion
-        tcs = raw_tcs * coverage_factor + (1.0 - coverage_factor) * 0.5
+        # Confidence multiplier: amplify deviation from 0.5 proportionally to coverage
+        tcs = raw_tcs + coverage_factor * (raw_tcs - 0.5) * 0.3
+        if facts_verified == 0:
+            tcs = raw_tcs
 
         # Clamp
         tcs = max(0.0, min(1.0, tcs))

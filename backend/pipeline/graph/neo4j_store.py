@@ -52,13 +52,22 @@ class Neo4jTKGStore(AbstractTKGStore):
 
     # Write operations
 
-    def add_fact(self, fact: TemporalFact, article_id: str | None = None) -> None:
+    def add_fact(
+        self,
+        fact: TemporalFact,
+        article_id: str | None = None,
+        title: str | None = None,
+        source: str | None = None,
+    ) -> None:
         """Store a fact as two Entity nodes + a TEMPORAL_RELATION edge."""
         with self._driver.session() as session:
-            session.execute_write(self._create_fact_tx, fact, article_id)
+            session.execute_write(self._create_fact_tx, fact, article_id, title, source)
 
     @staticmethod
-    def _create_fact_tx(tx, fact: TemporalFact, article_id: str | None) -> None:
+    def _create_fact_tx(
+        tx, fact: TemporalFact, article_id: str | None,
+        title: str | None = None, source: str | None = None,
+    ) -> None:
         def to_iso(expr: TemporalExpression | None) -> str | None:
             if expr and expr.normalized_date:
                 return expr.normalized_date.isoformat()
@@ -113,11 +122,27 @@ class Neo4jTKGStore(AbstractTKGStore):
         """, **params)
 
         if article_id:
-            tx.run("MERGE (a:Article {article_id: $article_id})", article_id=article_id)
+            tx.run("""
+                MERGE (a:Article {article_id: $article_id})
+                ON CREATE SET a.title = $title,
+                              a.source = $source,
+                              a.analyzed_at = $analyzed_at
+            """,
+            article_id=article_id,
+            title=title or "",
+            source=source or "",
+            analyzed_at=datetime.utcnow().isoformat(),
+            )
 
-    def add_facts(self, facts: list[TemporalFact], article_id: str | None = None) -> None:
+    def add_facts(
+        self,
+        facts: list[TemporalFact],
+        article_id: str | None = None,
+        title: str | None = None,
+        source: str | None = None,
+    ) -> None:
         for fact in facts:
-            self.add_fact(fact, article_id)
+            self.add_fact(fact, article_id, title=title, source=source)
         logger.info(
             f"Neo4jTKGStore: {len(facts)} facts written"
             + (f" for article {article_id}" if article_id else "")

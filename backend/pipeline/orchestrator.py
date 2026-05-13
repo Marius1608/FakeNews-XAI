@@ -151,7 +151,12 @@ class PipelineOrchestrator:
         # Persist facts after scoring
         if self._persistent_store and article_id:
             try:
-                self._persistent_store.add_facts(all_facts, article_id=article_id)
+                self._persistent_store.add_facts(
+                    all_facts,
+                    article_id=article_id,
+                    title=article.title or "",
+                    source=article.source or "",
+                )
                 logger.info(f"Neo4j: {len(all_facts)} facts persisted (article_id={article_id})")
             except Exception as e:
                 logger.error(f"Neo4j persistence failed: {e}")

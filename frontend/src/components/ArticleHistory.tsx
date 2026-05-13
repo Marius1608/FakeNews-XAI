@@ -147,7 +147,9 @@ function ArticleHistory({ open, onClose }: ArticleHistoryProps): React.ReactElem
                   <ListItemText
                     primary={
                       <Typography variant="body2" noWrap sx={{ fontWeight: "medium" }}>
-                        {article.title ?? <em>Untitled</em>}
+                        {article.title && article.title.trim()
+                          ? article.title.trim().slice(0, 60)
+                          : <em>Untitled</em>}
                       </Typography>
                     }
                     secondary={

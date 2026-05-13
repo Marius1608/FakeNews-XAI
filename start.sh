@@ -41,7 +41,7 @@ fi
 # Resolve values from env with fallbacks
 OLLAMA_URL="${OLLAMA_HOST:-http://localhost:11434}"
 
-IFS=',' read -ra LLM_MODELS   <<< "${LLM_MODELS:-sciphi/triplex}"
+IFS=',' read -ra LLM_MODELS   <<< "${LLM_MODELS:-llama3}"
 IFS=',' read -ra SPACY_MODELS <<< "${SPACY_MODELS:-en_core_web_trf}"
 
 # Trim whitespace from each element

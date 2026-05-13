@@ -228,7 +228,8 @@ class InternalVerifier:
                 if SequenceMatcher(None, subj_h, subj_e).ratio() >= 0.85:
                     if _is_inauguration_or_election(e_fact):
                         point_e = _extract_point_time(e_fact)
-                        if point_e and point_e > start_h:
+                        # 180-day buffer: election -> inauguration transition is normal (up to ~6 months)
+                        if point_e and (point_e - start_h).days > 180:
                             inconsistencies.append(Inconsistency(
                                 inconsistency_type=InconsistencyType.IMPLICIT_CONTRADICTION,
                                 severity=Severity.MEDIUM,
