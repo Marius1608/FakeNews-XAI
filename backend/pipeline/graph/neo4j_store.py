@@ -45,6 +45,7 @@ class Neo4jTKGStore(AbstractTKGStore):
         with self._driver.session() as session:
             session.run("CREATE INDEX IF NOT EXISTS FOR (e:Entity) ON (e.entity_id)")
             session.run("CREATE INDEX IF NOT EXISTS FOR (a:Article) ON (a.article_id)")
+            session.run("CREATE INDEX IF NOT EXISTS FOR (c:WikidataCache) ON (c.entity_key)")
 
     def close(self) -> None:
         self._driver.close()
@@ -188,6 +189,38 @@ class Neo4jTKGStore(AbstractTKGStore):
                 id=article_id,
             )
             return True
+
+    # // section wikidata_cache
+
+    def cache_wikidata_result(self, entity_name: str, wikidata_facts: list[dict]) -> None:
+        """Stocheaza rezultatul Wikidata in Neo4j pentru cache persistent."""
+        import json
+        cache_key = entity_name.lower().strip()
+        with self._driver.session() as session:
+            session.run("""
+                MERGE (c:WikidataCache {entity_key: $key})
+                SET c.facts_json = $facts_json,
+                    c.cached_at = datetime(),
+                    c.entity_name = $entity_name
+            """, key=cache_key, facts_json=json.dumps(wikidata_facts), entity_name=entity_name)
+
+    def get_cached_wikidata(self, entity_name: str, max_age_hours: int = 168) -> Optional[list[dict]]:
+        """Recupereaza cache Wikidata. Returneaza None daca nu exista sau e expirat (default 7 zile)."""
+        import json
+        cache_key = entity_name.lower().strip()
+        with self._driver.session() as session:
+            result = session.run("""
+                MATCH (c:WikidataCache {entity_key: $key})
+                WHERE duration.between(c.cached_at, datetime()).hours < $max_hours
+                RETURN c.facts_json AS facts_json
+            """, key=cache_key, max_hours=max_age_hours).single()
+
+            if result and result["facts_json"]:
+                try:
+                    return json.loads(result["facts_json"])
+                except json.JSONDecodeError:
+                    return None
+        return None
 
     def summary(self) -> dict:
         with self._driver.session() as session:

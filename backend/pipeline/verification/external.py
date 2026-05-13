@@ -51,11 +51,18 @@ class ExternalVerificationResult:
 class ExternalVerifier:
     """Verifica fapte contra Reference KG si Wikidata."""
 
-    def __init__(self, wikidata_client: Optional[WikidataClient] = None, reference_kg_path: Path = REFERENCE_KG_FILE, use_wikidata: bool = True):
+    def __init__(
+        self,
+        wikidata_client: Optional[WikidataClient] = None,
+        reference_kg_path: Path = REFERENCE_KG_FILE,
+        use_wikidata: bool = True,
+        persistent_store=None,
+    ):
         self.client = wikidata_client or WikidataClient()
         self.use_wikidata = use_wikidata
         self._reference_kg: dict = self._load_reference_kg(reference_kg_path)
         self._wikidata_cache: dict[str, list[WikidataFact]] = {}
+        self._persistent_store = persistent_store
 
     def verify(self, tkg: TemporalKnowledgeGraph) -> ExternalVerificationResult:
         result = ExternalVerificationResult()
@@ -108,10 +115,22 @@ class ExternalVerifier:
     # // section wikidata
     def _fetch_from_wikidata(self, fact: TemporalFact, result: ExternalVerificationResult) -> list[WikidataFact]:
         cache_key = fact.subject.text.lower().strip()
+
+        # 1. Cache in-memory (cel mai rapid)
         if cache_key in self._wikidata_cache:
-            logger.debug(f"Wikidata cache hit: '{cache_key}'")
+            logger.debug(f"Wikidata cache hit (memory): '{cache_key}'")
             return self._wikidata_cache[cache_key]
 
+        # 2. Cache Neo4j persistent (daca disponibil)
+        if self._persistent_store and hasattr(self._persistent_store, "get_cached_wikidata"):
+            cached = self._persistent_store.get_cached_wikidata(cache_key)
+            if cached is not None:
+                wf_list = [_dict_to_wikidata_fact(d) for d in cached]
+                self._wikidata_cache[cache_key] = wf_list
+                logger.debug(f"Wikidata cache hit (Neo4j): '{cache_key}' ({len(wf_list)} fapte)")
+                return wf_list
+
+        # 3. Query Wikidata real
         entity_id = self.client.search_entity(fact.subject.text)
         result.wikidata_queries += 1
         if not entity_id:
@@ -124,8 +143,17 @@ class ExternalVerifier:
 
         for wf in wikidata_facts:
             wf.entity_label = fact.subject.text
-            
+
         self._wikidata_cache[cache_key] = wikidata_facts
+
+        # Salveaza in Neo4j cache dupa fetch real
+        if self._persistent_store and hasattr(self._persistent_store, "cache_wikidata_result"):
+            try:
+                serialized = [_wikidata_fact_to_dict(wf) for wf in wikidata_facts]
+                self._persistent_store.cache_wikidata_result(cache_key, serialized)
+            except Exception as e:
+                logger.debug(f"Wikidata Neo4j cache write failed: {e}")
+
         return wikidata_facts
 
     # // section compare
@@ -250,3 +278,33 @@ def _parse_date_str(date_str: Optional[str]) -> Optional[datetime]:
         except ValueError:
             continue
     return None
+
+
+# // section wikidata_serialization
+
+def _wikidata_fact_to_dict(wf: WikidataFact) -> dict:
+    return {
+        "entity_id": wf.entity_id,
+        "entity_label": wf.entity_label,
+        "property_id": wf.property_id,
+        "property_label": wf.property_label,
+        "value_label": wf.value_label,
+        "time_start": wf.time_start.isoformat() if wf.time_start else None,
+        "time_end": wf.time_end.isoformat() if wf.time_end else None,
+        "time_point": wf.time_point.isoformat() if wf.time_point else None,
+    }
+
+
+def _dict_to_wikidata_fact(d: dict) -> WikidataFact:
+    def parse_iso(s: Optional[str]) -> Optional[datetime]:
+        return datetime.fromisoformat(s) if s else None
+    return WikidataFact(
+        entity_id=d.get("entity_id", ""),
+        entity_label=d.get("entity_label", ""),
+        property_id=d.get("property_id", ""),
+        property_label=d.get("property_label", ""),
+        value_label=d.get("value_label", ""),
+        time_start=parse_iso(d.get("time_start")),
+        time_end=parse_iso(d.get("time_end")),
+        time_point=parse_iso(d.get("time_point")),
+    )

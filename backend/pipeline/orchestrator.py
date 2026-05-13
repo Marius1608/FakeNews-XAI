@@ -7,10 +7,12 @@ import time
 from typing import Optional
 
 from backend.pipeline.extraction.base import AbstractExtractor
+from backend.pipeline.graph.base_store import AbstractTKGStore
 from backend.pipeline.graph.builder import TKGBuilder
 from backend.pipeline.graph.models import Article, TCSResult
 from backend.pipeline.graph.store import TemporalKnowledgeGraph
 from backend.pipeline.scoring.tcs import TCSCalculator
+from backend.pipeline.verification.cross_article import CrossArticleVerifier
 from backend.pipeline.verification.external import ExternalVerifier
 from backend.pipeline.verification.internal import InternalVerifier
 
@@ -36,10 +38,20 @@ class PipelineOrchestrator:
       C1 (SpacyExtractor | LLMExtractor) → C2 (TKGBuilder) → C3 (Verificare) → C4 (TCSCalculator)
     """
 
-    def __init__(self, use_wikidata: bool = True, extractor_name: str = "spacy", model_name: str | None = None):
+    def __init__(
+        self,
+        use_wikidata: bool = True,
+        extractor_name: str = "spacy",
+        model_name: str | None = None,
+        persistent_store: Optional[AbstractTKGStore] = None,
+        enable_cross_article: bool = True,
+    ):
         self.use_wikidata = use_wikidata
         self.extractor_name = extractor_name
         self.model_name = model_name
+
+        self._persistent_store = persistent_store
+        self._enable_cross_article = enable_cross_article
 
         self._extractor: Optional[AbstractExtractor] = None
         self._builder = TKGBuilder()
@@ -63,9 +75,20 @@ class PipelineOrchestrator:
         return self._extractor
 
     @property
+    def llm_explainer(self):
+        """Lazy-load: instanta LLMExplainer creata doar la primul apel."""
+        if not hasattr(self, "_llm_explainer"):
+            from backend.pipeline.scoring.llm_explainer import LLMExplainer
+            self._llm_explainer = LLMExplainer()
+        return self._llm_explainer
+
+    @property
     def external_verifier(self) -> ExternalVerifier:
         if self._external_verifier is None:
-            self._external_verifier = ExternalVerifier(use_wikidata=self.use_wikidata)
+            self._external_verifier = ExternalVerifier(
+                use_wikidata=self.use_wikidata,
+                persistent_store=self._persistent_store,
+            )
         return self._external_verifier
 
     def run(self, article: Article) -> TCSResult:
@@ -93,9 +116,21 @@ class PipelineOrchestrator:
         external = self.external_verifier.verify(tkg)
         logger.info(f"C3b ✓ — {len(external.inconsistencies)} inconsistente ({external.wikidata_queries} query-uri)")
 
-        # C4: Calcul TCS
         all_facts = tkg.get_all_facts()
         all_inconsistencies = internal.inconsistencies + external.inconsistencies
+
+        # C3c: Verificare cross-article (optional, necesita Neo4j)
+        cross_article_incs: list = []
+        article_id = None
+        if self._persistent_store and self._enable_cross_article:
+            import uuid
+            article_id = str(uuid.uuid4())
+            cross_verifier = CrossArticleVerifier(self._persistent_store)
+            cross_article_incs = cross_verifier.verify(all_facts, article_id)
+            logger.info(f"C3c ✓ — {len(cross_article_incs)} conflicte cross-article")
+            all_inconsistencies.extend(cross_article_incs)
+
+        # C4: Calcul TCS
         facts_verified = external.facts_checked
         facts_total = len(all_facts)
 
@@ -109,6 +144,29 @@ class PipelineOrchestrator:
             pipeline_variant=self.extractor_name,
             start_time_ms=start_ms,
         )
+
+        result.article_id = article_id
+        result.cross_article_inconsistencies = cross_article_incs
+
+        # Persistare dupa calcul TCS
+        if self._persistent_store and article_id:
+            try:
+                self._persistent_store.add_facts(all_facts, article_id=article_id)
+                logger.info(f"Neo4j: {len(all_facts)} fapte persistate (article_id={article_id})")
+            except Exception as e:
+                logger.error(f"Neo4j persistare esuata: {e}")
+
+        # XAI: Explicatie LLM (optional, daca Ollama e disponibil)
+        if self.llm_explainer.is_available():
+            explanation = self.llm_explainer.explain(result, article_text=article.text, article_title=article.title)
+            if explanation:
+                result.explanation_text = explanation
+                logger.info("XAI ✓ — Explicatie LLM generata")
+            else:
+                logger.info("XAI — Fallback pe template static")
+        else:
+            logger.info("XAI — Ollama indisponibil, folosim template static")
+
         logger.info(f"Pipeline DONE — TCS={result.score:.3f} ({result.label}) in {result.processing_time_ms:.0f}ms")
         return result
 
