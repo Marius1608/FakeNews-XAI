@@ -1,0 +1,49 @@
+[
+  {
+    "title": "Obama Presidency — Accurate Timeline",
+    "text": "Barack Obama was inaugurated as the 44th President of the United States on January 20, 2009. He succeeded George W. Bush, who had served two terms. Obama signed the Affordable Care Act into law on March 23, 2010, following months of congressional debate. He won re-election on November 6, 2012, defeating Republican nominee Mitt Romney. His second term ended on January 20, 2017, when Donald Trump was inaugurated as the 45th President.",
+    "publication_date": "2020-01-01",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "known_inconsistencies": []
+  },
+  {
+    "title": "Obama Senate Career and Presidential Campaign",
+    "text": "Barack Obama was elected to the United States Senate from Illinois in November 2004 and began serving in January 2005. He announced his candidacy for president on February 10, 2007, in Springfield, Illinois. Obama won the presidential election on November 4, 2008, defeating John McCain. He was inaugurated as the 44th President on January 20, 2009. During his first term he signed the Affordable Care Act on March 23, 2010.",
+    "publication_date": "2020-06-01",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "known_inconsistencies": []
+  },
+  {
+    "title": "Obama Illinois Career — Fabricated Dual Role",
+    "text": "Barack Obama served as both Senator and Governor of Illinois simultaneously from 2005 to 2008. During this period he held both legislative and executive office in Illinois at the same time. He was later inaugurated as President on January 20, 2009, and signed the Affordable Care Act into law on March 23, 2010.",
+    "publication_date": "2020-01-01",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "known_inconsistencies": [
+      "entity_inconsistency: Obama cannot be Senator and Governor simultaneously — incompatible roles"
+    ]
+  },
+  {
+    "title": "Trump Presidency — Inverted Dates and Future Event",
+    "text": "Donald Trump served as the 45th President of the United States from January 20, 2021 to January 20, 2017. The 2025 International Economic Forum concluded last week with landmark agreements signed by all G20 nations. The forum produced binding commitments on trade and climate policy that took effect immediately.",
+    "publication_date": "2020-03-01",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "known_inconsistencies": [
+      "ordering_error: Trump presidency interval is inverted — end date (2017) precedes start date (2021)",
+      "future_as_past: 2025 forum described as past event but article publication date is 2020"
+    ]
+  },
+  {
+    "title": "Obama Election Timeline — Reversed Cause and Effect",
+    "text": "Barack Obama began his presidency in January 2009 and took office as the 44th President of the United States. He won the presidential election in November 2012, securing his path to the White House. The Affordable Care Act was signed into law in March 2010 during his first term as president.",
+    "publication_date": "2020-01-01",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "known_inconsistencies": [
+      "implicit_contradiction: Obama took office in January 2009 but won the election in November 2012 — office predates the election that supposedly granted it"
+    ]
+  }
+]

@@ -1,0 +1,119 @@
+{
+  "generated_at": "2026-05-13T18:12:16.194099",
+  "pipeline": "spacy",
+  "fake_threshold": 0.6,
+  "metrics": {
+    "total": 5,
+    "tp": 1,
+    "tn": 1,
+    "fp": 1,
+    "fn": 2,
+    "precision": 0.5,
+    "recall": 0.3333,
+    "f1": 0.4,
+    "accuracy": 0.4,
+    "avg_tcs_true_articles": 0.604,
+    "avg_tcs_fake_articles": 0.575
+  },
+  "articles": [
+    {
+      "idx": 1,
+      "title": "Obama Presidency — Accurate Timeline",
+      "tcs": 0.6667,
+      "tcs_label": "Moderately Consistent",
+      "n_claims": 3,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 9093.7,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 2,
+      "title": "Obama Senate Career and Presidential Campaign",
+      "tcs": 0.5413,
+      "tcs_label": "Moderately Consistent",
+      "n_claims": 4,
+      "n_inconsistencies": 1,
+      "coherence_factor": 0.75,
+      "expected_fake": false,
+      "predicted_fake": true,
+      "outcome": "FP",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "implicit_contradiction",
+          "severity": "medium",
+          "description": "Contradictie implicita: 'Illinois' a inceput 'Illinois' (2004) INAINTE de 'January' (2005)."
+        }
+      ],
+      "processing_time_ms": 8534.8,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 3,
+      "title": "Obama Illinois Career — Fabricated Dual Role",
+      "tcs": 0.65,
+      "tcs_label": "Moderately Consistent",
+      "n_claims": 2,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [
+        "entity_inconsistency: Obama cannot be Senator and Governor simultaneously — incompatible roles"
+      ],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 7584.0,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 4,
+      "title": "Trump Presidency — Inverted Dates and Future Event",
+      "tcs": 0.425,
+      "tcs_label": "Multiple Inconsistencies (Suspicious)",
+      "n_claims": 2,
+      "n_inconsistencies": 1,
+      "coherence_factor": 0.5,
+      "expected_fake": true,
+      "predicted_fake": true,
+      "outcome": "TP",
+      "known_inconsistencies": [
+        "ordering_error: Trump presidency interval is inverted — end date (2017) precedes start date (2021)",
+        "future_as_past: 2025 forum described as past event but article publication date is 2020"
+      ],
+      "detected_inconsistencies": [
+        {
+          "type": "future_as_past",
+          "severity": "high",
+          "description": "Eveniment din 2025 prezentat ca trecut, dar articolul e din 2020: 'International Economic Forum'."
+        }
+      ],
+      "processing_time_ms": 7862.8,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 5,
+      "title": "Obama Election Timeline — Reversed Cause and Effect",
+      "tcs": 0.65,
+      "tcs_label": "Moderately Consistent",
+      "n_claims": 1,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [
+        "implicit_contradiction: Obama took office in January 2009 but won the election in November 2012 — office predates the election that supposedly granted it"
+      ],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 7012.2,
+      "source": "benchmark-fake"
+    }
+  ]
+}
