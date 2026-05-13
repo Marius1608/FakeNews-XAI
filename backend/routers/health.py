@@ -11,7 +11,7 @@ router = APIRouter(tags=["health"])
 
 @router.get("/health")
 async def health_check() -> dict:
-    """Returneaza statusul serverului si configuratia componentelor."""
+    """Return server status and component configuration."""
     return {
         "status": "ok",
         "components": {
@@ -23,5 +23,5 @@ async def health_check() -> dict:
 
 @router.get("/models")
 async def list_models() -> dict:
-    """Returneaza modelele disponibile per pipeline."""
+    """Return available models per pipeline."""
     return AVAILABLE_MODELS

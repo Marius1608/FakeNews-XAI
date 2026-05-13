@@ -21,21 +21,21 @@ logger = logging.getLogger(__name__)
 _EXTRACTOR_FACTORIES: dict[str, type] = {}
 
 def _get_extractor_class(name: str) -> type:
-    """Import lazy: incarca clasa extractorului doar cand e cerut."""
+    """Lazy import: loads the extractor class only when first requested."""
     if not _EXTRACTOR_FACTORIES:
         from backend.pipeline.extraction.spacy_extractor import SpacyExtractor
         from backend.pipeline.extraction.llm_extractor import LLMExtractor
         _EXTRACTOR_FACTORIES["spacy"] = SpacyExtractor
         _EXTRACTOR_FACTORIES["llm"] = LLMExtractor
     if name not in _EXTRACTOR_FACTORIES:
-        raise ValueError(f"Extractor necunoscut: '{name}'. Optiuni: {list(_EXTRACTOR_FACTORIES)}")
+        raise ValueError(f"Unknown extractor: '{name}'. Options: {list(_EXTRACTOR_FACTORIES)}")
     return _EXTRACTOR_FACTORIES[name]
 
 
 class PipelineOrchestrator:
     """
-    Orchestreaza pipeline-ul TCS complet:
-      C1 (SpacyExtractor | LLMExtractor) → C2 (TKGBuilder) → C3 (Verificare) → C4 (TCSCalculator)
+    Orchestrates the full TCS pipeline:
+      C1 (SpacyExtractor | LLMExtractor) -> C2 (TKGBuilder) -> C3 (Verification) -> C4 (TCSCalculator)
     """
 
     def __init__(
@@ -61,7 +61,7 @@ class PipelineOrchestrator:
 
     @property
     def extractor(self) -> AbstractExtractor:
-        """Lazy-load: instantiaza extractorul ales (spacy sau llm) o singura data."""
+        """Lazy-load: instantiates the chosen extractor (spacy or llm) once."""
         if self._extractor is None:
             cls = _get_extractor_class(self.extractor_name)
             kwargs = {}
@@ -70,13 +70,13 @@ class PipelineOrchestrator:
                     kwargs["model_name"] = self.model_name
                 elif self.extractor_name == "llm":
                     kwargs["model"] = self.model_name
-            logger.info(f"Orchestrator: initializare {cls.__name__} ({self.model_name or 'default'})...")
+            logger.info(f"Orchestrator: initializing {cls.__name__} ({self.model_name or 'default'})...")
             self._extractor = cls(**kwargs)
         return self._extractor
 
     @property
     def llm_explainer(self):
-        """Lazy-load: instanta LLMExplainer creata doar la primul apel."""
+        """Lazy-load: LLMExplainer instance created on first access."""
         if not hasattr(self, "_llm_explainer"):
             from backend.pipeline.scoring.llm_explainer import LLMExplainer
             self._llm_explainer = LLMExplainer()
@@ -92,34 +92,34 @@ class PipelineOrchestrator:
         return self._external_verifier
 
     def run(self, article: Article) -> TCSResult:
-        """Ruleaza pipeline-ul complet pe un articol."""
+        """Run the full pipeline on a single article."""
         start_ms = time.monotonic() * 1000
         logger.info(f"Pipeline START [{self.extractor_name}]: '{article.title[:60]}' ({len(article.text)} chars)")
 
-        # C1: Extractie
+        # C1: extraction
         facts = self.extractor.extract(article)
-        logger.info(f"C1 ✓ — {len(facts)} fapte extrase ({self.extractor_name})")
+        logger.info(f"C1 done — {len(facts)} facts extracted ({self.extractor_name})")
 
-        # C2: Constructie TKG
+        # C2: TKG construction
         tkg: TemporalKnowledgeGraph = self._builder.build(facts)
-        logger.info(f"C2 ✓ — TKG: {tkg.node_count} noduri, {tkg.edge_count} muchii, {tkg.fact_count} fapte")
+        logger.info(f"C2 done — TKG: {tkg.node_count} nodes, {tkg.edge_count} edges, {tkg.fact_count} facts")
 
         if tkg.fact_count == 0:
-            logger.warning("TKG gol — articolul nu contine fapte temporale verificabile.")
+            logger.warning("Empty TKG — article contains no verifiable temporal facts.")
             return _empty_result(article, self.extractor_name, start_ms)
 
-        # C3a: Verificare interna
+        # C3a: internal verification
         internal = self._internal_verifier.verify(tkg, publication_date=article.publication_date)
-        logger.info(f"C3a ✓ — {len(internal.inconsistencies)} inconsistente, coherence={internal.score_coherence:.3f}")
+        logger.info(f"C3a done — {len(internal.inconsistencies)} inconsistencies, coherence={internal.score_coherence:.3f}")
 
-        # C3b: Verificare externa
+        # C3b: external verification
         external = self.external_verifier.verify(tkg)
-        logger.info(f"C3b ✓ — {len(external.inconsistencies)} inconsistente ({external.wikidata_queries} query-uri)")
+        logger.info(f"C3b done — {len(external.inconsistencies)} inconsistencies ({external.wikidata_queries} Wikidata queries)")
 
         all_facts = tkg.get_all_facts()
         all_inconsistencies = internal.inconsistencies + external.inconsistencies
 
-        # C3c: Verificare cross-article (optional, necesita Neo4j)
+        # C3c: cross-article verification (optional, requires Neo4j)
         cross_article_incs: list = []
         article_id = None
         if self._persistent_store and self._enable_cross_article:
@@ -127,10 +127,10 @@ class PipelineOrchestrator:
             article_id = str(uuid.uuid4())
             cross_verifier = CrossArticleVerifier(self._persistent_store)
             cross_article_incs = cross_verifier.verify(all_facts, article_id)
-            logger.info(f"C3c ✓ — {len(cross_article_incs)} conflicte cross-article")
+            logger.info(f"C3c done — {len(cross_article_incs)} cross-article conflicts")
             all_inconsistencies.extend(cross_article_incs)
 
-        # C4: Calcul TCS
+        # C4: TCS computation
         facts_verified = external.facts_checked
         facts_total = len(all_facts)
 
@@ -148,47 +148,47 @@ class PipelineOrchestrator:
         result.article_id = article_id
         result.cross_article_inconsistencies = cross_article_incs
 
-        # Persistare dupa calcul TCS
+        # Persist facts after scoring
         if self._persistent_store and article_id:
             try:
                 self._persistent_store.add_facts(all_facts, article_id=article_id)
-                logger.info(f"Neo4j: {len(all_facts)} fapte persistate (article_id={article_id})")
+                logger.info(f"Neo4j: {len(all_facts)} facts persisted (article_id={article_id})")
             except Exception as e:
-                logger.error(f"Neo4j persistare esuata: {e}")
+                logger.error(f"Neo4j persistence failed: {e}")
 
-        # XAI: Explicatie LLM (optional, daca Ollama e disponibil)
+        # XAI: LLM explanation (optional, requires Ollama)
         if self.llm_explainer.is_available():
             explanation = self.llm_explainer.explain(result, article_text=article.text, article_title=article.title)
             if explanation:
                 result.explanation_text = explanation
-                logger.info("XAI ✓ — Explicatie LLM generata")
+                logger.info("XAI done — LLM explanation generated")
             else:
-                logger.info("XAI — Fallback pe template static")
+                logger.info("XAI — falling back to static template")
         else:
-            logger.info("XAI — Ollama indisponibil, folosim template static")
+            logger.info("XAI — Ollama unavailable, using static template")
 
         logger.info(f"Pipeline DONE — TCS={result.score:.3f} ({result.label}) in {result.processing_time_ms:.0f}ms")
         return result
 
     def run_batch(self, articles: list[Article]) -> list[TCSResult]:
-        """Ruleaza pipeline-ul pe o lista de articole (pentru evaluare dataset)."""
+        """Run the pipeline on a list of articles (for dataset evaluation)."""
         results = []
         for i, article in enumerate(articles):
             logger.info(f"Batch [{self.extractor_name}] {i + 1}/{len(articles)}: {article.title[:50]}")
             try:
                 result = self.run(article)
             except Exception as e:
-                logger.error(f"Eroare procesare '{article.title}': {e}", exc_info=True)
+                logger.error(f"Processing error for '{article.title}': {e}", exc_info=True)
                 result = _empty_result(article, self.extractor_name)
             results.append(result)
 
         avg = sum(r.score for r in results) / len(results) if results else 0
-        logger.info(f"Batch complet [{self.extractor_name}]: {len(results)} articole, TCS mediu: {avg:.3f}")
+        logger.info(f"Batch complete [{self.extractor_name}]: {len(results)} articles, avg TCS: {avg:.3f}")
         return results
 
 
 def _empty_result(article: Article, pipeline_variant: str, start_ms: Optional[float] = None) -> TCSResult:
-    """TCSResult gol: n_temporal_claims=0 semnaleaza lipsa fapte, nu consistenta."""
+    """Empty TCSResult: n_temporal_claims=0 signals no facts found, not consistency."""
     processing_time = 0.0
     if start_ms is not None:
         processing_time = (time.monotonic() * 1000) - start_ms
@@ -196,6 +196,6 @@ def _empty_result(article: Article, pipeline_variant: str, start_ms: Optional[fl
     return TCSResult(
         score=0.5, n_inconsistencies=0, n_temporal_claims=0, coherence_factor=1.0,
         inconsistencies=[], facts=[],
-        explanation_text="Nu s-au putut extrage fapte temporale verificabile din acest articol.",
+        explanation_text="No verifiable temporal facts could be extracted from this article.",
         timeline=[], pipeline_variant=pipeline_variant, processing_time_ms=processing_time,
     )

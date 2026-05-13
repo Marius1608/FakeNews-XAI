@@ -19,11 +19,11 @@ def load_liar(
     split: str = "test",
     max_articles: Optional[int] = None,
 ) -> list[Article]:
-    """LIAR: 12.8K declaratii PolitiFact. TSV cu 14 coloane."""
+    """LIAR: 12.8K PolitiFact statements. TSV with 14 columns."""
     if filepath is None:
         filepath = DATASETS_DIR / "liar" / f"{split}.tsv"
     if not filepath.exists():
-        logger.warning(f"Fisierul LIAR nu exista: {filepath}")
+        logger.warning(f"LIAR file not found: {filepath}")
         return []
 
     articles = []
@@ -40,7 +40,7 @@ def load_liar(
             if max_articles and len(articles) >= max_articles:
                 break
 
-    logger.info(f"LIAR [{split}]: s-au incarcat {len(articles)} articole")
+    logger.info(f"LIAR [{split}]: loaded {len(articles)} articles")
     return articles
 
 
@@ -50,12 +50,12 @@ def load_fakenewsnet(
     label: str = "fake",
     max_articles: Optional[int] = None,
 ) -> list[Article]:
-    """FakeNewsNet: articole JSON cu timestamps (politifact/gossipcop, fake/real)."""
+    """FakeNewsNet: JSON articles with timestamps (politifact/gossipcop, fake/real)."""
     if base_dir is None:
         base_dir = DATASETS_DIR / "fakenewsnet"
     data_dir = base_dir / source / label
     if not data_dir.exists():
-        logger.warning(f"Directorul FakeNewsNet nu exista: {data_dir}")
+        logger.warning(f"FakeNewsNet directory not found: {data_dir}")
         return []
 
     articles = []
@@ -87,13 +87,13 @@ def load_fakenewsnet(
             )
             articles.append(article)
         except (json.JSONDecodeError, KeyError) as e:
-            logger.debug(f"Eroare la citirea {json_file}: {e}")
+            logger.debug(f"Error reading {json_file}: {e}")
             continue
 
         if max_articles and len(articles) >= max_articles:
             break
 
-    logger.info(f"FakeNewsNet [{source}/{label}]: s-au incarcat {len(articles)} articole")
+    logger.info(f"FakeNewsNet [{source}/{label}]: loaded {len(articles)} articles")
     return articles
 
 
@@ -101,11 +101,11 @@ def load_ver1(
     filepath: Optional[Path] = None,
     max_articles: Optional[int] = None,
 ) -> list[Article]:
-    """VER-1 (Cheres & Groza): dezinformare Europa de Est, CSV."""
+    """VER-1 (Cheres & Groza): Eastern Europe disinformation, CSV."""
     if filepath is None:
         filepath = DATASETS_DIR / "ver1" / "ver1.csv"
     if not filepath.exists():
-        logger.warning(f"Fisierul VER-1 nu exista: {filepath}")
+        logger.warning(f"VER-1 file not found: {filepath}")
         return []
 
     articles = []
@@ -124,13 +124,13 @@ def load_ver1(
             if max_articles and len(articles) >= max_articles:
                 break
 
-    logger.info(f"VER-1: s-au incarcat {len(articles)} articole")
+    logger.info(f"VER-1: loaded {len(articles)} articles")
     return articles
 
 
 def load_dataset(name: str, max_articles: Optional[int] = None, **kwargs) -> list[Article]:
-    """Dispatcher: load_dataset("liar"), load_dataset("fakenewsnet", source="politifact")."""
+    """Dispatcher: load_dataset('liar'), load_dataset('fakenewsnet', source='politifact')."""
     loaders = {"liar": load_liar, "fakenewsnet": load_fakenewsnet, "ver1": load_ver1}
     if name.lower() not in loaders:
-        raise ValueError(f"Dataset necunoscut: {name}. Disponibile: {list(loaders.keys())}")
+        raise ValueError(f"Unknown dataset: {name}. Available: {list(loaders.keys())}")
     return loaders[name.lower()](max_articles=max_articles, **kwargs)

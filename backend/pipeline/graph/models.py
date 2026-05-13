@@ -7,14 +7,15 @@ from enum import Enum
 from typing import Optional
 
 
-# ── Enums ──
+# Enums
 class EntityType(str, Enum):
     PERSON = "PERSON"
     ORGANIZATION = "ORG"
     LOCATION = "GPE"
     EVENT = "EVENT"
     DATE = "DATE"
-    NORP = "NORP"           # Nationalitati, grupuri religioase/politice
+    # Nationalities, religious or political groups
+    NORP = "NORP"
     PRODUCT = "PRODUCT"
     OTHER = "OTHER"
 
@@ -52,10 +53,10 @@ class Severity(str, Enum):
     CRITICAL = "critical"
 
 
-# ── C1: Extraction output ──
+# C1: Extraction output
 @dataclass
 class Entity:
-    """O entitate extrasa din text."""
+    """An entity extracted from text."""
     text: str
     entity_type: EntityType
     start_char: int
@@ -69,7 +70,7 @@ class Entity:
 
 @dataclass
 class TemporalExpression:
-    """O expresie temporala normalizata (output dateparser)."""
+    """A normalized temporal expression (dateparser output)."""
     raw_text: str
     normalized_date: Optional[datetime] = None
     date_string: Optional[str] = None
@@ -87,8 +88,8 @@ class TemporalExpression:
 @dataclass
 class TemporalFact:
     """
-    Un fapt temporal — unitatea de baza a pipeline-ului.
-    Circula de la C1 (Extraction) la C2 (Graph).
+    A temporal fact — the basic unit of the pipeline.
+    Flows from C1 (Extraction) to C2 (Graph).
     """
     subject: Entity
     predicate: RelationType
@@ -116,29 +117,31 @@ class TemporalFact:
         )
 
 
-# ── Input ──
+# Input
 @dataclass
 class Article:
-    """Un articol de analizat."""
+    """An article to be analyzed."""
     text: str
     title: str = ""
     publication_date: Optional[datetime] = None
     source: str = ""
     url: str = ""
-    label: Optional[str] = None       # ground truth: "true", "false", etc.
+    # Ground truth label: "true", "false", etc.
+    label: Optional[str] = None
     dataset: Optional[str] = None
 
 
-# ── C3: Verification output ──
+# C3: Verification output
 @dataclass
 class Inconsistency:
-    """O inconsistenta temporala detectata de C3 (Verification)."""
+    """A temporal inconsistency detected by C3 (Verification)."""
     inconsistency_type: InconsistencyType
     severity: Severity
     description: str
     facts_involved: list[TemporalFact] = field(default_factory=list)
     sentence_indices: list[int] = field(default_factory=list)
-    verified_by: str = "internal"      # "internal", "wikidata", "reference_kg"
+    # Source of the verification: "internal", "wikidata", "reference_kg"
+    verified_by: str = "internal"
     evidence: Optional[str] = None
 
     def __repr__(self) -> str:
@@ -148,14 +151,15 @@ class Inconsistency:
         )
 
 
-# ── C4: Scoring output ──
+# C4: Scoring output
 @dataclass
 class TCSResult:
     """
-    Rezultatul final al pipeline-ului.
+    Final pipeline output.
     TCS = 1 - (inconsist_detected / claims_temporal) x score_coherence
     """
-    score: float                       # [0, 1] — 1.0 = consistent, 0.0 = suspect
+    # [0, 1] — 1.0 = consistent, 0.0 = suspect
+    score: float
 
     n_inconsistencies: int
     n_temporal_claims: int
@@ -174,7 +178,7 @@ class TCSResult:
 
     @property
     def label(self) -> str:
-        """Eticheta de consistenta conform Score Interpretation."""
+        """Consistency label according to the Score Interpretation table."""
         if self.n_temporal_claims == 0:
             return "Insufficient Temporal Data"
         elif self.score >= 0.8:

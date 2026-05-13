@@ -17,7 +17,7 @@ MIN_TEMPORAL_CLAIMS = 1
 
 
 class TCSCalculator:
-    """Calculeaza scorul TCS din rezultatele C2 (TKG) + C3 (verificari)."""
+    """Computes the TCS score from C2 (TKG) and C3 (verification) results."""
 
     def compute(
         self, n_claims: int, inconsistencies: list[Inconsistency],
@@ -27,53 +27,55 @@ class TCSCalculator:
     ) -> TCSResult:
         """
         TCS = 1 - (weighted_penalty / max_possible_penalty) × score_coherence × coverage_factor
-        
-        coverage_factor: cat de bine s-a putut verifica articolul (0-1)
-        weighted_penalty: suma ponderilor inconsistentelor detectate
+
+        coverage_factor: fraction of facts that could be verified (0-1)
+        weighted_penalty: sum of severity weights for detected inconsistencies
         """
         facts = facts or []
-        
+
         if n_claims == 0:
             return TCSResult(
-                score=0.5, n_inconsistencies=0, n_temporal_claims=0, 
-                coherence_factor=1.0, inconsistencies=[], facts=[], 
+                score=0.5, n_inconsistencies=0, n_temporal_claims=0,
+                coherence_factor=1.0, inconsistencies=[], facts=[],
                 explanation_text="insufficient_data"
             )
-        
-        # Ponderi per severity
+
+        # Severity weights
         SEVERITY_WEIGHTS = {
             Severity.HIGH: 1.0,
             Severity.MEDIUM: 0.6,
             Severity.LOW: 0.3,
             Severity.CRITICAL: 1.0
         }
-        
-        # Calcul penalty ponderat
+
+        # Weighted penalty
         weighted_penalty = sum(SEVERITY_WEIGHTS.get(inc.severity, 0.5) for inc in inconsistencies)
-        max_possible_penalty = n_claims * max(SEVERITY_WEIGHTS.values())  # worst case
-        
-        # Coverage factor: cat de mult s-a verificat
+        # Worst-case: every claim has a critical inconsistency
+        max_possible_penalty = n_claims * max(SEVERITY_WEIGHTS.values())
+
+        # Coverage factor: proportion of facts verified; clamped to min 0.3
         if facts_total > 0:
-            coverage_factor = max(0.3, facts_verified / facts_total)  # minim 0.3 ca sa nu anuleze scorul
+            coverage_factor = max(0.3, facts_verified / facts_total)
         else:
-            coverage_factor = 0.5  # default cand nu stim
-        
-        # Formula principala
+            # Default when verification coverage is unknown
+            coverage_factor = 0.5
+
+        # Main formula
         penalty_ratio = min(1.0, weighted_penalty / max_possible_penalty) if max_possible_penalty > 0 else 0.0
         raw_tcs = (1.0 - penalty_ratio) * score_coherence
-        
-        # Aplica coverage
-        tcs = raw_tcs * coverage_factor + (1.0 - coverage_factor) * 0.5  # blend cu 0.5 (neutru) pe partea neverificata
-        
+
+        # Blend with neutral 0.5 on the unverified portion
+        tcs = raw_tcs * coverage_factor + (1.0 - coverage_factor) * 0.5
+
         # Clamp
         tcs = max(0.0, min(1.0, tcs))
-        
+
         logger.info(f"TCS: penalty={weighted_penalty:.2f}/{max_possible_penalty:.2f}, "
                     f"coherence={score_coherence:.3f}, coverage={coverage_factor:.2f} "
-                    f"→ TCS={tcs:.3f}")
-        
+                    f"-> TCS={tcs:.3f}")
+
         timeline = _build_timeline(facts, inconsistencies)
-        
+
         processing_time = 0.0
         if start_time_ms is not None:
             processing_time = (time.monotonic() * 1000) - start_time_ms
@@ -89,7 +91,7 @@ class TCSCalculator:
 
 
 def _build_timeline(facts: list[TemporalFact], inconsistencies: list[Inconsistency]) -> list[dict]:
-    """Timeline sortat cronologic pentru UI (Sprint 4)."""
+    """Build a chronologically sorted timeline for the UI."""
     inc_by_sentence: dict[int, Inconsistency] = {}
     for inc in inconsistencies:
         for idx in inc.sentence_indices:
@@ -101,7 +103,7 @@ def _build_timeline(facts: list[TemporalFact], inconsistencies: list[Inconsisten
         inc = inc_by_sentence.get(fact.source_sentence_idx)
         events.append({
             "year": year,
-            "label": f"{fact.subject.text} — {fact.predicate.value} → {fact.object.text}",
+            "label": f"{fact.subject.text} — {fact.predicate.value} -> {fact.object.text}",
             "has_inconsistency": inc is not None,
             "inconsistency_type": inc.inconsistency_type.value if inc else None,
             "inconsistency_description": inc.description if inc else None,
@@ -122,4 +124,3 @@ def _extract_year(fact: TemporalFact) -> int | None:
         if expr and expr.normalized_date:
             return expr.normalized_date.year
     return None
-

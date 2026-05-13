@@ -27,14 +27,14 @@ INCOMPATIBLE_POSITIONS = [
     {"president", "prime minister", "chancellor"},
 ]
 
-FUTURE_INDICATORS = {"will ", "going to ", "expected to ", "planned for ", "is set to ", 
+FUTURE_INDICATORS = {"will ", "going to ", "expected to ", "planned for ", "is set to ",
                      "shall ", "is expected", "are expected", "will be ", "would "}
 
 INAUGURATION_KEYWORDS = {"inaugurat", "inaugurated", "sworn in", "took office", "assumed office"}
 ELECTION_KEYWORDS = {"elected", "election", "won", "re-elected", "voted"}
 
 def _split_compound_positions(position_text: str) -> list[str]:
-    """Separa pozitii compuse: 'Senator and Governor' -> ['Senator', 'Governor']."""
+    """Split compound position strings: 'Senator and Governor' -> ['Senator', 'Governor']."""
     parts = re.split(r'\s+and\s+|\s*&\s*|\s*,\s*', position_text, flags=re.IGNORECASE)
     return [p.strip().lower() for p in parts if p.strip()]
 
@@ -46,12 +46,14 @@ def _is_inauguration_or_election(fact: TemporalFact) -> bool:
 @dataclass
 class InternalVerificationResult:
     """
-    Rezultat verificare interna.
-    score_coherence = 1 - (conf_temp / rel_temp) — intrare in formula TCS.
+    Internal verification result.
+    score_coherence = 1 - (conf_temp / rel_temp) — input to the TCS formula.
     """
     inconsistencies: list[Inconsistency] = field(default_factory=list)
-    conf_temp: int = 0    # conflicte temporale detectate
-    rel_temp: int = 0     # total relatii temporale
+    # Temporal conflicts detected
+    conf_temp: int = 0
+    # Total temporal relations
+    rel_temp: int = 0
 
     @property
     def score_coherence(self) -> float:
@@ -61,7 +63,7 @@ class InternalVerificationResult:
 
 
 class InternalVerifier:
-    """Ruleaza verificari interne pe TKG si returneaza score_coherence."""
+    """Runs internal checks on the TKG and returns a score_coherence value."""
 
     def verify(self, tkg: TemporalKnowledgeGraph, publication_date: Optional[datetime] = None) -> InternalVerificationResult:
         all_facts = tkg.get_all_facts()
@@ -71,8 +73,8 @@ class InternalVerifier:
         inconsistencies.extend(self._check_temporal_cycles(tkg))
         inconsistencies.extend(self._check_causal_violations(all_facts))
         inconsistencies.extend(self._check_ordering_errors(all_facts))
-        
-        # // section noi
+
+        # Additional checks
         inconsistencies.extend(self._check_factual_contradictions(all_facts))
         inconsistencies.extend(self._check_implicit_contradictions(all_facts))
         if publication_date:
@@ -82,12 +84,12 @@ class InternalVerifier:
         result = InternalVerificationResult(
             inconsistencies=inconsistencies, conf_temp=len(inconsistencies), rel_temp=rel_temp,
         )
-        logger.info(f"Verificare interna: {result.conf_temp} conflicte / {rel_temp} relatii → score_coherence={result.score_coherence:.3f}")
+        logger.info(f"Internal verification: {result.conf_temp} conflicts / {rel_temp} relations -> score_coherence={result.score_coherence:.3f}")
         return result
 
-    # // section check_cycles
+    # V1: Temporal cycles
     def _check_temporal_cycles(self, tkg: TemporalKnowledgeGraph) -> list[Inconsistency]:
-        """V1: Cicluri in relatiile PRECEDED/FOLLOWED (ex: A inainte de B inainte de A)."""
+        """V1: Cycles in PRECEDED/FOLLOWED relations (e.g. A before B before A)."""
         order_graph = nx.DiGraph()
         for edge in tkg.get_edges_by_relation(RelationType.PRECEDED) + tkg.get_edges_by_relation(RelationType.FOLLOWED):
             order_graph.add_edge(edge["source"], edge["target"])
@@ -98,19 +100,19 @@ class InternalVerifier:
         try:
             cycle = nx.find_cycle(order_graph, orientation="original")
             nodes_in_cycle = [u for u, v, _ in cycle]
-            cycle_str = " → ".join(nodes_in_cycle) + f" → {nodes_in_cycle[0]}"
+            cycle_str = " -> ".join(nodes_in_cycle) + f" -> {nodes_in_cycle[0]}"
             return [Inconsistency(
                 inconsistency_type=InconsistencyType.TEMPORAL_CYCLE,
                 severity=Severity.HIGH,
-                description=f"Ciclu temporal: {cycle_str}.",
-                verified_by="internal", evidence=f"Ciclu: {cycle_str}",
+                description=f"Temporal cycle: {cycle_str}.",
+                verified_by="internal", evidence=f"Cycle: {cycle_str}",
             )]
         except nx.NetworkXNoCycle:
             return []
 
-    # // section check_causal
+    # V2: Causal violations
     def _check_causal_violations(self, facts: list[TemporalFact]) -> list[Inconsistency]:
-        """V2: Efect inainte de cauza in fapte CAUSED."""
+        """V2: Effect precedes cause in CAUSED facts."""
         inconsistencies = []
         causal_facts = [f for f in facts if f.predicate in CAUSAL_RELATIONS]
 
@@ -129,17 +131,17 @@ class InternalVerifier:
                     inconsistencies.append(Inconsistency(
                         inconsistency_type=InconsistencyType.CAUSAL_VIOLATION,
                         severity=Severity.HIGH,
-                        description=f"Violare cauzala: '{fact.subject.text}' → '{fact.object.text}', efectul ({effect_time.year}) precede cauza ({cause_time.year}).",
+                        description=f"Causal violation: '{fact.subject.text}' -> '{fact.object.text}', effect ({effect_time.year}) precedes cause ({cause_time.year}).",
                         facts_involved=[fact, ef],
                         sentence_indices=[fact.source_sentence_idx, ef.source_sentence_idx],
                         verified_by="internal",
-                        evidence=f"Cauza: {cause_time.strftime('%Y-%m-%d')}, Efect: {effect_time.strftime('%Y-%m-%d')}",
+                        evidence=f"Cause: {cause_time.strftime('%Y-%m-%d')}, Effect: {effect_time.strftime('%Y-%m-%d')}",
                     ))
         return inconsistencies
 
-    # // section check_ordering
+    # V3: Ordering errors
     def _check_ordering_errors(self, facts: list[TemporalFact]) -> list[Inconsistency]:
-        """V3: Interval inversat (start > end) si durata implausibila (>50 ani)."""
+        """V3: Inverted interval (start > end) and implausible duration (>50 years)."""
         inconsistencies = []
         for fact in facts:
             if not (fact.time_start and fact.time_end):
@@ -153,7 +155,7 @@ class InternalVerifier:
                 inconsistencies.append(Inconsistency(
                     inconsistency_type=InconsistencyType.ORDERING_ERROR,
                     severity=Severity.MEDIUM,
-                    description=f"Interval inversat: '{fact.subject.text}' [{fact.time_start.date_string} → {fact.time_end.date_string}].",
+                    description=f"Inverted interval: '{fact.subject.text}' [{fact.time_start.date_string} -> {fact.time_end.date_string}].",
                     facts_involved=[fact], sentence_indices=[fact.source_sentence_idx],
                     verified_by="internal", evidence=f"start={fact.time_start.date_string}, end={fact.time_end.date_string}",
                 ))
@@ -163,67 +165,66 @@ class InternalVerifier:
                     inconsistencies.append(Inconsistency(
                         inconsistency_type=InconsistencyType.DURATION_IMPLAUSIBLE,
                         severity=Severity.LOW,
-                        description=f"Durata implausibila: '{fact.subject.text}' — {duration_years:.0f} ani.",
+                        description=f"Implausible duration: '{fact.subject.text}' — {duration_years:.0f} years.",
                         facts_involved=[fact], sentence_indices=[fact.source_sentence_idx],
-                        verified_by="internal", evidence=f"Durata: {duration_years:.0f} ani",
+                        verified_by="internal", evidence=f"Duration: {duration_years:.0f} years",
                     ))
         return inconsistencies
 
-    # // section check_factual_contradictions
+    # V4: Factual contradictions
     def _check_factual_contradictions(self, facts: list[TemporalFact]) -> list[Inconsistency]:
-        """V4: Contradicții factuale (același obiect cu subiecte diferite ce se suprapun temporal)."""
+        """V4: Factual contradictions (same object held by different subjects with temporal overlap)."""
         inconsistencies = []
         for i, f1 in enumerate(facts):
             for j, f2 in enumerate(facts):
                 if i >= j or f1.predicate != f2.predicate:
                     continue
-                    
+
                 obj1 = f1.object.text.lower()
                 obj2 = f2.object.text.lower()
-                
-                # Căutăm același obiect (ex: 'president') deținut de entități diferite
+
+                # Same object (e.g. 'president') held by different subjects
                 if SequenceMatcher(None, obj1, obj2).ratio() >= 0.85:
                     subj1 = f1.subject.text.lower()
                     subj2 = f2.subject.text.lower()
-                    
+
                     if SequenceMatcher(None, subj1, subj2).ratio() < 0.85:
-                        # Subiecte diferite + același obiect. Verificăm overlap
+                        # Different subjects + same object: check temporal overlap
                         start1, end1 = _extract_bounds(f1)
                         start2, end2 = _extract_bounds(f2)
-                        
+
                         if _check_overlap(start1, end1, start2, end2):
                             inconsistencies.append(Inconsistency(
                                 inconsistency_type=InconsistencyType.FACTUAL_CONTRADICTION,
                                 severity=Severity.HIGH,
-                                description=f"Contradictie: '{f1.subject.text}' si '{f2.subject.text}' ca '{f1.object.text}' in acelasi interval.",
+                                description=f"Contradiction: '{f1.subject.text}' and '{f2.subject.text}' both as '{f1.object.text}' in the same interval.",
                                 facts_involved=[f1, f2],
                                 sentence_indices=[f1.source_sentence_idx, f2.source_sentence_idx],
                                 verified_by="internal",
-                                evidence="Fapte in acelasi interval de timp."
+                                evidence="Facts overlap in time."
                             ))
         return inconsistencies
 
-    # // section check_implicit_contradictions
+    # V5: Implicit contradictions
     def _check_implicit_contradictions(self, facts: list[TemporalFact]) -> list[Inconsistency]:
-        """V5: Contradicții implicite (ex: poziție înainte de alegeri)."""
+        """V5: Implicit contradictions (e.g. holding a position before the election)."""
         inconsistencies = []
-        
+
         holds_facts = [f for f in facts if f.predicate in (RelationType.HOLDS_POSITION, RelationType.GENERIC)]
         event_facts = facts
         ended_facts = [f for f in facts if f.predicate == RelationType.ENDED]
-        
+
         for h_fact in holds_facts:
             subj_h = h_fact.subject.text.lower()
             start_h = _extract_point_time(h_fact) or (h_fact.time_start.normalized_date if h_fact.time_start else None)
-            
+
             if not start_h:
                 continue
-                
-            # Verifica event_facts (alegeri/inaugurare)
+
+            # Check against inauguration/election events
             for e_fact in event_facts:
                 subj_e = e_fact.subject.text.lower()
-                obj_e = e_fact.object.text.lower()
-                
+
                 if SequenceMatcher(None, subj_h, subj_e).ratio() >= 0.85:
                     if _is_inauguration_or_election(e_fact):
                         point_e = _extract_point_time(e_fact)
@@ -231,46 +232,44 @@ class InternalVerifier:
                             inconsistencies.append(Inconsistency(
                                 inconsistency_type=InconsistencyType.IMPLICIT_CONTRADICTION,
                                 severity=Severity.MEDIUM,
-                                description=f"Contradictie implicita: '{h_fact.subject.text}' a inceput '{h_fact.object.text}' ({start_h.year}) INAINTE de '{e_fact.object.text}' ({point_e.year}).",
+                                description=f"Implicit contradiction: '{h_fact.subject.text}' started '{h_fact.object.text}' ({start_h.year}) BEFORE '{e_fact.object.text}' ({point_e.year}).",
                                 facts_involved=[h_fact, e_fact],
                                 sentence_indices=[h_fact.source_sentence_idx, e_fact.source_sentence_idx],
                                 verified_by="internal",
-                                evidence="Incompatibilitate secventiala."
+                                evidence="Sequential incompatibility."
                             ))
-                            
-            # Verifica ended_facts
+
+            # Check against ended facts
             for end_fact in ended_facts:
                 subj_end = end_fact.subject.text.lower()
                 if SequenceMatcher(None, subj_h, subj_end).ratio() >= 0.85:
                     point_end = _extract_point_time(end_fact)
                     if point_end and start_h > point_end:
                         if (start_h - point_end).days < 30:
-                            # Warning, dar pentru moment adaugam ca inconsistenta LOW
                             pass
 
         return inconsistencies
 
-    # // section check_future_as_past
+    # V6: Future as past
     def _check_future_as_past(self, facts: list[TemporalFact], publication_date: datetime) -> list[Inconsistency]:
-        """V6: Date viitoare prezentate ca evenimente deja intamplate."""
+        """V6: Future dates presented as already-happened events."""
         inconsistencies = []
         for fact in facts:
             fact_date = _extract_point_time(fact)
             if fact_date is None or fact_date <= publication_date:
                 continue
-            
-            # Data e in viitor fata de publication_date
+
             source = (fact.source_sentence or "").lower()
-            
-            # Daca propozitia contine indicatori de viitor, e OK
+
+            # If the sentence contains future tense indicators, it is expected
             if any(ind in source for ind in FUTURE_INDICATORS):
                 continue
-            
-            # Altfel: articolul vorbeste despre un eveniment viitor ca si cum s-a intamplat
+
+            # Article refers to a future event as if it already happened
             inconsistencies.append(Inconsistency(
                 inconsistency_type=InconsistencyType.FUTURE_AS_PAST,
                 severity=Severity.HIGH,
-                description=f"Eveniment din {fact_date.year} prezentat ca trecut, dar articolul e din {publication_date.year}: '{fact.subject.text}'.",
+                description=f"Event from {fact_date.year} presented as past, but article is from {publication_date.year}: '{fact.subject.text}'.",
                 facts_involved=[fact],
                 sentence_indices=[fact.source_sentence_idx],
                 verified_by="internal",
@@ -278,13 +277,13 @@ class InternalVerifier:
             ))
         return inconsistencies
 
-    # // section check_entity_consistency
+    # V7: Entity consistency
     def _check_entity_consistency(self, facts: list[TemporalFact]) -> list[Inconsistency]:
-        """V7: Aceeași persoană ocupă două funcții incompatibile simultan."""
+        """V7: Same person holds two incompatible positions simultaneously."""
         inconsistencies = []
         holds_facts = [f for f in facts if f.predicate == RelationType.HOLDS_POSITION]
-        
-        # Nou: verificam fapte individuale care au pozitii compuse incompatibile
+
+        # Check individual facts with compound incompatible positions
         for f in holds_facts:
             roles = _split_compound_positions(f.object.text)
             if len(roles) > 1:
@@ -298,15 +297,15 @@ class InternalVerifier:
                         inconsistencies.append(Inconsistency(
                             inconsistency_type=InconsistencyType.ENTITY_INCONSISTENCY,
                             severity=Severity.MEDIUM,
-                            description=f"Roluri simultane incompatibile pentru '{f.subject.text}': {', '.join(matched_terms)}.",
+                            description=f"Incompatible simultaneous roles for '{f.subject.text}': {', '.join(matched_terms)}.",
                             facts_involved=[f],
                             sentence_indices=[f.source_sentence_idx],
                             verified_by="internal",
-                            evidence="Functii incompatibile compuse in acelasi fapt."
+                            evidence="Incompatible compound positions in the same fact."
                         ))
                         break
 
-        # Grupare dupa subiect (fuzzy match)
+        # Group by subject (fuzzy match)
         grouped_facts = []
         for f in holds_facts:
             added = False
@@ -317,47 +316,47 @@ class InternalVerifier:
                     break
             if not added:
                 grouped_facts.append([f])
-                
+
         for group in grouped_facts:
             for i, f1 in enumerate(group):
                 for j, f2 in enumerate(group):
                     if i >= j:
                         continue
-                        
+
                     obj1 = f1.object.text.lower()
                     obj2 = f2.object.text.lower()
-                    
+
                     if SequenceMatcher(None, obj1, obj2).ratio() < 0.80:
-                        # Functii diferite
+                        # Different roles
                         start1, end1 = _extract_bounds(f1)
                         start2, end2 = _extract_bounds(f2)
-                        
+
                         if _check_overlap(start1, end1, start2, end2):
                             roles1 = _split_compound_positions(obj1)
                             roles2 = _split_compound_positions(obj2)
-                            
+
                             for inc_set in INCOMPATIBLE_POSITIONS:
                                 has_1 = any(any(t in r for t in inc_set) for r in roles1)
                                 has_2 = any(any(t in r for t in inc_set) for r in roles2)
-                                
+
                                 if has_1 and has_2:
                                     inconsistencies.append(Inconsistency(
                                         inconsistency_type=InconsistencyType.ENTITY_INCONSISTENCY,
                                         severity=Severity.MEDIUM,
-                                        description=f"Roluri simultane incompatibile pentru '{f1.subject.text}': '{f1.object.text}' si '{f2.object.text}'.",
+                                        description=f"Incompatible simultaneous roles for '{f1.subject.text}': '{f1.object.text}' and '{f2.object.text}'.",
                                         facts_involved=[f1, f2],
                                         sentence_indices=[f1.source_sentence_idx, f2.source_sentence_idx],
                                         verified_by="internal",
-                                        evidence="Functii incompatibile suprapuse."
+                                        evidence="Overlapping incompatible positions."
                                     ))
                                     break
-                                    
+
         return inconsistencies
 
 
-# // section utils
+# Utility functions
 def _extract_point_time(fact: TemporalFact) -> Optional[datetime]:
-    """Cel mai reprezentativ moment: time_point > time_start > time_end."""
+    """Most representative datetime: time_point > time_start > time_end."""
     for field in ("time_point", "time_start", "time_end"):
         expr = getattr(fact, field)
         if expr and expr.normalized_date:
@@ -365,7 +364,7 @@ def _extract_point_time(fact: TemporalFact) -> Optional[datetime]:
     return None
 
 def _extract_bounds(fact: TemporalFact) -> tuple[Optional[datetime], Optional[datetime]]:
-    """Extrage (start, end) din fapt, convertind punctele la intervale degenerate."""
+    """Extract (start, end) from a fact, treating point times as degenerate intervals."""
     if fact.time_start and fact.time_end:
         return fact.time_start.normalized_date, fact.time_end.normalized_date
     if fact.time_point:
@@ -374,13 +373,11 @@ def _extract_bounds(fact: TemporalFact) -> tuple[Optional[datetime], Optional[da
     return None, None
 
 def _check_overlap(s1: Optional[datetime], e1: Optional[datetime], s2: Optional[datetime], e2: Optional[datetime]) -> bool:
-    """Verifica suprapunerea intre doua intervale [s1, e1] si [s2, e2]."""
+    """True if the intervals [s1, e1] and [s2, e2] overlap."""
     if not (s1 and e1 and s2 and e2):
-        # Daca lipseste vreo margine (ex. doar start), asumam cel mai larg interval
-        # Dar e mai safe sa facem match doar pe punctele disponibile.
-        # Daca avem doar start-uri:
-        if s1 and s2 and s1.year == s2.year: 
+        # If only start times are available, match on same year
+        if s1 and s2 and s1.year == s2.year:
             return True
         return False
-        
+
     return max(s1, s2) <= min(e1, e2)

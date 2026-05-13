@@ -18,17 +18,17 @@ logger = logging.getLogger(__name__)
 
 class TemporalKnowledgeGraph(AbstractTKGStore):
     """
-    Graf temporal conform Cai et al. (2024): G = (E, R, T, F).
-    Noduri = entitati, Muchii = relatii cu metadata temporala.
+    Temporal graph following Cai et al. (2024): G = (E, R, T, F).
+    Nodes = entities, edges = relations with temporal metadata.
     """
 
     def __init__(self) -> None:
         self._graph: nx.MultiDiGraph = nx.MultiDiGraph()
         self._facts: list[TemporalFact] = []
 
-    # ── Adaugare ──
+    # Write operations
     def add_fact(self, fact: TemporalFact, article_id: str | None = None) -> None:
-        """Adauga un TemporalFact ca nod+muchie in graf. article_id ignorat (in-memory)."""
+        """Add a TemporalFact as a node+edge pair. article_id is ignored (in-memory)."""
         subj_id = _entity_id(fact.subject)
         obj_id = _entity_id(fact.object)
 
@@ -44,22 +44,22 @@ class TemporalKnowledgeGraph(AbstractTKGStore):
     def add_facts(self, facts: list[TemporalFact], article_id: str | None = None) -> None:
         for fact in facts:
             self.add_fact(fact, article_id)
-        logger.info(f"TKG: {len(facts)} fapte adaugate. Noduri: {self.node_count}, Muchii: {self.edge_count}")
+        logger.info(f"TKG: {len(facts)} facts added. Nodes: {self.node_count}, Edges: {self.edge_count}")
 
-    # ── Interogare noduri ──
+    # Node queries
     def get_entities_by_type(self, entity_type: EntityType) -> list[str]:
         return [nid for nid, attrs in self._graph.nodes(data=True) if attrs.get("entity_type") == entity_type.value]
 
     def get_node_attrs(self, entity_id: str) -> dict:
         return dict(self._graph.nodes.get(entity_id, {}))
 
-    # ── Interogare fapte ──
+    # Fact queries
     def get_all_facts(self, article_id: str | None = None) -> list[TemporalFact]:
         # article_id ignored — in-memory store holds one article at a time
         return list(self._facts)
 
     def get_facts_for_entity(self, entity_name: str) -> list[TemporalFact]:
-        """Faptele in care entitatea apare ca subiect sau obiect."""
+        """Return facts where the entity appears as subject or object."""
         entity_id = entity_name.lower().strip()
         return [f for f in self._facts if _entity_id(f.subject) == entity_id or _entity_id(f.object) == entity_id]
 
@@ -72,7 +72,7 @@ class TemporalKnowledgeGraph(AbstractTKGStore):
         return False
 
     def get_edges_in_interval(self, t_start: datetime, t_end: datetime) -> list[dict]:
-        """Muchiile active in intervalul [t_start, t_end]."""
+        """Return edges active within the interval [t_start, t_end]."""
         result = []
         for src, tgt, data in self._graph.edges(data=True):
             if _edge_active_in_interval(data, t_start, t_end):
@@ -90,9 +90,9 @@ class TemporalKnowledgeGraph(AbstractTKGStore):
         edge_data = self._graph.get_edge_data(subject, obj)
         return any(attrs.get("relation") == relation.value for attrs in edge_data.values())
 
-    # ── Snapshot temporal ──
+    # Temporal snapshot
     def snapshot(self, t: datetime) -> nx.MultiDiGraph:
-        """Subgraful activ la momentul t: F_t = { f in F | t in interval(f) }."""
+        """Subgraph active at time t: F_t = { f in F | t in interval(f) }."""
         sub = nx.MultiDiGraph()
         for src, tgt, data in self._graph.edges(data=True):
             if _edge_active_at(data, t):
@@ -103,7 +103,7 @@ class TemporalKnowledgeGraph(AbstractTKGStore):
                 sub.add_edge(src, tgt, **data)
         return sub
 
-    # ── Statistici ──
+    # Statistics
     @property
     def node_count(self) -> int:
         return self._graph.number_of_nodes()
@@ -127,9 +127,9 @@ class TemporalKnowledgeGraph(AbstractTKGStore):
         return f"TemporalKnowledgeGraph(nodes={self.node_count}, edges={self.edge_count}, facts={self.fact_count})"
 
 
-# ── Helpers ──
+# Helpers
 def _entity_id(entity: Entity) -> str:
-    """ID nod: wikidata_id daca exista, altfel text lowercase."""
+    """Node ID: wikidata_id if available, else lowercased text."""
     if entity.wikidata_id:
         return entity.wikidata_id
     return entity.text.lower().strip()
@@ -158,7 +158,7 @@ def _edge_attrs(fact: TemporalFact) -> dict:
 
 
 def _edge_active_at(data: dict, t: datetime) -> bool:
-    """Muchia e activa la momentul t?"""
+    """True if the edge is active at time t."""
     t_start, t_end, t_point = data.get("time_start"), data.get("time_end"), data.get("time_point")
     if t_start and t_end:
         return t_start <= t <= t_end
@@ -166,11 +166,12 @@ def _edge_active_at(data: dict, t: datetime) -> bool:
         return t >= t_start
     if t_point:
         return t_point.year == t.year
-    return True  # fara ancora temporala = mereu activ
+    # No temporal anchor: treated as always active
+    return True
 
 
 def _edge_active_in_interval(data: dict, t_start: datetime, t_end: datetime) -> bool:
-    """Muchia se suprapune cu intervalul [t_start, t_end]?"""
+    """True if the edge overlaps with the interval [t_start, t_end]."""
     edge_start, edge_end, edge_point = data.get("time_start"), data.get("time_end"), data.get("time_point")
     if edge_point:
         return t_start <= edge_point <= t_end
@@ -179,4 +180,3 @@ def _edge_active_in_interval(data: dict, t_start: datetime, t_end: datetime) -> 
     if edge_start:
         return edge_start <= t_end
     return True
-

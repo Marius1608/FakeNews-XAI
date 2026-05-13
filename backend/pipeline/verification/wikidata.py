@@ -21,15 +21,18 @@ RATE_LIMIT_DELAY_SECONDS = 1.0
 
 @dataclass
 class WikidataFact:
-    """Un fapt temporal returnat de Wikidata. Folosit de external.py pentru comparatie."""
+    """A temporal fact returned by Wikidata, used by external.py for comparison."""
     entity_id: str
     entity_label: str
     property_id: str
     property_label: str
     value_label: str
-    time_start: Optional[datetime] = None   # P580
-    time_end: Optional[datetime] = None     # P582
-    time_point: Optional[datetime] = None   # P585
+    # P580: start time
+    time_start: Optional[datetime] = None
+    # P582: end time
+    time_end: Optional[datetime] = None
+    # P585: point in time
+    time_point: Optional[datetime] = None
 
     def __repr__(self) -> str:
         time_info = ""
@@ -37,12 +40,12 @@ class WikidataFact:
             time_info = f" @{self.time_point.year}"
         elif self.time_start:
             end_year = self.time_end.year if self.time_end else "?"
-            time_info = f" [{self.time_start.year}→{end_year}]"
+            time_info = f" [{self.time_start.year}->{end_year}]"
         return f"WikidataFact({self.entity_label} | {self.property_label}: {self.value_label}{time_info})"
 
 
 class WikidataClient:
-    """Client SPARQL Wikidata: search_entity(name) + get_temporal_facts(Q-ID)."""
+    """SPARQL client for Wikidata: search_entity(name) + get_temporal_facts(Q-ID)."""
 
     def __init__(self, endpoint: str = WIKIDATA_ENDPOINT, timeout: int = SPARQL_TIMEOUT_SECONDS, rate_limit_delay: float = RATE_LIMIT_DELAY_SECONDS):
         self.endpoint = endpoint
@@ -50,10 +53,9 @@ class WikidataClient:
         self.rate_limit_delay = rate_limit_delay
         self._last_request_time: float = 0.0
 
-
-    # Cautare entitate — returneaza QID string sau None
+    # Entity search — returns a QID string or None
     def search_entity(self, name: str, language: str = "en") -> Optional[str]:
-        """Cauta Q-ID Wikidata dupa label. Returneaza primul QID gasit (ex. 'Q76') sau None."""
+        """Search for a Wikidata Q-ID by label. Returns the first match (e.g. 'Q76') or None."""
         self._wait_rate_limit()
         url = "https://www.wikidata.org/w/api.php"
         params = {"action": "wbsearchentities", "search": name, "language": language, "format": "json", "limit": 5}
@@ -65,16 +67,16 @@ class WikidataClient:
             results = data.get("search", [])
             if results:
                 qid = results[0].get("id", "")
-                logger.debug(f"Wikidata: '{name}' → {qid}")
+                logger.debug(f"Wikidata: '{name}' -> {qid}")
                 return qid
-            logger.debug(f"Wikidata: '{name}' → nicio potrivire")
+            logger.debug(f"Wikidata: '{name}' -> no match")
             return None
         except requests.RequestException as e:
-            logger.warning(f"Wikidata search esuat pentru '{name}': {e}")
+            logger.warning(f"Wikidata search failed for '{name}': {e}")
             return None
 
     def search_entity_full(self, name: str, language: str = "en") -> list[dict]:
-        """Cautare cu rezultate complete (id, label, description). Util pentru debug/notebook."""
+        """Full search with id, label, description. Useful for debugging/notebooks."""
         self._wait_rate_limit()
         url = "https://www.wikidata.org/w/api.php"
         params = {"action": "wbsearchentities", "search": name, "language": language, "format": "json", "limit": 5}
@@ -85,16 +87,15 @@ class WikidataClient:
             data = response.json()
             return [{"id": item.get("id", ""), "label": item.get("label", ""), "description": item.get("description", "")} for item in data.get("search", [])]
         except requests.RequestException as e:
-            logger.warning(f"Wikidata search esuat pentru '{name}': {e}")
+            logger.warning(f"Wikidata search failed for '{name}': {e}")
             return []
 
-
-    # Fapte temporale — interogare SPARQL
+    # Temporal facts — SPARQL query
     def get_temporal_facts(self, entity_id: str, relation_properties: Optional[list[str]] = None) -> list[WikidataFact]:
-        """Interogheaza fapte cu P580/P582/P585 pentru o entitate (QID, ex. 'Q76')."""
+        """Query facts with P580/P582/P585 qualifiers for an entity (QID, e.g. 'Q76')."""
         self._wait_rate_limit()
         query = self._build_temporal_query(entity_id, relation_properties)
-        logger.debug(f"SPARQL query pentru {entity_id}:\n{query}")
+        logger.debug(f"SPARQL query for {entity_id}:\n{query}")
 
         try:
             response = requests.get(
@@ -105,30 +106,28 @@ class WikidataClient:
             response.raise_for_status()
             data = response.json()
             bindings = data.get("results", {}).get("bindings", [])
-            logger.debug(f"SPARQL: {len(bindings)} rezultate pentru {entity_id}")
+            logger.debug(f"SPARQL: {len(bindings)} results for {entity_id}")
             return self._parse_sparql_results(data, entity_id)
         except requests.RequestException as e:
-            logger.warning(f"Wikidata SPARQL esuat pentru {entity_id}: {e}")
+            logger.warning(f"Wikidata SPARQL failed for {entity_id}: {e}")
             return []
 
     def get_position_held(self, entity_id: str) -> list[WikidataFact]:
-        """P39 — pozitii detinute."""
+        """P39 — positions held."""
         return self.get_temporal_facts(entity_id, relation_properties=["P39"])
 
     def get_membership(self, entity_id: str) -> list[WikidataFact]:
         """P463 — member of."""
         return self.get_temporal_facts(entity_id, relation_properties=["P463"])
 
-
-    # Constructie query SPARQL
+    # SPARQL query construction
     def _build_temporal_query(self, entity_id: str, relation_properties: Optional[list[str]]) -> str:
         """
-        Construieste query SPARQL care extrage fapte cu qualifier-e temporale.
+        Build a SPARQL query extracting facts with temporal qualifiers.
         Pattern: wd:Qxxx p:Pxx ?stmt . ?stmt ps:Pxx ?value . ?stmt pq:P580 ?start .
         """
         if relation_properties:
-            # Query specific: o singura proprietate cu pattern explicit
-            # Genereaza UNION daca sunt mai multe proprietati
+            # Specific query: one property per UNION block
             unions = []
             for prop in relation_properties:
                 unions.append(f"""    {{
@@ -138,7 +137,7 @@ class WikidataClient:
     }}""")
             body = "\n    UNION\n".join(unions)
         else:
-            # Query general: toate proprietatile cu qualifier-e temporale
+            # General query: all properties with temporal qualifiers
             body = f"""    wd:{entity_id} ?propClaim ?statement .
     ?statement ?psValue ?value .
     ?propEntity wikibase:claim ?propClaim .
@@ -157,10 +156,10 @@ WHERE {{
 LIMIT 50""".strip()
 
     def _parse_sparql_results(self, data: dict, entity_id: str) -> list[WikidataFact]:
-        """Parseaza raspunsul SPARQL si returneaza WikidataFact-uri."""
+        """Parse a SPARQL response and return WikidataFact objects."""
         facts = []
         for row in data.get("results", {}).get("bindings", []):
-            # propId vine ca literal string ("P39") sau ca URI
+            # propId arrives as a literal string ("P39") or as a URI
             prop_raw = row.get("propId", {}).get("value", "")
             prop_id = _extract_prop_id(prop_raw) if "/" in prop_raw else prop_raw
             value_label = row.get("valueLabel", {}).get("value", "")
@@ -191,9 +190,9 @@ LIMIT 50""".strip()
         self._last_request_time = time.monotonic()
 
 
-# Utilitare
+# Utility functions
 def _parse_wikidata_date(date_str: Optional[str]) -> Optional[datetime]:
-    """Parseaza ISO 8601 Wikidata (ex: '+2009-01-20T00:00:00Z')."""
+    """Parse Wikidata ISO 8601 date (e.g. '+2009-01-20T00:00:00Z')."""
     if not date_str:
         return None
     clean = date_str.lstrip("+-")
@@ -202,7 +201,7 @@ def _parse_wikidata_date(date_str: Optional[str]) -> Optional[datetime]:
             return datetime.strptime(clean[:len(fmt.replace('%', 'X').replace('X', ''))], fmt)
         except ValueError:
             continue
-    # Fallback: incearca doar primele 10 caractere (YYYY-MM-DD)
+    # Fallback: try first 10 characters (YYYY-MM-DD)
     try:
         return datetime.strptime(clean[:10], "%Y-%m-%d")
     except ValueError:
@@ -210,5 +209,5 @@ def _parse_wikidata_date(date_str: Optional[str]) -> Optional[datetime]:
 
 
 def _extract_prop_id(uri: str) -> str:
-    """'http://www.wikidata.org/entity/P39' → 'P39'."""
+    """'http://www.wikidata.org/entity/P39' -> 'P39'."""
     return uri.rsplit("/", 1)[-1] if "/" in uri else uri

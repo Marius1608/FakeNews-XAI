@@ -13,8 +13,7 @@ from backend.pipeline.graph.models import TCSResult, TemporalFact
 
 logger = logging.getLogger(__name__)
 
-# // section prompt
-
+# System prompt for the LLM explanation task
 EXPLANATION_SYSTEM_PROMPT = """You are an expert fact-checker explaining the results of a temporal consistency analysis on a news article.
 
 Given:
@@ -36,7 +35,7 @@ Respond with ONLY the explanation text. No preamble, no markdown."""
 
 
 class LLMExplainer:
-    """Genereaza explicatii XAI folosind llama3 via Ollama."""
+    """Generates XAI explanations using llama3 via Ollama."""
 
     def __init__(self, model: str = None, host: str = None, timeout: int = None):
         self._model = model or OLLAMA_MODEL
@@ -44,7 +43,7 @@ class LLMExplainer:
         self._timeout = timeout or OLLAMA_TIMEOUT_SECONDS
 
     def is_available(self) -> bool:
-        """Verifica daca Ollama e accesibil."""
+        """Check whether Ollama is reachable."""
         try:
             r = requests.get(f"{self._host}/api/tags", timeout=5)
             return r.status_code == 200
@@ -52,9 +51,9 @@ class LLMExplainer:
             return False
 
     def explain(self, result: TCSResult, article_text: str = "", article_title: str = "") -> Optional[str]:
-        """Genereaza explicatie XAI pe baza rezultatului TCS.
+        """Generate an XAI explanation from a TCSResult.
 
-        Returneaza string cu explicatia sau None daca Ollama nu e disponibil.
+        Returns the explanation string, or None if Ollama is unavailable.
         """
         context = self._build_context(result, article_text, article_title)
 
@@ -77,24 +76,23 @@ class LLMExplainer:
             explanation = data.get("message", {}).get("content", "").strip()
 
             if not explanation:
-                logger.warning("LLMExplainer: raspuns gol de la Ollama")
+                logger.warning("LLMExplainer: empty response from Ollama")
                 return None
 
-            logger.info(f"LLMExplainer: explicatie generata ({len(explanation)} chars)")
+            logger.info(f"LLMExplainer: explanation generated ({len(explanation)} chars)")
             logger.debug(f"LLMExplainer response: {explanation[:200]}...")
             return explanation
 
         except requests.RequestException as e:
-            logger.error(f"LLMExplainer: eroare Ollama — {e}")
+            logger.error(f"LLMExplainer: Ollama request error — {e}")
             return None
         except (KeyError, json.JSONDecodeError) as e:
-            logger.error(f"LLMExplainer: eroare parsare raspuns — {e}")
+            logger.error(f"LLMExplainer: response parse error — {e}")
             return None
 
-    # // section context
-
+    # Context builder for the explanation prompt
     def _build_context(self, result: TCSResult, article_text: str, article_title: str) -> str:
-        """Construieste contextul pentru prompt-ul de explicatie."""
+        """Build the user-turn context for the explanation prompt."""
         parts = []
 
         parts.append(f"Article title: {article_title or 'Unknown'}")
@@ -108,7 +106,7 @@ class LLMExplainer:
             parts.append("\nExtracted temporal facts:")
             for i, fact in enumerate(result.facts[:10]):
                 time_str = _format_fact_time(fact)
-                parts.append(f"  {i+1}. {fact.subject.text} — {fact.predicate.value} → {fact.object.text} {time_str}")
+                parts.append(f"  {i+1}. {fact.subject.text} — {fact.predicate.value} -> {fact.object.text} {time_str}")
 
         if result.inconsistencies:
             parts.append("\nDetected inconsistencies:")
@@ -126,7 +124,7 @@ class LLMExplainer:
 
 
 def _format_fact_time(fact: TemporalFact) -> str:
-    """Formateaza timpul unui fapt pentru context."""
+    """Format the temporal info of a fact for the LLM context."""
     if fact.time_point and fact.time_point.date_string:
         return f"@{fact.time_point.date_string}"
     parts = []
@@ -134,4 +132,4 @@ def _format_fact_time(fact: TemporalFact) -> str:
         parts.append(fact.time_start.date_string)
     if fact.time_end and fact.time_end.date_string:
         parts.append(fact.time_end.date_string)
-    return f"[{' → '.join(parts)}]" if parts else ""
+    return f"[{' -> '.join(parts)}]" if parts else ""

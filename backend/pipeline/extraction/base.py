@@ -6,14 +6,14 @@ from backend.pipeline.graph.models import Article, TemporalFact
 
 
 class AbstractExtractor(ABC):
-    """Interfata comuna: Pipeline A (spaCy) si Pipeline B (LLM) o implementeaza."""
+    """Common interface: Pipeline A (spaCy) and Pipeline B (LLM) both implement it."""
 
     @abstractmethod
     def extract(self, article: Article) -> list[TemporalFact]:
-        """Extrage fapte temporale dintr-un articol."""
+        """Extract temporal facts from an article."""
         ...
 
     @abstractmethod
     def get_name(self) -> str:
-        """Returneaza numele extractorului ('spacy' sau 'llm')."""
+        """Return the extractor name ('spacy' or 'llm')."""
         ...

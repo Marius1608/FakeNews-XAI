@@ -50,7 +50,7 @@ class Neo4jTKGStore(AbstractTKGStore):
     def close(self) -> None:
         self._driver.close()
 
-    # ── Write ──
+    # Write operations
 
     def add_fact(self, fact: TemporalFact, article_id: str | None = None) -> None:
         """Store a fact as two Entity nodes + a TEMPORAL_RELATION edge."""
@@ -123,7 +123,7 @@ class Neo4jTKGStore(AbstractTKGStore):
             + (f" for article {article_id}" if article_id else "")
         )
 
-    # ── Read ──
+    # Read operations
 
     def get_all_facts(self, article_id: str | None = None) -> list[TemporalFact]:
         """Retrieve facts, optionally filtered by article_id."""
@@ -190,10 +190,10 @@ class Neo4jTKGStore(AbstractTKGStore):
             )
             return True
 
-    # // section wikidata_cache
+    # Wikidata cache
 
     def cache_wikidata_result(self, entity_name: str, wikidata_facts: list[dict]) -> None:
-        """Stocheaza rezultatul Wikidata in Neo4j pentru cache persistent."""
+        """Store a Wikidata query result in Neo4j for persistent caching."""
         import json
         cache_key = entity_name.lower().strip()
         with self._driver.session() as session:
@@ -205,7 +205,7 @@ class Neo4jTKGStore(AbstractTKGStore):
             """, key=cache_key, facts_json=json.dumps(wikidata_facts), entity_name=entity_name)
 
     def get_cached_wikidata(self, entity_name: str, max_age_hours: int = 168) -> Optional[list[dict]]:
-        """Recupereaza cache Wikidata. Returneaza None daca nu exista sau e expirat (default 7 zile)."""
+        """Retrieve a cached Wikidata result. Returns None if absent or expired (default 7 days)."""
         import json
         cache_key = entity_name.lower().strip()
         with self._driver.session() as session:
@@ -239,7 +239,7 @@ class Neo4jTKGStore(AbstractTKGStore):
             }
 
 
-# ── Helpers ──
+# Helpers
 
 def _record_to_fact(record) -> TemporalFact:
     """Reconstruct a TemporalFact from a Neo4j query record."""

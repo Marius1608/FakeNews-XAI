@@ -24,7 +24,7 @@ APPROXIMATE_PATTERNS = re.compile(
     re.IGNORECASE,
 )
 
-# "early 2000s", "mid-1990s", "late 1980s"
+# Matches patterns like "early 2000s", "mid-1990s", "late 1980s"
 DECADE_PATTERN = re.compile(
     r"\b(?:(early|mid|late)[- ])?((?:1[0-9]|20)\d{2})s\b",
     re.IGNORECASE,
@@ -32,7 +32,7 @@ DECADE_PATTERN = re.compile(
 
 
 class TemporalParser:
-    """Normalizeaza expresii temporale in datetime folosind dateparser."""
+    """Normalizes temporal expressions to datetime objects using dateparser."""
 
     def __init__(
         self,
@@ -53,7 +53,7 @@ class TemporalParser:
         start_char: int = 0,
         end_char: int = 0,
     ) -> Optional[TemporalExpression]:
-        """Parseaza o expresie temporala. reference_date = publication_date al articolului."""
+        """Parse a temporal expression; reference_date is the article publication date."""
         if not text or not text.strip():
             return None
 
@@ -65,7 +65,7 @@ class TemporalParser:
         if reference_date:
             settings["RELATIVE_BASE"] = reference_date
 
-        # Pre-procesare decade patterns ("early 2000s" -> "2000")
+        # Pre-process decade patterns: "early 2000s" -> "2000"
         normalized_text, was_normalized = self._normalize_approximate(clean_text)
 
         parsed_date = dateparser.parse(
@@ -102,7 +102,7 @@ class TemporalParser:
         date_spans: list[tuple[int, int, str]],
         reference_date: Optional[datetime] = None,
     ) -> list[TemporalExpression]:
-        """Parseaza mai multe expresii temporale dintr-o propozitie."""
+        """Parse multiple temporal expressions from a single sentence."""
         results = []
         for start, end, text in date_spans:
             expr = self.parse(text, reference_date, start, end)
@@ -111,7 +111,7 @@ class TemporalParser:
         return results
 
     def _normalize_approximate(self, text: str) -> tuple[str, bool]:
-        """Converteste decade patterns: early 2000s->2000, mid 1990s->1995, late 1980s->1989."""
+        """Convert decade patterns: early 2000s->2000, mid 1990s->1995, late 1980s->1989."""
         match = DECADE_PATTERN.search(text)
         if not match:
             return text, False
@@ -129,7 +129,7 @@ class TemporalParser:
         return str(year), True
 
     def _estimate_confidence(self, text: str, is_relative: bool, is_approximate: bool) -> float:
-        """Estimeaza confidence: date complete=high, relative=medium, aproximative=low."""
+        """Estimate confidence: full dates = high, relative = medium, approximate = low."""
         confidence = 1.0
 
         if is_approximate:
@@ -137,13 +137,13 @@ class TemporalParser:
         if is_relative:
             confidence -= 0.2
 
-        # Date complete (zi + luna + an)
+        # Full date (day + month + year)
         if re.search(r"\d{1,2}\s+\w+\s+\d{4}", text) or re.search(
             r"\w+\s+\d{1,2},?\s+\d{4}", text
         ):
             confidence = min(confidence + 0.1, 1.0)
 
-        # Doar anul
+        # Year-only expression
         if re.fullmatch(r"\d{4}", text.strip()):
             confidence = min(confidence, 0.6)
 

@@ -22,7 +22,7 @@ from backend.pipeline.graph.models import (
 
 logger = logging.getLogger(__name__)
 
-# // mapping
+# spaCy label to internal EntityType mapping
 SPACY_TO_ENTITY_TYPE = {
     "PERSON": EntityType.PERSON,
     "ORG": EntityType.ORGANIZATION,
@@ -37,7 +37,7 @@ SPACY_TO_ENTITY_TYPE = {
 SUBJECT_DEPS = {"nsubj", "nsubjpass", "agent"}
 OBJECT_DEPS = {"dobj", "attr", "pobj", "oprd", "appos"}
 
-# // verbs
+# Verb sets for relation classification
 POSITION_VERBS = {
     "serve", "elect", "appoint", "become", "lead", "head", "chair",
     "run", "name", "install", "retain",
@@ -68,7 +68,7 @@ TEMPORAL_VERBS = {
 
 
 class SpacyExtractor(AbstractExtractor):
-    """Pipeline A — extractor deterministic (NER + dependency parsing + reguli)."""
+    """Pipeline A — deterministic extractor (NER + dependency parsing + rules)."""
 
     def __init__(self, model_name: str = "en_core_web_trf"):
         self.model_name = model_name
@@ -77,21 +77,21 @@ class SpacyExtractor(AbstractExtractor):
 
     @property
     def nlp(self) -> spacy.Language:
-        """Încarcă modelul spaCy la prima folosire (lazy load)."""
+        """Load the spaCy model on first use (lazy load)."""
         if self._nlp is None:
-            logger.info(f"Se încarcă modelul spaCy: {self.model_name}")
+            logger.info(f"Loading spaCy model: {self.model_name}")
             self._nlp = spacy.load(self.model_name)
         return self._nlp
 
     def get_name(self) -> str:
         return "spacy"
 
-    # // main_extraction
+    # Main extraction entry point
     def extract(self, article: Article) -> list[TemporalFact]:
-        """Extrage fapte temporale din articol parcurgând propozițiile."""
+        """Extract temporal facts from an article by processing each sentence."""
         doc = self.nlp(article.text)
         facts: list[TemporalFact] = []
-        
+
         dep_count = 0
         nominal_count = 0
         fallback_count = 0
@@ -104,15 +104,15 @@ class SpacyExtractor(AbstractExtractor):
             nominal_count += n_cnt
             fallback_count += f_cnt
 
-        logger.info(f"SpacyExtractor: {len(facts)} fapte din {sent_count} propozitii "
+        logger.info(f"SpacyExtractor: {len(facts)} facts from {sent_count} sentences "
                     f"(dep: {dep_count}, nominal: {nominal_count}, fallback: {fallback_count})")
         return facts
 
-    # // sentence_extraction
+    # Sentence-level extraction
     def _extract_from_sentence(
         self, sent: Span, sent_idx: int, pub_date: Optional[datetime],
     ) -> tuple[list[TemporalFact], int, int, int]:
-        """Extrage fapte dintr-o propoziție. Folosește fallback dacă parsarea eșuează."""
+        """Extract facts from one sentence; falls back if parsing yields nothing."""
         entities = [self._span_to_entity(ent) for ent in sent.ents if ent.label_ != "DATE"]
 
         date_spans = [
@@ -126,12 +126,12 @@ class SpacyExtractor(AbstractExtractor):
         facts = []
         dep_cnt, nom_cnt, fall_cnt = 0, 0, 0
 
-        logger.debug(f"Sent[{sent_idx}]: {len(entities)} entitati, {len(temporal_exprs)} date, 0 fapte initiale")
+        logger.debug(f"Sent[{sent_idx}]: {len(entities)} entities, {len(temporal_exprs)} dates")
         if not entities:
-            logger.debug(f"Sent[{sent_idx}]: SKIP — zero entitati non-DATE")
+            logger.debug(f"Sent[{sent_idx}]: SKIP — no non-DATE entities")
             return facts, dep_cnt, nom_cnt, fall_cnt
         if not temporal_exprs:
-            logger.debug(f"Sent[{sent_idx}]: SKIP — zero expresii temporale")
+            logger.debug(f"Sent[{sent_idx}]: SKIP — no temporal expressions")
             return facts, dep_cnt, nom_cnt, fall_cnt
 
         # 1. Dependency parsing
@@ -139,14 +139,14 @@ class SpacyExtractor(AbstractExtractor):
         facts.extend(dep_facts)
         dep_cnt = len(dep_facts)
 
-        # 2. Fraze nominale
+        # 2. Nominal phrases
         nom_facts = self._extract_nominal_facts(sent, entities, temporal_exprs, sent_idx)
         for nf in nom_facts:
             if not any(f.subject.text == nf.subject.text and f.time_point == nf.time_point for f in facts):
                 facts.append(nf)
                 nom_cnt += 1
 
-        # 3. Fallback
+        # 3. Fallback: raw entity-date pairing
         if not facts:
             fall_facts = self._fallback_entity_date_pairs(entities, temporal_exprs, sent, sent_idx)
             facts.extend(fall_facts)
@@ -154,12 +154,12 @@ class SpacyExtractor(AbstractExtractor):
 
         return facts, dep_cnt, nom_cnt, fall_cnt
 
-    # // dependency_parsing
+    # Dependency-based extraction
     def _extract_via_dependencies(
         self, sent: Span, entities: list[Entity],
         temporal_exprs: list[TemporalExpression], sent_idx: int,
     ) -> list[TemporalFact]:
-        """Extrage triple din arborele de dependențe asociate expresiilor temporale."""
+        """Extract triples from the dependency tree associated with temporal expressions."""
         root = next((t for t in sent if t.dep_ == "ROOT" and t.pos_ == "VERB"), None)
         if root is None:
             return []
@@ -192,7 +192,7 @@ class SpacyExtractor(AbstractExtractor):
     def _find_entities_by_dep(
         self, root: Token, dep_labels: set[str], entities: list[Entity],
     ) -> list[Entity]:
-        """Găsește entitățile legate de rădăcină prin dependency labels."""
+        """Find entities linked to the root token via the given dependency labels."""
         matched = []
         seen_spans: set[tuple[int, int]] = set()
 
@@ -217,11 +217,11 @@ class SpacyExtractor(AbstractExtractor):
                             _try_add(entity)
         return matched
 
-    # // nominal_extraction
+    # Nominal phrase extraction
     def _extract_nominal_facts(
         self, sent: Span, entities: list[Entity], temporal_exprs: list[TemporalExpression], sent_idx: int,
     ) -> list[TemporalFact]:
-        """Detectează asocieri între date și substantive în absența unui verb clar."""
+        """Detect entity-date associations in the absence of a clear verb."""
         facts = []
         for temp_expr in temporal_exprs:
             temp_token = next((t for t in sent if t.idx >= temp_expr.start_char and t.idx < temp_expr.end_char), None)
@@ -246,9 +246,9 @@ class SpacyExtractor(AbstractExtractor):
                             break
         return facts
 
-    # // relation_classification
+    # Relation classification
     def _classify_relation(self, verb: Token) -> RelationType:
-        """Determină tipul relației pe baza lemei verbului."""
+        """Determine the relation type based on the verb lemma."""
         lemma = verb.lemma_.lower()
 
         if lemma in POSITION_VERBS:
@@ -271,7 +271,7 @@ class SpacyExtractor(AbstractExtractor):
     def _assign_temporal(
         self, exprs: list[TemporalExpression],
     ) -> tuple[Optional[TemporalExpression], Optional[TemporalExpression], Optional[TemporalExpression]]:
-        """Asignează expresii temporale la interval sau punct exact."""
+        """Assign temporal expressions to interval start/end or a single time point."""
         if len(exprs) == 0:
             return None, None, None
         elif len(exprs) == 1:
@@ -280,27 +280,27 @@ class SpacyExtractor(AbstractExtractor):
             sorted_exprs = sorted(exprs, key=lambda e: e.start_char)
             return sorted_exprs[0], sorted_exprs[1], None
 
-    # // fallback_extraction
+    # Fallback extraction
     def _fallback_entity_date_pairs(
         self, entities: list[Entity], temporal_exprs: list[TemporalExpression],
         sent: Span, sent_idx: int,
     ) -> list[TemporalFact]:
-        """Asociere brută între entități și date. Limitat la 5 fapte/propoziție."""
+        """Raw entity-date pairing. Limited to 5 facts per sentence."""
         if not entities or not temporal_exprs:
             return []
 
         time_start, time_end, time_point = self._assign_temporal(temporal_exprs)
         facts = []
-        
+
         for i, subj in enumerate(entities):
             if len(facts) >= 5:
                 break
-            
+
             obj = entities[i+1] if i + 1 < len(entities) else Entity(
                 text="[context]", entity_type=EntityType.OTHER,
                 start_char=0, end_char=0,
             )
-            
+
             facts.append(TemporalFact(
                 subject=subj,
                 predicate=RelationType.GENERIC,
@@ -313,12 +313,12 @@ class SpacyExtractor(AbstractExtractor):
                 extraction_confidence=0.5,
                 extractor="spacy",
             ))
-            
+
         return facts
 
-    # // utilities
+    # Utilities
     def _span_to_entity(self, ent: Span) -> Entity:
-        """Convertește token spaCy în format intern Entity."""
+        """Convert a spaCy span to the internal Entity format."""
         entity_type = SPACY_TO_ENTITY_TYPE.get(ent.label_, EntityType.OTHER)
         return Entity(
             text=ent.text, entity_type=entity_type,

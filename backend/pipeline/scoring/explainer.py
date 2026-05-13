@@ -19,7 +19,7 @@ from backend.pipeline.verification.external import ExternalVerificationResult
 logger = logging.getLogger(__name__)
 
 
-# Template-uri explicatii
+# Score explanation templates
 _SCORE_TEMPLATES = {
     "high": (
         "The article's temporal claims are highly consistent (TCS = {score:.2f}). "
@@ -66,10 +66,10 @@ _SEVERITY_LABELS = {
 
 
 class TCSExplainer:
-    """Genereaza explicatii text si structurate pentru TCSResult."""
+    """Generates text and structured explanations for a TCSResult."""
 
     def explain(self, result: TCSResult) -> str:
-        """Explicatie completa: sumar scor + detalii inconsistente."""
+        """Full explanation: score summary + inconsistency details."""
         parts = [self._explain_score(result)]
 
         if result.inconsistencies:
@@ -82,8 +82,8 @@ class TCSExplainer:
 
     def explain_structured(self, result: TCSResult) -> dict:
         """
-        Explicatie structurata pentru frontend (JSON-serializable).
-        Contine: summary, inconsistency_details, fact_annotations, metadata.
+        Structured explanation for the frontend (JSON-serializable).
+        Contains: summary, inconsistency_details, fact_annotations, metadata.
         """
         return {
             "summary": self._explain_score(result),
@@ -103,10 +103,9 @@ class TCSExplainer:
             "processing_time_ms": result.processing_time_ms,
         }
 
-
-    # Explicatie scor
+    # Score explanation
     def _explain_score(self, result: TCSResult) -> str:
-        """Selecteaza template-ul potrivit pe baza scorului."""
+        """Select the appropriate template based on the score."""
         if result.n_temporal_claims == 0:
             return _SCORE_TEMPLATES["no_data"]
 
@@ -125,13 +124,11 @@ class TCSExplainer:
             n_inc=result.n_inconsistencies,
         )
 
-
-    # Explicatii inconsistente
+    # Inconsistency explanations
     def _explain_inconsistencies(self, inconsistencies: list[Inconsistency]) -> str:
-        """Lista inconsistentelor cu severitate si detalii."""
+        """List inconsistencies with severity and details, sorted by severity."""
         lines = ["Detected inconsistencies:"]
 
-        # Sorteaza dupa severitate (critical primele)
         severity_order = {Severity.CRITICAL: 0, Severity.HIGH: 1, Severity.MEDIUM: 2, Severity.LOW: 3}
         sorted_inc = sorted(inconsistencies, key=lambda i: severity_order.get(i.severity, 4))
 
@@ -147,7 +144,7 @@ class TCSExplainer:
         return "\n".join(lines)
 
     def _inconsistency_detail(self, inc: Inconsistency) -> dict:
-        """Detalii structurate pentru o singura inconsistenta (frontend)."""
+        """Structured detail for a single inconsistency (frontend)."""
         return {
             "type": inc.inconsistency_type.value,
             "severity": inc.severity.value,
@@ -158,13 +155,12 @@ class TCSExplainer:
             "sentence_indices": inc.sentence_indices,
         }
 
-
-    # Adnotari per fapt (pentru highlight in UI)
+    # Per-fact annotations (for UI text highlight)
     def _fact_annotation(
         self, fact: TemporalFact, inconsistencies: list[Inconsistency],
     ) -> dict:
-        """Adnotare per fapt: status (consistent/inconsistent/verified) + detalii."""
-        # Gaseste inconsistentele legate de acest fapt (dupa sentence_idx)
+        """Per-fact annotation: status (consistent/inconsistent) + details."""
+        # Find inconsistencies linked to this fact by sentence_idx
         related = [
             inc for inc in inconsistencies
             if fact.source_sentence_idx in inc.sentence_indices
@@ -193,10 +189,9 @@ class TCSExplainer:
             "inconsistencies": [inc.description for inc in related],
         }
 
-
-    # Sumar acoperire (cate fapte, cate verificate extern)
+    # Coverage summary
     def _explain_coverage(self, result: TCSResult) -> str:
-        """Rezumat: fapte extrase, distributia extractor-ilor, verificare externa."""
+        """Summary: facts extracted, extractor distribution, external verification."""
         n_total = len(result.facts)
         extractors = {}
         for f in result.facts:
@@ -204,7 +199,6 @@ class TCSExplainer:
 
         extractor_str = ", ".join(f"{k}: {v}" for k, v in extractors.items())
 
-        # Fapte cu verificare externa
         ext_verified = sum(
             1 for inc in result.inconsistencies if inc.verified_by != "internal"
         )
@@ -215,13 +209,13 @@ class TCSExplainer:
         )
 
 
-# Utilitare
+# Utility functions
 def _severity_rank(severity: Severity) -> int:
     return {Severity.LOW: 0, Severity.MEDIUM: 1, Severity.HIGH: 2, Severity.CRITICAL: 3}.get(severity, 0)
 
 
 def _severity_color(severity: Severity) -> str:
-    """Culoare pentru frontend highlight."""
+    """Color code for frontend text highlight."""
     return {
         Severity.LOW: "yellow",
         Severity.MEDIUM: "orange",
@@ -231,7 +225,7 @@ def _severity_color(severity: Severity) -> str:
 
 
 def _fact_time_string(fact: TemporalFact) -> str:
-    """Formateaza timpul unui fapt ca string lizibil."""
+    """Format the temporal info of a fact as a human-readable string."""
     if fact.time_point and fact.time_point.date_string:
         return fact.time_point.date_string
     parts = []
@@ -239,4 +233,4 @@ def _fact_time_string(fact: TemporalFact) -> str:
         parts.append(fact.time_start.date_string)
     if fact.time_end and fact.time_end.date_string:
         parts.append(fact.time_end.date_string)
-    return " → ".join(parts) if parts else "unknown"
+    return " -> ".join(parts) if parts else "unknown"

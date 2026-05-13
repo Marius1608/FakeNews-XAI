@@ -28,7 +28,7 @@ app = FastAPI(
     description="Temporal Coherence Score — fake news detection through temporal consistency analysis.",
 )
 
-# CORS — permite frontend React (localhost:3000)
+# CORS — allow the React dev server (localhost:3000) by default
 app.add_middleware(
     CORSMiddleware,
     allow_origins=CORS_ORIGINS,
@@ -48,9 +48,9 @@ app.include_router(upload_router)
 
 @app.on_event("startup")
 async def _startup() -> None:
-    logger.info(f"{API_TITLE} v{API_VERSION} — server pornit.")
+    logger.info(f"{API_TITLE} v{API_VERSION} — server started.")
 
 
 @app.on_event("shutdown")
 async def _shutdown() -> None:
-    logger.info("Server oprit.")
+    logger.info("Server stopped.")

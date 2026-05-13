@@ -22,9 +22,9 @@ logger = logging.getLogger(__name__)
 REFERENCE_KG_FILE = REFERENCE_KG_DIR / "verified_events.json"
 DATE_TOLERANCE_DAYS = 365
 
-# // section relations
+# Relations that can be verified against external sources
 EXTERNALLY_VERIFIABLE_RELATIONS = {
-    RelationType.HOLDS_POSITION, 
+    RelationType.HOLDS_POSITION,
     RelationType.MEMBER_OF,
     RelationType.OCCURRED_ON,
     RelationType.STARTED,
@@ -49,7 +49,7 @@ class ExternalVerificationResult:
 
 
 class ExternalVerifier:
-    """Verifica fapte contra Reference KG si Wikidata."""
+    """Verifies facts against the Reference KG and Wikidata."""
 
     def __init__(
         self,
@@ -69,68 +69,68 @@ class ExternalVerifier:
 
         verifiable = [f for f in tkg.get_all_facts() if f.predicate in EXTERNALLY_VERIFIABLE_RELATIONS and _has_temporal_anchor(f)]
         result.facts_checked = len(verifiable)
-        logger.info(f"Verificare externa: {len(verifiable)} fapte eligibile din {tkg.fact_count} total.")
+        logger.info(f"External verification: {len(verifiable)} eligible facts out of {tkg.fact_count} total.")
 
         for fact in verifiable:
             result.inconsistencies.extend(self._verify_fact(fact, result))
 
-        logger.info(f"Verificare externa: {len(result.inconsistencies)} inconsistente, {result.wikidata_queries} query-uri Wikidata.")
+        logger.info(f"External verification: {len(result.inconsistencies)} inconsistencies, {result.wikidata_queries} Wikidata queries.")
         return result
 
-    # // section verify_fact
+    # Fact verification
     def _verify_fact(self, fact: TemporalFact, result: ExternalVerificationResult) -> list[Inconsistency]:
         subject_name = fact.subject.text.lower().strip()
         props = RELATION_TO_WIKIDATA_PROPS.get(fact.predicate, [])
-        
-        logger.debug(f"Verificare externa [{fact.predicate.value}]: '{fact.subject.text}' → props={props}")
 
-        # 1. Reference KG local
+        logger.debug(f"External verification [{fact.predicate.value}]: '{fact.subject.text}' -> props={props}")
+
+        # 1. Local Reference KG
         ref_facts = self._find_in_reference_kg(subject_name)
-        # Filtrează doar faptele din Reference KG cu aceeași relație
+        # Filter to facts with the same relation
         relevant_ref = [r for r in ref_facts if r.get("relation") == fact.predicate.value]
         if relevant_ref:
             result.facts_matched += 1
             return self._compare_with_reference(fact, relevant_ref)
-        # Dacă Reference KG nu are fapte relevante, continua la Wikidata (nu return!)
+        # If Reference KG has no relevant facts, continue to Wikidata
 
         # 2. Wikidata
         if not self.use_wikidata:
             return []
-            
+
         wikidata_facts = self._fetch_from_wikidata(fact, result)
         if wikidata_facts:
             result.facts_matched += 1
             return self._compare_with_wikidata(fact, wikidata_facts)
-            
+
         return []
 
     def _find_in_reference_kg(self, subject_name: str) -> list[dict]:
-        """Cauta in Reference KG folosind fuzzy matching."""
+        """Search the Reference KG using fuzzy matching."""
         facts = []
         for key, value in self._reference_kg.items():
             if _fuzzy_entity_match(subject_name, key):
                 facts.extend(value)
         return facts
 
-    # // section wikidata
+    # Wikidata fetch with 3-level cache
     def _fetch_from_wikidata(self, fact: TemporalFact, result: ExternalVerificationResult) -> list[WikidataFact]:
         cache_key = fact.subject.text.lower().strip()
 
-        # 1. Cache in-memory (cel mai rapid)
+        # 1. In-memory cache (fastest)
         if cache_key in self._wikidata_cache:
             logger.debug(f"Wikidata cache hit (memory): '{cache_key}'")
             return self._wikidata_cache[cache_key]
 
-        # 2. Cache Neo4j persistent (daca disponibil)
+        # 2. Neo4j persistent cache (if available)
         if self._persistent_store and hasattr(self._persistent_store, "get_cached_wikidata"):
             cached = self._persistent_store.get_cached_wikidata(cache_key)
             if cached is not None:
                 wf_list = [_dict_to_wikidata_fact(d) for d in cached]
                 self._wikidata_cache[cache_key] = wf_list
-                logger.debug(f"Wikidata cache hit (Neo4j): '{cache_key}' ({len(wf_list)} fapte)")
+                logger.debug(f"Wikidata cache hit (Neo4j): '{cache_key}' ({len(wf_list)} facts)")
                 return wf_list
 
-        # 3. Query Wikidata real
+        # 3. Live Wikidata SPARQL query
         entity_id = self.client.search_entity(fact.subject.text)
         result.wikidata_queries += 1
         if not entity_id:
@@ -146,7 +146,7 @@ class ExternalVerifier:
 
         self._wikidata_cache[cache_key] = wikidata_facts
 
-        # Salveaza in Neo4j cache dupa fetch real
+        # Persist result to Neo4j cache after live fetch
         if self._persistent_store and hasattr(self._persistent_store, "cache_wikidata_result"):
             try:
                 serialized = [_wikidata_fact_to_dict(wf) for wf in wikidata_facts]
@@ -156,7 +156,7 @@ class ExternalVerifier:
 
         return wikidata_facts
 
-    # // section compare
+    # Comparison helpers
     def _compare_with_reference(self, fact: TemporalFact, ref_facts: list[dict]) -> list[Inconsistency]:
         inconsistencies = []
         for ref in ref_facts:
@@ -168,7 +168,7 @@ class ExternalVerifier:
                 ext_end=_parse_date_str(ref.get("time_end")),
                 ext_point=_parse_date_str(ref.get("time_point")),
                 source="reference_kg",
-                evidence=f"Reference KG: {ref.get('value', '')} [{ref.get('time_start', '?')} → {ref.get('time_end', '?')}]",
+                evidence=f"Reference KG: {ref.get('value', '')} [{ref.get('time_start', '?')} -> {ref.get('time_end', '?')}]",
             )
             if incons:
                 inconsistencies.append(incons)
@@ -177,48 +177,47 @@ class ExternalVerifier:
     def _compare_with_wikidata(self, fact: TemporalFact, wikidata_facts: list[WikidataFact]) -> list[Inconsistency]:
         inconsistencies = []
         obj_text = fact.object.text.lower()
-        
+
         relevant = [wf for wf in wikidata_facts if _fuzzy_entity_match(obj_text, wf.value_label)]
         if not relevant:
             relevant = wikidata_facts
 
         for wf in relevant[:3]:
-            logger.debug(f"  Match Wikidata: {wf.value_label} [{wf.time_start} → {wf.time_end}]")
+            logger.debug(f"  Wikidata match: {wf.value_label} [{wf.time_start} -> {wf.time_end}]")
             incons = _compare_temporal_intervals(
                 fact=fact, ext_start=wf.time_start, ext_end=wf.time_end, ext_point=wf.time_point,
                 source="wikidata",
-                evidence=f"Wikidata ({wf.entity_id}): {wf.property_label} = {wf.value_label} [{wf.time_start.year if wf.time_start else '?'} → {wf.time_end.year if wf.time_end else '?'}]",
+                evidence=f"Wikidata ({wf.entity_id}): {wf.property_label} = {wf.value_label} [{wf.time_start.year if wf.time_start else '?'} -> {wf.time_end.year if wf.time_end else '?'}]",
             )
             if incons:
-                # Add logging details for mismatch
                 f_s = fact.time_start.normalized_date.year if fact.time_start and fact.time_start.normalized_date else "?"
                 f_e = fact.time_end.normalized_date.year if fact.time_end and fact.time_end.normalized_date else "?"
                 w_s = wf.time_start.year if wf.time_start else "?"
                 w_e = wf.time_end.year if wf.time_end else "?"
-                logger.debug(f"  MISMATCH: articol={f_s}→{f_e} vs wikidata={w_s}→{w_e}")
+                logger.debug(f"  MISMATCH: article={f_s}->{f_e} vs wikidata={w_s}->{w_e}")
                 inconsistencies.append(incons)
-                
+
         return inconsistencies
 
-    # // section load
+    # Reference KG loading
     def _load_reference_kg(self, path: Path) -> dict:
         if not path.exists():
-            logger.warning(f"Reference KG negasit la {path}.")
+            logger.warning(f"Reference KG not found at {path}.")
             return {}
         try:
             with open(path, encoding="utf-8") as f:
                 data = json.load(f)
             normalized = {k.lower(): v for k, v in data.items()}
-            logger.info(f"Reference KG incarcat: {len(normalized)} entitati.")
+            logger.info(f"Reference KG loaded: {len(normalized)} entities.")
             return normalized
         except (json.JSONDecodeError, OSError) as e:
-            logger.error(f"Eroare Reference KG: {e}")
+            logger.error(f"Reference KG load error: {e}")
             return {}
 
 
-# // section helpers
+# Helper functions
 def _fuzzy_entity_match(name1: str, name2: str, threshold: float = 0.80) -> bool:
-    """Compara doua nume de entitati cu fuzzy matching."""
+    """Compare two entity names using fuzzy matching."""
     n1, n2 = name1.lower().strip(), name2.lower().strip()
     if not n1 or not n2:
         return False
@@ -232,7 +231,7 @@ def _compare_temporal_intervals(
     fact: TemporalFact, ext_start: Optional[datetime], ext_end: Optional[datetime],
     ext_point: Optional[datetime], source: str, evidence: str,
 ) -> Optional[Inconsistency]:
-    """Compara interval articol vs sursa externa."""
+    """Compare the article interval against an external source."""
     tolerance = timedelta(days=DATE_TOLERANCE_DAYS)
     fact_start = fact.time_start.normalized_date if fact.time_start else None
     fact_end = fact.time_end.normalized_date if fact.time_end else None
@@ -242,7 +241,7 @@ def _compare_temporal_intervals(
         if not (ext_start - tolerance <= fact_point <= ext_end + tolerance):
             return Inconsistency(
                 inconsistency_type=InconsistencyType.DATE_MISMATCH, severity=Severity.HIGH,
-                description=f"Data din articol ({fact_point.year}) nu corespunde intervalului {source} [{ext_start.year} → {ext_end.year}].",
+                description=f"Article date ({fact_point.year}) does not match {source} interval [{ext_start.year} -> {ext_end.year}].",
                 facts_involved=[fact], sentence_indices=[fact.source_sentence_idx],
                 verified_by=source, evidence=evidence,
             )
@@ -251,7 +250,7 @@ def _compare_temporal_intervals(
         if fact_end < ext_start - tolerance or fact_start > ext_end + tolerance:
             return Inconsistency(
                 inconsistency_type=InconsistencyType.DATE_MISMATCH, severity=Severity.HIGH,
-                description=f"Intervalul [{fact_start.year} → {fact_end.year}] nu se suprapune cu {source} [{ext_start.year} → {ext_end.year}].",
+                description=f"Interval [{fact_start.year} -> {fact_end.year}] does not overlap with {source} [{ext_start.year} -> {ext_end.year}].",
                 facts_involved=[fact], sentence_indices=[fact.source_sentence_idx],
                 verified_by=source, evidence=evidence,
             )
@@ -260,7 +259,7 @@ def _compare_temporal_intervals(
         if abs((fact_point - ext_point).days) > DATE_TOLERANCE_DAYS:
             return Inconsistency(
                 inconsistency_type=InconsistencyType.DATE_MISMATCH, severity=Severity.MEDIUM,
-                description=f"Data din articol ({fact_point.year}) difera de {source} ({ext_point.year}).",
+                description=f"Article date ({fact_point.year}) differs from {source} ({ext_point.year}).",
                 facts_involved=[fact], sentence_indices=[fact.source_sentence_idx],
                 verified_by=source, evidence=evidence,
             )
@@ -280,7 +279,7 @@ def _parse_date_str(date_str: Optional[str]) -> Optional[datetime]:
     return None
 
 
-# // section wikidata_serialization
+# Wikidata serialization helpers
 
 def _wikidata_fact_to_dict(wf: WikidataFact) -> dict:
     return {
