@@ -52,11 +52,6 @@ WIKIDATA_ENDPOINT = os.getenv(
 WIKIDATA_TEMPORAL_PROPERTIES = ["P580", "P582", "P585"]
 
 
-# NewsAPI — demo/notebook only, not part of the main pipeline
-NEWSAPI_KEY = os.getenv("NEWSAPI_KEY", "")
-NEWSAPI_BASE_URL = "https://newsapi.org/v2"
-
-
 # TCS thresholds — score bands for the final verdict label
 TCS_THRESHOLDS = {
     "very_consistent": 0.8,   # 0.8–1.0: likely real

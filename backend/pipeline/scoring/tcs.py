@@ -15,10 +15,6 @@ logger = logging.getLogger(__name__)
 
 MIN_TEMPORAL_CLAIMS = 1
 
-SEVERITY_WEIGHTS = {
-    Severity.LOW: 1.0, Severity.MEDIUM: 2.0, Severity.HIGH: 3.0, Severity.CRITICAL: 4.0,
-}
-
 
 class TCSCalculator:
     """Calculeaza scorul TCS din rezultatele C2 (TKG) + C3 (verificari)."""
@@ -72,12 +68,9 @@ class TCSCalculator:
         # Clamp
         tcs = max(0.0, min(1.0, tcs))
         
-        # Label
-        label = _score_to_label(tcs)
-        
         logger.info(f"TCS: penalty={weighted_penalty:.2f}/{max_possible_penalty:.2f}, "
                     f"coherence={score_coherence:.3f}, coverage={coverage_factor:.2f} "
-                    f"→ TCS={tcs:.3f} ({label})")
+                    f"→ TCS={tcs:.3f}")
         
         timeline = _build_timeline(facts, inconsistencies)
         
@@ -91,23 +84,8 @@ class TCSCalculator:
             inconsistencies=inconsistencies, facts=facts,
             timeline=timeline, pipeline_variant=pipeline_variant,
             processing_time_ms=processing_time,
-            explanation_text=label
+            explanation_text=""
         )
-
-
-def _compute_tcs_raw(n_inconsistencies: int, claims_temporal: int, score_coherence: float) -> float:
-    """
-    TCS = 1 - (inconsist_detected / claims_temporal) × score_coherence
-    Edge cases: claims_temporal=0 → 0.0; score_coherence=0 → 0.0.
-    """
-    if claims_temporal < MIN_TEMPORAL_CLAIMS:
-        logger.warning(f"TCS: claims_temporal={claims_temporal} sub minim. Scor = 0.0.")
-        return 0.0
-    if score_coherence <= 0.0:
-        logger.warning("TCS: score_coherence=0. Scor = 0.0.")
-        return 0.0
-
-    return 1.0 - (n_inconsistencies / claims_temporal) * score_coherence
 
 
 def _build_timeline(facts: list[TemporalFact], inconsistencies: list[Inconsistency]) -> list[dict]:
@@ -145,14 +123,3 @@ def _extract_year(fact: TemporalFact) -> int | None:
             return expr.normalized_date.year
     return None
 
-def _score_to_label(tcs: float) -> str:
-    if tcs >= 0.85:
-        return "highly_consistent"
-    elif tcs >= 0.65:
-        return "mostly_consistent"
-    elif tcs >= 0.45:
-        return "partially_consistent"
-    elif tcs >= 0.25:
-        return "mostly_inconsistent"
-    else:
-        return "highly_inconsistent"

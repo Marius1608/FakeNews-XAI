@@ -151,7 +151,7 @@ function TCSScoreDisplay({
       >
         <Chip label={`${nClaims} claims`} size="small" />
         <Chip label={`${nInconsistencies} inconsistencies`} size="small" />
-        <Chip label={`Coherence Factor: ${coherenceFactor.toFixed(2)}`} size="small" />
+        <Chip label={`Coh. ${coherenceFactor.toFixed(2)}`} size="small" />
         <Chip label={formatPipeline(pipeline, model)} size="small" />
         <Chip label={`${Math.round(processingTimeMs)}ms`} size="small" />
       </Box>

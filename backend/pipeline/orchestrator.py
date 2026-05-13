@@ -194,7 +194,7 @@ def _empty_result(article: Article, pipeline_variant: str, start_ms: Optional[fl
         processing_time = (time.monotonic() * 1000) - start_ms
 
     return TCSResult(
-        score=0.0, n_inconsistencies=0, n_temporal_claims=0, coherence_factor=1.0,
+        score=0.5, n_inconsistencies=0, n_temporal_claims=0, coherence_factor=1.0,
         inconsistencies=[], facts=[],
         explanation_text="Nu s-au putut extrage fapte temporale verificabile din acest articol.",
         timeline=[], pipeline_variant=pipeline_variant, processing_time_ms=processing_time,

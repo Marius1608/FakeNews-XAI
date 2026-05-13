@@ -71,7 +71,7 @@ function App(): React.ReactElement {
               TCS — Temporal Coherence Score
             </Typography>
             <Typography variant="caption" color="text.secondary">
-              Fake News Detection through Temporal Consistency Analysis
+              Temporal Consistency Analysis
             </Typography>
           </Box>
 
