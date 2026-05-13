@@ -94,9 +94,20 @@ class PipelineOrchestrator:
         logger.info(f"C3b ✓ — {len(external.inconsistencies)} inconsistente ({external.wikidata_queries} query-uri)")
 
         # C4: Calcul TCS
+        all_facts = tkg.get_all_facts()
+        all_inconsistencies = internal.inconsistencies + external.inconsistencies
+        facts_verified = external.facts_checked
+        facts_total = len(all_facts)
+
         result = self._calculator.compute(
-            tkg=tkg, internal=internal, external=external,
-            pipeline_variant=self.extractor_name, start_time_ms=start_ms,
+            n_claims=len(all_facts),
+            inconsistencies=all_inconsistencies,
+            score_coherence=internal.score_coherence,
+            facts_verified=facts_verified,
+            facts_total=facts_total,
+            facts=all_facts,
+            pipeline_variant=self.extractor_name,
+            start_time_ms=start_ms,
         )
         logger.info(f"Pipeline DONE — TCS={result.score:.3f} ({result.label}) in {result.processing_time_ms:.0f}ms")
         return result

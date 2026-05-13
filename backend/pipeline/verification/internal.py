@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import Optional
 from difflib import SequenceMatcher
+import re
 
 import networkx as nx
 
@@ -25,6 +26,21 @@ INCOMPATIBLE_POSITIONS = [
     {"senator", "governor", "representative", "mayor"},
     {"president", "prime minister", "chancellor"},
 ]
+
+FUTURE_INDICATORS = {"will ", "going to ", "expected to ", "planned for ", "is set to ", 
+                     "shall ", "is expected", "are expected", "will be ", "would "}
+
+INAUGURATION_KEYWORDS = {"inaugurat", "inaugurated", "sworn in", "took office", "assumed office"}
+ELECTION_KEYWORDS = {"elected", "election", "won", "re-elected", "voted"}
+
+def _split_compound_positions(position_text: str) -> list[str]:
+    """Separa pozitii compuse: 'Senator and Governor' -> ['Senator', 'Governor']."""
+    parts = re.split(r'\s+and\s+|\s*&\s*|\s*,\s*', position_text, flags=re.IGNORECASE)
+    return [p.strip().lower() for p in parts if p.strip()]
+
+def _is_inauguration_or_election(fact: TemporalFact) -> bool:
+    text = (fact.object.text + " " + (fact.source_sentence or "")).lower()
+    return any(kw in text for kw in INAUGURATION_KEYWORDS | ELECTION_KEYWORDS)
 
 
 @dataclass
@@ -192,8 +208,8 @@ class InternalVerifier:
         """V5: Contradicții implicite (ex: poziție înainte de alegeri)."""
         inconsistencies = []
         
-        holds_facts = [f for f in facts if f.predicate == RelationType.HOLDS_POSITION]
-        event_facts = [f for f in facts if f.predicate == RelationType.OCCURRED_ON]
+        holds_facts = [f for f in facts if f.predicate in (RelationType.HOLDS_POSITION, RelationType.GENERIC)]
+        event_facts = facts
         ended_facts = [f for f in facts if f.predicate == RelationType.ENDED]
         
         for h_fact in holds_facts:
@@ -209,7 +225,7 @@ class InternalVerifier:
                 obj_e = e_fact.object.text.lower()
                 
                 if SequenceMatcher(None, subj_h, subj_e).ratio() >= 0.85:
-                    if "election" in obj_e or "inaugurat" in obj_e:
+                    if _is_inauguration_or_election(e_fact):
                         point_e = _extract_point_time(e_fact)
                         if point_e and point_e > start_h:
                             inconsistencies.append(Inconsistency(
@@ -236,28 +252,30 @@ class InternalVerifier:
 
     # // section check_future_as_past
     def _check_future_as_past(self, facts: list[TemporalFact], publication_date: datetime) -> list[Inconsistency]:
-        """V6: Evenimente in viitor fata de data publicarii descrise la trecut."""
+        """V6: Date viitoare prezentate ca evenimente deja intamplate."""
         inconsistencies = []
-        past_indicators = [" was ", " were ", " had ", " signed ", " won ", " became "]
-        
         for fact in facts:
-            time_to_check = _extract_point_time(fact) or (fact.time_start.normalized_date if fact.time_start else None)
-            if not time_to_check:
+            fact_date = _extract_point_time(fact)
+            if fact_date is None or fact_date <= publication_date:
                 continue
-                
-            if time_to_check > publication_date:
-                sent = fact.source_sentence.lower()
-                if any(ind in sent for ind in past_indicators):
-                    inconsistencies.append(Inconsistency(
-                        inconsistency_type=InconsistencyType.FUTURE_AS_PAST,
-                        severity=Severity.HIGH,
-                        description=f"Eveniment viitor descris la trecut: '{fact.subject.text}' in {time_to_check.year} (publicat {publication_date.year}).",
-                        facts_involved=[fact],
-                        sentence_indices=[fact.source_sentence_idx],
-                        verified_by="internal",
-                        evidence="Format trecut pentru data in viitor."
-                    ))
-                    
+            
+            # Data e in viitor fata de publication_date
+            source = (fact.source_sentence or "").lower()
+            
+            # Daca propozitia contine indicatori de viitor, e OK
+            if any(ind in source for ind in FUTURE_INDICATORS):
+                continue
+            
+            # Altfel: articolul vorbeste despre un eveniment viitor ca si cum s-a intamplat
+            inconsistencies.append(Inconsistency(
+                inconsistency_type=InconsistencyType.FUTURE_AS_PAST,
+                severity=Severity.HIGH,
+                description=f"Eveniment din {fact_date.year} prezentat ca trecut, dar articolul e din {publication_date.year}: '{fact.subject.text}'.",
+                facts_involved=[fact],
+                sentence_indices=[fact.source_sentence_idx],
+                verified_by="internal",
+                evidence=f"Fact date: {fact_date.strftime('%Y-%m-%d')}, Publication: {publication_date.strftime('%Y-%m-%d')}",
+            ))
         return inconsistencies
 
     # // section check_entity_consistency
@@ -266,6 +284,28 @@ class InternalVerifier:
         inconsistencies = []
         holds_facts = [f for f in facts if f.predicate == RelationType.HOLDS_POSITION]
         
+        # Nou: verificam fapte individuale care au pozitii compuse incompatibile
+        for f in holds_facts:
+            roles = _split_compound_positions(f.object.text)
+            if len(roles) > 1:
+                for inc_set in INCOMPATIBLE_POSITIONS:
+                    matched_terms = set()
+                    for r in roles:
+                        for t in inc_set:
+                            if t in r:
+                                matched_terms.add(t)
+                    if len(matched_terms) > 1:
+                        inconsistencies.append(Inconsistency(
+                            inconsistency_type=InconsistencyType.ENTITY_INCONSISTENCY,
+                            severity=Severity.MEDIUM,
+                            description=f"Roluri simultane incompatibile pentru '{f.subject.text}': {', '.join(matched_terms)}.",
+                            facts_involved=[f],
+                            sentence_indices=[f.source_sentence_idx],
+                            verified_by="internal",
+                            evidence="Functii incompatibile compuse in acelasi fapt."
+                        ))
+                        break
+
         # Grupare dupa subiect (fuzzy match)
         grouped_facts = []
         for f in holds_facts:
@@ -293,10 +333,12 @@ class InternalVerifier:
                         start2, end2 = _extract_bounds(f2)
                         
                         if _check_overlap(start1, end1, start2, end2):
+                            roles1 = _split_compound_positions(obj1)
+                            roles2 = _split_compound_positions(obj2)
+                            
                             for inc_set in INCOMPATIBLE_POSITIONS:
-                                # Verifica daca oricare din termeni e prezent in obj1/obj2
-                                has_1 = any(t in obj1 for t in inc_set)
-                                has_2 = any(t in obj2 for t in inc_set)
+                                has_1 = any(any(t in r for t in inc_set) for r in roles1)
+                                has_2 = any(any(t in r for t in inc_set) for r in roles2)
                                 
                                 if has_1 and has_2:
                                     inconsistencies.append(Inconsistency(

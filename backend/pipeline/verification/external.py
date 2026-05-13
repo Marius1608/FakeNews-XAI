@@ -79,9 +79,12 @@ class ExternalVerifier:
 
         # 1. Reference KG local
         ref_facts = self._find_in_reference_kg(subject_name)
-        if ref_facts:
+        # Filtrează doar faptele din Reference KG cu aceeași relație
+        relevant_ref = [r for r in ref_facts if r.get("relation") == fact.predicate.value]
+        if relevant_ref:
             result.facts_matched += 1
-            return self._compare_with_reference(fact, ref_facts)
+            return self._compare_with_reference(fact, relevant_ref)
+        # Dacă Reference KG nu are fapte relevante, continua la Wikidata (nu return!)
 
         # 2. Wikidata
         if not self.use_wikidata:

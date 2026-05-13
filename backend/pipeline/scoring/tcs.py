@@ -24,65 +24,74 @@ class TCSCalculator:
     """Calculeaza scorul TCS din rezultatele C2 (TKG) + C3 (verificari)."""
 
     def compute(
-        self, tkg: TemporalKnowledgeGraph,
-        internal: InternalVerificationResult, external: ExternalVerificationResult,
-        pipeline_variant: str = "spacy", start_time_ms: Optional[float] = None,
+        self, n_claims: int, inconsistencies: list[Inconsistency],
+        score_coherence: float, facts_verified: int = 0, facts_total: int = 0,
+        facts: list[TemporalFact] = None, pipeline_variant: str = "spacy",
+        start_time_ms: Optional[float] = None
     ) -> TCSResult:
-        """Calcul TCS standard (numarare simpla inconsistente)."""
-        all_inconsistencies = internal.inconsistencies + external.inconsistencies
-        claims_temporal = tkg.fact_count
-        n_inconsistencies = len(all_inconsistencies)
-        score_coherence = internal.score_coherence
-
-        tcs_raw = _compute_tcs_raw(n_inconsistencies, claims_temporal, score_coherence)
-        tcs_score = max(0.0, min(1.0, tcs_raw))
-
-        timeline = _build_timeline(tkg.get_all_facts(), all_inconsistencies)
-
-        processing_time = 0.0
-        if start_time_ms is not None:
-            processing_time = (time.monotonic() * 1000) - start_time_ms
-
-        result = TCSResult(
-            score=tcs_score, n_inconsistencies=n_inconsistencies,
-            n_temporal_claims=claims_temporal, coherence_factor=score_coherence,
-            inconsistencies=all_inconsistencies, facts=tkg.get_all_facts(),
-            timeline=timeline, pipeline_variant=pipeline_variant,
-            processing_time_ms=processing_time,
-        )
-        logger.info(f"TCS: {tcs_score:.3f} | {n_inconsistencies}/{claims_temporal} inconsistente | coherence={score_coherence:.3f} | '{result.label}'")
-        return result
-
-    def compute_weighted(
-        self, tkg: TemporalKnowledgeGraph,
-        internal: InternalVerificationResult, external: ExternalVerificationResult,
-        pipeline_variant: str = "spacy", start_time_ms: Optional[float] = None,
-    ) -> TCSResult:
-        """Varianta ponderata: LOW=1, MEDIUM=2, HIGH=3, CRITICAL=4."""
-        all_inconsistencies = internal.inconsistencies + external.inconsistencies
-        claims_temporal = tkg.fact_count
-        score_coherence = internal.score_coherence
-
-        weighted_sum = sum(SEVERITY_WEIGHTS.get(inc.severity, 1.0) for inc in all_inconsistencies)
-        max_weight = SEVERITY_WEIGHTS[Severity.CRITICAL]
-
-        if claims_temporal == 0:
-            tcs_score = 0.0
+        """
+        TCS = 1 - (weighted_penalty / max_possible_penalty) × score_coherence × coverage_factor
+        
+        coverage_factor: cat de bine s-a putut verifica articolul (0-1)
+        weighted_penalty: suma ponderilor inconsistentelor detectate
+        """
+        facts = facts or []
+        
+        if n_claims == 0:
+            return TCSResult(
+                score=0.5, n_inconsistencies=0, n_temporal_claims=0, 
+                coherence_factor=1.0, inconsistencies=[], facts=[], 
+                explanation_text="insufficient_data"
+            )
+        
+        # Ponderi per severity
+        SEVERITY_WEIGHTS = {
+            Severity.HIGH: 1.0,
+            Severity.MEDIUM: 0.6,
+            Severity.LOW: 0.3,
+            Severity.CRITICAL: 1.0
+        }
+        
+        # Calcul penalty ponderat
+        weighted_penalty = sum(SEVERITY_WEIGHTS.get(inc.severity, 0.5) for inc in inconsistencies)
+        max_possible_penalty = n_claims * max(SEVERITY_WEIGHTS.values())  # worst case
+        
+        # Coverage factor: cat de mult s-a verificat
+        if facts_total > 0:
+            coverage_factor = max(0.3, facts_verified / facts_total)  # minim 0.3 ca sa nu anuleze scorul
         else:
-            weighted_ratio = weighted_sum / (claims_temporal * max_weight)
-            tcs_score = max(0.0, min(1.0, 1.0 - (weighted_ratio * score_coherence)))
-
-        timeline = _build_timeline(tkg.get_all_facts(), all_inconsistencies)
+            coverage_factor = 0.5  # default cand nu stim
+        
+        # Formula principala
+        penalty_ratio = min(1.0, weighted_penalty / max_possible_penalty) if max_possible_penalty > 0 else 0.0
+        raw_tcs = (1.0 - penalty_ratio) * score_coherence
+        
+        # Aplica coverage
+        tcs = raw_tcs * coverage_factor + (1.0 - coverage_factor) * 0.5  # blend cu 0.5 (neutru) pe partea neverificata
+        
+        # Clamp
+        tcs = max(0.0, min(1.0, tcs))
+        
+        # Label
+        label = _score_to_label(tcs)
+        
+        logger.info(f"TCS: penalty={weighted_penalty:.2f}/{max_possible_penalty:.2f}, "
+                    f"coherence={score_coherence:.3f}, coverage={coverage_factor:.2f} "
+                    f"→ TCS={tcs:.3f} ({label})")
+        
+        timeline = _build_timeline(facts, inconsistencies)
+        
         processing_time = 0.0
         if start_time_ms is not None:
             processing_time = (time.monotonic() * 1000) - start_time_ms
 
         return TCSResult(
-            score=tcs_score, n_inconsistencies=len(all_inconsistencies),
-            n_temporal_claims=claims_temporal, coherence_factor=score_coherence,
-            inconsistencies=all_inconsistencies, facts=tkg.get_all_facts(),
+            score=tcs, n_inconsistencies=len(inconsistencies),
+            n_temporal_claims=n_claims, coherence_factor=score_coherence,
+            inconsistencies=inconsistencies, facts=facts,
             timeline=timeline, pipeline_variant=pipeline_variant,
             processing_time_ms=processing_time,
+            explanation_text=label
         )
 
 
@@ -135,3 +144,15 @@ def _extract_year(fact: TemporalFact) -> int | None:
         if expr and expr.normalized_date:
             return expr.normalized_date.year
     return None
+
+def _score_to_label(tcs: float) -> str:
+    if tcs >= 0.85:
+        return "highly_consistent"
+    elif tcs >= 0.65:
+        return "mostly_consistent"
+    elif tcs >= 0.45:
+        return "partially_consistent"
+    elif tcs >= 0.25:
+        return "mostly_inconsistent"
+    else:
+        return "highly_inconsistent"
