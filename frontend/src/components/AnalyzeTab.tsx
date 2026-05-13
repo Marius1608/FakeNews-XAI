@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Box, Checkbox, Chip, FormControlLabel, Stack, Typography } from "@mui/material";
+import { Psychology } from "@mui/icons-material";
 import axios from "axios";
 import type { AnalyzeRequest, AnalyzeResponse, ModelsResponse } from "../types";
 import { analyzeArticle, getModels } from "../api/client";
@@ -91,6 +92,18 @@ function AnalyzeTab(): React.ReactElement {
             model={analyzeResult.model}
             processingTimeMs={analyzeResult.processing_time_ms}
           />
+
+          {/* AI Explanation */}
+          {analyzeResult.llm_explanation && analyzeResult.llm_explanation.length > 50 && (
+            <Alert severity="info" icon={<Psychology fontSize="inherit" />}>
+              <Typography variant="body2" sx={{ fontWeight: "medium", mb: 0.5 }}>
+                AI Explanation
+              </Typography>
+              <Typography variant="body2">
+                {analyzeResult.llm_explanation}
+              </Typography>
+            </Alert>
+          )}
 
           {/* Cross-article conflicts banner */}
           {crossArticleConflicts.length > 0 && (

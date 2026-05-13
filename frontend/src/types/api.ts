@@ -68,6 +68,7 @@ export interface AnalyzeResponse {
   processing_time_ms: number;
   article_id?: string | null;
   cross_article_inconsistencies?: InconsistencyResponse[];
+  llm_explanation?: string | null;
 }
 
 // batch schemas
