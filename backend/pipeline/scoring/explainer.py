@@ -51,6 +51,10 @@ _INCONSISTENCY_TEMPLATES = {
     InconsistencyType.DATE_MISMATCH: "Date mismatch: {desc}",
     InconsistencyType.ANACHRONISM: "Anachronism: {desc}",
     InconsistencyType.DURATION_IMPLAUSIBLE: "Implausible duration: {desc}",
+    InconsistencyType.FACTUAL_CONTRADICTION: "Factual contradiction: {desc}",
+    InconsistencyType.IMPLICIT_CONTRADICTION: "Implicit contradiction: {desc}",
+    InconsistencyType.FUTURE_AS_PAST: "Future event reported as past: {desc}",
+    InconsistencyType.ENTITY_INCONSISTENCY: "Entity inconsistency: {desc}",
 }
 
 _SEVERITY_LABELS = {

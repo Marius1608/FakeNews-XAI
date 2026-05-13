@@ -39,6 +39,10 @@ class InconsistencyType(str, Enum):
     DATE_MISMATCH = "date_mismatch"
     ANACHRONISM = "anachronism"
     DURATION_IMPLAUSIBLE = "duration_implausible"
+    FACTUAL_CONTRADICTION = "factual_contradiction"
+    IMPLICIT_CONTRADICTION = "implicit_contradiction"
+    FUTURE_AS_PAST = "future_as_past"
+    ENTITY_INCONSISTENCY = "entity_inconsistency"
 
 
 class Severity(str, Enum):

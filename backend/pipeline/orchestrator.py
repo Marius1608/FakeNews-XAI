@@ -86,7 +86,7 @@ class PipelineOrchestrator:
             return _empty_result(article, self.extractor_name, start_ms)
 
         # C3a: Verificare interna
-        internal = self._internal_verifier.verify(tkg)
+        internal = self._internal_verifier.verify(tkg, publication_date=article.publication_date)
         logger.info(f"C3a ✓ — {len(internal.inconsistencies)} inconsistente, coherence={internal.score_coherence:.3f}")
 
         # C3b: Verificare externa
