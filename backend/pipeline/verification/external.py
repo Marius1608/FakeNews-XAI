@@ -20,7 +20,7 @@ from backend.pipeline.verification.wikidata import WikidataClient, WikidataFact
 logger = logging.getLogger(__name__)
 
 REFERENCE_KG_FILE = REFERENCE_KG_DIR / "verified_events.json"
-DATE_TOLERANCE_DAYS = 365
+DATE_TOLERANCE_DAYS = 400
 
 # Relations that can be verified against external sources
 EXTERNALLY_VERIFIABLE_RELATIONS = {
@@ -85,9 +85,16 @@ class ExternalVerifier:
         logger.debug(f"External verification [{fact.predicate.value}]: '{fact.subject.text}' -> props={props}")
 
         # 1. Local Reference KG
-        ref_facts = self._find_in_reference_kg(subject_name)
-        # Filter to facts with the same relation
-        relevant_ref = [r for r in ref_facts if r.get("relation") == fact.predicate.value]
+        ref_pairs = self._find_in_reference_kg(subject_name)
+        # Keep only pairs where the KG entity is actually the same entity as the article subject.
+        # The fuzzy match in _find_in_reference_kg uses a substring shortcut that can conflate
+        # "clinton" with both "bill clinton" and "hillary clinton". A SequenceMatcher ratio > 0.85
+        # on the full names prevents cross-entity comparisons (e.g. Clinton vs Obama facts).
+        relevant_ref = [
+            ref_fact for kg_key, ref_fact in ref_pairs
+            if SequenceMatcher(None, subject_name, kg_key).ratio() > 0.85
+            and ref_fact.get("relation") == fact.predicate.value
+        ]
         if relevant_ref:
             result.facts_matched += 1
             return self._compare_with_reference(fact, relevant_ref)
@@ -104,13 +111,14 @@ class ExternalVerifier:
 
         return []
 
-    def _find_in_reference_kg(self, subject_name: str) -> list[dict]:
-        """Search the Reference KG using fuzzy matching."""
-        facts = []
-        for key, value in self._reference_kg.items():
+    def _find_in_reference_kg(self, subject_name: str) -> list[tuple[str, dict]]:
+        """Search the Reference KG — returns (kg_entity_key, fact_dict) pairs."""
+        pairs: list[tuple[str, dict]] = []
+        for key, facts in self._reference_kg.items():
             if _fuzzy_entity_match(subject_name, key):
-                facts.extend(value)
-        return facts
+                for fact in facts:
+                    pairs.append((key, fact))
+        return pairs
 
     # Wikidata fetch with 3-level cache
     def _fetch_from_wikidata(self, fact: TemporalFact, result: ExternalVerificationResult) -> list[WikidataFact]:

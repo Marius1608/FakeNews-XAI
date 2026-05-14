@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-14T14:13:06.790914",
+  "generated_at": "2026-05-14T14:54:50.571719",
   "pipeline": "spacy",
   "threshold": 0.6,
   "use_wikidata": false,
@@ -7,14 +7,14 @@
     "metrics": {
       "total": 25,
       "tp": 4,
-      "tn": 7,
-      "fp": 3,
+      "tn": 9,
+      "fp": 1,
       "fn": 11,
-      "precision": 0.5714,
+      "precision": 0.8,
       "recall": 0.2667,
-      "f1": 0.3636,
-      "accuracy": 0.44,
-      "avg_tcs_true": 0.8056,
+      "f1": 0.4,
+      "accuracy": 0.52,
+      "avg_tcs_true": 0.95,
       "avg_tcs_fake": 0.8055
     },
     "articles": [
@@ -34,7 +34,7 @@
         "coherence_factor": 1.0,
         "known_inconsistencies": [],
         "detected_inconsistencies": [],
-        "processing_time_ms": 50875.1
+        "processing_time_ms": 13991.4
       },
       {
         "idx": 2,
@@ -52,7 +52,7 @@
         "coherence_factor": 1.0,
         "known_inconsistencies": [],
         "detected_inconsistencies": [],
-        "processing_time_ms": 7462.9
+        "processing_time_ms": 7317.2
       },
       {
         "idx": 3,
@@ -70,7 +70,7 @@
         "coherence_factor": 1.0,
         "known_inconsistencies": [],
         "detected_inconsistencies": [],
-        "processing_time_ms": 8611.2
+        "processing_time_ms": 8193.1
       },
       {
         "idx": 4,
@@ -79,37 +79,16 @@
         "expected_fake": false,
         "inconsistency_types": [],
         "notes": "Factually accurate Clinton presidency with correct dates and elections.",
-        "predicted_fake": true,
-        "outcome": "FP",
-        "tcs": 0.0159,
-        "tcs_label": "Severe Violations (Likely Fake)",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
         "n_claims": 3,
-        "n_inconsistencies": 4,
+        "n_inconsistencies": 0,
         "coherence_factor": 1.0,
         "known_inconsistencies": [],
-        "detected_inconsistencies": [
-          {
-            "type": "date_mismatch",
-            "severity": "high",
-            "description": "Article date (1992) does not match reference_kg interval [2009 -> 2013]."
-          },
-          {
-            "type": "date_mismatch",
-            "severity": "high",
-            "description": "Article date (1992) does not match reference_kg interval [2001 -> 2009]."
-          },
-          {
-            "type": "date_mismatch",
-            "severity": "high",
-            "description": "Article date (1992) does not match reference_kg interval [2009 -> 2013]."
-          },
-          {
-            "type": "date_mismatch",
-            "severity": "high",
-            "description": "Article date (1992) does not match reference_kg interval [2001 -> 2009]."
-          }
-        ],
-        "processing_time_ms": 8657.2
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7549.8
       },
       {
         "idx": 5,
@@ -118,32 +97,16 @@
         "expected_fake": false,
         "inconsistency_types": [],
         "notes": "Factually accurate Bush W presidency with verifiable election and legislation dates.",
-        "predicted_fake": true,
-        "outcome": "FP",
-        "tcs": 0.5397,
-        "tcs_label": "Moderately Consistent",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
         "n_claims": 5,
-        "n_inconsistencies": 3,
-        "coherence_factor": 0.8,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
         "known_inconsistencies": [],
-        "detected_inconsistencies": [
-          {
-            "type": "implicit_contradiction",
-            "severity": "medium",
-            "description": "Implicit contradiction: 'John Kerry' started 'November' (2004) BEFORE 'January' (2009)."
-          },
-          {
-            "type": "date_mismatch",
-            "severity": "high",
-            "description": "Article date (2000) does not match reference_kg interval [2001 -> 2009]."
-          },
-          {
-            "type": "date_mismatch",
-            "severity": "high",
-            "description": "Article date (2000) does not match reference_kg interval [2001 -> 2009]."
-          }
-        ],
-        "processing_time_ms": 8536.5
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7521.0
       },
       {
         "idx": 6,
@@ -161,7 +124,7 @@
         "coherence_factor": 1.0,
         "known_inconsistencies": [],
         "detected_inconsistencies": [],
-        "processing_time_ms": 8214.6
+        "processing_time_ms": 7684.7
       },
       {
         "idx": 7,
@@ -179,7 +142,7 @@
         "coherence_factor": 1.0,
         "known_inconsistencies": [],
         "detected_inconsistencies": [],
-        "processing_time_ms": 8296.3
+        "processing_time_ms": 7354.1
       },
       {
         "idx": 8,
@@ -197,7 +160,7 @@
         "coherence_factor": 1.0,
         "known_inconsistencies": [],
         "detected_inconsistencies": [],
-        "processing_time_ms": 7904.4
+        "processing_time_ms": 7959.2
       },
       {
         "idx": 9,
@@ -215,7 +178,7 @@
         "coherence_factor": 1.0,
         "known_inconsistencies": [],
         "detected_inconsistencies": [],
-        "processing_time_ms": 7530.3
+        "processing_time_ms": 7425.8
       },
       {
         "idx": 10,
@@ -233,7 +196,7 @@
         "coherence_factor": 1.0,
         "known_inconsistencies": [],
         "detected_inconsistencies": [],
-        "processing_time_ms": 77.7
+        "processing_time_ms": 80.2
       },
       {
         "idx": 11,
@@ -255,7 +218,7 @@
           "entity_inconsistency: Obama cannot be Senator and Governor simultaneously — incompatible roles"
         ],
         "detected_inconsistencies": [],
-        "processing_time_ms": 7614.1
+        "processing_time_ms": 7859.6
       },
       {
         "idx": 12,
@@ -286,7 +249,7 @@
             "description": "Event from 2021 presented as past, but article is from 2020: 'the United States'."
           }
         ],
-        "processing_time_ms": 10729.3
+        "processing_time_ms": 8987.7
       },
       {
         "idx": 13,
@@ -308,7 +271,7 @@
           "implicit_contradiction: Obama took office in January 2009 but won the election in November 2012 — office predates the election that supposedly granted it"
         ],
         "detected_inconsistencies": [],
-        "processing_time_ms": 6922.1
+        "processing_time_ms": 7080.8
       },
       {
         "idx": 14,
@@ -330,7 +293,7 @@
           "date_mismatch: Biden presidency stated as 2017-2021, which were Donald Trump's years in office"
         ],
         "detected_inconsistencies": [],
-        "processing_time_ms": 7901.1
+        "processing_time_ms": 8031.9
       },
       {
         "idx": 15,
@@ -353,7 +316,7 @@
           "entity_inconsistency: Clinton did not defeat Dukakis — Clinton defeated Bush in 1992"
         ],
         "detected_inconsistencies": [],
-        "processing_time_ms": 71.6
+        "processing_time_ms": 101.6
       },
       {
         "idx": 16,
@@ -377,7 +340,7 @@
           "ordering_error: 1996 election winner stated as Bush but 1996 was won by Clinton"
         ],
         "detected_inconsistencies": [],
-        "processing_time_ms": 7766.9
+        "processing_time_ms": 7762.7
       },
       {
         "idx": 17,
@@ -399,7 +362,7 @@
           "entity_inconsistency: Biden cannot be Senator and VP simultaneously — he resigned from Senate before taking VP office"
         ],
         "detected_inconsistencies": [],
-        "processing_time_ms": 11005.4
+        "processing_time_ms": 7114.5
       },
       {
         "idx": 18,
@@ -421,7 +384,7 @@
           "entity_inconsistency: Clinton cannot be Arkansas Governor and U.S. President simultaneously — he resigned as Governor before inauguration"
         ],
         "detected_inconsistencies": [],
-        "processing_time_ms": 7498.8
+        "processing_time_ms": 7559.9
       },
       {
         "idx": 19,
@@ -449,7 +412,7 @@
             "description": "Contradiction: 'the United States' and 'Rick Perry' both as 'December' in the same interval."
           }
         ],
-        "processing_time_ms": 8278.4
+        "processing_time_ms": 7722.6
       },
       {
         "idx": 20,
@@ -477,7 +440,7 @@
             "description": "Inverted interval: 'Bill Clinton' [2004-03-01 -> 2000-01-01]."
           }
         ],
-        "processing_time_ms": 6840.0
+        "processing_time_ms": 9069.3
       },
       {
         "idx": 21,
@@ -499,7 +462,7 @@
           "future_as_past: Biden signed a law in 2018 but his presidency did not begin until January 2021"
         ],
         "detected_inconsistencies": [],
-        "processing_time_ms": 8096.3
+        "processing_time_ms": 7459.1
       },
       {
         "idx": 22,
@@ -521,7 +484,7 @@
           "future_as_past: Bush W signed a law on March 23, 2010, but his presidency ended in January 2009"
         ],
         "detected_inconsistencies": [],
-        "processing_time_ms": 6632.7
+        "processing_time_ms": 7027.1
       },
       {
         "idx": 23,
@@ -549,7 +512,7 @@
             "description": "Event from 2024 presented as past, but article is from 2022: 'Donald Trump'."
           }
         ],
-        "processing_time_ms": 8088.1
+        "processing_time_ms": 8443.6
       },
       {
         "idx": 24,
@@ -571,7 +534,7 @@
           "ordering_error: Clinton inaugurated January 1993 but attributed to winning the 1996 election — first term inauguration precedes the election that supposedly enabled it"
         ],
         "detected_inconsistencies": [],
-        "processing_time_ms": 6575.4
+        "processing_time_ms": 6885.5
       },
       {
         "idx": 25,
@@ -593,7 +556,7 @@
           "ordering_error: Trump (President-elect) signed a law on December 22, 2016, one month before his January 20, 2017 inauguration — legislation signed before taking presidential office"
         ],
         "detected_inconsistencies": [],
-        "processing_time_ms": 7894.9
+        "processing_time_ms": 7327.7
       }
     ]
   },

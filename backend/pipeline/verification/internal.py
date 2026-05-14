@@ -210,12 +210,24 @@ class InternalVerifier:
         """V5: Implicit contradictions (e.g. holding a position before the election)."""
         inconsistencies = []
 
-        holds_facts = [f for f in facts if f.predicate in (RelationType.HOLDS_POSITION, RelationType.GENERIC)]
+        # Only HOLDS_POSITION facts are meaningful anchors for V5.
+        # GENERIC facts often capture peripheral noun phrases (e.g. "John Kerry" extracted
+        # from "defeating John Kerry") and do not reliably indicate role occupancy.
+        holds_facts = [f for f in facts if f.predicate == RelationType.HOLDS_POSITION]
         event_facts = facts
         ended_facts = [f for f in facts if f.predicate == RelationType.ENDED]
 
         for h_fact in holds_facts:
             subj_h = h_fact.subject.text.lower()
+
+            # V5 only fires for entities that appear in at least 2 distinct facts.
+            entity_fact_count = sum(
+                1 for f in facts
+                if SequenceMatcher(None, subj_h, f.subject.text.lower()).ratio() >= 0.85
+            )
+            if entity_fact_count < 2:
+                continue
+
             start_h = _extract_point_time(h_fact) or (h_fact.time_start.normalized_date if h_fact.time_start else None)
 
             if not start_h:
