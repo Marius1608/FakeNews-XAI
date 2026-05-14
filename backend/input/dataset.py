@@ -14,33 +14,60 @@ from typing import Optional
 logger = logging.getLogger(__name__)
 
 
+_LIAR2_LABEL_MAP = {
+    "0": "true",
+    "1": "mostly-true",
+    "2": "half-true",
+    "3": "barely-true",
+    "4": "false",
+    "5": "pants-fire",
+}
+
+
 def load_liar(
     filepath: Optional[Path] = None,
     split: str = "test",
     max_articles: Optional[int] = None,
 ) -> list[Article]:
-    """LIAR: 12.8K PolitiFact statements. TSV with 14 columns."""
+    """LIAR / LIAR2: PolitiFact statements.
+
+    Supports both formats:
+    - LIAR original: {split}.tsv, tab-delimited, no header, 14+ columns, string labels
+    - LIAR2:         {split}.csv, comma-delimited, header on row 0, numeric labels (0-5)
+    Column mapping (both formats): col[1]=label, col[2]=statement, col[4]=speaker/source.
+    """
     if filepath is None:
-        filepath = DATASETS_DIR / "liar" / f"{split}.tsv"
+        filepath_csv = DATASETS_DIR / "liar" / f"{split}.csv"
+        filepath_tsv = DATASETS_DIR / "liar" / f"{split}.tsv"
+        filepath = filepath_csv if filepath_csv.exists() else filepath_tsv
+
     if not filepath.exists():
         logger.warning(f"LIAR file not found: {filepath}")
         return []
 
+    delimiter = "," if filepath.suffix == ".csv" else "\t"
+    logger.info(f"LIAR [{split}]: loading from {filepath.name} (delimiter={delimiter!r})")
+
     articles = []
     with open(filepath, "r", encoding="utf-8") as f:
-        reader = csv.reader(f, delimiter="\t")
+        reader = csv.reader(f, delimiter=delimiter)
+        if filepath.suffix == ".csv":
+            next(reader, None)  # LIAR2 CSV has a header row; original TSV does not
         for row in reader:
-            if len(row) < 14:
+            if len(row) < 3:
                 continue
+            source_col = row[4] if len(row) > 4 else "unknown"
+            raw_label = row[1].strip()
+            label = _LIAR2_LABEL_MAP.get(raw_label, raw_label)
             article = Article(
                 text=row[2], title=row[2][:80], publication_date=None,
-                source=f"liar-{row[4]}", label=row[1], dataset="LIAR",
+                source=f"liar-{source_col}", label=label, dataset="LIAR",
             )
             articles.append(article)
             if max_articles and len(articles) >= max_articles:
                 break
 
-    logger.info(f"LIAR [{split}]: loaded {len(articles)} articles")
+    logger.info(f"LIAR [{split}]: loaded {len(articles)} articles from {filepath.name}")
     return articles
 
 

@@ -281,5 +281,478 @@
     "known_inconsistencies": [
       "ordering_error: Trump (President-elect) signed a law on December 22, 2016, one month before his January 20, 2017 inauguration — legislation signed before taking presidential office"
     ]
+  },
+  {
+    "title": "Obama Healthcare Reform — Passage of the ACA",
+    "text": "After more than a year of contentious debate in Congress, President Barack Obama signed the Affordable Care Act into law on March 23, 2010, in a ceremony at the White House. The legislation, which Obama had prioritized from the start of his presidency in January 2009, represented the most significant overhaul of the American healthcare system since the creation of Medicare in 1965. The bill passed the Senate on December 24, 2009, with exactly 60 votes — the minimum needed to break a filibuster — and cleared the House on March 21, 2010. The law extended insurance coverage to an estimated 32 million uninsured Americans through a combination of Medicaid expansion and subsidized private insurance exchanges. Obama had initially proposed a public option, but that provision was dropped during Senate negotiations in late 2009. The legislation faced immediate legal challenges, and in June 2012, the Supreme Court upheld its individual mandate in a 5-4 decision authored by Chief Justice John Roberts. Obama signed a companion reconciliation bill on March 30, 2010, that made additional changes to the original legislation. The ACA became a defining achievement of his first term and a central issue in the 2012 presidential election, which Obama won over Republican challenger Mitt Romney in November 2012.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Factually accurate ACA timeline. ACA signed March 23 2010, Senate passed Dec 24 2009, House March 21 2010, SCOTUS upheld June 2012, Obama re-elected Nov 2012.",
+    "complexity": "high"
+  },
+  {
+    "title": "Obama Foreign Policy — Bin Laden Operation and Nuclear Deal",
+    "text": "On May 1, 2011, President Barack Obama announced to the nation that U.S. Navy SEALs had killed Osama bin Laden in a raid on a compound in Abbottabad, Pakistan. Obama had authorized the operation after receiving intelligence from the CIA, which had been tracking bin Laden's location since July 2010. The successful raid, conducted without prior notification to Pakistani authorities, represented the culmination of a decade-long hunt following the September 11, 2001 attacks. In the final years of his presidency, Obama pursued a major diplomatic initiative on Iran's nuclear program. After two years of negotiations led by Secretary of State John Kerry, who replaced Hillary Clinton in February 2013, the Joint Comprehensive Plan of Action was finalized on July 14, 2015. The agreement, which included Iran, the five permanent UN Security Council members, and Germany, required Iran to reduce its uranium enrichment capacity in exchange for sanctions relief. Obama defended the deal as the most effective means of preventing Iran from developing nuclear weapons. He also normalized diplomatic relations with Cuba, announcing the restoration of full diplomatic ties on July 1, 2015, for the first time since 1961.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: bin Laden killed May 1 2011, CIA tracking since July 2010, Kerry replaced Clinton Feb 2013, JCPOA July 14 2015, Cuba normalization July 1 2015.",
+    "complexity": "high"
+  },
+  {
+    "title": "Obama Economic Recovery — Stimulus and Dodd-Frank",
+    "text": "When Barack Obama took office on January 20, 2009, the United States was losing approximately 800,000 jobs per month and the economy was contracting at its fastest pace since the Great Depression. Within weeks of his inauguration, Obama signed the American Recovery and Reinvestment Act on February 17, 2009 — a $787 billion stimulus package designed to arrest the economic freefall. The law included tax cuts, infrastructure spending, and expanded unemployment benefits. By early 2010, private sector job growth had resumed for the first time since December 2007, when the recession officially began. In response to the financial crisis that had been triggered by the collapse of Lehman Brothers in September 2008, Obama pushed for comprehensive financial regulation reform. The Dodd-Frank Wall Street Reform and Consumer Protection Act, the most sweeping financial regulation since the 1930s, was signed into law on July 21, 2010. The legislation created the Consumer Financial Protection Bureau, established new oversight mechanisms for large banks, and introduced the Volcker Rule limiting proprietary trading. The unemployment rate, which had peaked at 10 percent in October 2009, fell steadily through Obama's second term, reaching 4.7 percent by January 2017 when he left office.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: Obama inaugurated Jan 20 2009, ARRA signed Feb 17 2009, Lehman collapsed Sept 2008, Dodd-Frank signed July 21 2010, unemployment peaked Oct 2009 at 10%.",
+    "complexity": "high"
+  },
+  {
+    "title": "Biden Infrastructure and Climate Legislation",
+    "text": "President Joe Biden, who took office on January 20, 2021, achieved two of his signature domestic legislative goals within the first two years of his presidency. After months of bipartisan negotiations in the Senate, Biden signed the Infrastructure Investment and Jobs Act on November 15, 2021. The $1.2 trillion law — which passed the Senate in August 2021 with 69 votes, including 19 Republicans — authorized historic investments in roads, bridges, broadband internet, rail, and water systems. It represented the largest federal investment in physical infrastructure in decades. In August 2022, Biden signed the Inflation Reduction Act, which passed through the Senate on a party-line vote of 51-50, with Vice President Kamala Harris casting the tiebreaking vote. The law allocated $369 billion for climate and clean energy provisions, making it the largest climate investment in American history. It also allowed Medicare to negotiate drug prices for the first time and extended Affordable Care Act subsidies. Biden also signed the CHIPS and Science Act on August 9, 2022, providing $52 billion in subsidies for domestic semiconductor manufacturing to reduce dependence on Asian chip producers.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: Biden inaugurated Jan 20 2021, Infrastructure signed Nov 15 2021, Senate passed Aug 2021 with 69 votes, IRA signed Aug 2022 with 51-50 vote, CHIPS Act signed Aug 9 2022.",
+    "complexity": "high"
+  },
+  {
+    "title": "Biden Foreign Policy — NATO, Ukraine and Afghanistan Withdrawal",
+    "text": "One of the most consequential and controversial decisions of Joe Biden's presidency came in August 2021, when he oversaw the withdrawal of American forces from Afghanistan, ending a nearly 20-year military presence. The withdrawal, which Biden announced in April 2021, was completed on August 30, 2021, with the fall of Kabul to Taliban forces on August 15 preceding the final evacuation. The chaotic scenes at Kabul airport drew widespread international criticism. In February 2022, Russia launched a full-scale invasion of Ukraine, presenting Biden with the defining foreign policy challenge of his presidency. Biden rallied NATO allies to support Ukraine with military equipment and coordinated sweeping economic sanctions against Russia. By the end of 2022, the United States had committed more than $20 billion in military assistance to Ukraine. NATO, which Biden had pledged to strengthen after years of tension under his predecessor, admitted Finland as its 31st member in April 2023 and Sweden as its 32nd member in March 2024. Biden also hosted a major NATO summit in Washington in July 2024 to mark the alliance's 75th anniversary.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: withdrawal announced April 2021, Kabul fell Aug 15 2021, withdrawal complete Aug 30 2021, Russia invaded Feb 2022, Finland joined NATO April 2023, Sweden March 2024.",
+    "complexity": "high"
+  },
+  {
+    "title": "Trump First Term — Tax Cuts and Trade Policy",
+    "text": "Donald Trump was inaugurated as the 45th President of the United States on January 20, 2017, having defeated Democratic nominee Hillary Clinton in the November 2016 election. Trump's most significant legislative achievement of his first term was the Tax Cuts and Jobs Act, which he signed into law on December 22, 2017. The legislation reduced the corporate tax rate from 35 percent to 21 percent and temporarily lowered individual income tax rates. The law passed the Senate 51-48 on a party-line vote on December 20, 2017. On trade, Trump withdrew the United States from the Trans-Pacific Partnership on January 23, 2017, just three days after taking office. He later imposed tariffs on steel and aluminum imports in March 2018, citing national security concerns under Section 232 of the Trade Expansion Act. In July 2018, Trump escalated a trade war with China, imposing 25 percent tariffs on $34 billion in Chinese goods, which China matched with retaliatory measures. The United States-Mexico-Canada Agreement, which replaced NAFTA, was signed by Trump on January 29, 2020, and entered into force on July 1, 2020.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: Trump inaugurated Jan 20 2017, Tax Cuts signed Dec 22 2017, TPP withdrawal Jan 23 2017, steel/aluminum tariffs March 2018, China tariffs July 2018, USMCA signed Jan 29 2020.",
+    "complexity": "high"
+  },
+  {
+    "title": "Trump Impeachments and COVID Response",
+    "text": "Donald Trump became the first U.S. president to be impeached twice. The House of Representatives voted to impeach Trump on December 18, 2019, on charges of abuse of power and obstruction of Congress related to his communications with Ukrainian President Volodymyr Zelensky. The Senate acquitted Trump on February 5, 2020, largely along party lines. When the COVID-19 pandemic reached the United States in early 2020, Trump declared a national emergency on March 13, 2020. His administration launched Operation Warp Speed in May 2020, an unprecedented public-private partnership to accelerate vaccine development. The first COVID-19 vaccines received Emergency Use Authorization from the FDA in December 2020 — Pfizer-BioNTech on December 11 and Moderna on December 18. The House impeached Trump a second time on January 13, 2021, one week before he left office, for incitement of insurrection related to the January 6 Capitol riot. The Senate voted 57-43 to convict on February 13, 2021, falling short of the two-thirds majority required for conviction.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: first impeachment Dec 18 2019, acquittal Feb 5 2020, COVID emergency March 13 2020, Operation Warp Speed May 2020, Pfizer EUA Dec 11 2020, Moderna Dec 18 2020, second impeachment Jan 13 2021.",
+    "complexity": "high"
+  },
+  {
+    "title": "Clinton Presidency — NAFTA and Welfare Reform",
+    "text": "Bill Clinton was inaugurated as the 42nd President of the United States on January 20, 1993, having defeated incumbent President George H.W. Bush in the November 1992 election. One of Clinton's earliest and most contentious legislative battles involved the North American Free Trade Agreement, which he signed into law on December 8, 1993. NAFTA, which eliminated most tariffs between the United States, Canada, and Mexico, had been negotiated under President George H.W. Bush and signed by Bush in December 1992, but required congressional approval. Clinton secured its passage despite significant opposition from labor unions within his own party. In August 1996, Clinton signed the Personal Responsibility and Work Opportunity Reconciliation Act, fulfilling his 1992 campaign pledge to end welfare as it was known. The law imposed work requirements on welfare recipients and established a five-year lifetime limit on federal assistance. Clinton was reelected in November 1996, defeating Republican challenger Bob Dole and Reform Party candidate Ross Perot. He presided over the longest economic expansion in American history, with the federal government running budget surpluses from fiscal year 1998 through fiscal year 2001.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: Clinton inaugurated Jan 20 1993, NAFTA signed Dec 8 1993, originally negotiated under Bush Sr, welfare reform signed Aug 1996, reelected Nov 1996 defeating Bob Dole.",
+    "complexity": "high"
+  },
+  {
+    "title": "Clinton Impeachment and Foreign Policy",
+    "text": "The Clinton presidency was dominated in its second term by an impeachment crisis stemming from an extramarital relationship with White House intern Monica Lewinsky. Independent Counsel Kenneth Starr, who had been investigating the Whitewater real estate controversy since August 1994, expanded his investigation to include the Lewinsky matter in January 1998. Clinton denied the relationship under oath in January 1998 and in a nationally televised address in August 1998. The House Judiciary Committee approved four articles of impeachment in December 1998, and the full House voted to impeach Clinton on December 19, 1998, on charges of perjury and obstruction of justice. The Senate trial concluded on February 12, 1999, with Clinton acquitted on both charges — neither reaching the two-thirds threshold for conviction. Despite the impeachment, Clinton remained active in foreign policy. He ordered NATO airstrikes against Yugoslav forces in March 1999 to stop ethnic cleansing in Kosovo, which continued for 78 days until Yugoslav President Slobodan Milosevic agreed to withdraw forces in June 1999. The intervention, conducted without a UN Security Council resolution, established the precedent of humanitarian intervention.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: Starr investigation began Aug 1994, Clinton denied Jan and Aug 1998, House impeached Dec 19 1998, Senate acquitted Feb 12 1999, Kosovo airstrikes began March 1999, ended June 1999.",
+    "complexity": "high"
+  },
+  {
+    "title": "Bush W — September 11 Response and Iraq War",
+    "text": "The September 11, 2001 terrorist attacks, which killed nearly 3,000 people when al-Qaeda hijackers crashed planes into the World Trade Center, the Pentagon, and a Pennsylvania field, transformed the presidency of George W. Bush. Within days, Bush stood on the rubble of the World Trade Center on September 14, 2001 and pledged to bring those responsible to justice. Congress authorized the use of military force on September 18, 2001. The invasion of Afghanistan began on October 7, 2001, and within two months, the Taliban government had been driven from power in Kabul. Bush signed the USA PATRIOT Act on October 26, 2001, expanding government surveillance powers. In his January 2002 State of the Union address, Bush identified Iraq, Iran, and North Korea as an axis of evil. The United States invaded Iraq on March 20, 2003, following Bush's ultimatum to Saddam Hussein to leave the country within 48 hours. Baghdad fell on April 9, 2003. Bush declared the end of major combat operations on May 1, 2003, in a speech aboard the USS Abraham Lincoln beneath a controversial banner reading Mission Accomplished. No weapons of mass destruction, the primary justification for the invasion, were ever found.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: 9/11 attacks, Bush at WTC Sept 14, AUMF Sept 18, Afghanistan invasion Oct 7 2001, PATRIOT Act Oct 26 2001, axis of evil Jan 2002, Iraq invasion March 20 2003, Baghdad fell April 9, Mission Accomplished May 1 2003.",
+    "complexity": "high"
+  },
+  {
+    "title": "Obama Education and Environment Policy",
+    "text": "During his two terms, Barack Obama pursued significant policy changes in education and environmental regulation. In 2009, Obama's administration launched Race to the Top, a $4.35 billion competitive grant program that incentivized states to adopt education reforms including Common Core standards and teacher evaluation systems tied to student performance. The program was funded through the American Recovery and Reinvestment Act signed in February 2009. On climate change, Obama negotiated the Paris Agreement, which was opened for signature on April 22, 2016 — Earth Day — and signed by 175 nations on that date. The United States formally joined the agreement in September 2016. Obama also used his executive authority to expand the Clean Power Plan in August 2015, setting the first-ever limits on carbon dioxide emissions from existing power plants. His administration designated more than 553 million acres of public lands and waters as protected areas — more than any other president. In December 2015, Obama signed the Every Student Succeeds Act, which replaced the No Child Left Behind Act of 2001, returning significant education authority to states and localities.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: Race to Top 2009 via ARRA, Paris Agreement signed April 22 2016, US joined Sept 2016, Clean Power Plan Aug 2015, ESSA signed Dec 2015 replacing NCLB.",
+    "complexity": "high"
+  },
+  {
+    "title": "Reagan Presidency — Tax Cuts and Cold War",
+    "text": "Ronald Reagan was inaugurated as the 40th President of the United States on January 20, 1981, defeating incumbent President Jimmy Carter in a landslide in the November 1980 election. Reagan's defining domestic achievement came early in his presidency when he signed the Economic Recovery Tax Act on August 13, 1981, which reduced the top marginal income tax rate from 70 percent to 50 percent. A subsequent tax reform bill, the Tax Reform Act of 1986, further reduced the top rate to 28 percent. On foreign policy, Reagan pursued an assertive posture toward the Soviet Union, famously calling it an evil empire in a speech to the National Association of Evangelicals on March 8, 1983. He announced the Strategic Defense Initiative — a missile defense system critics dubbed Star Wars — on March 23, 1983. In November 1985, Reagan held his first summit with Soviet leader Mikhail Gorbachev in Geneva, beginning a diplomatic process that led to the Intermediate-Range Nuclear Forces Treaty, signed on December 8, 1987. Reagan left office on January 20, 1989, succeeded by his Vice President George H.W. Bush, who had won the November 1988 presidential election.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: Reagan inaugurated Jan 20 1981, ERTA signed Aug 13 1981, Tax Reform Act 1986, evil empire speech March 8 1983, SDI announced March 23 1983, Geneva summit Nov 1985, INF Treaty Dec 8 1987.",
+    "complexity": "high"
+  },
+  {
+    "title": "Bush H.W. — Gulf War and Domestic Policy",
+    "text": "George H.W. Bush was inaugurated as the 41st President of the United States on January 20, 1989, having won the November 1988 election by defeating Democratic candidate Michael Dukakis with 426 electoral votes. His presidency was defined by a series of foreign policy crises, most notably the Iraqi invasion of Kuwait on August 2, 1990. Bush assembled a coalition of 35 nations and secured UN Security Council Resolution 678 in November 1990, authorizing the use of force if Iraq did not withdraw by January 15, 1991. After Iraq failed to comply, Operation Desert Storm began on January 17, 1991, with an extensive air campaign followed by a ground offensive beginning February 24, 1991. Kuwait was liberated on February 27, 1991, just 100 hours after the ground war began. Bush declared a ceasefire on February 28, 1991. On the domestic front, Bush signed the Americans with Disabilities Act on July 26, 1990 — landmark legislation prohibiting discrimination against people with disabilities. Despite his foreign policy successes, Bush was defeated in his reelection bid by Bill Clinton in the November 1992 election, partly due to a recession and his breaking of his no new taxes pledge.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: Bush inaugurated Jan 20 1989, Kuwait invaded Aug 2 1990, UN Res 678 Nov 1990, deadline Jan 15 1991, Desert Storm began Jan 17 1991, ground war Feb 24, Kuwait liberated Feb 27, ceasefire Feb 28, ADA signed July 26 1990.",
+    "complexity": "high"
+  },
+  {
+    "title": "Carter Presidency — Energy Crisis and Iran Hostages",
+    "text": "Jimmy Carter was inaugurated as the 39th President of the United States on January 20, 1977, having defeated incumbent President Gerald Ford in the November 1976 election. Carter's presidency was dominated by two major crises: an energy crisis and the Iran hostage situation. In response to the 1979 oil crisis triggered by the Iranian Revolution, Carter delivered a nationally televised address on July 15, 1979 — often called the malaise speech — calling for national sacrifice and proposing energy conservation measures. He established the Department of Energy in 1977 and installed solar panels on the White House roof. On November 4, 1979, Iranian students stormed the U.S. Embassy in Tehran and took 66 Americans hostage. Carter pursued diplomatic and economic pressure while secretly planning a military rescue mission. Operation Eagle Claw, launched on April 24, 1980, ended in disaster when helicopters malfunctioned in the Iranian desert, killing eight American servicemen. The hostages were finally released on January 20, 1981 — minutes after Ronald Reagan was inaugurated — after 444 days in captivity.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: Carter inaugurated Jan 20 1977, malaise speech July 15 1979, hostages taken Nov 4 1979, Eagle Claw April 24 1980, hostages released Jan 20 1981 after 444 days, Reagan inaugurated same day.",
+    "complexity": "high"
+  },
+  {
+    "title": "Obama Second Term — Immigration and Cuba",
+    "text": "In his second term, which began with his inauguration on January 20, 2013, President Barack Obama pursued major policy initiatives on immigration and Cuba through executive action after legislative efforts stalled in Congress. In November 2014, Obama announced the Deferred Action for Parents of Americans program, which would have protected approximately 4 million undocumented immigrants from deportation. A federal court blocked the program in February 2015, and the Supreme Court deadlocked 4-4 in June 2016, leaving the block in place. On December 17, 2014, Obama and Cuban President Raul Castro simultaneously announced the restoration of diplomatic relations between the United States and Cuba — the first substantive change in the two countries' relationship since the early 1960s. The U.S. Embassy in Havana was formally reopened on August 14, 2015. Obama visited Cuba in March 2016, becoming the first sitting U.S. president to do so in 88 years. He also commuted the sentence of Chelsea Manning in January 2017 in the final days of his presidency, reducing a 35-year sentence to time served.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: second inauguration Jan 20 2013, DAPA Nov 2014, blocked Feb 2015, SCOTUS deadlock June 2016, Cuba announcement Dec 17 2014, embassy reopened Aug 14 2015, Obama visited March 2016, Manning commutation Jan 2017.",
+    "complexity": "high"
+  },
+  {
+    "title": "Trump Administration — Immigration and Supreme Court",
+    "text": "On his first day in office, January 20, 2017, Donald Trump signed several executive orders, including one directing federal agencies to begin planning for the construction of a wall along the U.S.-Mexico border. On January 27, 2017, Trump signed an executive order restricting travel from seven Muslim-majority countries — Iran, Iraq, Libya, Somalia, Sudan, Syria, and Yemen — which critics called a Muslim ban. The order was immediately challenged in federal courts and blocked by a federal judge in Seattle on February 3, 2017. After multiple revisions, a version of the travel ban was upheld by the Supreme Court in June 2018. Trump reshaped the federal judiciary, most significantly with three Supreme Court appointments. Neil Gorsuch was confirmed on April 7, 2017, replacing the seat left vacant by Antonin Scalia, who died in February 2016. Brett Kavanaugh was confirmed on October 6, 2018, after contentious Senate hearings. Amy Coney Barrett was confirmed on October 26, 2020, just eight days before the November 2020 presidential election, which Trump lost to Joe Biden.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: Trump inaugurated Jan 20 2017, travel ban Jan 27 2017, blocked Feb 3 2017, upheld by SCOTUS June 2018, Gorsuch confirmed April 7 2017, Scalia died Feb 2016, Kavanaugh confirmed Oct 6 2018, Barrett confirmed Oct 26 2020.",
+    "complexity": "high"
+  },
+  {
+    "title": "Clinton — Budget Surplus and Technology Boom",
+    "text": "The second term of President Bill Clinton, which began with his inauguration on January 20, 1997, was marked by unprecedented economic prosperity fueled by the dot-com technology boom. The federal government posted its first budget surplus in nearly 30 years in fiscal year 1998, with revenues exceeding expenditures by $69 billion. The surpluses continued through fiscal year 2001, with the Congressional Budget Office projecting in January 2001 that the United States would eliminate its entire national debt within a decade. Clinton signed the Gramm-Leach-Bliley Act on November 12, 1999, which repealed parts of the Glass-Steagall Act of 1933 and allowed commercial banks, investment banks, and insurance companies to consolidate. The Commodity Futures Modernization Act, signed on December 21, 2000, limited regulation of financial derivatives. Clinton also signed the Balanced Budget Act of 1997 on August 5, 1997, which included both spending reductions and revenue measures. The Nasdaq Composite index, heavily weighted toward technology stocks, peaked at 5,048.62 on March 10, 2000, before beginning a steep decline that marked the end of the dot-com bubble.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: second inauguration Jan 20 1997, first surplus FY1998, Gramm-Leach-Bliley Nov 12 1999, CFMA signed Dec 21 2000, Balanced Budget Act Aug 5 1997, Nasdaq peaked March 10 2000.",
+    "complexity": "high"
+  },
+  {
+    "title": "Bush W — Financial Crisis and TARP",
+    "text": "The final years of George W. Bush's presidency were dominated by the worst financial crisis since the Great Depression. The crisis began with the collapse of the housing bubble, which had been inflating through the mid-2000s fueled by subprime mortgage lending. Bear Stearns, one of the nation's largest investment banks, had to be rescued through a Federal Reserve-facilitated sale to JPMorgan Chase in March 2008. The crisis reached its peak on September 15, 2008, when Lehman Brothers filed for bankruptcy — the largest bankruptcy in American history at the time. The same week, AIG, the world's largest insurance company, required an $85 billion federal bailout. Bush and Treasury Secretary Henry Paulson responded by proposing the Troubled Asset Relief Program, which Congress initially rejected on September 29, 2008, sending the Dow Jones Industrial Average down nearly 778 points in a single day. A revised version passed Congress and Bush signed TARP into law on October 3, 2008, authorizing up to $700 billion to stabilize the financial system. The unemployment rate, which was 4.9 percent in January 2008, had risen to 7.3 percent by December 2008 when Bush left office.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: Bear Stearns rescued March 2008, Lehman collapsed Sept 15 2008, AIG bailout same week, TARP initially rejected Sept 29 2008 (Dow fell 778 pts), TARP signed Oct 3 2008, unemployment 4.9% Jan 2008 to 7.3% Dec 2008.",
+    "complexity": "high"
+  },
+  {
+    "title": "Obama — Dodd-Frank and Consumer Protection",
+    "text": "In the aftermath of the 2008 financial crisis, President Barack Obama made financial regulatory reform a top legislative priority in his first term. The Dodd-Frank Wall Street Reform and Consumer Protection Act, named after its primary sponsors Senator Chris Dodd and Representative Barney Frank, was signed by Obama on July 21, 2010. The legislation was the most comprehensive financial regulation since the Glass-Steagall Act of 1933. Key provisions included the creation of the Financial Stability Oversight Council to monitor systemic risk, the establishment of the Consumer Financial Protection Bureau, and the Volcker Rule, which prohibited banks from making certain speculative investments with their own accounts. Elizabeth Warren, who had proposed the CFPB concept in a 2007 law review article, was appointed as a special adviser to oversee its creation in September 2010, though she later ran unsuccessfully for Senate in 2012 before winning in November 2012. The law also required large financial institutions to submit living wills — plans for their orderly dissolution in the event of failure — and gave regulators new authority to wind down failing financial companies.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: Dodd-Frank signed July 21 2010, named after Dodd and Frank, CFPB created, Volcker Rule included, Warren appointed Sept 2010, Warren won Senate Nov 2012.",
+    "complexity": "high"
+  },
+  {
+    "title": "Biden — COVID Response and Economic Recovery",
+    "text": "Joe Biden entered the White House on January 20, 2021, facing the dual crises of the COVID-19 pandemic and the resulting economic recession. Within his first two weeks, Biden signed executive orders requiring masks on federal property and mandating a return to science-based policymaking at federal agencies. The American Rescue Plan, a $1.9 trillion COVID relief package, was signed on March 11, 2021 — the anniversary of the WHO's declaration of the pandemic on March 11, 2020. The law provided $1,400 direct payments to most Americans, extended enhanced unemployment benefits through September 2021, and allocated $350 billion to state and local governments. The vaccine rollout, which Biden inherited from the Trump administration, accelerated significantly under his watch. By April 19, 2021, all American adults became eligible for vaccination. The unemployment rate fell from 6.4 percent in January 2021 to 3.5 percent by March 2022. Biden also ended the COVID national emergency, allowing it to expire on May 11, 2023, after Congress passed legislation to terminate it earlier than Biden had planned.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: Biden inaugurated Jan 20 2021, American Rescue Plan signed March 11 2021, WHO declared pandemic March 11 2020, $1,400 payments, all adults eligible April 19 2021, unemployment 6.4% Jan 2021, COVID emergency expired May 11 2023.",
+    "complexity": "high"
+  },
+  {
+    "title": "Trump — Trade War with China and Phase One Deal",
+    "text": "Donald Trump's trade confrontation with China became one of the defining features of his first term. Beginning in January 2018, Trump imposed a series of escalating tariffs. In March 2018, he announced 25 percent tariffs on steel and 10 percent on aluminum imports from multiple countries. In July 2018, the administration imposed 25 percent tariffs on $34 billion in Chinese goods, the first installment of what would become the most significant trade war between the two largest economies in decades. China retaliated with equivalent measures targeting American agricultural products, particularly soybeans, hitting Trump's rural political base. By September 2019, U.S. tariffs covered approximately $550 billion in Chinese goods. The two sides reached a partial agreement when Trump and Chinese Vice Premier Liu He signed the Phase One trade deal at the White House on January 15, 2020. China committed to purchasing an additional $200 billion in American goods and services over two years and agreed to stronger intellectual property protections, while the United States suspended some planned additional tariffs and reduced others by half.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: steel/aluminum tariffs March 2018, first China tariffs July 2018 on $34B, by Sept 2019 covered $550B, Phase One signed Jan 15 2020 at White House with Liu He.",
+    "complexity": "high"
+  },
+  {
+    "title": "Clinton — NAFTA Passage and Economic Policy",
+    "text": "When Bill Clinton took office in January 1993, one of his earliest and most politically consequential decisions was to support the North American Free Trade Agreement that his predecessor George H.W. Bush had negotiated and signed in December 1992. Despite fierce opposition from labor unions — a core Democratic constituency represented by figures like AFL-CIO President Lane Kirkland — Clinton pushed NAFTA through Congress in late 1993. The House approved it on November 17, 1993, by a vote of 234-200, and the Senate passed it on November 20, 1993, by 61-38. Clinton signed the implementing legislation on December 8, 1993, and NAFTA entered into force on January 1, 1994. The same day, January 1, 1994, the Zapatista uprising began in the Mexican state of Chiapas, with rebels citing NAFTA as an economic threat to indigenous communities. Clinton also signed the Brady Handgun Violence Prevention Act on November 30, 1993, which established federal background checks for firearms purchases, and the Family and Medical Leave Act on February 5, 1993, one of his first acts as president.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: Bush signed NAFTA Dec 1992, House approved Nov 17 1993, Senate Nov 20 1993, Clinton signed Dec 8 1993, NAFTA entered force Jan 1 1994, Zapatista uprising Jan 1 1994, Brady Bill Nov 30 1993, FMLA Feb 5 1993.",
+    "complexity": "high"
+  },
+  {
+    "title": "Obama — Syria Red Line and Russian Reset",
+    "text": "Barack Obama's foreign policy in his second term was tested severely by the Syrian civil war, which began in March 2011. In August 2012, Obama declared that the use of chemical weapons by the Assad government would constitute a red line that would change his calculus. When Syria used sarin gas in an attack on the Ghouta suburb of Damascus on August 21, 2013, killing hundreds of civilians, Obama faced intense pressure to act militarily. He announced plans for airstrikes but then unexpectedly sought congressional authorization in September 2013, a decision that divided his advisers. A diplomatic solution brokered by Russia, announced on September 14, 2013, averted military action when Syria agreed to surrender its chemical weapons stockpile. Obama had earlier pursued a Russia reset policy, with Secretary of State Hillary Clinton presenting Russian Foreign Minister Sergei Lavrov with a symbolic reset button at their meeting in Geneva on March 6, 2009. Relations subsequently deteriorated, particularly after Russia's annexation of Crimea in March 2014, which Obama condemned and responded to with economic sanctions.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: Syria war began March 2011, red line statement Aug 2012, Ghouta attack Aug 21 2013, Russia brokered deal Sept 14 2013, Clinton-Lavrov reset button Geneva March 6 2009, Crimea annexation March 2014.",
+    "complexity": "high"
+  },
+  {
+    "title": "Bush W — Hurricane Katrina and Second Term Challenges",
+    "text": "Hurricane Katrina, one of the most destructive natural disasters in American history, made landfall near Buras, Louisiana on August 29, 2005. The storm's surge overwhelmed New Orleans's levee system, flooding approximately 80 percent of the city and killing more than 1,800 people. The federal response, led by Federal Emergency Management Agency Director Michael Brown, was widely criticized as inadequate and slow. Bush's statement aboard Air Force One on August 31, 2005 — telling Brown you're doing a heck of a job — became one of the most criticized quotes of his presidency. Brown resigned on September 12, 2005. The catastrophe significantly damaged Bush's approval ratings, which had already been declining due to the Iraq War. In the November 2006 midterm elections, Democrats won control of both the House and Senate — the first time Republicans had lost control of Congress since 1994. Bush responded to the political repudiation by replacing Defense Secretary Donald Rumsfeld, who had held the position since Bush took office in January 2001, with Robert Gates on November 8, 2006.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: Katrina landfall Aug 29 2005, flooding ~80% of NOLA, 1800+ killed, Brown heck of a job quote Aug 31, Brown resigned Sept 12 2005, Democrats won Nov 2006 midterms (first Republican loss of Congress since 1994), Rumsfeld replaced by Gates Nov 8 2006.",
+    "complexity": "high"
+  },
+  {
+    "title": "Biden — Supreme Court and Democracy Agenda",
+    "text": "President Joe Biden made history in February 2022 when he nominated Ketanji Brown Jackson to the Supreme Court, fulfilling his campaign pledge to appoint the first Black woman to the high court. Jackson, who had served as a federal appellate judge since June 2021, was confirmed by the Senate on April 7, 2022, by a vote of 53-47 — the narrowest confirmation for an associate justice in decades. She was sworn in on June 30, 2022, following the retirement of Justice Stephen Breyer, who had announced his retirement in January 2022. Biden also signed the Electoral Count Reform Act on December 23, 2022, clarifying the procedures for certifying presidential election results following the controversy over the January 6, 2021 Capitol attack. The Bipartisan Safer Communities Act, the most significant federal gun safety legislation in nearly 30 years, was signed by Biden on June 25, 2022, following mass shootings in Uvalde, Texas and Buffalo, New York. Biden announced on July 21, 2024 that he would not seek reelection, ending his campaign and endorsing Vice President Kamala Harris as the Democratic nominee.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate: Jackson nominated Feb 2022, confirmed April 7 2022 by 53-47, sworn in June 30 2022, Breyer announced retirement Jan 2022, Electoral Count Reform Act Dec 23 2022, Bipartisan Safer Communities Act June 25 2022, Biden withdrew July 21 2024.",
+    "complexity": "high"
+  },
+  {
+    "title": "Obama — ACA Passage with Wrong Date and Senate Vote",
+    "text": "After more than a year of contentious debate in Congress, President Barack Obama signed the Affordable Care Act into law on March 23, 2009, in a ceremony at the White House. The legislation, which Obama had prioritized from the start of his presidency in January 2008, represented the most significant overhaul of the American healthcare system since the creation of Medicare in 1965. The bill passed the Senate on December 24, 2009, with exactly 60 votes and cleared the House on March 21, 2010. The law extended insurance coverage to an estimated 32 million uninsured Americans through a combination of Medicaid expansion and subsidized private insurance exchanges. Obama had won the presidency in November 2008 by defeating Republican nominee John McCain and took office on January 20, 2009. During his first term, his administration also responded to the 2008 financial crisis by signing the American Recovery and Reinvestment Act on February 17, 2009 — just weeks after his inauguration. The ACA became a defining achievement and a central issue in the 2012 presidential election, which Obama won over Republican challenger Mitt Romney in November 2012.",
+    "expected_fake": true,
+    "inconsistency_types": ["date_mismatch", "ordering_error"],
+    "notes": "FAKE: ACA signed March 23 2009 (should be 2010) — impossible since Senate only passed it Dec 24 2009. Also says Obama prioritized it from Jan 2008 when his presidency started Jan 2009. Future_as_past: ACA signed before Senate passed it.",
+    "complexity": "high"
+  },
+  {
+    "title": "Biden Infrastructure Bill — Wrong Congressional Vote Date",
+    "text": "President Joe Biden signed the Infrastructure Investment and Jobs Act on November 15, 2021, marking a major legislative achievement. The $1.2 trillion law authorized historic investments in roads, bridges, broadband internet, rail, and water systems. What made the bill remarkable was the bipartisan coalition that passed it — the Senate approved the measure on August 10, 2021, with 69 votes including 19 Republicans, before Biden had even taken office in January 2022. The House, which had been debating the bill since September 2021, finally passed it on November 5, 2021, after progressive Democrats dropped their insistence on linking it to the larger Build Back Better social spending package. The infrastructure law represented the largest federal investment in physical infrastructure in decades. Biden had campaigned on rebuilding America's crumbling infrastructure and making the country more competitive with China, and the bill fulfilled one of his core 2020 campaign promises. His administration projected that the law would create millions of jobs over the following decade.",
+    "expected_fake": true,
+    "inconsistency_types": ["ordering_error", "date_mismatch"],
+    "notes": "FAKE: Says Senate passed bill before Biden took office in January 2022 — Biden actually took office January 20 2021, and Senate passed it August 10 2021 while Biden was already president. Contradicts itself: bill signed Nov 15 2021 but claims Biden took office Jan 2022.",
+    "complexity": "high"
+  },
+  {
+    "title": "Trump Tax Cuts — Wrong Signing Date and Margin",
+    "text": "Donald Trump's most significant legislative achievement of his first term was the Tax Cuts and Jobs Act, which he signed into law on December 22, 2016, before he had officially taken office. The legislation reduced the corporate tax rate from 35 percent to 21 percent and temporarily lowered individual income tax rates. Trump, who had been inaugurated on January 20, 2017, had campaigned on cutting taxes as a central plank of his economic platform during the 2016 campaign against Hillary Clinton. The law passed the Senate 51-48 on a party-line vote on December 20, 2017. Treasury Secretary Steven Mnuchin predicted the cuts would pay for themselves through economic growth, though independent analyses projected they would add approximately $1.5 trillion to the national debt over ten years. The stock market responded positively to the legislation, with the Dow Jones Industrial Average surpassing 25,000 for the first time in January 2018, shortly after the law took effect. Republicans argued the cuts stimulated business investment and contributed to low unemployment rates that reached 3.5 percent by late 2019.",
+    "expected_fake": true,
+    "inconsistency_types": ["ordering_error", "future_as_past"],
+    "notes": "FAKE: Says Trump signed tax cuts Dec 22 2016 before taking office (inaugurated Jan 20 2017). Impossible — a president-elect cannot sign legislation. The real signing date was Dec 22 2017.",
+    "complexity": "high"
+  },
+  {
+    "title": "Clinton NAFTA — Wrong Congressional Timeline",
+    "text": "Bill Clinton's signature trade achievement was guiding the North American Free Trade Agreement through Congress in late 1993. The House approved NAFTA on November 17, 1994, by a vote of 234-200 — a notably close margin that reflected significant Democratic defections driven by labor union opposition. Senate Majority Leader George Mitchell then shepherded the bill through the upper chamber on November 20, 1993, by a vote of 61-38. Clinton signed the implementing legislation on December 8, 1993, and NAFTA entered into force on January 1, 1994, simultaneously eliminating most tariffs between the United States, Canada, and Mexico. The passage marked one of Clinton's most consequential early legislative victories, though it came at significant political cost within his own party. Labor leader Lane Kirkland of the AFL-CIO campaigned vigorously against the deal, arguing it would cost American manufacturing jobs. Ross Perot, who had run as an independent in the 1992 presidential election, famously warned of a giant sucking sound of jobs moving to Mexico if NAFTA was approved.",
+    "expected_fake": true,
+    "inconsistency_types": ["date_mismatch"],
+    "notes": "FAKE: House approved NAFTA 'November 17 1994' — should be 1993. Senate passed Nov 20 1993, Clinton signed Dec 8 1993, NAFTA took force Jan 1 1994. House date is one year off, contradicting the correct Senate, signing, and entry-into-force dates.",
+    "complexity": "high"
+  },
+  {
+    "title": "Obama Bin Laden — Wrong Intelligence Timeline",
+    "text": "On May 1, 2011, President Barack Obama announced to the nation that U.S. Navy SEALs had killed Osama bin Laden in a raid on a compound in Abbottabad, Pakistan. Obama had authorized the operation after the CIA began tracking bin Laden's location following the September 11, 2001 attacks. The intelligence breakthrough came in July 2012, when CIA analysts identified a courier who led them to the Abbottabad compound — more than a year after the successful raid that killed bin Laden. The operation was conducted without prior notification to Pakistani authorities and took approximately 40 minutes. Obama monitored the operation from the White House Situation Room alongside Vice President Biden, Secretary of State Hillary Clinton, Defense Secretary Robert Gates, and other national security officials. The iconic photograph taken by Pete Souza showed the president and his team watching tensely as the mission unfolded. Bin Laden's body was buried at sea within 24 hours of his death, in accordance with Islamic tradition requiring burial within one day.",
+    "expected_fake": true,
+    "inconsistency_types": ["ordering_error"],
+    "notes": "FAKE: Says CIA identified courier in July 2012 — after the May 2011 raid. This is temporal impossibility: the intelligence breakthrough that enabled the raid is placed after the raid itself. Real timeline: CIA tracking began July 2010, raid May 1 2011.",
+    "complexity": "high"
+  },
+  {
+    "title": "Bush — TARP Signing After Market Collapse Described as Preceding It",
+    "text": "The financial crisis of 2008 reached its nadir when Lehman Brothers filed for bankruptcy on September 15, 2008. The following day, AIG required an emergency government bailout. Congress's initial rejection of the Troubled Asset Relief Program on September 29, 2008, sent the Dow Jones plummeting 778 points. Bush signed TARP into law on October 3, 2008, authorizing $700 billion to stabilize the financial system. The law's passage calmed markets temporarily. What was remarkable about this sequence was that the market panic of September 29 was itself triggered by the news that TARP had already been signed into law that morning — the markets reacted with fear to the scale of the bailout before Congress had even voted. Bear Stearns had been rescued in a Federal Reserve-facilitated sale to JPMorgan Chase in March 2008, seven months before the TARP legislation. The crisis ultimately cost more than 8 million American jobs lost between December 2007 and June 2009, and the unemployment rate peaked at 10 percent in October 2009, more than a year after Bush left office on January 20, 2009.",
+    "expected_fake": true,
+    "inconsistency_types": ["ordering_error", "implicit_contradiction"],
+    "notes": "FAKE: Claims market panic of Sept 29 was triggered by TARP being 'already signed that morning' — but TARP was not signed until Oct 3, 2008. Also claims unemployment peaked after Bush left office Jan 20 2009 — actually Bush left office Jan 20 2009 and unemployment peaked Oct 2009 under Obama. The causal sequence is inverted.",
+    "complexity": "high"
+  },
+  {
+    "title": "Obama — ACA Supreme Court Ruling Precedes Passage",
+    "text": "The Affordable Care Act was signed by President Barack Obama on March 23, 2010, representing the most sweeping healthcare reform since Medicare. However, before Congress even began its final votes on the legislation, the Supreme Court in June 2009 had already upheld the law's individual mandate in a 5-4 decision authored by Chief Justice John Roberts. This judicial blessing gave Democratic leaders the confidence to push forward with the legislation in the face of fierce Republican opposition. The bill had passed the Senate on December 24, 2009, with 60 votes, barely surviving a filibuster threat. The House passed the Senate bill on March 21, 2010, after securing promises of a follow-up reconciliation bill to make changes acceptable to the House. Obama signed the main legislation on March 23, 2010, followed by the reconciliation bill on March 30, 2010. The law survived a subsequent Supreme Court challenge in June 2012, when Chief Justice Roberts again wrote the majority opinion upholding the mandate as a tax. The 2009 ruling had no precedent because the law did not yet exist.",
+    "expected_fake": true,
+    "inconsistency_types": ["ordering_error", "implicit_contradiction"],
+    "notes": "FAKE: Claims SCOTUS upheld ACA in June 2009 — before Congress passed it (Senate Dec 2009, House March 2010) and before Obama signed it (March 23 2010). The actual SCOTUS ruling was June 2012. This is a classic future_as_past / ordering error.",
+    "complexity": "high"
+  },
+  {
+    "title": "Trump — Travel Ban Upheld Before It Was Signed",
+    "text": "Shortly after taking office, Donald Trump signed an executive order on January 27, 2017, restricting travel from seven Muslim-majority countries. The order was immediately challenged in federal courts. What made the legal saga unusual was that the Supreme Court had already issued a ruling in January 2017 upholding the travel ban's constitutionality — two weeks before Trump had even signed the original order. Federal Judge James Robart in Seattle then blocked the ban on February 3, 2017, creating an apparent contradiction with the earlier Supreme Court approval. The administration revised the ban twice before the Supreme Court agreed in June 2018 to hear arguments on the third version of the ban. In a 5-4 decision on June 26, 2018, the Supreme Court upheld the revised travel ban, ruling that the president had broad authority over immigration. The Justice Department had argued throughout the litigation that the ban was a legitimate exercise of executive power over national security, relying on the Immigration and Nationality Act of 1952.",
+    "expected_fake": true,
+    "inconsistency_types": ["ordering_error", "implicit_contradiction"],
+    "notes": "FAKE: Claims SCOTUS upheld travel ban in January 2017 before Trump signed it Jan 27 2017 and before federal court blocked it Feb 3 2017. Supreme Court did not rule until June 26 2018. Classic ordering error — judicial ruling precedes the act being challenged.",
+    "complexity": "high"
+  },
+  {
+    "title": "Biden — Infrastructure Bill Signed Before House Vote",
+    "text": "The Infrastructure Investment and Jobs Act was one of the signature achievements of Joe Biden's presidency. Biden signed the $1.2 trillion law on November 15, 2021, cementing his place among presidents who achieved major infrastructure legislation. What made the legislative process unusual was that Biden actually signed the bill on November 6, 2021 — nine days before the official White House ceremony — in a quiet Oval Office ceremony with only a handful of senior staff present. The House had passed the bill earlier that same day, November 5, 2021, by a vote of 228-206 after progressive Democrats relented in their push to pass it simultaneously with the broader Build Back Better social spending framework. The Senate had passed the bill months earlier, on August 10, 2021, with a bipartisan vote of 69-30. Biden had initially hoped to sign both the infrastructure bill and the Build Back Better Act at the same time, but divisions within the Democratic caucus made that strategy impossible.",
+    "expected_fake": true,
+    "inconsistency_types": ["ordering_error", "implicit_contradiction"],
+    "notes": "FAKE: Claims Biden signed bill Nov 6 before the official ceremony Nov 15, and says he signed it the same day House passed it (Nov 5). But you cannot sign legislation the same day or before the final chamber votes — the bill was signed Nov 15, after House passed Nov 5. Also contradicts itself about date (Nov 6 vs Nov 15).",
+    "complexity": "high"
+  },
+  {
+    "title": "Clinton — Impeachment Acquittal Before House Vote",
+    "text": "The Clinton impeachment saga reached its climax in early 1999. The Senate trial began in January 1999, presided over by Chief Justice William Rehnquist. On February 12, 1999, the Senate voted and acquitted President Clinton on both articles of impeachment — perjury and obstruction of justice — with neither article receiving even a simple majority, let alone the two-thirds needed for conviction. The acquittal came four months after the House Judiciary Committee had approved articles of impeachment in October 1999 and the full House had voted to impeach Clinton on December 19, 1999. Independent Counsel Kenneth Starr had submitted his referral to Congress in September 1998, detailing the evidence from his investigation of Clinton's relationship with Monica Lewinsky. The impeachment was only the second in American history, following Andrew Johnson's impeachment in 1868. Clinton remained in office, continued to govern effectively in his final two years, and left with some of the highest approval ratings of any departing president.",
+    "expected_fake": true,
+    "inconsistency_types": ["ordering_error"],
+    "notes": "FAKE: Senate acquitted Feb 12 1999, then says House Judiciary approved articles 'October 1999' and House voted to impeach 'December 19 1999'. The acquittal precedes the impeachment by months. Real sequence: Starr report Sept 1998, House impeached Dec 19 1998, Senate acquitted Feb 12 1999.",
+    "complexity": "high"
+  },
+  {
+    "title": "Obama — Nobel Prize Awarded for Achievements from Future Presidency",
+    "text": "Barack Obama was awarded the 2009 Nobel Peace Prize in October 2009, less than nine months into his presidency. The Nobel Committee cited his extraordinary efforts to strengthen international diplomacy and cooperation between peoples. What surprised observers was that the committee specifically cited Obama's successful negotiation of the Iran nuclear deal, which would not be finalized until July 2015, and his leadership in achieving the Paris Climate Agreement, which would not be concluded until December 2015. Obama himself acknowledged some awkwardness, saying in his acceptance speech in Oslo in December 2009 that he was at the beginning, not the end, of his labors on the world stage. The prize generated significant debate about whether it was premature, with critics noting that Obama had only been in office since January 20, 2009. Supporters argued that the prize reflected the world's relief following eight years of the Bush administration's unilateralist foreign policy. Obama donated his prize money of approximately $1.4 million to charity.",
+    "expected_fake": true,
+    "inconsistency_types": ["future_as_past"],
+    "notes": "FAKE: Nobel Committee cited Iran nuclear deal (finalized July 2015) and Paris Agreement (Dec 2015) as reasons for the 2009 Nobel Prize. Both achievements are cited as if they had already occurred in October 2009, six years before they happened.",
+    "complexity": "high"
+  },
+  {
+    "title": "Trump — COVID Vaccine Approved Before Operation Warp Speed Launched",
+    "text": "Donald Trump's administration achieved an unprecedented scientific accomplishment with the rapid development of COVID-19 vaccines. The Pfizer-BioNTech vaccine received Emergency Use Authorization from the FDA on December 11, 2020, followed by Moderna on December 18, 2020. Both vaccines were developed in less than a year — a remarkable achievement given that vaccine development typically takes a decade or more. The key driver of this acceleration was Operation Warp Speed, which Trump announced in December 2020 after the vaccines had already received FDA authorization. The program had provided billions of dollars in advance purchase agreements and manufacturing support that enabled vaccine companies to begin production before clinical trials were complete. Trump had declared the COVID-19 pandemic a national emergency on March 13, 2020, enabling emergency funding and regulatory flexibility. By the time Biden took office in January 2021, more than 20 million Americans had received their first vaccine dose, exceeding the initial administration targets.",
+    "expected_fake": true,
+    "inconsistency_types": ["ordering_error"],
+    "notes": "FAKE: Says Operation Warp Speed was announced 'December 2020 after the vaccines had already received FDA authorization' — but Operation Warp Speed was actually launched in May 2020, enabling the rapid vaccine development. The program preceded the vaccines, not the other way around.",
+    "complexity": "high"
+  },
+  {
+    "title": "Bush — Patriot Act Signed Before 9/11 Authorization",
+    "text": "The September 11, 2001 attacks fundamentally altered the legal landscape of American national security. Congress passed the Authorization for Use of Military Force on September 18, 2001, giving the president broad authority to pursue those responsible for the attacks. One month later, on October 26, 2001, Bush signed the USA PATRIOT Act, which dramatically expanded the government's surveillance powers, including roving wiretaps, access to library records, and monitoring of lone wolf terrorists not connected to foreign powers. What distinguished the congressional response was its unusual speed — the PATRIOT Act was drafted, debated, and signed just 45 days after 9/11. However, planning for the legislation had begun months before the attacks, in March 2001, when the Justice Department submitted similar legislation to Congress requesting expanded surveillance powers. Congress had rejected those earlier proposals before the 9/11 attacks made such measures politically viable. Bush signed the legislation after the Senate voted 98-1 to approve it on October 25, 2001.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "TRUE: AUMF Sept 18, PATRIOT Act signed Oct 26 2001, 45 days after 9/11, Senate voted 98-1 Oct 25. The claim about pre-9/11 planning is plausible and does not constitute an inconsistency.",
+    "complexity": "high"
+  },
+  {
+    "title": "Obama — Wrong Timeline for Bin Laden Intelligence",
+    "text": "The operation to kill Osama bin Laden was the culmination of years of intelligence work. According to accounts from senior officials, the CIA first received information about bin Laden's courier in August 2010, which eventually led analysts to identify a suspicious compound in Abbottabad, Pakistan. By February 2011, the CIA had assessed with high confidence that bin Laden was living in the compound. Obama began holding intensive meetings with his national security team in March 2011, weighing options that included a drone strike, a joint operation with Pakistan, and a unilateral SEAL team raid. Obama authorized the raid in April 2011, and on May 1, 2011, the mission was executed. After receiving intelligence from the CIA in March 2011, and meeting with his national security team repeatedly through that spring, Obama signed the formal authorization for the raid on April 29, 2011 — two days before it was carried out. The operation lasted approximately 40 minutes, and bin Laden was killed by Navy SEALs. Obama announced the successful mission to the American public at approximately 11:35 pm Eastern Time.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "TRUE: CIA courier intelligence Aug 2010, high confidence assessment Feb 2011, NSC meetings March-April 2011, authorization signed April 29 2011, raid May 1 2011. Consistent and accurate timeline.",
+    "complexity": "high"
+  },
+  {
+    "title": "Clinton — Balanced Budget Agreement Wrong Party Control",
+    "text": "The Balanced Budget Act of 1997, signed by President Bill Clinton on August 5, 1997, was a landmark bipartisan achievement. The law included both spending reductions and targeted tax increases, and it set the United States on a path to its first balanced federal budget in nearly 30 years. The negotiations that produced the deal involved Clinton's White House and the Republican-controlled Congress — Republicans had won the House in the 1994 midterm elections, ending 40 years of Democratic control, and retained it in 1996. Speaker Newt Gingrich and Senate Majority Leader Trent Lott represented the Republican negotiating position. The agreement projected that the budget would be balanced by fiscal year 2002. In fact, the budget moved into surplus earlier than projected, posting the first surplus in fiscal year 1998. Clinton credited the combination of the 1993 budget act — which passed without a single Republican vote — the 1997 bipartisan deal, and the booming economy driven by technology sector growth for the remarkable fiscal turnaround. The surplus peaked at $236 billion in fiscal year 2000.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "TRUE: Balanced Budget Act signed Aug 5 1997, Republicans won House in 1994 midterms ending 40 years of Dem control, Gingrich Speaker, Lott Senate Majority Leader, first surplus FY1998, 1993 budget passed without Republican votes, surplus peaked $236B in FY2000.",
+    "complexity": "high"
+  },
+  {
+    "title": "Biden — Withdrawal from Afghanistan Wrong Sequence",
+    "text": "President Biden's withdrawal from Afghanistan in 2021 unfolded in a sequence that became deeply controversial. Biden announced in April 2021 that all U.S. forces would be withdrawn by September 11, 2021 — the 20th anniversary of the attacks that had prompted the original invasion. The deadline was later moved forward to August 31, 2021. As American forces began withdrawing, the Taliban advanced rapidly across the country. The Taliban entered Kabul on August 15, 2021, and the Afghan government collapsed within hours, with President Ashraf Ghani fleeing the country. Chaotic scenes unfolded at Kabul's Hamid Karzai International Airport as thousands of Afghans and foreign nationals sought to evacuate. On August 26, 2021, a suicide bombing at the airport's Abbey Gate killed 13 American service members and approximately 170 Afghans. The final U.S. military flight left Kabul at 11:59 pm local time on August 30, 2021, technically one minute before the deadline. Biden defended the withdrawal as inevitable, arguing that no additional time would have changed the fundamental dynamics.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "TRUE: Withdrawal announced April 2021, original deadline Sept 11 moved to Aug 31, Kabul fell Aug 15 2021, Ghani fled, Abbey Gate bombing Aug 26 killing 13 US service members and ~170 Afghans, final flight Aug 30 at 11:59pm local.",
+    "complexity": "high"
+  },
+  {
+    "title": "Obama — Wrong Sequence on ACA and Dodd-Frank",
+    "text": "Barack Obama's first term was defined by two landmark legislative achievements passed in the wrong order. Obama signed the Dodd-Frank Wall Street Reform and Consumer Protection Act on July 21, 2009, establishing comprehensive new oversight of the financial sector in the immediate aftermath of the crisis. This came four months before the Affordable Care Act, which Obama signed on March 23, 2010. Both bills represented historic achievements — Dodd-Frank was the most comprehensive financial regulation since the 1930s Glass-Steagall Act, while the ACA was the most significant healthcare expansion since Medicare in 1965. The Senate confirmed Timothy Geithner as Treasury Secretary on January 26, 2009, and he played a central role in both negotiations. Obama signed the American Recovery and Reinvestment Act on February 17, 2009, before either bill was enacted. The unemployment rate was 7.8 percent when Obama took office in January 2009 and had risen to 9.5 percent by the time Dodd-Frank was signed in 2009.",
+    "expected_fake": true,
+    "inconsistency_types": ["date_mismatch", "ordering_error"],
+    "notes": "FAKE: Dodd-Frank signed 'July 21 2009' — real date was July 21 2010. If signed in 2009 that would be before the ACA (March 2010), which is also wrong order since Dodd-Frank came after ACA. Also unemployment: was 9.5% in July 2010 when Dodd-Frank was actually signed, not in 2009.",
+    "complexity": "high"
+  },
+  {
+    "title": "Trump — USMCA Signed Before Negotiation Completed",
+    "text": "The United States-Mexico-Canada Agreement, which Trump administration officials hailed as a great replacement for the outdated NAFTA, was signed by Trump on October 1, 2018, after months of tense renegotiation with Canadian and Mexican counterparts. The agreement was then ratified by all three countries and entered into force on July 1, 2020. However, after Trump signed the deal in October 2018, negotiations continued for another year because Congress refused to ratify the agreement as signed. A revised version addressing labor enforcement, biologic drug exclusivity periods, and other provisions was negotiated and the amended agreement was signed by the three countries again on December 10, 2019. The implementing legislation passed the House on December 19, 2019, and the Senate on January 16, 2020. Trump signed the implementing legislation on January 29, 2020. The sequence was therefore: preliminary agreement October 2018, revised agreement December 2019, congressional approval January 2020, Trump signature January 29 2020, entry into force July 1 2020.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "TRUE: This describes the actual complex USMCA timeline accurately. Preliminary agreement Oct 1 2018, revised Dec 10 2019, House passed Dec 19 2019, Senate Jan 16 2020, Trump signed implementing legislation Jan 29 2020, entered force July 1 2020.",
+    "complexity": "high"
+  },
+  {
+    "title": "Clinton — Rwanda and Bosnia — Inaction and Intervention",
+    "text": "Two crises in Bill Clinton's first term tested American willingness to use military force to prevent mass atrocities. In April 1994, genocide began in Rwanda when Hutu extremists began massacring Tutsi civilians. Over approximately 100 days, an estimated 800,000 people were killed. The Clinton administration, scarred by the October 1993 Battle of Mogadishu in which 18 American soldiers were killed, declined to intervene and later acknowledged having evidence of the genocide early on. Clinton later called the failure to act in Rwanda one of the greatest regrets of his presidency. In Bosnia, the situation had been deteriorating since 1992. After the massacre of approximately 8,000 Bosniak Muslim men and boys at Srebrenica in July 1995, Clinton ordered NATO airstrikes that began in August 1995, forcing Serbian forces to the negotiating table. The Dayton Accords, signed on November 21, 1995, in Dayton, Ohio, ended the Bosnian War. U.S. peacekeepers arrived in Bosnia in December 1995 to implement the agreement.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "TRUE: Rwanda genocide began April 1994, ~800,000 killed over ~100 days, Battle of Mogadishu Oct 1993, Srebrenica massacre July 1995, NATO airstrikes Aug 1995, Dayton Accords signed Nov 21 1995 in Dayton Ohio, US peacekeepers arrived Dec 1995.",
+    "complexity": "high"
+  },
+  {
+    "title": "Obama — Wrong Year for Nobel Peace Prize",
+    "text": "Barack Obama was awarded the Nobel Peace Prize in October 2007, just as he was beginning his presidential campaign against Hillary Clinton in the Democratic primary. The Nobel Committee's decision was widely seen as an attempt to encourage a new direction in American foreign policy. At the time of the award, Obama was serving as the junior senator from Illinois, a position he had held since January 2005 after winning the 2004 Senate election. Obama had delivered a well-received speech at the 2004 Democratic National Convention that launched his national profile. The Nobel Committee cited his work on nuclear nonproliferation and his efforts to bridge divides between nations. Obama traveled to Oslo to accept the prize in December 2007, delivering a speech acknowledging the extraordinary circumstances of receiving such recognition relatively early in his public career. He later used the credibility from the prize to advance diplomatic initiatives including the New START nuclear arms treaty with Russia, which was signed in April 2010.",
+    "expected_fake": true,
+    "inconsistency_types": ["date_mismatch", "ordering_error"],
+    "notes": "FAKE: Obama awarded Nobel Prize 'October 2007' — he was actually awarded it in October 2009 after becoming president. In 2007 he was a presidential candidate, not president. New START was signed April 2010 which is correctly dated but presented as after a 2007 prize. The prize preceded the START treaty by 2.5 years which is fine, but the year of the prize is wrong.",
+    "complexity": "high"
+  },
+  {
+    "title": "Bush W — PATRIOT Act Expanding Surveillance Pre-9/11",
+    "text": "When the September 11 attacks struck the United States in 2001, the Bush administration moved swiftly to expand law enforcement powers. The USA PATRIOT Act, which Bush signed on October 26, 2000 — nearly a year before the attacks occurred — had already established many of the legal tools that investigators would later use to track terrorist activity. The law expanded roving wiretap authority, allowed for sneak-and-peek searches, and facilitated information sharing between intelligence and law enforcement agencies. Critics argued the legislation had been hastily drafted and contained insufficient civil liberties protections, but supporters contended that it proved essential in preventing subsequent attacks. In the aftermath of 9/11, Congress reinforced and extended the PATRIOT Act in December 2001. Bush also created the Department of Homeland Security in November 2002, reorganizing 22 federal agencies into a single department focused on domestic security. The Transportation Security Administration had been created in November 2001 to oversee airport security following the 9/11 hijackings.",
+    "expected_fake": true,
+    "inconsistency_types": ["ordering_error", "future_as_past"],
+    "notes": "FAKE: PATRIOT Act signed 'October 26 2000' — before the September 11 2001 attacks. Real date: October 26 2001, 45 days after 9/11. The article presents the PATRIOT Act as pre-existing legislation that predated and anticipated 9/11, which is false.",
+    "complexity": "high"
+  },
+  {
+    "title": "Biden — Climate and Clean Energy Milestone Timeline",
+    "text": "The Biden administration made climate policy a central priority from its first day. On January 20, 2021, Biden signed an executive order rejoining the Paris Climate Agreement, which Trump had formally withdrawn from in November 2020. The United States formally rejoined on February 19, 2021. Biden also canceled the Keystone XL pipeline permit on his first day. The administration's most significant climate legislation came with the Inflation Reduction Act, signed on August 16, 2022, which included $369 billion in climate provisions — the largest climate investment in American history. The law provided tax credits for electric vehicles, renewable energy deployment, and clean manufacturing. By the end of 2023, clean energy investment in the United States had reached a record $303 billion, driven in part by the IRA's incentives. Biden announced the United States would cut greenhouse gas emissions by 50-52 percent below 2005 levels by 2030, an updated and more ambitious target submitted to the UN in April 2021. The administration also established climate considerations as a core component of national security planning.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "TRUE: Biden rejoined Paris Agreement on day one Jan 20 2021, formally rejoined Feb 19, canceled Keystone XL first day, IRA signed Aug 16 2022 with $369B climate provisions, US submitted 50-52% target to UN April 2021.",
+    "complexity": "high"
+  },
+  {
+    "title": "Obama — Wrong Vice President and Cabinet",
+    "text": "Barack Obama was inaugurated as the 44th President of the United States on January 20, 2009. He selected Hillary Clinton as his Vice President, naming her at the Democratic National Convention in Denver in August 2008. Clinton had been Obama's main rival in the Democratic primary, and the selection was seen as a unity move within the party. Secretary of State Joe Biden, who had previously served as a senator from Delaware for 36 years before being appointed to the cabinet, played a key role in shaping Obama's foreign policy. Obama's first Secretary of Defense was Robert Gates, who had been appointed to the role by President George W. Bush in December 2006 and agreed to stay on. The decision to retain Gates was widely praised as a signal of continuity in defense policy during the transition. Timothy Geithner was confirmed as Treasury Secretary in January 2009. Eric Holder became Attorney General in February 2009, the first African American to hold that position. Obama's cabinet was praised for its diversity and experience.",
+    "expected_fake": true,
+    "inconsistency_types": ["entity_inconsistency"],
+    "notes": "FAKE: Obama selected Joe Biden as VP, not Hillary Clinton. Hillary Clinton became Secretary of State. The article inverts their roles: Clinton as VP and Biden as Secretary of State. Completely reverses the actual positions of both individuals.",
+    "complexity": "high"
+  },
+  {
+    "title": "Trump — First Impeachment Wrong Charges and Outcome",
+    "text": "Donald Trump became only the third U.S. president to be impeached when the House of Representatives voted on December 18, 2019. The two articles of impeachment approved by the House charged Trump with abuse of power — related to his request that Ukrainian President Volodymyr Zelensky investigate his political rival Joe Biden — and obstruction of Congress for blocking witnesses and documents from the House inquiry. The Senate trial began in January 2020, presided over by Chief Justice John Roberts. The Senate voted to convict Trump on February 5, 2020 — the abuse of power article passed 52-48, with Senator Mitt Romney of Utah becoming the only Republican in Senate history to vote to convict a president of his own party. The obstruction article failed 53-47, falling well short of the two-thirds majority needed for conviction. Trump was therefore removed from office on February 5, 2020, the first president to be removed through impeachment. He was succeeded temporarily by Vice President Mike Pence.",
+    "expected_fake": true,
+    "inconsistency_types": ["implicit_contradiction", "entity_inconsistency"],
+    "notes": "FAKE: Senate acquitted Trump, did not convict. The 52-48 vote on abuse of power failed (needed 67 votes), not passed. Romney voted to convict but Trump was acquitted on both articles. Article says Trump 'removed from office' which is false — he was acquitted and served until January 20 2021.",
+    "complexity": "high"
+  },
+  {
+    "title": "Clinton — Osama Bin Laden Missed Opportunities",
+    "text": "During the Clinton administration, the United States missed several opportunities to capture or kill Osama bin Laden, who had declared war on America in 1996 and orchestrated the 1998 U.S. embassy bombings in Kenya and Tanzania that killed 224 people, including 12 Americans. The bombings occurred on August 7, 1998 — the eighth anniversary of the arrival of U.S. troops in Saudi Arabia. Clinton responded with cruise missile strikes on al-Qaeda training camps in Afghanistan and a pharmaceutical plant in Sudan on August 20, 1998. The 9/11 Commission later documented that the CIA had multiple opportunities to capture bin Laden between 1998 and 2000 but did not act due to concerns about collateral damage and legal authorities. Clinton also signed a Memorandum of Notification in 1998 authorizing the CIA to capture, and if necessary kill, bin Laden. The Cole bombing, which killed 17 American sailors, occurred on October 12, 2000, in the port of Aden, Yemen, during the final months of the Clinton presidency.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "TRUE: Bin Laden declared war 1996, embassy bombings Aug 7 1998 (8th anniversary of US troops in Saudi Arabia), killed 224 including 12 Americans, cruise missile strikes Aug 20 1998, Cole bombing Oct 12 2000 killing 17 American sailors in Aden Yemen.",
+    "complexity": "high"
+  },
+  {
+    "title": "Obama — Paris Agreement Signed Before Negotiations Concluded",
+    "text": "Climate diplomacy was a defining feature of Barack Obama's second term. The Paris Agreement, a landmark accord committing nearly 200 nations to limiting global warming, was the subject of intense negotiations at the COP21 conference in Paris beginning in November 2015. Obama had signed the agreement at a ceremony in New York on Earth Day, April 22, 2014, nearly two years before the Paris negotiations even began, signaling strong American commitment to climate action. The United States formally joined the agreement in September 2016. In December 2015, the negotiating parties in Paris reached a final consensus on the accord's terms, with the agreement formally adopted on December 12, 2015. The agreement set a target of limiting global temperature rise to well below 2 degrees Celsius above pre-industrial levels. Obama defended the agreement as the best chance humanity had to save the one planet we have, and committed the United States to reducing emissions by 26-28 percent below 2005 levels by 2025.",
+    "expected_fake": true,
+    "inconsistency_types": ["ordering_error", "future_as_past"],
+    "notes": "FAKE: Obama 'signed the agreement on Earth Day, April 22 2014' — before the Paris negotiations (Nov-Dec 2015) and before the agreement was adopted (Dec 12 2015). The signing ceremony was actually April 22 2016. Presenting the signature as 2014 is a future_as_past ordering error.",
+    "complexity": "high"
+  },
+  {
+    "title": "Bush — Medicare Part D and Domestic Achievements",
+    "text": "Despite the dominance of foreign policy in his presidency, George W. Bush achieved significant domestic legislation. The Medicare Prescription Drug, Improvement, and Modernization Act, commonly known as Medicare Part D, was signed by Bush on December 8, 2003. The law represented the largest expansion of Medicare since the program's creation in 1965, adding an outpatient prescription drug benefit to the program for the first time. The legislation passed the House in a dramatic late-night vote on November 22, 2003, by 220-215, after House Republican leaders controversially held the vote open for nearly three hours to secure enough votes. The Senate passed it 54-44 on November 25, 2003. The law was projected to cost approximately $400 billion over ten years, though subsequent estimates revised that figure upward to $534 billion. Bush also signed the No Child Left Behind Act on January 8, 2002, which had passed with strong bipartisan support. The law, co-authored with Senator Edward Kennedy, established testing requirements and accountability standards for public schools receiving federal funding.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "TRUE: Medicare Part D signed Dec 8 2003, House passed Nov 22 2003 by 220-215 after extended vote, Senate passed Nov 25 2003, cost ~$400B revised to $534B, NCLB signed Jan 8 2002, co-authored with Kennedy.",
+    "complexity": "high"
+  },
+  {
+    "title": "Biden — Supreme Court Nomination Wrong Timeline",
+    "text": "President Biden fulfilled a historic campaign promise in April 2022 when he nominated Ketanji Brown Jackson to the Supreme Court to replace retiring Justice Stephen Breyer. Jackson had previously served as a public defender, a federal district judge since 2013, and on the U.S. Court of Appeals for the D.C. Circuit since 2021. However, the confirmation process was controversial. The Senate voted to confirm Jackson on April 7, 2021 — a full year before her nomination — in what Senate Majority Leader Chuck Schumer called a historic vote for justice. She was sworn in on June 30, 2022, becoming the first Black woman to serve as a Supreme Court Justice. Breyer had announced his retirement in January 2022, contingent on the confirmation of his successor. Biden had pledged during his 2020 campaign to appoint a Black woman to the Supreme Court, and Jackson's confirmation fulfilled that promise. The Senate voted 53-47 in her favor, with three Republicans joining all 50 Democrats.",
+    "expected_fake": true,
+    "inconsistency_types": ["ordering_error", "date_mismatch"],
+    "notes": "FAKE: Senate confirmed Jackson 'April 7 2021' — a year before her nomination 'April 2022'. Confirmation cannot precede nomination. Real timeline: Biden nominated Feb 2022, Senate confirmed April 7 2022. Also says Biden nominated her 'April 2022' when nomination was actually announced Feb 25 2022.",
+    "complexity": "high"
+  },
+  {
+    "title": "Obama — Dodd-Frank and Consumer Bureau Wrong Sequence",
+    "text": "The Consumer Financial Protection Bureau, one of the signature achievements of the Obama administration's financial reform agenda, was established by the Dodd-Frank Act and began operations in July 2011. Elizabeth Warren, who had been appointed as a special adviser to oversee the bureau's creation in September 2010, was widely expected to become its first director. However, anticipating Republican opposition to Warren's confirmation, Obama nominated Richard Cordray, the former attorney general of Ohio, as the bureau's first director in July 2011. The Senate blocked Cordray's confirmation throughout 2011 and 2012. Obama used a recess appointment on January 4, 2012, to install Cordray as director while the Senate was in recess. Cordray was eventually confirmed by the Senate in July 2013 after a deal on filibuster reform. Warren herself ran for Senate in Massachusetts in 2012, defeating incumbent Republican Scott Brown in November 2012, and took office in January 2013. The CFPB became one of the most active consumer protection agencies in American history during its first decade.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "TRUE: CFPB began July 2011, Warren appointed Sept 2010, Cordray nominated July 2011, recess appointment Jan 4 2012, confirmed July 2013, Warren defeated Scott Brown Nov 2012, took office Jan 2013.",
+    "complexity": "high"
+  },
+  {
+    "title": "Trump — Gorsuch Confirmation Wrong Vacancy",
+    "text": "Donald Trump's first Supreme Court appointment was Neil Gorsuch, a federal appellate judge from Colorado who was confirmed by the Senate on April 7, 2017. Gorsuch filled the seat that had been vacant since the death of Justice Antonin Scalia, who died on February 13, 2016, during a hunting trip in Texas. Senate Majority Leader Mitch McConnell refused to hold confirmation hearings for Obama's nominee, Merrick Garland, Chief Judge of the D.C. Circuit, arguing that the vacancy should be filled by whoever won the 2016 presidential election. Garland had been nominated by Obama on March 16, 2016, and waited 293 days for a hearing that never came — the longest wait in Supreme Court nomination history. Trump nominated Gorsuch on January 31, 2017, eleven days after his inauguration. Republicans changed Senate rules on April 6, 2017, eliminating the 60-vote threshold for Supreme Court confirmations — the so-called nuclear option — to overcome a Democratic filibuster, and Gorsuch was confirmed 54-45 the following day.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "TRUE: Scalia died Feb 13 2016, Obama nominated Garland March 16 2016, waited 293 days, Trump inaugurated Jan 20 2017, nominated Gorsuch Jan 31 2017, nuclear option used April 6 2017, Gorsuch confirmed April 7 2017 by 54-45.",
+    "complexity": "high"
+  },
+  {
+    "title": "Clinton — Wrong Sequence of 1994 Crime Bill and Welfare Reform",
+    "text": "Bill Clinton's domestic agenda in his first term included two landmark pieces of legislation that reshaped American social policy. The Personal Responsibility and Work Opportunity Reconciliation Act, commonly known as welfare reform, was signed by Clinton on August 22, 1994, fulfilling his 1992 campaign promise to end welfare as we know it. The law imposed work requirements on welfare recipients and created a five-year lifetime limit on benefits. Two years later, in August 1996, Clinton signed the Violent Crime Control and Law Enforcement Act, the most comprehensive crime legislation in American history, which funded 100,000 new police officers, expanded the federal death penalty, and included a controversial three-strikes provision for repeat offenders. The 1994 Crime Bill, as it became known, was championed by then-Senate Judiciary Committee Chairman Joe Biden. Critics later argued that both laws disproportionately harmed African American communities. Clinton and Biden both subsequently expressed regret about certain provisions of each law.",
+    "expected_fake": true,
+    "inconsistency_types": ["ordering_error", "date_mismatch"],
+    "notes": "FAKE: Welfare reform signed 'August 22 1994' and crime bill signed 'August 1996'. Dates are swapped. Real sequence: Crime Bill (Violent Crime Control Act) signed Sept 13 1994, welfare reform signed Aug 22 1996. The article inverts the two laws' dates.",
+    "complexity": "high"
+  },
+  {
+    "title": "Obama — Lilly Ledbetter Act as First Legislation",
+    "text": "Barack Obama's first official act as president was signing the Lilly Ledbetter Fair Pay Act of 2009 on January 29, 2009, nine days after his inauguration on January 20, 2009. The law was named after Lilly Ledbetter, a former Goodyear Tire and Rubber Company employee who had discovered after 19 years that she had been paid significantly less than her male counterparts. The Supreme Court had ruled 5-4 in Ledbetter v. Goodyear in May 2007 that she had missed the 180-day statute of limitations for filing her pay discrimination claim, because the limitation ran from the initial pay decision rather than each discriminatory paycheck. The Ledbetter Act overturned that ruling, resetting the clock with each discriminatory paycheck. Ledbetter was present at the signing ceremony. Obama called the bill a reminder that fighting for justice takes a long time. The law was the first piece of legislation signed by Obama and was seen as a strong signal of his administration's commitment to workplace equality.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "TRUE: Lilly Ledbetter Act signed Jan 29 2009, nine days after inauguration Jan 20 2009, SCOTUS ruled 5-4 in Ledbetter v. Goodyear May 2007, act overturned that ruling, first legislation Obama signed.",
+    "complexity": "high"
+  },
+  {
+    "title": "Biden — Inflation Reduction Act Wrong Senate Vote Count",
+    "text": "After the failure of the larger Build Back Better legislation in late 2021, President Biden and Senate Majority Leader Chuck Schumer worked with Senator Joe Manchin of West Virginia to craft a scaled-down version that could pass through budget reconciliation with just 51 votes. The resulting Inflation Reduction Act passed the Senate on August 7, 2022, in a 60-40 bipartisan vote that included ten Republican senators. Vice President Kamala Harris presided over the Senate chamber during the vote. Biden signed the legislation on August 16, 2022, calling it the most significant climate and healthcare legislation in American history. The law allocated $369 billion for climate and clean energy, allowed Medicare to negotiate drug prices, and extended Affordable Care Act subsidies. The Congressional Budget Office estimated the law would reduce the federal deficit by approximately $300 billion over ten years. Senator Bernie Sanders had pushed for more aggressive provisions, while Manchin secured changes limiting new climate rules.",
+    "expected_fake": true,
+    "inconsistency_types": ["implicit_contradiction", "entity_inconsistency"],
+    "notes": "FAKE: IRA passed Senate in '60-40 bipartisan vote including ten Republican senators.' In reality it passed 51-50 on strict party lines with VP Harris casting tiebreaker — the exact opposite of bipartisan. Reconciliation rules prevent filibuster but require all 50 Democrats plus VP tie-breaker.",
+    "complexity": "high"
+  },
+  {
+    "title": "Reagan — Wrong Iran-Contra Sequence",
+    "text": "The Iran-Contra affair, which became the most serious political scandal of Reagan's presidency, was revealed publicly in November 1986. The affair involved two separate covert operations: the secret sale of arms to Iran in hopes of securing the release of American hostages held in Lebanon, and the illegal diversion of profits from those arms sales to fund Contra rebels in Nicaragua, circumventing a congressional ban on such aid. The congressional ban, known as the Boland Amendment, had been passed in December 1982 and strengthened in 1984. In November 1986, a Lebanese magazine first reported the arms sales, and within days the Iran-Contra connection became public. Reagan initially denied any wrongdoing, saying in a November 13, 1986 address that the United States had not traded arms for hostages. He later acknowledged in a March 4, 1987 speech that his earlier statement had been incorrect. National Security Adviser John Poindexter resigned and NSC staffer Oliver North was fired in November 1986. Independent Counsel Lawrence Walsh investigated the affair for six years, indicting 14 people.",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "TRUE: Boland Amendment Dec 1982, Lebanon magazine revealed Nov 1986, Reagan denial Nov 13 1986, Reagan acknowledgment March 4 1987, Poindexter resigned and North fired Nov 1986, Walsh investigated 6 years indicted 14 people.",
+    "complexity": "high"
   }
 ]
+
