@@ -5,6 +5,8 @@
     "publication_date": "2020-01-01",
     "source": "benchmark-true",
     "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Factually accurate Obama timeline with verifiable dates.",
     "known_inconsistencies": []
   },
   {
@@ -13,6 +15,88 @@
     "publication_date": "2020-06-01",
     "source": "benchmark-true",
     "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Factually accurate Obama Senate and campaign timeline.",
+    "known_inconsistencies": []
+  },
+  {
+    "title": "Biden Presidency — Accurate Timeline",
+    "text": "Joe Biden was sworn in as the 46th President of the United States on January 20, 2021, succeeding Donald Trump. Biden had previously served as the 47th Vice President under Barack Obama from January 2009 to January 2017. He signed the American Rescue Plan Act on March 11, 2021, providing $1.9 trillion in COVID-19 economic relief. He also signed the Infrastructure Investment and Jobs Act on November 15, 2021.",
+    "publication_date": "2022-01-01",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Factually accurate Biden presidency with verifiable dates and legislation.",
+    "known_inconsistencies": []
+  },
+  {
+    "title": "Clinton Presidency — Accurate Record",
+    "text": "Bill Clinton was elected the 42nd President of the United States in November 1992, defeating incumbent President George H.W. Bush. He was inaugurated on January 20, 1993. During his first term, he signed NAFTA into law on December 8, 1993. He was re-elected in 1996, defeating Bob Dole, and served a second term until January 20, 2001.",
+    "publication_date": "2020-01-01",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Factually accurate Clinton presidency with correct dates and elections.",
+    "known_inconsistencies": []
+  },
+  {
+    "title": "George W. Bush Presidency — Accurate Timeline",
+    "text": "George W. Bush was elected the 43rd President of the United States in the 2000 presidential election, defeating Democratic nominee Al Gore. He was inaugurated on January 20, 2001. Following the September 11, 2001 terrorist attacks, he signed the Authorization for Use of Military Force on September 18, 2001. He was re-elected in November 2004, defeating John Kerry, and served until January 20, 2009.",
+    "publication_date": "2020-01-01",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Factually accurate Bush W presidency with verifiable election and legislation dates.",
+    "known_inconsistencies": []
+  },
+  {
+    "title": "Trump First Term — Accurate Record",
+    "text": "Donald Trump was inaugurated as the 45th President of the United States on January 20, 2017, having defeated Hillary Clinton in the November 2016 election. He signed the Tax Cuts and Jobs Act into law on December 22, 2017. The House of Representatives voted to impeach him on December 18, 2019, but the Senate acquitted him on February 5, 2020. He was defeated in the 2020 presidential election by Joe Biden.",
+    "publication_date": "2021-01-01",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Factually accurate Trump first term with correct impeachment and election timeline.",
+    "known_inconsistencies": []
+  },
+  {
+    "title": "George H.W. Bush Presidency — Accurate Timeline",
+    "text": "George H.W. Bush was inaugurated as the 41st President of the United States on January 20, 1989. During his presidency, the Berlin Wall fell on November 9, 1989. He led the United States in the Gulf War, which began in August 1990 after Iraq invaded Kuwait; the ceasefire was declared on February 28, 1991. He was defeated in the 1992 presidential election by Bill Clinton.",
+    "publication_date": "2020-01-01",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Factually accurate H.W. Bush presidency with correct Gulf War and election dates.",
+    "known_inconsistencies": []
+  },
+  {
+    "title": "Reagan Presidency — Accurate Timeline",
+    "text": "Ronald Reagan was inaugurated as the 40th President of the United States on January 20, 1981, defeating incumbent President Jimmy Carter. He signed the Economic Recovery Tax Act on August 13, 1981. On June 12, 1987, he delivered his famous Berlin Wall speech calling on Mikhail Gorbachev to 'tear down this wall.' He served two full terms, leaving office on January 20, 1989.",
+    "publication_date": "2020-01-01",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Factually accurate Reagan presidency with correct legislation and speech dates.",
+    "known_inconsistencies": []
+  },
+  {
+    "title": "Carter Presidency — Accurate Timeline",
+    "text": "Jimmy Carter was inaugurated as the 39th President of the United States on January 20, 1977. He presided over the Camp David Accords, signed on September 17, 1978, brokering peace between Egypt and Israel. The Iranian hostage crisis began on November 4, 1979, when Iranian militants seized the U.S. Embassy in Tehran. The crisis lasted until Carter's final day in office on January 20, 1981.",
+    "publication_date": "2020-01-01",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Factually accurate Carter presidency with correct treaty and hostage crisis dates.",
+    "known_inconsistencies": []
+  },
+  {
+    "title": "Obama Second Term — Accurate Timeline",
+    "text": "Barack Obama was re-elected as the 44th President on November 6, 2012, defeating Republican nominee Mitt Romney. He was inaugurated for his second term on January 20, 2013. During his second term, he signed the Paris Agreement on Climate Change on April 22, 2016. His second term ended on January 20, 2017, when Donald Trump was inaugurated as the 45th President.",
+    "publication_date": "2020-01-01",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Factually accurate Obama second term with correct election, inauguration, and treaty dates.",
     "known_inconsistencies": []
   },
   {
@@ -21,6 +105,8 @@
     "publication_date": "2020-01-01",
     "source": "benchmark-fake",
     "expected_fake": true,
+    "inconsistency_types": ["entity_inconsistency"],
+    "notes": "Obama was Senator from 2005-2008 but was never Governor of Illinois — he cannot hold both legislative and executive state offices simultaneously.",
     "known_inconsistencies": [
       "entity_inconsistency: Obama cannot be Senator and Governor simultaneously — incompatible roles"
     ]
@@ -31,6 +117,8 @@
     "publication_date": "2020-03-01",
     "source": "benchmark-fake",
     "expected_fake": true,
+    "inconsistency_types": ["date_mismatch", "future_as_past", "ordering_error"],
+    "notes": "Trump presidency interval is inverted (end 2017 before start 2021); 2025 forum described as recent past but article is from 2020.",
     "known_inconsistencies": [
       "ordering_error: Trump presidency interval is inverted — end date (2017) precedes start date (2021)",
       "future_as_past: 2025 forum described as past event but article publication date is 2020"
@@ -42,8 +130,156 @@
     "publication_date": "2020-01-01",
     "source": "benchmark-fake",
     "expected_fake": true,
+    "inconsistency_types": ["ordering_error"],
+    "notes": "Obama took office January 2009 but the text claims he won the election in November 2012 — office predates the election that supposedly granted it.",
     "known_inconsistencies": [
       "implicit_contradiction: Obama took office in January 2009 but won the election in November 2012 — office predates the election that supposedly granted it"
+    ]
+  },
+  {
+    "title": "Biden Presidency — Inverted Mandate Years",
+    "text": "Joe Biden served as the 46th President of the United States from January 20, 2017 to January 20, 2021. During his presidency he signed the American Rescue Plan providing COVID-19 economic relief. He had previously served as Vice President under Barack Obama and announced his candidacy for the 2020 election.",
+    "publication_date": "2022-01-01",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["date_mismatch"],
+    "notes": "Biden presidency dates (2017-2021) are actually Trump's dates; Biden was VP during 2009-2017 and President from 2021 onward.",
+    "known_inconsistencies": [
+      "date_mismatch: Biden presidency stated as 2017-2021, which were Donald Trump's years in office"
+    ]
+  },
+  {
+    "title": "Clinton Presidency — Wrong Mandate Years",
+    "text": "Bill Clinton served as the 42nd President of the United States from January 20, 1989 to January 20, 1993, winning the election by defeating Republican nominee Michael Dukakis. He signed NAFTA during his first term and pursued a centrist Democratic agenda. He was re-elected in 1996 for a second term.",
+    "publication_date": "2020-01-01",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["date_mismatch"],
+    "notes": "1989-1993 were George H.W. Bush's dates; Clinton served 1993-2001 after defeating Bush in 1992; Michael Dukakis lost to Bush in 1988, not to Clinton.",
+    "known_inconsistencies": [
+      "date_mismatch: Clinton's stated term 1989-1993 belongs to George H.W. Bush",
+      "entity_inconsistency: Clinton did not defeat Dukakis — Clinton defeated Bush in 1992"
+    ]
+  },
+  {
+    "title": "Bush Presidency — Wrong Inauguration Year",
+    "text": "George W. Bush was inaugurated as the 43rd President of the United States on January 20, 1997, following his victory over Al Gore in the 1996 presidential election. He served until January 20, 2005, when he began his second term. The September 11 attacks occurred during his presidency in 2001.",
+    "publication_date": "2020-01-01",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["date_mismatch", "ordering_error"],
+    "notes": "Bush W was inaugurated in 2001, not 1997; 1997 was Clinton's second term; the 1996 election was won by Clinton, not Bush; Bush defeated Gore in 2000.",
+    "known_inconsistencies": [
+      "date_mismatch: Bush W inaugurated in 1997 is incorrect — he was inaugurated in 2001",
+      "ordering_error: 1996 election winner stated as Bush but 1996 was won by Clinton"
+    ]
+  },
+  {
+    "title": "Biden — Impossible VP and Senator Dual Role",
+    "text": "Joe Biden served simultaneously as both U.S. Senator from Delaware and Vice President of the United States from January 2009 to January 2015. Holding both the legislative office of Senator and the executive office of Vice President concurrently, he worked with President Obama on healthcare reform and foreign policy initiatives.",
+    "publication_date": "2022-01-01",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["entity_inconsistency"],
+    "notes": "Biden resigned from the Senate on January 15, 2009, days before being sworn in as VP on January 20, 2009 — he could not hold both offices simultaneously.",
+    "known_inconsistencies": [
+      "entity_inconsistency: Biden cannot be Senator and VP simultaneously — he resigned from Senate before taking VP office"
+    ]
+  },
+  {
+    "title": "Clinton — Impossible Governor and President Dual Role",
+    "text": "Bill Clinton served simultaneously as both Governor of Arkansas and President of the United States from January 1993 to January 1996. While maintaining his gubernatorial duties in Little Rock, he managed federal affairs from Washington D.C. He signed NAFTA in 1993 during this dual executive tenure.",
+    "publication_date": "2020-01-01",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["entity_inconsistency"],
+    "notes": "Clinton resigned as Governor of Arkansas before becoming President; he could not simultaneously hold state executive and federal executive offices.",
+    "known_inconsistencies": [
+      "entity_inconsistency: Clinton cannot be Arkansas Governor and U.S. President simultaneously — he resigned as Governor before inauguration"
+    ]
+  },
+  {
+    "title": "Bush W — Impossible Governor and President Dual Role",
+    "text": "George W. Bush held the offices of both Governor of Texas and President of the United States concurrently from January 2001 to December 2001. He retained Texas gubernatorial authority while serving as the 43rd President, transferring power to Lieutenant Governor Rick Perry only in December 2001 after completing a legislative session.",
+    "publication_date": "2020-01-01",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["entity_inconsistency"],
+    "notes": "Bush resigned as Texas governor in January 2001 before becoming President; Rick Perry succeeded him immediately, not in December 2001.",
+    "known_inconsistencies": [
+      "entity_inconsistency: Bush W cannot be Texas Governor and U.S. President simultaneously — he resigned as Governor before inauguration in January 2001"
+    ]
+  },
+  {
+    "title": "Clinton Signs Law in 2004 — After Leaving Office",
+    "text": "During the Clinton administration, President Bill Clinton signed the landmark Bipartisan Campaign Reform Act in March 2004, addressing campaign finance abuses that had emerged during the 2000 election cycle. The Act was hailed as a major legislative achievement of Clinton's second term in office.",
+    "publication_date": "2020-01-01",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["future_as_past"],
+    "notes": "Clinton left office January 20, 2001; the BCRA was signed by George W. Bush in March 2002, not by Clinton in 2004.",
+    "known_inconsistencies": [
+      "future_as_past: Clinton signed a law in 2004 but his presidency ended in January 2001"
+    ]
+  },
+  {
+    "title": "Biden Signs Law in 2018 — Before His Presidency",
+    "text": "Joe Biden, during his presidency, signed the Families First Coronavirus Response Act in March 2018, one of the earliest federal responses to emerging public health threats. The legislation provided emergency paid leave and free testing provisions that became a model for future pandemic policy across all states.",
+    "publication_date": "2022-01-01",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["future_as_past"],
+    "notes": "Biden's presidency began January 20, 2021; in 2018 he was a private citizen. The Families First Act was signed by Trump in March 2020, not by Biden in 2018.",
+    "known_inconsistencies": [
+      "future_as_past: Biden signed a law in 2018 but his presidency did not begin until January 2021"
+    ]
+  },
+  {
+    "title": "Bush W Signs ACA in 2010 — After Leaving Office",
+    "text": "President George W. Bush signed the Affordable Care Act into law on March 23, 2010, fulfilling a campaign promise to reform the American healthcare system. The legislation passed after months of contentious congressional debate and provided coverage to millions of previously uninsured Americans nationwide.",
+    "publication_date": "2020-01-01",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["future_as_past"],
+    "notes": "Bush left office January 20, 2009; the ACA was signed by Barack Obama on March 23, 2010 — over a year after Bush's term ended.",
+    "known_inconsistencies": [
+      "future_as_past: Bush W signed a law on March 23, 2010, but his presidency ended in January 2009"
+    ]
+  },
+  {
+    "title": "Biden Elected in 2024 But Inaugurated in 2021",
+    "text": "Joe Biden took office as the 46th President of the United States on January 20, 2021, after winning the November 2024 presidential election against incumbent Donald Trump. His transition team prepared extensively during the weeks between the November election victory and the January inauguration ceremony.",
+    "publication_date": "2022-01-01",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["ordering_error"],
+    "notes": "Biden won the November 2020 election (not 2024) and took office January 20, 2021; the text places the election three years after the inauguration.",
+    "known_inconsistencies": [
+      "ordering_error: Biden inaugurated in January 2021 after winning a November 2024 election — inauguration precedes the election by 3+ years"
+    ]
+  },
+  {
+    "title": "Clinton Inaugurated in 1993 After Winning 1996 Election",
+    "text": "Bill Clinton was inaugurated as the 42nd President on January 20, 1993, having won the 1996 presidential election against Republican candidate Bob Dole. His victory in 1996 paved the way for his first term beginning in 1993, establishing him as a transformative figure in American politics.",
+    "publication_date": "2020-01-01",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["ordering_error"],
+    "notes": "Clinton won the 1992 election (defeating Bush), not the 1996 election, before his January 1993 inauguration; he won re-election in 1996 for his second term.",
+    "known_inconsistencies": [
+      "ordering_error: Clinton inaugurated January 1993 but attributed to winning the 1996 election — first term inauguration precedes the election that supposedly enabled it"
+    ]
+  },
+  {
+    "title": "Trump Signs Tax Bill Before Inauguration",
+    "text": "President-elect Donald Trump signed the Tax Cuts and Jobs Act into law on December 22, 2016, approximately one month before his inauguration on January 20, 2017. The tax reform bill had been drafted in the weeks following the November election and was fast-tracked through Congress with broad Republican support.",
+    "publication_date": "2021-01-01",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["ordering_error"],
+    "notes": "Trump was not yet President on December 22, 2016; TCJA was actually signed December 22, 2017 — a full year after inauguration, not a month before it.",
+    "known_inconsistencies": [
+      "ordering_error: Trump (President-elect) signed a law on December 22, 2016, one month before his January 20, 2017 inauguration — legislation signed before taking presidential office"
     ]
   }
 ]

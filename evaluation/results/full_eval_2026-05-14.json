@@ -1,0 +1,605 @@
+{
+  "generated_at": "2026-05-14T14:13:06.790914",
+  "pipeline": "spacy",
+  "threshold": 0.6,
+  "use_wikidata": false,
+  "benchmark": {
+    "metrics": {
+      "total": 25,
+      "tp": 4,
+      "tn": 7,
+      "fp": 3,
+      "fn": 11,
+      "precision": 0.5714,
+      "recall": 0.2667,
+      "f1": 0.3636,
+      "accuracy": 0.44,
+      "avg_tcs_true": 0.8056,
+      "avg_tcs_fake": 0.8055
+    },
+    "articles": [
+      {
+        "idx": 1,
+        "title": "Obama Presidency — Accurate Timeline",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Obama timeline with verifiable dates.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 3,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 50875.1
+      },
+      {
+        "idx": 2,
+        "title": "Obama Senate Career and Presidential Campaign",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Obama Senate and campaign timeline.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 4,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7462.9
+      },
+      {
+        "idx": 3,
+        "title": "Biden Presidency — Accurate Timeline",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Biden presidency with verifiable dates and legislation.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 1,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8611.2
+      },
+      {
+        "idx": 4,
+        "title": "Clinton Presidency — Accurate Record",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Clinton presidency with correct dates and elections.",
+        "predicted_fake": true,
+        "outcome": "FP",
+        "tcs": 0.0159,
+        "tcs_label": "Severe Violations (Likely Fake)",
+        "n_claims": 3,
+        "n_inconsistencies": 4,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (1992) does not match reference_kg interval [2009 -> 2013]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (1992) does not match reference_kg interval [2001 -> 2009]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (1992) does not match reference_kg interval [2009 -> 2013]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (1992) does not match reference_kg interval [2001 -> 2009]."
+          }
+        ],
+        "processing_time_ms": 8657.2
+      },
+      {
+        "idx": 5,
+        "title": "George W. Bush Presidency — Accurate Timeline",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Bush W presidency with verifiable election and legislation dates.",
+        "predicted_fake": true,
+        "outcome": "FP",
+        "tcs": 0.5397,
+        "tcs_label": "Moderately Consistent",
+        "n_claims": 5,
+        "n_inconsistencies": 3,
+        "coherence_factor": 0.8,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "implicit_contradiction",
+            "severity": "medium",
+            "description": "Implicit contradiction: 'John Kerry' started 'November' (2004) BEFORE 'January' (2009)."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (2000) does not match reference_kg interval [2001 -> 2009]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (2000) does not match reference_kg interval [2001 -> 2009]."
+          }
+        ],
+        "processing_time_ms": 8536.5
+      },
+      {
+        "idx": 6,
+        "title": "Trump First Term — Accurate Record",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Trump first term with correct impeachment and election timeline.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 5,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8214.6
+      },
+      {
+        "idx": 7,
+        "title": "George H.W. Bush Presidency — Accurate Timeline",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate H.W. Bush presidency with correct Gulf War and election dates.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 4,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8296.3
+      },
+      {
+        "idx": 8,
+        "title": "Reagan Presidency — Accurate Timeline",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Reagan presidency with correct legislation and speech dates.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 1,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7904.4
+      },
+      {
+        "idx": 9,
+        "title": "Carter Presidency — Accurate Timeline",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Carter presidency with correct treaty and hostage crisis dates.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 3,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7530.3
+      },
+      {
+        "idx": 10,
+        "title": "Obama Second Term — Accurate Timeline",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Obama second term with correct election, inauguration, and treaty dates.",
+        "predicted_fake": true,
+        "outcome": "FP",
+        "tcs": 0.5,
+        "tcs_label": "Insufficient Temporal Data",
+        "n_claims": 0,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 77.7
+      },
+      {
+        "idx": 11,
+        "title": "Obama Illinois Career — Fabricated Dual Role",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "entity_inconsistency"
+        ],
+        "notes": "Obama was Senator from 2005-2008 but was never Governor of Illinois — he cannot hold both legislative and executive state offices simultaneously.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 2,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "entity_inconsistency: Obama cannot be Senator and Governor simultaneously — incompatible roles"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7614.1
+      },
+      {
+        "idx": 12,
+        "title": "Trump Presidency — Inverted Dates and Future Event",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "date_mismatch",
+          "future_as_past",
+          "ordering_error"
+        ],
+        "notes": "Trump presidency interval is inverted (end 2017 before start 2021); 2025 forum described as recent past but article is from 2020.",
+        "predicted_fake": true,
+        "outcome": "TP",
+        "tcs": 0.5185,
+        "tcs_label": "Moderately Consistent",
+        "n_claims": 3,
+        "n_inconsistencies": 1,
+        "coherence_factor": 0.6667,
+        "known_inconsistencies": [
+          "ordering_error: Trump presidency interval is inverted — end date (2017) precedes start date (2021)",
+          "future_as_past: 2025 forum described as past event but article publication date is 2020"
+        ],
+        "detected_inconsistencies": [
+          {
+            "type": "future_as_past",
+            "severity": "high",
+            "description": "Event from 2021 presented as past, but article is from 2020: 'the United States'."
+          }
+        ],
+        "processing_time_ms": 10729.3
+      },
+      {
+        "idx": 13,
+        "title": "Obama Election Timeline — Reversed Cause and Effect",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error"
+        ],
+        "notes": "Obama took office January 2009 but the text claims he won the election in November 2012 — office predates the election that supposedly granted it.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 1,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "implicit_contradiction: Obama took office in January 2009 but won the election in November 2012 — office predates the election that supposedly granted it"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 6922.1
+      },
+      {
+        "idx": 14,
+        "title": "Biden Presidency — Inverted Mandate Years",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "date_mismatch"
+        ],
+        "notes": "Biden presidency dates (2017-2021) are actually Trump's dates; Biden was VP during 2009-2017 and President from 2021 onward.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 3,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "date_mismatch: Biden presidency stated as 2017-2021, which were Donald Trump's years in office"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7901.1
+      },
+      {
+        "idx": 15,
+        "title": "Clinton Presidency — Wrong Mandate Years",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "date_mismatch"
+        ],
+        "notes": "1989-1993 were George H.W. Bush's dates; Clinton served 1993-2001 after defeating Bush in 1992; Michael Dukakis lost to Bush in 1988, not to Clinton.",
+        "predicted_fake": true,
+        "outcome": "TP",
+        "tcs": 0.5,
+        "tcs_label": "Insufficient Temporal Data",
+        "n_claims": 0,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "date_mismatch: Clinton's stated term 1989-1993 belongs to George H.W. Bush",
+          "entity_inconsistency: Clinton did not defeat Dukakis — Clinton defeated Bush in 1992"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 71.6
+      },
+      {
+        "idx": 16,
+        "title": "Bush Presidency — Wrong Inauguration Year",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "date_mismatch",
+          "ordering_error"
+        ],
+        "notes": "Bush W was inaugurated in 2001, not 1997; 1997 was Clinton's second term; the 1996 election was won by Clinton, not Bush; Bush defeated Gore in 2000.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 3,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "date_mismatch: Bush W inaugurated in 1997 is incorrect — he was inaugurated in 2001",
+          "ordering_error: 1996 election winner stated as Bush but 1996 was won by Clinton"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7766.9
+      },
+      {
+        "idx": 17,
+        "title": "Biden — Impossible VP and Senator Dual Role",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "entity_inconsistency"
+        ],
+        "notes": "Biden resigned from the Senate on January 15, 2009, days before being sworn in as VP on January 20, 2009 — he could not hold both offices simultaneously.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 2,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "entity_inconsistency: Biden cannot be Senator and VP simultaneously — he resigned from Senate before taking VP office"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 11005.4
+      },
+      {
+        "idx": 18,
+        "title": "Clinton — Impossible Governor and President Dual Role",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "entity_inconsistency"
+        ],
+        "notes": "Clinton resigned as Governor of Arkansas before becoming President; he could not simultaneously hold state executive and federal executive offices.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 2,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "entity_inconsistency: Clinton cannot be Arkansas Governor and U.S. President simultaneously — he resigned as Governor before inauguration"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7498.8
+      },
+      {
+        "idx": 19,
+        "title": "Bush W — Impossible Governor and President Dual Role",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "entity_inconsistency"
+        ],
+        "notes": "Bush resigned as Texas governor in January 2001 before becoming President; Rick Perry succeeded him immediately, not in December 2001.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 0.73,
+        "tcs_label": "Moderately Consistent",
+        "n_claims": 5,
+        "n_inconsistencies": 1,
+        "coherence_factor": 0.8,
+        "known_inconsistencies": [
+          "entity_inconsistency: Bush W cannot be Texas Governor and U.S. President simultaneously — he resigned as Governor before inauguration in January 2001"
+        ],
+        "detected_inconsistencies": [
+          {
+            "type": "factual_contradiction",
+            "severity": "high",
+            "description": "Contradiction: 'the United States' and 'Rick Perry' both as 'December' in the same interval."
+          }
+        ],
+        "processing_time_ms": 8278.4
+      },
+      {
+        "idx": 20,
+        "title": "Clinton Signs Law in 2004 — After Leaving Office",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "future_as_past"
+        ],
+        "notes": "Clinton left office January 20, 2001; the BCRA was signed by George W. Bush in March 2002, not by Clinton in 2004.",
+        "predicted_fake": true,
+        "outcome": "TP",
+        "tcs": 0.0,
+        "tcs_label": "Severe Violations (Likely Fake)",
+        "n_claims": 1,
+        "n_inconsistencies": 1,
+        "coherence_factor": 0.0,
+        "known_inconsistencies": [
+          "future_as_past: Clinton signed a law in 2004 but his presidency ended in January 2001"
+        ],
+        "detected_inconsistencies": [
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Bill Clinton' [2004-03-01 -> 2000-01-01]."
+          }
+        ],
+        "processing_time_ms": 6840.0
+      },
+      {
+        "idx": 21,
+        "title": "Biden Signs Law in 2018 — Before His Presidency",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "future_as_past"
+        ],
+        "notes": "Biden's presidency began January 20, 2021; in 2018 he was a private citizen. The Families First Act was signed by Trump in March 2020, not by Biden in 2018.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 2,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "future_as_past: Biden signed a law in 2018 but his presidency did not begin until January 2021"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8096.3
+      },
+      {
+        "idx": 22,
+        "title": "Bush W Signs ACA in 2010 — After Leaving Office",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "future_as_past"
+        ],
+        "notes": "Bush left office January 20, 2009; the ACA was signed by Barack Obama on March 23, 2010 — over a year after Bush's term ended.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 1,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "future_as_past: Bush W signed a law on March 23, 2010, but his presidency ended in January 2009"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 6632.7
+      },
+      {
+        "idx": 23,
+        "title": "Biden Elected in 2024 But Inaugurated in 2021",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error"
+        ],
+        "notes": "Biden won the November 2020 election (not 2024) and took office January 20, 2021; the text places the election three years after the inauguration.",
+        "predicted_fake": true,
+        "outcome": "TP",
+        "tcs": 0.3333,
+        "tcs_label": "Multiple Inconsistencies (Suspicious)",
+        "n_claims": 2,
+        "n_inconsistencies": 1,
+        "coherence_factor": 0.5,
+        "known_inconsistencies": [
+          "ordering_error: Biden inaugurated in January 2021 after winning a November 2024 election — inauguration precedes the election by 3+ years"
+        ],
+        "detected_inconsistencies": [
+          {
+            "type": "future_as_past",
+            "severity": "high",
+            "description": "Event from 2024 presented as past, but article is from 2022: 'Donald Trump'."
+          }
+        ],
+        "processing_time_ms": 8088.1
+      },
+      {
+        "idx": 24,
+        "title": "Clinton Inaugurated in 1993 After Winning 1996 Election",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error"
+        ],
+        "notes": "Clinton won the 1992 election (defeating Bush), not the 1996 election, before his January 1993 inauguration; he won re-election in 1996 for his second term.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 1,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "ordering_error: Clinton inaugurated January 1993 but attributed to winning the 1996 election — first term inauguration precedes the election that supposedly enabled it"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 6575.4
+      },
+      {
+        "idx": 25,
+        "title": "Trump Signs Tax Bill Before Inauguration",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error"
+        ],
+        "notes": "Trump was not yet President on December 22, 2016; TCJA was actually signed December 22, 2017 — a full year after inauguration, not a month before it.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 1,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "ordering_error: Trump (President-elect) signed a law on December 22, 2016, one month before his January 20, 2017 inauguration — legislation signed before taking presidential office"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7894.9
+      }
+    ]
+  },
+  "liar": {},
+  "fakenewsnet": {},
+  "pipeline_comparison": {},
+  "pipeline_comparison_rows": [],
+  "boxplot": null
+}
