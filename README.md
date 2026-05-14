@@ -1,254 +1,300 @@
 # FakeNews-XAI
 
-## Overview
+**Detectarea explicabilă a inconsistențelor temporale în știrile politice folosind Grafuri de Cunoștințe Temporale și un scor de coerență (TCS).**
 
-Explainable Agentic AI system for Fake News Detection through Temporal Consistency Analysis.
-The system computes a **Temporal Coherence Score (TCS)** by extracting temporal facts from a
-news article, constructing a Temporal Knowledge Graph (TKG), and detecting internal and external
-inconsistencies across the article's timeline of claims.
-
-**Bachelor Thesis — Technical University of Cluj-Napoca (UTCN), 2026**  
-Author: Marius Pantea | Supervisors: Prof. Adrian Groza, Conf. Ioana Cheres
+Lucrare de licență — Universitatea Tehnică din Cluj-Napoca (UTCN), Facultatea de Automatică și Calculatoare, 2026  
+Autor: Marius Pantea | Coordonator: Prof. Adrian Groza | Co-coordonator: Conf. Ioana Cheres
 
 ---
 
-## Architecture
+## Descriere
 
-The pipeline consists of four sequential components:
+Sistemul analizează articole de știri politice și calculează un **Temporal Coherence Score (TCS)** — o valoare în intervalul [0, 1] care cuantifică coerența temporală a articolului. Un scor ridicat indică un articol consistent; un scor scăzut semnalează inconsistențe temporale care sugerează dezinformare.
+
+Pe lângă scor, sistemul generează:
+- lista inconsistențelor detectate (tip, severitate, descriere)
+- timeline cronologic a faptelor extrase
+- explicație în limbaj natural generată de un LLM local (XAI)
+
+---
+
+## Arhitectură
 
 ```
-Article Text
-     |
-     v
-[C1: Temporal Extraction]    spaCy NER  OR  LLM (Ollama)
-     |
-     v
-[C2: TKG Construction]       networkx MultiDiGraph — entities as nodes, temporal relations as edges
-     |
-     v
-[C3: Verification]           Internal consistency checks  +  External Wikidata SPARQL queries
-     |
-     v
-[C4: TCS Scoring]            Score in [0.0, 1.0] + structured natural-language explanation
+Articol de știri politice
+        |
+        v
+[C1 — Temporal Extraction]
+  Pipeline A: spaCy en_core_web_trf  (deterministic, Precision=0.75)
+  Pipeline B: Ollama llama3:8b        (LLM few-shot,  Recall=0.50)
+        |
+        v  TemporalFacts (subject, predicate, object, time)
+        |
+        v
+[C2 — TKG Construction]
+  TemporalKnowledgeGraph (networkx MultiDiGraph) — per articol
+  Neo4j Community Edition             — persistent, cross-article
+        |
+        v  TKG
+        |
+        v
+[C3 — Verification]
+  C3a: InternalVerifier   — cicluri, violări cauzale, erori de ordonare (V1–V7)
+  C3b: ExternalVerifier   — Wikidata SPARQL (P580/P582/P585) + Reference KG local
+  C3c: CrossArticleVerifier — conflicte cu articole anterioare (via Neo4j)
+        |
+        v  Inconsistencies (type, severity)
+        |
+        v
+[C4 — TCS Score Computation]
+  TCS = raw_tcs + coverage_factor × (raw_tcs − 0.5) × 0.3
+  raw_tcs = (1 − penalty_ratio) × score_coherence
+  SEVERITY: LOW=0.2  MEDIUM=0.5  HIGH=1.0  CRITICAL=1.5
+        |
+        v
+[XAI — LLM Explainer]
+  llama3:8b generează explicație în limbaj natural
+  Fallback: template-uri statice per tip de inconsistență
+        |
+        v
+OUTPUT: TCS Score + Label + Inconsistency List + Timeline + AI Explanation
 ```
 
-**C1 — Temporal Information Extraction**  
-Two interchangeable extractors produce normalized (subject, predicate, object, time) fact triples.
-Pipeline A uses a deterministic spaCy NER model; Pipeline B uses an LLM running locally via Ollama.
+---
 
-**C2 — Temporal Knowledge Graph Construction**  
-Facts are assembled into a `TemporalKnowledgeGraph` (networkx `MultiDiGraph`). Nodes represent
-named entities; directed edges carry temporal metadata and per-fact confidence scores.
+## Interpretarea scorului TCS
 
-**C3 — Verification**  
-`InternalVerifier` detects contradictions within the article's own timeline (overlapping date
-ranges, reversed event order). `ExternalVerifier` cross-references claims against Wikidata via
-SPARQL (temporal properties P580, P582, P585) and against a local Reference Knowledge Graph
-stored in `data/reference_kg/`.
-
-**C4 — TCS Scoring and Explainability**  
-`TCSCalculator` combines the coherence factor and inconsistency penalties into a single score.
-A structured explainer maps each inconsistency back to its source sentence for the UI.
-
-### TCS Score Bands
-
-| Score range | Label              | Interpretation              |
-|-------------|--------------------|-----------------------------|
-| 0.8 – 1.0   | Very Consistent    | Likely credible             |
-| 0.5 – 0.8   | Moderately Consistent | Minor temporal issues    |
-| 0.2 – 0.5   | Suspicious         | Multiple inconsistencies    |
-| 0.0 – 0.2   | Severe Violations  | Likely fabricated           |
+| Interval | Label | Semnificație |
+|---|---|---|
+| 0.8 – 1.0 | Highly Consistent (Likely True) | Fapte temporale coerente |
+| 0.5 – 0.8 | Moderately Consistent | Inconsistențe minore |
+| 0.2 – 0.5 | Multiple Inconsistencies (Suspicious) | Contradicții multiple |
+| 0.0 – 0.2 | Severe Violations (Likely Fake) | Inconsistențe critice |
+| = 0.5 (special) | Insufficient Temporal Data | 0 fapte temporale extrase |
 
 ---
 
-## Models
+## Rezultate evaluare (benchmark 84 articole, fără Wikidata)
 
-| Model ID          | Display Name            | Pipeline | Description                                              |
-|-------------------|-------------------------|----------|----------------------------------------------------------|
-| `en_core_web_trf` | spaCy Transformer       | spaCy    | RoBERTa-based NER — highest accuracy; default spaCy model |
-| `en_core_web_lg`  | spaCy Large             | spaCy    | Word-vector NER — faster inference, slightly lower accuracy |
-| `sciphi/triplex`  | Triplex (KG extraction) | LLM      | Fine-tuned for Knowledge Graph triplet extraction; default LLM model |
-| `fakenews-ner`    | FakeNews-NER (custom)   | LLM      | Custom model fine-tuned for temporal political NER       |
-
-All LLM models run locally through [Ollama](https://ollama.com) — no external API keys required.
-
+| Metric | Pipeline A (spaCy) | Pipeline B (LLM) |
+|---|---|---|
+| Precision | 0.625 | — |
+| Recall | 0.139 | — |
+| F1 | 0.227 | — |
+| Accuracy | 0.595 | — |
 ---
+## Setup
 
-## Features
+### Cerințe
 
-- Single article analysis with selectable pipeline and model
-- Side-by-side comparison of any two model/pipeline combinations on the same article
-- Interactive TCS gauge with animated score display
-- Per-sentence fact annotation with color-coded consistency status
-- Inconsistency list with severity levels and evidence excerpts
-- Temporal timeline chart (recharts)
-- Temporal Knowledge Graph visualization (react-force-graph-2d)
-- Fully on-premise — no cloud inference, no external API dependencies beyond public Wikidata SPARQL
+- Python 3.11+
+- Node.js 18+
+- [Ollama](https://ollama.com) instalat și pornit
+- [Neo4j Desktop](https://neo4j.com/download/) (opțional — pentru cross-article și cache Wikidata)
 
----
-
-## Quick Start
+### Instalare
 
 ```bash
-# Clone
+# Clonează repo-ul
 git clone https://github.com/Marius1608/FakeNews-XAI.git
 cd FakeNews-XAI
 
-# Create and activate a Python virtual environment
+# Creează și activează venv
 python -m venv venv
-source venv/bin/activate          # Linux / macOS / Git Bash
-# venv\Scripts\activate           # Windows PowerShell
+source venv/Scripts/activate        # Git Bash / Windows
+# source venv/bin/activate          # Linux / macOS
 
-# Install Python dependencies
+# Instalează dependențele Python
 pip install -r requirements.txt
 
-# Install spaCy models
+# Descarcă modelul spaCy
 python -m spacy download en_core_web_trf
-python -m spacy download en_core_web_lg
 
-# Configure environment
+# Descarcă modelul LLM (Ollama trebuie să fie pornit)
+ollama pull llama3
+
+# Configurează variabilele de mediu
 cp .env.example .env
-# Edit .env if you need to change models or ports — defaults work out of the box
-
-# Start all services
-./start.sh          # Linux / macOS / Git Bash
-.\start.ps1         # Windows PowerShell
+# Editează .env dacă vrei să schimbi porturile sau credențialele Neo4j
 ```
 
-The startup scripts check whether Ollama is running, pull any missing LLM models, then launch
-both the FastAPI backend and the React frontend.
+### Pornire
 
----
+```bash
+bash start.sh        # Git Bash / Linux / macOS
+.\start.ps1          # Windows PowerShell
+```
 
-## Manual Start
+Scriptul pornește automat backend-ul FastAPI și frontend-ul React.
 
-Open three separate terminals:
+### Pornire manuală (3 terminale)
 
-**Terminal 1 — Ollama (LLM server)**
+**Terminal 1 — Ollama**
 ```bash
 ollama serve
-ollama pull sciphi/triplex
 ```
 
-**Terminal 2 — FastAPI backend**
+**Terminal 2 — Backend FastAPI**
 ```bash
-source venv/bin/activate          # or venv\Scripts\activate on Windows
+source venv/Scripts/activate
 uvicorn backend.main:app --reload --port 8000
 ```
 
-**Terminal 3 — React frontend**
+**Terminal 3 — Frontend React**
 ```bash
 cd frontend
 npm install
 npm start
 ```
 
-| Service        | URL                              |
-|----------------|----------------------------------|
-| Frontend       | http://localhost:3000            |
-| API            | http://localhost:8000            |
-| Swagger UI     | http://localhost:8000/docs       |
+| Serviciu | URL |
+|---|---|
+| Frontend | http://localhost:3000 |
+| Backend API | http://localhost:8000 |
+| Swagger UI | http://localhost:8000/docs |
+
+### Neo4j (opțional)
+
+1. Instalează Neo4j Desktop
+2. Creează o bază de date locală (ex: `fake-news`) și pornește-o
+3. Setează în `.env`:
+```
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=parola_ta
+```
+Fără Neo4j, pipeline-ul rulează fără persistență (C3c omis).
+
+---
+
+## Configurare (.env)
+
+| Variabilă | Default | Descriere |
+|---|---|---|
+| `SPACY_DEFAULT_MODEL` | `en_core_web_trf` | Modelul spaCy implicit |
+| `LLM_DEFAULT_MODEL` | `llama3` | Modelul Ollama implicit |
+| `OLLAMA_HOST` | `http://localhost:11434` | URL server Ollama |
+| `WIKIDATA_ENDPOINT` | `https://query.wikidata.org/sparql` | Endpoint SPARQL Wikidata |
+| `NEO4J_URI` | `bolt://localhost:7687` | URI Neo4j |
+| `NEO4J_USER` | `neo4j` | User Neo4j |
+| `NEO4J_PASSWORD` | — | Parolă Neo4j |
+| `CORS_ORIGINS` | `http://localhost:3000` | Origini permise CORS |
 
 ---
 
 ## API Endpoints
 
-| Method | Path       | Description                                                |
-|--------|------------|------------------------------------------------------------|
-| POST   | `/analyze` | Analyze a single article — returns TCS score + explanation |
-| POST   | `/compare` | Run any two model/pipeline combinations side by side       |
-| GET    | `/models`  | List available models per pipeline                         |
-| GET    | `/health`  | Server health check and active component configuration     |
+| Metodă | Path | Descriere |
+|---|---|---|
+| POST | `/analyze` | Analizează un articol → TCS + inconsistențe + explicație |
+| POST | `/compare` | Compară Pipeline A vs B pe același articol |
+| POST | `/analyze-batch` | Analizează mai multe articole simultan |
+| GET | `/articles` | Istoricul articolelor salvate în Neo4j |
+| GET | `/health` | Status backend + componente active |
 
-### Analyze request
+### Exemplu cerere `/analyze`
 
 ```json
-POST /analyze
 {
-  "text": "The president signed the treaty on March 15, 2022 ...",
-  "title": "Treaty Signing",
-  "publication_date": "2022-03-15",
+  "text": "Obama served as president from 2009 to 2017...",
+  "title": "Obama Presidency",
+  "publication_date": "2024-01-01",
   "pipeline": "spacy",
-  "model": "en_core_web_trf"
+  "use_wikidata": true,
+  "persist": true
 }
 ```
 
-`pipeline` is `"spacy"` or `"llm"`. `model` is optional — omitting it uses the pipeline default.
+---
 
-### Compare request
+## Evaluare
 
-```json
-POST /compare
-{
-  "text": "...",
-  "pipeline_a": "spacy",
-  "model_a": "en_core_web_trf",
-  "pipeline_b": "llm",
-  "model_b": "sciphi/triplex"
-}
+```bash
+# Benchmark complet (fără Wikidata, rapid)
+python evaluation/run_evaluation.py --no-wikidata --benchmark-only
+
+# Benchmark complet cu Wikidata (recomandat pentru teză)
+python evaluation/run_evaluation.py
+
+# Evaluare LIAR2
+python evaluation/run_liar_eval.py --n 100 --split test
+
+# Comparație Pipeline A vs B
+python evaluation/run_evaluation.py --benchmark-only
 ```
 
-The response includes both full results plus a `score_delta` and an `agreement` summary string.
+Rezultatele se salvează în `evaluation/results/` și figurile în `evaluation/figures/`.
 
 ---
 
-## Configuration
-
-Copy `.env.example` to `.env`. All variables have working defaults for local development.
-
-| Variable                 | Default                             | Description                                      |
-|--------------------------|-------------------------------------|--------------------------------------------------|
-| `SPACY_MODELS`           | `en_core_web_trf,en_core_web_lg`    | Comma-separated spaCy models exposed by the API  |
-| `SPACY_DEFAULT_MODEL`    | `en_core_web_trf`                   | spaCy model pre-selected in the UI               |
-| `LLM_MODELS`             | `sciphi/triplex,fakenews-ner`       | Comma-separated Ollama models exposed by the API |
-| `LLM_DEFAULT_MODEL`      | `sciphi/triplex`                    | LLM model pre-selected in the UI                 |
-| `OLLAMA_HOST`            | `http://localhost:11434`            | Ollama server URL                                |
-| `OLLAMA_TIMEOUT_SECONDS` | `120`                               | Seconds before an Ollama request times out       |
-| `WIKIDATA_ENDPOINT`      | `https://query.wikidata.org/sparql` | SPARQL endpoint for external verification        |
-| `CORS_ORIGINS`           | `http://localhost:3000`             | Allowed origins for the FastAPI CORS policy      |
-
----
-
-## Project Structure
+## Structura proiectului
 
 ```
 FakeNews-XAI/
 ├── backend/
-│   ├── config.py                   # Centralized settings — all values come from .env
-│   ├── main.py                     # FastAPI app entry point, CORS, router registration
+│   ├── config.py                    # Setări centralizate din .env
+│   ├── main.py                      # FastAPI app, CORS, routere
+│   ├── dependencies.py              # Injectare dependențe (Neo4j store)
 │   ├── pipeline/
-│   │   ├── orchestrator.py         # C1 → C2 → C3 → C4 coordinator
-│   │   ├── extraction/             # C1: SpacyExtractor, LLMExtractor, abstract base
-│   │   ├── graph/                  # C2: TKGBuilder, TemporalKnowledgeGraph, domain models
-│   │   ├── verification/           # C3: InternalVerifier, ExternalVerifier (Wikidata)
-│   │   └── scoring/                # C4: TCSCalculator, structured Explainer
-│   └── routers/                    # FastAPI route handlers (analyze, compare, health)
+│   │   ├── orchestrator.py          # C1→C2→C3→C4 + XAI coordinator
+│   │   ├── extraction/              # C1: SpacyExtractor, LLMExtractor, base
+│   │   ├── graph/                   # C2: TKGBuilder, TemporalKnowledgeGraph,
+│   │   │                            #     Neo4jTKGStore, models
+│   │   ├── verification/            # C3: InternalVerifier, ExternalVerifier,
+│   │   │                            #     CrossArticleVerifier, wikidata client
+│   │   └── scoring/                 # C4: TCSCalculator, LLMExplainer, Explainer
+│   └── routers/                     # FastAPI route handlers
 ├── frontend/
-│   ├── src/
-│   │   ├── components/             # React components: ArticleInput, TCSScoreDisplay,
-│   │   │                           #   TextHighlight, InconsistencyList, Timeline, TemporalGraph
-│   │   ├── utils/modelLabels.ts    # Human-readable model display names and descriptions
-│   │   ├── api/client.ts           # Axios wrappers for all backend endpoints
-│   │   └── types/api.ts            # TypeScript interfaces mirroring backend Pydantic schemas
-│   └── package.json
+│   └── src/
+│       ├── components/              # AnalyzeTab, CompareTab, BatchTab,
+│       │                            #   ArticleHistory, TCSScoreDisplay,
+│       │                            #   Timeline, TemporalGraph, TextHighlight
+│       ├── api.ts                   # Client HTTP pentru backend
+│       └── theme.ts                 # Tema MUI
+├── evaluation/
+│   ├── run_evaluation.py            # Suită completă evaluare
+│   ├── run_benchmark.py             # Benchmark manual izolat
+│   ├── run_liar_eval.py             # Evaluare LIAR2
+│   ├── benchmark_articles.json      # 84 articole cu ground truth
+│   ├── results/                     # Rezultate JSON
+│   └── figures/                     # Boxplot-uri PNG
 ├── data/
-│   ├── datasets/                   # Evaluation datasets
-│   └── reference_kg/              # Local Reference Knowledge Graph for C3 verification
+│   └── reference_kg/
+│       └── verified_events.json     # Reference KG local (16 entități)
+├── docs/
+│   ├── feature_extraction.md
+│   ├── feature_tkg.md
+│   ├── feature_verification.md
+│   ├── feature_tcs.md
+│   ├── feature_explainability.md
+│   ├── feature_neo4j.md
+│   └── feature_evaluation.md
 ├── .env.example
 ├── requirements.txt
-├── start.ps1                       # Windows PowerShell startup script
-└── start.sh                        # Linux / macOS / Git Bash startup script
+├── start.sh
+└── start.ps1
 ```
 
 ---
 
-## Tech Stack
+## Stack tehnologic
 
-| Layer    | Technology                                                              |
-|----------|-------------------------------------------------------------------------|
-| Backend  | Python 3.11, FastAPI, uvicorn, spaCy 3, networkx, python-dotenv         |
-| LLM      | Ollama (local inference — no cloud dependency)                          |
-| External | Wikidata SPARQL (public endpoint, no API key required)                  |
-| Frontend | React 19, TypeScript, Material UI v9, recharts, react-force-graph-2d, axios |
+| Strat | Tehnologie |
+|---|---|
+| Backend | Python 3.11, FastAPI, uvicorn, Pydantic |
+| NLP | spaCy `en_core_web_trf` (RoBERTa-based) |
+| LLM | Ollama `llama3:8b` (inferență locală, GPU) |
+| Graph | networkx MultiDiGraph + Neo4j Community Edition |
+| Verificare externă | Wikidata SPARQL (endpoint public, fără API key) |
+| Frontend | React 19, TypeScript, Material UI v6, recharts |
+| Evaluare | pytest, matplotlib, seaborn |
 
 ---
+
+## Datasets
+
+| Dataset | Tip | Utilizare |
+|---|---|---|
+| Benchmark manual | 84 articole sintetice cu ground truth | Evaluare principală (F1, Precision, Recall) |
+| LIAR2 | ~23K statements PolitiFact (2023) | Distribuție TCS per label |
+| VER-1 (Conf. Cheres) | Articole românești | Evaluare multilingvă (future work) |
