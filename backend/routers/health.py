@@ -1,4 +1,4 @@
-"""Router — GET /health: status server si disponibilitate componente."""
+"""Router — GET /health: server status and component availability."""
 
 from __future__ import annotations
 

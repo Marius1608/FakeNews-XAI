@@ -1,4 +1,4 @@
-"""Structuri de date partajate de toate cele 4 componente TCS."""
+"""Shared data structures used by all four TCS pipeline components."""
 
 from __future__ import annotations
 from dataclasses import dataclass, field

@@ -1,4 +1,4 @@
-"""C3a — Verificare Interna: cicluri temporale, violari cauzale, ordering errors."""
+"""C3a — Internal Verification: temporal cycles, causal violations, ordering errors."""
 
 from __future__ import annotations
 

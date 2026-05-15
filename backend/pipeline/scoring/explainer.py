@@ -1,4 +1,4 @@
-"""C4 — Explainer: generare explicatii in limbaj natural pentru rezultatul TCS."""
+"""C4 — Explainer: generates natural language explanations for the TCS result."""
 
 from __future__ import annotations
 

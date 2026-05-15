@@ -1,7 +1,7 @@
-"""Teste pytest pentru pipeline-ul TCS.
+"""Pytest tests for the TCS pipeline.
 
-Rulare: pytest backend/tests/test_pipeline.py -v
-Nu necesita Ollama sau Neo4j pornite.
+Run: pytest backend/tests/test_pipeline.py -v
+Does not require Ollama or Neo4j to be running.
 """
 
 from __future__ import annotations
@@ -84,7 +84,7 @@ def _make_fact(
 # // section test_temporal_parser
 
 class TestTemporalParser:
-    """Teste pentru normalizarea expresiilor temporale."""
+    """Tests for temporal expression normalization."""
 
     def setup_method(self):
         self.parser = TemporalParser()
@@ -127,13 +127,13 @@ class TestTemporalParser:
     def test_full_date_confidence(self):
         result = self.parser.parse("March 23, 2010")
         assert result is not None
-        # Data completa -> confidence >= 0.9
+        # Full date -> confidence >= 0.9
         assert result.confidence >= 0.9
 
     def test_bare_year_confidence_lower(self):
         result = self.parser.parse("2009")
         assert result is not None
-        # Doar an -> confidence <= 0.6
+        # Year only -> confidence <= 0.6
         assert result.confidence <= 0.6
 
     def test_empty_string_returns_none(self):
@@ -142,7 +142,7 @@ class TestTemporalParser:
 
     def test_unparseable_returns_expr_with_none_date(self):
         result = self.parser.parse("some random text without date")
-        # Returneaza TemporalExpression, dar normalized_date=None
+        # Returns a TemporalExpression but with normalized_date=None
         assert result is not None
         assert result.normalized_date is None
         assert result.confidence == 0.0
@@ -151,12 +151,12 @@ class TestTemporalParser:
 # // section test_spacy_extractor
 
 def _first_available_spacy_model() -> Optional[str]:
-    """Returneaza primul model spaCy instalat, sau None daca nu exista niciunul."""
+    """Returns the first installed spaCy model, or None if none is installed."""
     import spacy
     installed = spacy.util.get_installed_models()
     if not installed:
         return None
-    # Preferinta: trf > lg > sm > orice altceva
+    # Preference order: trf > lg > sm > any other
     for preferred in ("en_core_web_trf", "en_core_web_lg", "en_core_web_sm"):
         if preferred in installed:
             return preferred
@@ -166,15 +166,15 @@ def _first_available_spacy_model() -> Optional[str]:
 _SPACY_MODEL = _first_available_spacy_model()
 _spacy_available = pytest.mark.skipif(
     _SPACY_MODEL is None,
-    reason="Niciun model spaCy instalat",
+    reason="No spaCy model installed",
 )
 
 
 class TestSpacyExtractor:
-    """Teste extractor spaCy pe articolul Obama.
+    """Tests for the spaCy extractor on the Obama article.
 
-    Foloseste primul model spaCy disponibil (nu neaparat en_core_web_trf).
-    Sarind daca niciun model nu e instalat.
+    Uses the first available spaCy model (not necessarily en_core_web_trf).
+    Skipped if no spaCy model is installed.
     """
 
     @_spacy_available
@@ -182,7 +182,7 @@ class TestSpacyExtractor:
         from backend.pipeline.extraction.spacy_extractor import SpacyExtractor
         extractor = SpacyExtractor(model_name=_SPACY_MODEL)
         facts = extractor.extract(OBAMA_ARTICLE)
-        assert len(facts) >= 1, "Extractor trebuie sa gaseasca cel putin un fapt temporal"
+        assert len(facts) >= 1, "Extractor must find at least one temporal fact"
 
     @_spacy_available
     def test_facts_have_temporal_anchor(self):
@@ -193,7 +193,7 @@ class TestSpacyExtractor:
             f for f in facts
             if f.time_point or f.time_start or f.time_end
         ]
-        assert len(temporal) >= 1, "Cel putin un fapt trebuie sa aiba ancora temporala"
+        assert len(temporal) >= 1, "At least one fact must have a temporal anchor"
 
     @_spacy_available
     def test_facts_have_valid_predicates(self):
@@ -216,7 +216,7 @@ class TestSpacyExtractor:
 # // section test_tcs_formula
 
 class TestTCSFormula:
-    """Teste pentru formula TCS din TCSCalculator.compute()."""
+    """Tests for the TCS formula in TCSCalculator.compute()."""
 
     def setup_method(self):
         self.calc = TCSCalculator()
@@ -232,7 +232,7 @@ class TestTCSFormula:
         assert result.score >= 0.8
 
     def test_zero_claims_returns_score_half(self):
-        # n_claims=0 → caz special: scor 0.5 (insufficient data)
+        # n_claims=0 → special case: score 0.5 (insufficient data)
         result = self.calc.compute(
             n_claims=0,
             inconsistencies=[],
@@ -248,7 +248,7 @@ class TestTCSFormula:
             Inconsistency(
                 inconsistency_type=InconsistencyType.DATE_MISMATCH,
                 severity=Severity.CRITICAL,
-                description=f"Inconsistenta {i}",
+                description=f"Inconsistency {i}",
                 verified_by="internal",
             )
             for i in range(4)
@@ -265,7 +265,7 @@ class TestTCSFormula:
     def test_score_clamped_to_zero_one(self):
         from backend.pipeline.graph.models import Inconsistency
 
-        # Forteaza conditii extreme
+        # Force extreme conditions
         inc = Inconsistency(
             inconsistency_type=InconsistencyType.TEMPORAL_CYCLE,
             severity=Severity.CRITICAL,
@@ -316,7 +316,7 @@ class TestTCSFormula:
 # // section test_internal_verifier
 
 class TestInternalVerifier:
-    """Teste pentru InternalVerifier: V7 entity consistency si V6 future_as_past."""
+    """Tests for InternalVerifier: V7 entity consistency and V6 future_as_past."""
 
     def setup_method(self):
         self.verifier = InternalVerifier()
@@ -326,7 +326,7 @@ class TestInternalVerifier:
         return self.builder.build(facts)
 
     def test_v7_entity_compound_incompatible_roles(self):
-        # Obama ca "Senator and Governor" simultan — roluri incompatibile intr-un singur fapt
+        # Obama as "Senator and Governor" simultaneously — incompatible roles in a single fact
         fact = _make_fact(
             subject="Barack Obama",
             predicate=RelationType.HOLDS_POSITION,
@@ -344,7 +344,7 @@ class TestInternalVerifier:
         assert any("Obama" in i.description for i in entity_incs)
 
     def test_v7_entity_separate_incompatible_roles_overlap(self):
-        # Doua fapte separate: Obama Senator 2005-2008, Obama Governor 2005-2008
+        # Two separate facts: Obama Senator 2005-2008, Obama Governor 2005-2008
         fact_senator = _make_fact(
             subject="Barack Obama",
             predicate=RelationType.HOLDS_POSITION,
@@ -369,7 +369,7 @@ class TestInternalVerifier:
         assert len(entity_incs) >= 1
 
     def test_v7_compatible_roles_no_inconsistency(self):
-        # Senator si Profesor — roluri compatibile (nu sunt in INCOMPATIBLE_POSITIONS)
+        # Senator and Professor — compatible roles (not in INCOMPATIBLE_POSITIONS)
         fact1 = _make_fact(
             subject="John Doe",
             predicate=RelationType.HOLDS_POSITION,
@@ -394,7 +394,7 @@ class TestInternalVerifier:
         assert len(entity_incs) == 0
 
     def test_v6_future_as_past_detected(self):
-        # Articol publicat in 2020, fapt cu data 2025 fara indicatori de viitor
+        # Article published in 2020, fact dated 2025 with no future tense indicators
         pub_date = datetime(2020, 1, 1)
         fact = _make_fact(
             subject="John Smith",
@@ -414,7 +414,7 @@ class TestInternalVerifier:
         assert "2020" in future_incs[0].description
 
     def test_v6_future_indicator_skipped(self):
-        # Aceeasi data viitoare, dar propozitia contine "will be" — nu e inconsistenta
+        # Same future date, but the sentence contains "will be" — not an inconsistency
         pub_date = datetime(2020, 1, 1)
         fact = _make_fact(
             subject="John Smith",
@@ -432,7 +432,7 @@ class TestInternalVerifier:
         assert len(future_incs) == 0
 
     def test_v6_past_fact_no_inconsistency(self):
-        # Fapt in trecut fata de data publicarii — nu trebuie detectat ca future_as_past
+        # Fact in the past relative to publication date — must not be flagged as future_as_past
         pub_date = datetime(2020, 1, 1)
         fact = _make_fact(
             subject="Barack Obama",
@@ -449,7 +449,7 @@ class TestInternalVerifier:
         assert len(future_incs) == 0
 
     def test_coherence_score_range(self):
-        # score_coherence trebuie sa fie in [0, 1] indiferent de input
+        # score_coherence must be in [0, 1] regardless of input
         fact = _make_fact(
             subject="A", predicate=RelationType.HOLDS_POSITION, obj="B",
             time_start=datetime(2010, 1, 1), time_end=datetime(2009, 1, 1),  # inversat
@@ -461,7 +461,7 @@ class TestInternalVerifier:
 
 # // section test_orchestrator_no_neo4j
 
-# Fapte Obama predefinite folosite de orchestrator mock — independente de spaCy
+# Predefined Obama facts used by the mock orchestrator — independent of spaCy
 _OBAMA_FACTS = [
     _make_fact(
         subject="Barack Obama",
@@ -490,12 +490,12 @@ _OBAMA_FACTS = [
 
 
 class TestOrchestratorNoNeo4j:
-    """Teste orchestrator end-to-end fara Neo4j, fara Ollama, fara spaCy (extractorul e mockat)."""
+    """End-to-end orchestrator tests without Neo4j, Ollama, or spaCy (extractor is mocked)."""
 
     @pytest.fixture(autouse=True)
     def mock_dependencies(self):
         # Mock Ollama: LLMExplainer.is_available() -> False
-        # Mock spaCy extractor: extract() -> fapte Obama predefinite
+        # Mock spaCy extractor: extract() -> predefined Obama facts
         with (
             patch(
                 "backend.pipeline.scoring.llm_explainer.LLMExplainer.is_available",
@@ -536,7 +536,7 @@ class TestOrchestratorNoNeo4j:
             persistent_store=None,
         )
         result = orch.run(OBAMA_ARTICLE)
-        # Fara Neo4j, article_id trebuie sa fie None
+        # Without Neo4j, article_id must be None
         assert result.article_id is None
 
     def test_run_cross_article_empty_without_store(self):
@@ -555,13 +555,13 @@ class TestOrchestratorNoNeo4j:
 
         orch = PipelineOrchestrator(use_wikidata=False, extractor_name="spacy")
         result = orch.run(OBAMA_ARTICLE)
-        # Articol consistent — scor trebuie sa fie > 0.4
-        assert result.score > 0.4, f"Scor prea mic pentru articol consistent: {result.score}"
+        # Consistent article — score must be > 0.4
+        assert result.score > 0.4, f"Score too low for a consistent article: {result.score}"
 
     def test_run_empty_article_returns_empty_result(self):
         from backend.pipeline.orchestrator import PipelineOrchestrator
 
-        # Suprascrie mock-ul autouse cu o lista goala pentru acest test
+        # Override the autouse mock with an empty list for this test
         with patch(
             "backend.pipeline.extraction.spacy_extractor.SpacyExtractor.extract",
             return_value=[],
@@ -574,14 +574,14 @@ class TestOrchestratorNoNeo4j:
                 source="test",
             )
             result = orch.run(article_no_dates)
-            # Fara fapte temporale: n_temporal_claims=0
+            # No temporal facts: n_temporal_claims=0
             assert result.n_temporal_claims == 0
 
     def test_run_with_mock_neo4j_store(self):
         from backend.pipeline.orchestrator import PipelineOrchestrator
         from backend.pipeline.graph.base_store import AbstractTKGStore
 
-        # Mock store: get_facts_for_entity returneaza lista goala (necesar pentru CrossArticleVerifier)
+        # Mock store: get_facts_for_entity returns an empty list (required by CrossArticleVerifier)
         mock_store = MagicMock(spec=AbstractTKGStore)
         mock_store.get_facts_for_entity.return_value = []
         mock_store.get_all_facts.return_value = []
@@ -594,7 +594,7 @@ class TestOrchestratorNoNeo4j:
         )
         result = orch.run(OBAMA_ARTICLE)
 
-        # Cu persistent_store setat si fapte extrase, add_facts trebuie apelat
+        # With persistent_store set and facts extracted, add_facts must be called
         assert result.n_temporal_claims > 0
         mock_store.add_facts.assert_called_once()
         assert result.article_id is not None

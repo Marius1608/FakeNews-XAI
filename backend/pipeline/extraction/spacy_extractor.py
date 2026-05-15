@@ -1,4 +1,4 @@
-"""C1 — Pipeline A: extracție deterministică de fapte temporale cu spaCy (en_core_web_trf)."""
+"""C1 — Pipeline A: deterministic temporal fact extraction with spaCy (en_core_web_trf)."""
 
 from __future__ import annotations
 

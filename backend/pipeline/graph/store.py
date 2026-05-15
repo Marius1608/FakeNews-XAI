@@ -1,4 +1,4 @@
-"""C2 — Temporal Knowledge Graph Storage: G = (E, R, T, F) pe networkx MultiDiGraph."""
+"""C2 — Temporal Knowledge Graph Storage: G = (E, R, T, F) on a networkx MultiDiGraph."""
 
 from __future__ import annotations
 

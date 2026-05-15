@@ -1,4 +1,4 @@
-"""C3 — Client SPARQL pentru Wikidata (cautare entitati + fapte temporale P580/P582/P585)."""
+"""C3 — SPARQL client for Wikidata (entity search + temporal facts P580/P582/P585)."""
 
 from __future__ import annotations
 

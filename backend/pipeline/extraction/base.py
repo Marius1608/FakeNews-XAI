@@ -1,4 +1,4 @@
-"""C1 — Interfata abstracta pentru extractoarele de fapte temporale."""
+"""C1 — Abstract interface for temporal fact extractors."""
 
 from __future__ import annotations
 from abc import ABC, abstractmethod

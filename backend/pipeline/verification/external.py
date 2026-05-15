@@ -1,4 +1,4 @@
-"""C3b — Verificare Externa: compara TKG cu Wikidata si Reference KG."""
+"""C3b — External Verification: compares TKG against Wikidata and the Reference KG."""
 
 from __future__ import annotations
 

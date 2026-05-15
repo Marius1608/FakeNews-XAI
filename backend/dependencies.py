@@ -1,4 +1,4 @@
-"""Dependinte partajate — singleton-uri reutilizate de routers (analyze, compare)."""
+"""Shared dependencies — singletons reused by the analyze and compare routers."""
 
 from __future__ import annotations
 

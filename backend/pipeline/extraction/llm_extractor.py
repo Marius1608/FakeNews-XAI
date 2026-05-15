@@ -1,4 +1,4 @@
-"""C1 — Pipeline B: extracție de fapte temporale prin LLM local (Ollama)."""
+"""C1 — Pipeline B: temporal fact extraction via local LLM (Ollama)."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Router — POST /analyze: primeste articol, returneaza TCS + explicatii."""
+"""Router — POST /analyze: receives an article, returns TCS score and explanations."""
 
 from __future__ import annotations
 

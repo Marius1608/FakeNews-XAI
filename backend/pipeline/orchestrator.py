@@ -1,4 +1,4 @@
-"""Pipeline Orchestrator — leaga C1→C2→C3→C4 end-to-end: Article → TCSResult."""
+"""Pipeline Orchestrator — links C1→C2→C3→C4 end-to-end: Article → TCSResult."""
 
 from __future__ import annotations
 
