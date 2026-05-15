@@ -35,7 +35,7 @@ FIGURES_DIR = EVAL_DIR / "figures"
 LABEL_ORDER  = ["true", "mostly-true", "half-true", "barely-true", "false", "pants-fire"]
 FAKE_LABELS  = {"false", "pants-fire", "barely-true"}
 TRUE_LABELS  = {"true", "mostly-true", "half-true"}
-DEFAULT_THRESHOLD = 0.6
+DEFAULT_THRESHOLD = 0.55
 
 
 # section: pipeline helpers

@@ -66,6 +66,25 @@ TEMPORAL_VERBS = {
     "schedule", "plan", "expire", "renew",
 }
 
+SEQUENCE_VERBS = {
+    "precede", "predate", "antedate",
+    "follow", "succeed",
+}
+
+SEQUENCE_COMPOUND_PHRASES = [
+    ("come before",   RelationType.PRECEDED),
+    ("prior to",      RelationType.PRECEDED),
+    ("before sign",   RelationType.PRECEDED),
+    ("before pass",   RelationType.PRECEDED),
+    ("before approv", RelationType.PRECEDED),
+    ("before vote",   RelationType.PRECEDED),
+    ("precede sign",  RelationType.PRECEDED),
+    ("come after",    RelationType.FOLLOWED),
+    ("follow from",   RelationType.FOLLOWED),
+    ("result from",   RelationType.FOLLOWED),
+    ("come follow",   RelationType.FOLLOWED),
+]
+
 
 class SpacyExtractor(AbstractExtractor):
     """Pipeline A — deterministic extractor (NER + dependency parsing + rules)."""
@@ -258,6 +277,11 @@ class SpacyExtractor(AbstractExtractor):
         if any(p in phrase for p in ("win election", "win race", "defeat opponent")):
             return RelationType.HOLDS_POSITION
 
+        # Sequence compound phrases
+        for frag, rel in SEQUENCE_COMPOUND_PHRASES:
+            if frag in phrase:
+                return rel
+
         if lemma in POSITION_VERBS:
             return RelationType.HOLDS_POSITION
         elif lemma in {"win", "defeat", "beat"}:
@@ -268,9 +292,9 @@ class SpacyExtractor(AbstractExtractor):
             return RelationType.OCCURRED_ON
         elif lemma in CAUSAL_VERBS:
             return RelationType.CAUSED
-        elif lemma in {"precede", "before"}:
+        elif lemma in {"precede", "predate", "antedate"}:
             return RelationType.PRECEDED
-        elif lemma in {"follow", "after", "succeed"}:
+        elif lemma in {"follow", "succeed"}:
             return RelationType.FOLLOWED
         elif lemma in TEMPORAL_VERBS:
             return RelationType.GENERIC

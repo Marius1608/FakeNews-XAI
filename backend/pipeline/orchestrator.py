@@ -45,10 +45,12 @@ class PipelineOrchestrator:
         model_name: str | None = None,
         persistent_store: Optional[AbstractTKGStore] = None,
         enable_cross_article: bool = True,
+        persist: bool = False,
     ):
         self.use_wikidata = use_wikidata
         self.extractor_name = extractor_name
         self.model_name = model_name
+        self.persist = persist
 
         self._persistent_store = persistent_store
         self._enable_cross_article = enable_cross_article
@@ -122,9 +124,10 @@ class PipelineOrchestrator:
         # C3c: cross-article verification (optional, requires Neo4j)
         cross_article_incs: list = []
         article_id = None
-        if self._persistent_store and self._enable_cross_article:
+        if self._persistent_store:
             import uuid
             article_id = str(uuid.uuid4())
+        if self._persistent_store and self._enable_cross_article:
             cross_verifier = CrossArticleVerifier(self._persistent_store)
             cross_article_incs = cross_verifier.verify(all_facts, article_id)
             logger.info(f"C3c done — {len(cross_article_incs)} cross-article conflicts")
@@ -148,8 +151,8 @@ class PipelineOrchestrator:
         result.article_id = article_id
         result.cross_article_inconsistencies = cross_article_incs
 
-        # Persist facts after scoring
-        if self._persistent_store and article_id:
+        # Persist facts after scoring (only when persist=True; store may still be used for Wikidata cache)
+        if self._persistent_store is not None and self.persist:
             try:
                 self._persistent_store.add_facts(
                     all_facts,
@@ -190,6 +193,20 @@ class PipelineOrchestrator:
         avg = sum(r.score for r in results) / len(results) if results else 0
         logger.info(f"Batch complete [{self.extractor_name}]: {len(results)} articles, avg TCS: {avg:.3f}")
         return results
+
+
+def _generate_auto_title(text: str, max_words: int = 8) -> str:
+    """Generates a short title from the first meaningful words of the article."""
+    STOPWORDS = {
+        "the", "a", "an", "and", "or", "but", "in", "on", "at", "to",
+        "for", "of", "with", "by", "from", "is", "was", "were", "be",
+        "been", "being", "have", "has", "had", "that", "this", "these",
+        "those", "it", "its", "he", "she", "they", "we", "i", "you",
+    }
+    words = text.strip().split()
+    meaningful = [w.strip(".,;:!?\"'") for w in words if w.lower().strip(".,;:!?\"'") not in STOPWORDS]
+    title_words = meaningful[:max_words]
+    return " ".join(title_words) + "..." if len(meaningful) > max_words else " ".join(title_words)
 
 
 def _empty_result(article: Article, pipeline_variant: str, start_ms: Optional[float] = None) -> TCSResult:

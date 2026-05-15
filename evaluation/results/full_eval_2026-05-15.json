@@ -1,0 +1,2096 @@
+{
+  "generated_at": "2026-05-15T11:59:10.432712",
+  "pipeline": "spacy",
+  "threshold": 0.55,
+  "use_wikidata": true,
+  "benchmark": {
+    "metrics": {
+      "total": 84,
+      "tp": 7,
+      "tn": 44,
+      "fp": 4,
+      "fn": 29,
+      "precision": 0.6364,
+      "recall": 0.1944,
+      "f1": 0.2979,
+      "accuracy": 0.6071,
+      "avg_tcs_true": 0.8783,
+      "avg_tcs_fake": 0.8249
+    },
+    "articles": [
+      {
+        "idx": 1,
+        "title": "Obama Presidency — Accurate Timeline",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Obama timeline with verifiable dates.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 3,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 17838.3
+      },
+      {
+        "idx": 2,
+        "title": "Obama Senate Career and Presidential Campaign",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Obama Senate and campaign timeline.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 4,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7960.9
+      },
+      {
+        "idx": 3,
+        "title": "Biden Presidency — Accurate Timeline",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Biden presidency with verifiable dates and legislation.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 1,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8107.7
+      },
+      {
+        "idx": 4,
+        "title": "Clinton Presidency — Accurate Record",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Clinton presidency with correct dates and elections.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 3,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7496.3
+      },
+      {
+        "idx": 5,
+        "title": "George W. Bush Presidency — Accurate Timeline",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Bush W presidency with verifiable election and legislation dates.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 5,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7681.1
+      },
+      {
+        "idx": 6,
+        "title": "Trump First Term — Accurate Record",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Trump first term with correct impeachment and election timeline.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 5,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8280.7
+      },
+      {
+        "idx": 7,
+        "title": "George H.W. Bush Presidency — Accurate Timeline",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate H.W. Bush presidency with correct Gulf War and election dates.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 4,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8128.8
+      },
+      {
+        "idx": 8,
+        "title": "Reagan Presidency — Accurate Timeline",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Reagan presidency with correct legislation and speech dates.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 1,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8536.4
+      },
+      {
+        "idx": 9,
+        "title": "Carter Presidency — Accurate Timeline",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Carter presidency with correct treaty and hostage crisis dates.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 3,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7829.7
+      },
+      {
+        "idx": 10,
+        "title": "Obama Second Term — Accurate Timeline",
+        "source": "benchmark-true",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate Obama second term with correct election, inauguration, and treaty dates.",
+        "predicted_fake": true,
+        "outcome": "FP",
+        "tcs": 0.5,
+        "tcs_label": "Insufficient Temporal Data",
+        "n_claims": 0,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 77.4
+      },
+      {
+        "idx": 11,
+        "title": "Obama Illinois Career — Fabricated Dual Role",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "entity_inconsistency"
+        ],
+        "notes": "Obama was Senator from 2005-2008 but was never Governor of Illinois — he cannot hold both legislative and executive state offices simultaneously.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 2,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "entity_inconsistency: Obama cannot be Senator and Governor simultaneously — incompatible roles"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7499.2
+      },
+      {
+        "idx": 12,
+        "title": "Trump Presidency — Inverted Dates and Future Event",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "date_mismatch",
+          "future_as_past",
+          "ordering_error"
+        ],
+        "notes": "Trump presidency interval is inverted (end 2017 before start 2021); 2025 forum described as recent past but article is from 2020.",
+        "predicted_fake": true,
+        "outcome": "TP",
+        "tcs": 0.5185,
+        "tcs_label": "Moderately Consistent",
+        "n_claims": 3,
+        "n_inconsistencies": 1,
+        "coherence_factor": 0.6667,
+        "known_inconsistencies": [
+          "ordering_error: Trump presidency interval is inverted — end date (2017) precedes start date (2021)",
+          "future_as_past: 2025 forum described as past event but article publication date is 2020"
+        ],
+        "detected_inconsistencies": [
+          {
+            "type": "future_as_past",
+            "severity": "high",
+            "description": "Event from 2021 presented as past, but article is from 2020: 'the United States'."
+          }
+        ],
+        "processing_time_ms": 8188.3
+      },
+      {
+        "idx": 13,
+        "title": "Obama Election Timeline — Reversed Cause and Effect",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error"
+        ],
+        "notes": "Obama took office January 2009 but the text claims he won the election in November 2012 — office predates the election that supposedly granted it.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 1,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "implicit_contradiction: Obama took office in January 2009 but won the election in November 2012 — office predates the election that supposedly granted it"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8000.6
+      },
+      {
+        "idx": 14,
+        "title": "Biden Presidency — Inverted Mandate Years",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "date_mismatch"
+        ],
+        "notes": "Biden presidency dates (2017-2021) are actually Trump's dates; Biden was VP during 2009-2017 and President from 2021 onward.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 3,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "date_mismatch: Biden presidency stated as 2017-2021, which were Donald Trump's years in office"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7689.9
+      },
+      {
+        "idx": 15,
+        "title": "Clinton Presidency — Wrong Mandate Years",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "date_mismatch"
+        ],
+        "notes": "1989-1993 were George H.W. Bush's dates; Clinton served 1993-2001 after defeating Bush in 1992; Michael Dukakis lost to Bush in 1988, not to Clinton.",
+        "predicted_fake": true,
+        "outcome": "TP",
+        "tcs": 0.5,
+        "tcs_label": "Insufficient Temporal Data",
+        "n_claims": 0,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "date_mismatch: Clinton's stated term 1989-1993 belongs to George H.W. Bush",
+          "entity_inconsistency: Clinton did not defeat Dukakis — Clinton defeated Bush in 1992"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 62.4
+      },
+      {
+        "idx": 16,
+        "title": "Bush Presidency — Wrong Inauguration Year",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "date_mismatch",
+          "ordering_error"
+        ],
+        "notes": "Bush W was inaugurated in 2001, not 1997; 1997 was Clinton's second term; the 1996 election was won by Clinton, not Bush; Bush defeated Gore in 2000.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 3,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "date_mismatch: Bush W inaugurated in 1997 is incorrect — he was inaugurated in 2001",
+          "ordering_error: 1996 election winner stated as Bush but 1996 was won by Clinton"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7449.6
+      },
+      {
+        "idx": 17,
+        "title": "Biden — Impossible VP and Senator Dual Role",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "entity_inconsistency"
+        ],
+        "notes": "Biden resigned from the Senate on January 15, 2009, days before being sworn in as VP on January 20, 2009 — he could not hold both offices simultaneously.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 2,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "entity_inconsistency: Biden cannot be Senator and VP simultaneously — he resigned from Senate before taking VP office"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7965.2
+      },
+      {
+        "idx": 18,
+        "title": "Clinton — Impossible Governor and President Dual Role",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "entity_inconsistency"
+        ],
+        "notes": "Clinton resigned as Governor of Arkansas before becoming President; he could not simultaneously hold state executive and federal executive offices.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 2,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "entity_inconsistency: Clinton cannot be Arkansas Governor and U.S. President simultaneously — he resigned as Governor before inauguration"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 6675.1
+      },
+      {
+        "idx": 19,
+        "title": "Bush W — Impossible Governor and President Dual Role",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "entity_inconsistency"
+        ],
+        "notes": "Bush resigned as Texas governor in January 2001 before becoming President; Rick Perry succeeded him immediately, not in December 2001.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 0.73,
+        "tcs_label": "Moderately Consistent",
+        "n_claims": 5,
+        "n_inconsistencies": 1,
+        "coherence_factor": 0.8,
+        "known_inconsistencies": [
+          "entity_inconsistency: Bush W cannot be Texas Governor and U.S. President simultaneously — he resigned as Governor before inauguration in January 2001"
+        ],
+        "detected_inconsistencies": [
+          {
+            "type": "factual_contradiction",
+            "severity": "high",
+            "description": "Contradiction: 'the United States' and 'Rick Perry' both as 'December' in the same interval."
+          }
+        ],
+        "processing_time_ms": 9827.8
+      },
+      {
+        "idx": 20,
+        "title": "Clinton Signs Law in 2004 — After Leaving Office",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "future_as_past"
+        ],
+        "notes": "Clinton left office January 20, 2001; the BCRA was signed by George W. Bush in March 2002, not by Clinton in 2004.",
+        "predicted_fake": true,
+        "outcome": "TP",
+        "tcs": 0.0,
+        "tcs_label": "Severe Violations (Likely Fake)",
+        "n_claims": 1,
+        "n_inconsistencies": 4,
+        "coherence_factor": 0.0,
+        "known_inconsistencies": [
+          "future_as_past: Clinton signed a law in 2004 but his presidency ended in January 2001"
+        ],
+        "detected_inconsistencies": [
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Bill Clinton' [2004-03-01 -> 2000-01-01]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Interval [2004 -> 2000] does not overlap with wikidata [1977 -> 1979]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Interval [2004 -> 2000] does not overlap with wikidata [1983 -> 1992]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Interval [2004 -> 2000] does not overlap with wikidata [1992 -> 1993]."
+          }
+        ],
+        "processing_time_ms": 10165.3
+      },
+      {
+        "idx": 21,
+        "title": "Biden Signs Law in 2018 — Before His Presidency",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "future_as_past"
+        ],
+        "notes": "Biden's presidency began January 20, 2021; in 2018 he was a private citizen. The Families First Act was signed by Trump in March 2020, not by Biden in 2018.",
+        "predicted_fake": true,
+        "outcome": "TP",
+        "tcs": 0.0,
+        "tcs_label": "Severe Violations (Likely Fake)",
+        "n_claims": 2,
+        "n_inconsistencies": 6,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "future_as_past: Biden signed a law in 2018 but his presidency did not begin until January 2021"
+        ],
+        "detected_inconsistencies": [
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (2018) does not match wikidata interval [1999 -> 2001]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (2018) does not match wikidata interval [2003 -> 2005]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (2018) does not match wikidata interval [2009 -> 2017]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (2018) does not match wikidata interval [1999 -> 2001]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (2018) does not match wikidata interval [2003 -> 2005]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (2018) does not match wikidata interval [2009 -> 2017]."
+          }
+        ],
+        "processing_time_ms": 10447.9
+      },
+      {
+        "idx": 22,
+        "title": "Bush W Signs ACA in 2010 — After Leaving Office",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "future_as_past"
+        ],
+        "notes": "Bush left office January 20, 2009; the ACA was signed by Barack Obama on March 23, 2010 — over a year after Bush's term ended.",
+        "predicted_fake": true,
+        "outcome": "TP",
+        "tcs": 0.0,
+        "tcs_label": "Severe Violations (Likely Fake)",
+        "n_claims": 1,
+        "n_inconsistencies": 3,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "future_as_past: Bush W signed a law on March 23, 2010, but his presidency ended in January 2009"
+        ],
+        "detected_inconsistencies": [
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (2010) does not match wikidata interval [1995 -> 2000]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (2010) does not match wikidata interval [2000 -> 2001]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (2010) does not match wikidata interval [2001 -> 2009]."
+          }
+        ],
+        "processing_time_ms": 7444.5
+      },
+      {
+        "idx": 23,
+        "title": "Biden Elected in 2024 But Inaugurated in 2021",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error"
+        ],
+        "notes": "Biden won the November 2020 election (not 2024) and took office January 20, 2021; the text places the election three years after the inauguration.",
+        "predicted_fake": true,
+        "outcome": "TP",
+        "tcs": 0.3333,
+        "tcs_label": "Multiple Inconsistencies (Suspicious)",
+        "n_claims": 2,
+        "n_inconsistencies": 1,
+        "coherence_factor": 0.5,
+        "known_inconsistencies": [
+          "ordering_error: Biden inaugurated in January 2021 after winning a November 2024 election — inauguration precedes the election by 3+ years"
+        ],
+        "detected_inconsistencies": [
+          {
+            "type": "future_as_past",
+            "severity": "high",
+            "description": "Event from 2024 presented as past, but article is from 2022: 'Donald Trump'."
+          }
+        ],
+        "processing_time_ms": 8826.5
+      },
+      {
+        "idx": 24,
+        "title": "Clinton Inaugurated in 1993 After Winning 1996 Election",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error"
+        ],
+        "notes": "Clinton won the 1992 election (defeating Bush), not the 1996 election, before his January 1993 inauguration; he won re-election in 1996 for his second term.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 1,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "ordering_error: Clinton inaugurated January 1993 but attributed to winning the 1996 election — first term inauguration precedes the election that supposedly enabled it"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 6964.3
+      },
+      {
+        "idx": 25,
+        "title": "Trump Signs Tax Bill Before Inauguration",
+        "source": "benchmark-fake",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error"
+        ],
+        "notes": "Trump was not yet President on December 22, 2016; TCJA was actually signed December 22, 2017 — a full year after inauguration, not a month before it.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 1,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [
+          "ordering_error: Trump (President-elect) signed a law on December 22, 2016, one month before his January 20, 2017 inauguration — legislation signed before taking presidential office"
+        ],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 9073.1
+      },
+      {
+        "idx": 26,
+        "title": "Obama Healthcare Reform — Passage of the ACA",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Factually accurate ACA timeline. ACA signed March 23 2010, Senate passed Dec 24 2009, House March 21 2010, SCOTUS upheld June 2012, Obama re-elected Nov 2012.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 0.8089,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 11,
+        "n_inconsistencies": 2,
+        "coherence_factor": 0.8182,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Obama' [2009-01-15 -> 1965-05-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Obama' [2009-01-15 -> 1965-05-15]."
+          }
+        ],
+        "processing_time_ms": 10892.9
+      },
+      {
+        "idx": 27,
+        "title": "Obama Foreign Policy — Bin Laden Operation and Nuclear Deal",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: bin Laden killed May 1 2011, CIA tracking since July 2010, Kerry replaced Clinton Feb 2013, JCPOA July 14 2015, Cuba normalization July 1 2015.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 3,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8519.8
+      },
+      {
+        "idx": 28,
+        "title": "Obama Economic Recovery — Stimulus and Dodd-Frank",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: Obama inaugurated Jan 20 2009, ARRA signed Feb 17 2009, Lehman collapsed Sept 2008, Dodd-Frank signed July 21 2010, unemployment peaked Oct 2009 at 10%.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 4,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 6950.1
+      },
+      {
+        "idx": 29,
+        "title": "Biden Infrastructure and Climate Legislation",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: Biden inaugurated Jan 20 2021, Infrastructure signed Nov 15 2021, Senate passed Aug 2021 with 69 votes, IRA signed Aug 2022 with 51-50 vote, CHIPS Act signed Aug 9 2022.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 8,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 9322.6
+      },
+      {
+        "idx": 30,
+        "title": "Biden Foreign Policy — NATO, Ukraine and Afghanistan Withdrawal",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: withdrawal announced April 2021, Kabul fell Aug 15 2021, withdrawal complete Aug 30 2021, Russia invaded Feb 2022, Finland joined NATO April 2023, Sweden March 2024.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 0.8715,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 9,
+        "n_inconsistencies": 1,
+        "coherence_factor": 0.8889,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "factual_contradiction",
+            "severity": "high",
+            "description": "Contradiction: 'Biden' and 'Washington' both as 'Washington' in the same interval."
+          }
+        ],
+        "processing_time_ms": 10275.6
+      },
+      {
+        "idx": 31,
+        "title": "Trump First Term — Tax Cuts and Trade Policy",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: Trump inaugurated Jan 20 2017, Tax Cuts signed Dec 22 2017, TPP withdrawal Jan 23 2017, steel/aluminum tariffs March 2018, China tariffs July 2018, USMCA signed Jan 29 2020.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 6,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 9582.4
+      },
+      {
+        "idx": 32,
+        "title": "Trump Impeachments and COVID Response",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: first impeachment Dec 18 2019, acquittal Feb 5 2020, COVID emergency March 13 2020, Operation Warp Speed May 2020, Pfizer EUA Dec 11 2020, Moderna Dec 18 2020, second impeachment Jan 13 2021.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 7,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 11577.3
+      },
+      {
+        "idx": 33,
+        "title": "Clinton Presidency — NAFTA and Welfare Reform",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: Clinton inaugurated Jan 20 1993, NAFTA signed Dec 8 1993, originally negotiated under Bush Sr, welfare reform signed Aug 1996, reelected Nov 1996 defeating Bob Dole.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 0.8638,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 7,
+        "n_inconsistencies": 1,
+        "coherence_factor": 0.8571,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Clinton' [1996-08-15 -> 1992-05-15]."
+          }
+        ],
+        "processing_time_ms": 11364.9
+      },
+      {
+        "idx": 34,
+        "title": "Clinton Impeachment and Foreign Policy",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: Starr investigation began Aug 1994, Clinton denied Jan and Aug 1998, House impeached Dec 19 1998, Senate acquitted Feb 12 1999, Kosovo airstrikes began March 1999, ended June 1999.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 11,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7654.6
+      },
+      {
+        "idx": 35,
+        "title": "Bush W — September 11 Response and Iraq War",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: 9/11 attacks, Bush at WTC Sept 14, AUMF Sept 18, Afghanistan invasion Oct 7 2001, PATRIOT Act Oct 26 2001, axis of evil Jan 2002, Iraq invasion March 20 2003, Baghdad fell April 9, Mission Accomplished May 1 2003.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 13,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 16896.9
+      },
+      {
+        "idx": 36,
+        "title": "Obama Education and Environment Policy",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: Race to Top 2009 via ARRA, Paris Agreement signed April 22 2016, US joined Sept 2016, Clean Power Plan Aug 2015, ESSA signed Dec 2015 replacing NCLB.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 0.7362,
+        "tcs_label": "Moderately Consistent",
+        "n_claims": 8,
+        "n_inconsistencies": 2,
+        "coherence_factor": 0.75,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Obama' [2015-12-15 -> 2001-05-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Obama' [2015-12-15 -> 2001-05-15]."
+          }
+        ],
+        "processing_time_ms": 10083.8
+      },
+      {
+        "idx": 37,
+        "title": "Reagan Presidency — Tax Cuts and Cold War",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: Reagan inaugurated Jan 20 1981, ERTA signed Aug 13 1981, Tax Reform Act 1986, evil empire speech March 8 1983, SDI announced March 23 1983, Geneva summit Nov 1985, INF Treaty Dec 8 1987.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 10,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 9775.9
+      },
+      {
+        "idx": 38,
+        "title": "Bush H.W. — Gulf War and Domestic Policy",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: Bush inaugurated Jan 20 1989, Kuwait invaded Aug 2 1990, UN Res 678 Nov 1990, deadline Jan 15 1991, Desert Storm began Jan 17 1991, ground war Feb 24, Kuwait liberated Feb 27, ceasefire Feb 28, ADA signed July 26 1990.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 10,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7965.0
+      },
+      {
+        "idx": 39,
+        "title": "Carter Presidency — Energy Crisis and Iran Hostages",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: Carter inaugurated Jan 20 1977, malaise speech July 15 1979, hostages taken Nov 4 1979, Eagle Claw April 24 1980, hostages released Jan 20 1981 after 444 days, Reagan inaugurated same day.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 9,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8115.0
+      },
+      {
+        "idx": 40,
+        "title": "Obama Second Term — Immigration and Cuba",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: second inauguration Jan 20 2013, DAPA Nov 2014, blocked Feb 2015, SCOTUS deadlock June 2016, Cuba announcement Dec 17 2014, embassy reopened Aug 14 2015, Obama visited March 2016, Manning commutation Jan 2017.",
+        "predicted_fake": true,
+        "outcome": "FP",
+        "tcs": 0.1629,
+        "tcs_label": "Severe Violations (Likely Fake)",
+        "n_claims": 23,
+        "n_inconsistencies": 23,
+        "coherence_factor": 0.4348,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Obama' [2014-12-17 -> 1960-05-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Obama' [2014-12-17 -> 1960-05-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Obama' [2014-12-17 -> 1960-05-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Obama' [2014-12-17 -> 1960-05-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Cuban' [2014-12-17 -> 1960-05-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Cuban' [2014-12-17 -> 1960-05-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Cuban' [2014-12-17 -> 1960-05-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Cuban' [2014-12-17 -> 1960-05-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Raul Castro' [2014-12-17 -> 1960-05-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Raul Castro' [2014-12-17 -> 1960-05-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Raul Castro' [2014-12-17 -> 1960-05-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Raul Castro' [2014-12-17 -> 1960-05-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Obama' [2016-03-15 -> 1938-05-15]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Interval [2014 -> 1960] does not overlap with wikidata [2008 -> 2018]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Interval [2014 -> 1960] does not overlap with wikidata [2008 -> 2009]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Interval [2014 -> 1960] does not overlap with wikidata [1959 -> 2008]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Interval [2014 -> 1960] does not overlap with wikidata [2008 -> 2018]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Interval [2014 -> 1960] does not overlap with wikidata [1959 -> 2008]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Interval [2014 -> 1960] does not overlap with wikidata [2008 -> 2018]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Interval [2014 -> 1960] does not overlap with wikidata [2011 -> 2021]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Interval [2014 -> 1960] does not overlap with wikidata [2008 -> 2018]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Interval [2014 -> 1960] does not overlap with wikidata [2008 -> 2009]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Interval [2014 -> 1960] does not overlap with wikidata [1959 -> 2008]."
+          }
+        ],
+        "processing_time_ms": 15218.0
+      },
+      {
+        "idx": 41,
+        "title": "Trump Administration — Immigration and Supreme Court",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: Trump inaugurated Jan 20 2017, travel ban Jan 27 2017, blocked Feb 3 2017, upheld by SCOTUS June 2018, Gorsuch confirmed April 7 2017, Scalia died Feb 2016, Kavanaugh confirmed Oct 6 2018, Barrett confirmed Oct 26 2020.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 20,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8255.3
+      },
+      {
+        "idx": 42,
+        "title": "Clinton — Budget Surplus and Technology Boom",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: second inauguration Jan 20 1997, first surplus FY1998, Gramm-Leach-Bliley Nov 12 1999, CFMA signed Dec 21 2000, Balanced Budget Act Aug 5 1997, Nasdaq peaked March 10 2000.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 0.6122,
+        "tcs_label": "Moderately Consistent",
+        "n_claims": 6,
+        "n_inconsistencies": 2,
+        "coherence_factor": 0.6667,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Clinton' [1999-11-12 -> 1933-05-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Clinton' [1999-11-12 -> 1933-05-15]."
+          }
+        ],
+        "processing_time_ms": 8655.9
+      },
+      {
+        "idx": 43,
+        "title": "Bush W — Financial Crisis and TARP",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: Bear Stearns rescued March 2008, Lehman collapsed Sept 15 2008, AIG bailout same week, TARP initially rejected Sept 29 2008 (Dow fell 778 pts), TARP signed Oct 3 2008, unemployment 4.9% Jan 2008 to 7.3% Dec 2008.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 4,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8005.0
+      },
+      {
+        "idx": 44,
+        "title": "Obama — Dodd-Frank and Consumer Protection",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: Dodd-Frank signed July 21 2010, named after Dodd and Frank, CFPB created, Volcker Rule included, Warren appointed Sept 2010, Warren won Senate Nov 2012.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 6,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7112.8
+      },
+      {
+        "idx": 45,
+        "title": "Biden — COVID Response and Economic Recovery",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: Biden inaugurated Jan 20 2021, American Rescue Plan signed March 11 2021, WHO declared pandemic March 11 2020, $1,400 payments, all adults eligible April 19 2021, unemployment 6.4% Jan 2021, COVID emergency expired May 11 2023.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 7,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8871.9
+      },
+      {
+        "idx": 46,
+        "title": "Trump — Trade War with China and Phase One Deal",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: steel/aluminum tariffs March 2018, first China tariffs July 2018 on $34B, by Sept 2019 covered $550B, Phase One signed Jan 15 2020 at White House with Liu He.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 5,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8370.1
+      },
+      {
+        "idx": 47,
+        "title": "Clinton — NAFTA Passage and Economic Policy",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: Bush signed NAFTA Dec 1992, House approved Nov 17 1993, Senate Nov 20 1993, Clinton signed Dec 8 1993, NAFTA entered force Jan 1 1994, Zapatista uprising Jan 1 1994, Brady Bill Nov 30 1993, FMLA Feb 5 1993.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 0.7156,
+        "tcs_label": "Moderately Consistent",
+        "n_claims": 8,
+        "n_inconsistencies": 2,
+        "coherence_factor": 0.75,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Clinton' [1993-11-30 -> 1993-02-05]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Clinton' [1993-11-30 -> 1993-02-05]."
+          }
+        ],
+        "processing_time_ms": 9039.3
+      },
+      {
+        "idx": 48,
+        "title": "Obama — Syria Red Line and Russian Reset",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: Syria war began March 2011, red line statement Aug 2012, Ghouta attack Aug 21 2013, Russia brokered deal Sept 14 2013, Clinton-Lavrov reset button Geneva March 6 2009, Crimea annexation March 2014.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 7,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7384.2
+      },
+      {
+        "idx": 49,
+        "title": "Bush W — Hurricane Katrina and Second Term Challenges",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: Katrina landfall Aug 29 2005, flooding ~80% of NOLA, 1800+ killed, Brown heck of a job quote Aug 31, Brown resigned Sept 12 2005, Democrats won Nov 2006 midterms (first Republican loss of Congress since 1994), Rumsfeld replaced by Gates Nov 8 2006.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 0.7532,
+        "tcs_label": "Moderately Consistent",
+        "n_claims": 9,
+        "n_inconsistencies": 2,
+        "coherence_factor": 0.7778,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Democrats' [2006-11-15 -> 1994-05-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Democrats' [2006-11-15 -> 1994-05-15]."
+          }
+        ],
+        "processing_time_ms": 11850.0
+      },
+      {
+        "idx": 50,
+        "title": "Biden — Supreme Court and Democracy Agenda",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "Accurate: Jackson nominated Feb 2022, confirmed April 7 2022 by 53-47, sworn in June 30 2022, Breyer announced retirement Jan 2022, Electoral Count Reform Act Dec 23 2022, Bipartisan Safer Communities Act June 25 2022, Biden withdrew July 21 2024.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 0.9094,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 9,
+        "n_inconsistencies": 1,
+        "coherence_factor": 0.8889,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Biden' [2022-12-23 -> 2021-01-06]."
+          }
+        ],
+        "processing_time_ms": 8748.3
+      },
+      {
+        "idx": 51,
+        "title": "Obama — ACA Passage with Wrong Date and Senate Vote",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "date_mismatch",
+          "ordering_error"
+        ],
+        "notes": "FAKE: ACA signed March 23 2009 (should be 2010) — impossible since Senate only passed it Dec 24 2009. Also says Obama prioritized it from Jan 2008 when his presidency started Jan 2009. Future_as_past: ACA signed before Senate passed it.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 0.8089,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 11,
+        "n_inconsistencies": 2,
+        "coherence_factor": 0.8182,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Obama' [2008-01-15 -> 1965-05-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Obama' [2008-01-15 -> 1965-05-15]."
+          }
+        ],
+        "processing_time_ms": 8376.0
+      },
+      {
+        "idx": 52,
+        "title": "Biden Infrastructure Bill — Wrong Congressional Vote Date",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error",
+          "date_mismatch"
+        ],
+        "notes": "FAKE: Says Senate passed bill before Biden took office in January 2022 — Biden actually took office January 20 2021, and Senate passed it August 10 2021 while Biden was already president. Contradicts itself: bill signed Nov 15 2021 but claims Biden took office Jan 2022.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 0.615,
+        "tcs_label": "Moderately Consistent",
+        "n_claims": 5,
+        "n_inconsistencies": 3,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (2021) does not match wikidata interval [1999 -> 2001]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (2021) does not match wikidata interval [2003 -> 2005]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (2021) does not match wikidata interval [2009 -> 2017]."
+          }
+        ],
+        "processing_time_ms": 8908.5
+      },
+      {
+        "idx": 53,
+        "title": "Trump Tax Cuts — Wrong Signing Date and Margin",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error",
+          "future_as_past"
+        ],
+        "notes": "FAKE: Says Trump signed tax cuts Dec 22 2016 before taking office (inaugurated Jan 20 2017). Impossible — a president-elect cannot sign legislation. The real signing date was Dec 22 2017.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 2,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7204.1
+      },
+      {
+        "idx": 54,
+        "title": "Clinton NAFTA — Wrong Congressional Timeline",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "date_mismatch"
+        ],
+        "notes": "FAKE: House approved NAFTA 'November 17 1994' — should be 1993. Senate passed Nov 20 1993, Clinton signed Dec 8 1993, NAFTA took force Jan 1 1994. House date is one year off, contradicting the correct Senate, signing, and entry-into-force dates.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 4,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8488.0
+      },
+      {
+        "idx": 55,
+        "title": "Obama Bin Laden — Wrong Intelligence Timeline",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error"
+        ],
+        "notes": "FAKE: Says CIA identified courier in July 2012 — after the May 2011 raid. This is temporal impossibility: the intelligence breakthrough that enabled the raid is placed after the raid itself. Real timeline: CIA tracking began July 2010, raid May 1 2011.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 4,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7726.9
+      },
+      {
+        "idx": 56,
+        "title": "Bush — TARP Signing After Market Collapse Described as Preceding It",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error",
+          "implicit_contradiction"
+        ],
+        "notes": "FAKE: Claims market panic of Sept 29 was triggered by TARP being 'already signed that morning' — but TARP was not signed until Oct 3, 2008. Also claims unemployment peaked after Bush left office Jan 20 2009 — actually Bush left office Jan 20 2009 and unemployment peaked Oct 2009 under Obama. The causal sequence is inverted.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 7,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8615.3
+      },
+      {
+        "idx": 57,
+        "title": "Obama — ACA Supreme Court Ruling Precedes Passage",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error",
+          "implicit_contradiction"
+        ],
+        "notes": "FAKE: Claims SCOTUS upheld ACA in June 2009 — before Congress passed it (Senate Dec 2009, House March 2010) and before Obama signed it (March 23 2010). The actual SCOTUS ruling was June 2012. This is a classic future_as_past / ordering error.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 8,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7636.7
+      },
+      {
+        "idx": 58,
+        "title": "Trump — Travel Ban Upheld Before It Was Signed",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error",
+          "implicit_contradiction"
+        ],
+        "notes": "FAKE: Claims SCOTUS upheld travel ban in January 2017 before Trump signed it Jan 27 2017 and before federal court blocked it Feb 3 2017. Supreme Court did not rule until June 26 2018. Classic ordering error — judicial ruling precedes the act being challenged.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 0.8592,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 7,
+        "n_inconsistencies": 4,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "date_mismatch",
+            "severity": "medium",
+            "description": "Article date (2017) differs from wikidata (2021)."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "medium",
+            "description": "Article date (2017) differs from wikidata (2015)."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "medium",
+            "description": "Article date (2017) differs from wikidata (2021)."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "medium",
+            "description": "Article date (2017) differs from wikidata (2015)."
+          }
+        ],
+        "processing_time_ms": 8861.7
+      },
+      {
+        "idx": 59,
+        "title": "Biden — Infrastructure Bill Signed Before House Vote",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error",
+          "implicit_contradiction"
+        ],
+        "notes": "FAKE: Claims Biden signed bill Nov 6 before the official ceremony Nov 15, and says he signed it the same day House passed it (Nov 5). But you cannot sign legislation the same day or before the final chamber votes — the bill was signed Nov 15, after House passed Nov 5. Also contradicts itself about date (Nov 6 vs Nov 15).",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 3,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8201.3
+      },
+      {
+        "idx": 60,
+        "title": "Clinton — Impeachment Acquittal Before House Vote",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error"
+        ],
+        "notes": "FAKE: Senate acquitted Feb 12 1999, then says House Judiciary approved articles 'October 1999' and House voted to impeach 'December 19 1999'. The acquittal precedes the impeachment by months. Real sequence: Starr report Sept 1998, House impeached Dec 19 1998, Senate acquitted Feb 12 1999.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 9,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7594.2
+      },
+      {
+        "idx": 61,
+        "title": "Obama — Nobel Prize Awarded for Achievements from Future Presidency",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "future_as_past"
+        ],
+        "notes": "FAKE: Nobel Committee cited Iran nuclear deal (finalized July 2015) and Paris Agreement (Dec 2015) as reasons for the 2009 Nobel Prize. Both achievements are cited as if they had already occurred in October 2009, six years before they happened.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 4,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7124.0
+      },
+      {
+        "idx": 62,
+        "title": "Trump — COVID Vaccine Approved Before Operation Warp Speed Launched",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error"
+        ],
+        "notes": "FAKE: Says Operation Warp Speed was announced 'December 2020 after the vaccines had already received FDA authorization' — but Operation Warp Speed was actually launched in May 2020, enabling the rapid vaccine development. The program preceded the vaccines, not the other way around.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 4,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8319.1
+      },
+      {
+        "idx": 63,
+        "title": "Bush — Patriot Act Signed Before 9/11 Authorization",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "TRUE: AUMF Sept 18, PATRIOT Act signed Oct 26 2001, 45 days after 9/11, Senate voted 98-1 Oct 25. The claim about pre-9/11 planning is plausible and does not constitute an inconsistency.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 4,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 10066.8
+      },
+      {
+        "idx": 64,
+        "title": "Obama — Wrong Timeline for Bin Laden Intelligence",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "TRUE: CIA courier intelligence Aug 2010, high confidence assessment Feb 2011, NSC meetings March-April 2011, authorization signed April 29 2011, raid May 1 2011. Consistent and accurate timeline.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 11,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8843.9
+      },
+      {
+        "idx": 65,
+        "title": "Clinton — Balanced Budget Agreement Wrong Party Control",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "TRUE: Balanced Budget Act signed Aug 5 1997, Republicans won House in 1994 midterms ending 40 years of Dem control, Gingrich Speaker, Lott Senate Majority Leader, first surplus FY1998, 1993 budget passed without Republican votes, surplus peaked $236B in FY2000.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 0.8726,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 8,
+        "n_inconsistencies": 2,
+        "coherence_factor": 0.875,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Republicans' [1994-05-15 -> 1986-05-15]."
+          },
+          {
+            "type": "entity_inconsistency",
+            "severity": "low",
+            "description": "Position 'House' for 'Republicans' not found in Wikidata."
+          }
+        ],
+        "processing_time_ms": 11050.1
+      },
+      {
+        "idx": 66,
+        "title": "Biden — Withdrawal from Afghanistan Wrong Sequence",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "TRUE: Withdrawal announced April 2021, original deadline Sept 11 moved to Aug 31, Kabul fell Aug 15 2021, Ghani fled, Abbey Gate bombing Aug 26 killing 13 US service members and ~170 Afghans, final flight Aug 30 at 11:59pm local.",
+        "predicted_fake": true,
+        "outcome": "FP",
+        "tcs": 0.477,
+        "tcs_label": "Multiple Inconsistencies (Suspicious)",
+        "n_claims": 5,
+        "n_inconsistencies": 3,
+        "coherence_factor": 0.8,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "factual_contradiction",
+            "severity": "high",
+            "description": "Contradiction: 'Taliban' and 'Kabul' both as 'Kabul' in the same interval."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (2021) does not match wikidata interval [2009 -> 2008]."
+          },
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (2021) does not match wikidata interval [2021 -> 2008]."
+          }
+        ],
+        "processing_time_ms": 9308.2
+      },
+      {
+        "idx": 67,
+        "title": "Obama — Wrong Sequence on ACA and Dodd-Frank",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "date_mismatch",
+          "ordering_error"
+        ],
+        "notes": "FAKE: Dodd-Frank signed 'July 21 2009' — real date was July 21 2010. If signed in 2009 that would be before the ACA (March 2010), which is also wrong order since Dodd-Frank came after ACA. Also unemployment: was 9.5% in July 2010 when Dodd-Frank was actually signed, not in 2009.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 8,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7944.0
+      },
+      {
+        "idx": 68,
+        "title": "Trump — USMCA Signed Before Negotiation Completed",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "TRUE: This describes the actual complex USMCA timeline accurately. Preliminary agreement Oct 1 2018, revised Dec 10 2019, House passed Dec 19 2019, Senate Jan 16 2020, Trump signed implementing legislation Jan 29 2020, entered force July 1 2020.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 10,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7888.8
+      },
+      {
+        "idx": 69,
+        "title": "Clinton — Rwanda and Bosnia — Inaction and Intervention",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "TRUE: Rwanda genocide began April 1994, ~800,000 killed over ~100 days, Battle of Mogadishu Oct 1993, Srebrenica massacre July 1995, NATO airstrikes Aug 1995, Dayton Accords signed Nov 21 1995 in Dayton Ohio, US peacekeepers arrived Dec 1995.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 0.8715,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 9,
+        "n_inconsistencies": 1,
+        "coherence_factor": 0.8889,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "factual_contradiction",
+            "severity": "high",
+            "description": "Contradiction: 'Dayton' and 'Ohio' both as 'the Bosnian War' in the same interval."
+          }
+        ],
+        "processing_time_ms": 12694.1
+      },
+      {
+        "idx": 70,
+        "title": "Obama — Wrong Year for Nobel Peace Prize",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "date_mismatch",
+          "ordering_error"
+        ],
+        "notes": "FAKE: Obama awarded Nobel Prize 'October 2007' — he was actually awarded it in October 2009 after becoming president. In 2007 he was a presidential candidate, not president. New START was signed April 2010 which is correctly dated but presented as after a 2007 prize. The prize preceded the START treaty by 2.5 years which is fine, but the year of the prize is wrong.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 0.9217,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 5,
+        "n_inconsistencies": 1,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "date_mismatch",
+            "severity": "high",
+            "description": "Article date (2007) does not match wikidata interval [1997 -> 2004]."
+          }
+        ],
+        "processing_time_ms": 9089.4
+      },
+      {
+        "idx": 71,
+        "title": "Bush W — PATRIOT Act Expanding Surveillance Pre-9/11",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error",
+          "future_as_past"
+        ],
+        "notes": "FAKE: PATRIOT Act signed 'October 26 2000' — before the September 11 2001 attacks. Real date: October 26 2001, 45 days after 9/11. The article presents the PATRIOT Act as pre-existing legislation that predated and anticipated 9/11, which is false.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 4,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7786.4
+      },
+      {
+        "idx": 72,
+        "title": "Biden — Climate and Clean Energy Milestone Timeline",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "TRUE: Biden rejoined Paris Agreement on day one Jan 20 2021, formally rejoined Feb 19, canceled Keystone XL first day, IRA signed Aug 16 2022 with $369B climate provisions, US submitted 50-52% target to UN April 2021.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 0.6086,
+        "tcs_label": "Moderately Consistent",
+        "n_claims": 6,
+        "n_inconsistencies": 2,
+        "coherence_factor": 0.6667,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Biden' [2021-01-20 -> 2020-11-15]."
+          },
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Biden' [2021-01-20 -> 2020-11-15]."
+          }
+        ],
+        "processing_time_ms": 8896.0
+      },
+      {
+        "idx": 73,
+        "title": "Obama — Wrong Vice President and Cabinet",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "entity_inconsistency"
+        ],
+        "notes": "FAKE: Obama selected Joe Biden as VP, not Hillary Clinton. Hillary Clinton became Secretary of State. The article inverts their roles: Clinton as VP and Biden as Secretary of State. Completely reverses the actual positions of both individuals.",
+        "predicted_fake": true,
+        "outcome": "TP",
+        "tcs": 0.4082,
+        "tcs_label": "Multiple Inconsistencies (Suspicious)",
+        "n_claims": 7,
+        "n_inconsistencies": 3,
+        "coherence_factor": 0.5714,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "factual_contradiction",
+            "severity": "high",
+            "description": "Contradiction: 'Joe Biden' and 'State' both as 'Obama' in the same interval."
+          },
+          {
+            "type": "factual_contradiction",
+            "severity": "high",
+            "description": "Contradiction: 'Joe Biden' and 'Delaware' both as 'Obama' in the same interval."
+          },
+          {
+            "type": "factual_contradiction",
+            "severity": "high",
+            "description": "Contradiction: 'State' and 'Delaware' both as 'Obama' in the same interval."
+          }
+        ],
+        "processing_time_ms": 8132.2
+      },
+      {
+        "idx": 74,
+        "title": "Trump — First Impeachment Wrong Charges and Outcome",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "implicit_contradiction",
+          "entity_inconsistency"
+        ],
+        "notes": "FAKE: Senate acquitted Trump, did not convict. The 52-48 vote on abuse of power failed (needed 67 votes), not passed. Romney voted to convict but Trump was acquitted on both articles. Article says Trump 'removed from office' which is false — he was acquitted and served until January 20 2021.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 5,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7636.5
+      },
+      {
+        "idx": 75,
+        "title": "Clinton — Osama Bin Laden Missed Opportunities",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "TRUE: Bin Laden declared war 1996, embassy bombings Aug 7 1998 (8th anniversary of US troops in Saudi Arabia), killed 224 including 12 Americans, cruise missile strikes Aug 20 1998, Cole bombing Oct 12 2000 killing 17 American sailors in Aden Yemen.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 0.7426,
+        "tcs_label": "Moderately Consistent",
+        "n_claims": 16,
+        "n_inconsistencies": 3,
+        "coherence_factor": 0.8125,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "factual_contradiction",
+            "severity": "high",
+            "description": "Contradiction: 'the United States' and 'America' both as 'America' in the same interval."
+          },
+          {
+            "type": "factual_contradiction",
+            "severity": "high",
+            "description": "Contradiction: 'the United States' and 'U.S.' both as 'U.S.' in the same interval."
+          },
+          {
+            "type": "factual_contradiction",
+            "severity": "high",
+            "description": "Contradiction: 'the United States' and 'America' both as 'Americans' in the same interval."
+          }
+        ],
+        "processing_time_ms": 8870.4
+      },
+      {
+        "idx": 76,
+        "title": "Obama — Paris Agreement Signed Before Negotiations Concluded",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error",
+          "future_as_past"
+        ],
+        "notes": "FAKE: Obama 'signed the agreement on Earth Day, April 22 2014' — before the Paris negotiations (Nov-Dec 2015) and before the agreement was adopted (Dec 12 2015). The signing ceremony was actually April 22 2016. Presenting the signature as 2014 is a future_as_past ordering error.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 5,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7549.8
+      },
+      {
+        "idx": 77,
+        "title": "Bush — Medicare Part D and Domestic Achievements",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "TRUE: Medicare Part D signed Dec 8 2003, House passed Nov 22 2003 by 220-215 after extended vote, Senate passed Nov 25 2003, cost ~$400B revised to $534B, NCLB signed Jan 8 2002, co-authored with Kennedy.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 3,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7702.0
+      },
+      {
+        "idx": 78,
+        "title": "Biden — Supreme Court Nomination Wrong Timeline",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error",
+          "date_mismatch"
+        ],
+        "notes": "FAKE: Senate confirmed Jackson 'April 7 2021' — a year before her nomination 'April 2022'. Confirmation cannot precede nomination. Real timeline: Biden nominated Feb 2022, Senate confirmed April 7 2022. Also says Biden nominated her 'April 2022' when nomination was actually announced Feb 25 2022.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 6,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7841.5
+      },
+      {
+        "idx": 79,
+        "title": "Obama — Dodd-Frank and Consumer Bureau Wrong Sequence",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "TRUE: CFPB began July 2011, Warren appointed Sept 2010, Cordray nominated July 2011, recess appointment Jan 4 2012, confirmed July 2013, Warren defeated Scott Brown Nov 2012, took office Jan 2013.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 9,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 8074.7
+      },
+      {
+        "idx": 80,
+        "title": "Trump — Gorsuch Confirmation Wrong Vacancy",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "TRUE: Scalia died Feb 13 2016, Obama nominated Garland March 16 2016, waited 293 days, Trump inaugurated Jan 20 2017, nominated Gorsuch Jan 31 2017, nuclear option used April 6 2017, Gorsuch confirmed April 7 2017 by 54-45.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 0.9206,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 12,
+        "n_inconsistencies": 1,
+        "coherence_factor": 0.9167,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "factual_contradiction",
+            "severity": "high",
+            "description": "Contradiction: 'Senate' and 'Republicans' both as 'Senate' in the same interval."
+          }
+        ],
+        "processing_time_ms": 8749.0
+      },
+      {
+        "idx": 81,
+        "title": "Clinton — Wrong Sequence of 1994 Crime Bill and Welfare Reform",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "ordering_error",
+          "date_mismatch"
+        ],
+        "notes": "FAKE: Welfare reform signed 'August 22 1994' and crime bill signed 'August 1996'. Dates are swapped. Real sequence: Crime Bill (Violent Crime Control Act) signed Sept 13 1994, welfare reform signed Aug 22 1996. The article inverts the two laws' dates.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 7,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7659.2
+      },
+      {
+        "idx": 82,
+        "title": "Obama — Lilly Ledbetter Act as First Legislation",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "TRUE: Lilly Ledbetter Act signed Jan 29 2009, nine days after inauguration Jan 20 2009, SCOTUS ruled 5-4 in Ledbetter v. Goodyear May 2007, act overturned that ruling, first legislation Obama signed.",
+        "predicted_fake": false,
+        "outcome": "TN",
+        "tcs": 0.6086,
+        "tcs_label": "Moderately Consistent",
+        "n_claims": 3,
+        "n_inconsistencies": 1,
+        "coherence_factor": 0.6667,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "ordering_error",
+            "severity": "medium",
+            "description": "Inverted interval: 'Barack Obama's' [2009-05-15 -> 2009-01-29]."
+          }
+        ],
+        "processing_time_ms": 11122.4
+      },
+      {
+        "idx": 83,
+        "title": "Biden — Inflation Reduction Act Wrong Senate Vote Count",
+        "source": "",
+        "expected_fake": true,
+        "inconsistency_types": [
+          "implicit_contradiction",
+          "entity_inconsistency"
+        ],
+        "notes": "FAKE: IRA passed Senate in '60-40 bipartisan vote including ten Republican senators.' In reality it passed 51-50 on strict party lines with VP Harris casting tiebreaker — the exact opposite of bipartisan. Reconciliation rules prevent filibuster but require all 50 Democrats plus VP tie-breaker.",
+        "predicted_fake": false,
+        "outcome": "FN",
+        "tcs": 1.0,
+        "tcs_label": "Highly Consistent (Likely True)",
+        "n_claims": 2,
+        "n_inconsistencies": 0,
+        "coherence_factor": 1.0,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [],
+        "processing_time_ms": 7612.5
+      },
+      {
+        "idx": 84,
+        "title": "Reagan — Wrong Iran-Contra Sequence",
+        "source": "",
+        "expected_fake": false,
+        "inconsistency_types": [],
+        "notes": "TRUE: Boland Amendment Dec 1982, Lebanon magazine revealed Nov 1986, Reagan denial Nov 13 1986, Reagan acknowledgment March 4 1987, Poindexter resigned and North fired Nov 1986, Walsh investigated 6 years indicted 14 people.",
+        "predicted_fake": true,
+        "outcome": "FP",
+        "tcs": 0.125,
+        "tcs_label": "Severe Violations (Likely Fake)",
+        "n_claims": 4,
+        "n_inconsistencies": 3,
+        "coherence_factor": 0.25,
+        "known_inconsistencies": [],
+        "detected_inconsistencies": [
+          {
+            "type": "factual_contradiction",
+            "severity": "high",
+            "description": "Contradiction: 'Reagan' and 'Lebanese' both as 'November' in the same interval."
+          },
+          {
+            "type": "factual_contradiction",
+            "severity": "high",
+            "description": "Contradiction: 'Reagan' and 'Oliver North' both as 'November' in the same interval."
+          },
+          {
+            "type": "factual_contradiction",
+            "severity": "high",
+            "description": "Contradiction: 'Lebanese' and 'Oliver North' both as 'November' in the same interval."
+          }
+        ],
+        "processing_time_ms": 8650.4
+      }
+    ]
+  },
+  "liar": {},
+  "fakenewsnet": {},
+  "pipeline_comparison": {},
+  "pipeline_comparison_rows": [],
+  "boxplot": null
+}

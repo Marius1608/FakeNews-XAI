@@ -33,7 +33,7 @@ logger = logging.getLogger("benchmark")
 EVAL_DIR = Path(__file__).parent
 BENCHMARK_FILE = EVAL_DIR / "benchmark_articles.json"
 RESULTS_DIR = EVAL_DIR / "results"
-FAKE_THRESHOLD = 0.6
+FAKE_THRESHOLD = 0.55
 
 
 # // section load

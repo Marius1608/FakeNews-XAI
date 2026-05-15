@@ -11,6 +11,7 @@ from pydantic import BaseModel, Field
 
 from backend.pipeline.graph.models import Article, Inconsistency
 from backend.dependencies import get_orchestrator, explainer
+from backend.pipeline.orchestrator import _generate_auto_title
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["analyze"])
@@ -114,21 +115,25 @@ async def analyze_article(req: AnalyzeRequest) -> AnalyzeResponse:
         text=req.text, title=req.title,
         publication_date=pub_date, source=req.source,
     )
+    if not article.title:
+        article.title = _generate_auto_title(req.text)
 
     logger.info(f"/analyze: '{article.title[:50]}' ({len(article.text)} chars, pipeline={req.pipeline}, model={req.model or 'default'})")
 
-    # Acquire persistent store if persist=True
-    persistent_store = None
-    if req.persist:
-        from backend.config import NEO4J_ENABLED
-        if NEO4J_ENABLED:
-            from backend.pipeline.graph.factory import create_persistent_store
-            persistent_store = create_persistent_store()
-        else:
-            logger.warning("/analyze: persist=True but NEO4J_ENABLED=false")
+    # Always open store when Neo4j is available — used for Wikidata cache regardless of persist flag
+    from backend.config import NEO4J_ENABLED
+    from backend.pipeline.graph.factory import create_persistent_store
+
+    store = None
+    if NEO4J_ENABLED:
+        store = create_persistent_store()
+    elif req.persist:
+        logger.warning("/analyze: persist=True but NEO4J_ENABLED=false")
 
     orchestrator = get_orchestrator(req.pipeline, req.model)
-    orchestrator._persistent_store = persistent_store
+    orchestrator._persistent_store = store
+    orchestrator.persist = req.persist
+    orchestrator._enable_cross_article = False
 
     try:
         result = orchestrator.run(article)
@@ -136,8 +141,8 @@ async def analyze_article(req: AnalyzeRequest) -> AnalyzeResponse:
         logger.error(f"/analyze: pipeline error — {e}", exc_info=True)
         raise HTTPException(status_code=500, detail="Internal pipeline error.")
     finally:
-        if persistent_store:
-            persistent_store.close()
+        if store:
+            store.close()
 
     article_id = result.article_id
     cross_article_inconsistencies = [

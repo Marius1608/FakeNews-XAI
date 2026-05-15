@@ -65,6 +65,7 @@ function BatchTab({ availableModels }: BatchTabProps): React.ReactElement {
   const [pipeline, setPipeline] = useState<"spacy" | "llm">("spacy");
   const [model, setModel] = useState<string>("");
   const [persist, setPersist] = useState<boolean>(true);
+  const [compareWithNeo4j, setCompareWithNeo4j] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [result, setResult] = useState<BatchResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -129,6 +130,7 @@ function BatchTab({ availableModels }: BatchTabProps): React.ReactElement {
         pipeline,
         model: model || undefined,
         persist,
+        compare_with_neo4j: compareWithNeo4j,
       });
       setResult(response);
     } catch (err: unknown) {
@@ -259,9 +261,17 @@ function BatchTab({ availableModels }: BatchTabProps): React.ReactElement {
                 onChange={(e) => setPersist(e.target.checked)}
               />
             }
-            label={
-              <Typography variant="body2">Save to Neo4j for cross-article analysis</Typography>
+            label="Save to Neo4j"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                size="small"
+                checked={compareWithNeo4j}
+                onChange={(e) => setCompareWithNeo4j(e.target.checked)}
+              />
             }
+            label="Compare with Neo4j history"
           />
 
           <Box sx={{ ml: "auto" }}>

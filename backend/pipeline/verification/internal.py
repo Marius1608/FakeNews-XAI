@@ -23,8 +23,10 @@ CAUSAL_RELATIONS = {RelationType.CAUSED}
 MAX_PLAUSIBLE_TENURE_YEARS = 50
 
 INCOMPATIBLE_POSITIONS = [
-    {"senator", "governor", "representative", "mayor"},
-    {"president", "prime minister", "chancellor"},
+    {"senator", "governor", "representative", "mayor", "congressman"},
+    {"president", "prime minister", "chancellor", "secretary of state"},
+    {"vice president", "senator", "governor"},
+    {"speaker", "senator", "governor"},
 ]
 
 FUTURE_INDICATORS = {"will ", "going to ", "expected to ", "planned for ", "is set to ",
@@ -323,7 +325,7 @@ class InternalVerifier:
         for f in holds_facts:
             added = False
             for group in grouped_facts:
-                if SequenceMatcher(None, group[0].subject.text.lower(), f.subject.text.lower()).ratio() >= 0.85:
+                if SequenceMatcher(None, group[0].subject.text.lower(), f.subject.text.lower()).ratio() >= 0.75:
                     group.append(f)
                     added = True
                     break
@@ -339,15 +341,14 @@ class InternalVerifier:
                     obj1 = f1.object.text.lower()
                     obj2 = f2.object.text.lower()
 
-                    if SequenceMatcher(None, obj1, obj2).ratio() < 0.80:
+                    if SequenceMatcher(None, obj1, obj2).ratio() < 0.70:
                         # Different roles
                         start1, end1 = _extract_bounds(f1)
                         start2, end2 = _extract_bounds(f2)
+                        roles1 = _split_compound_positions(obj1)
+                        roles2 = _split_compound_positions(obj2)
 
                         if _check_overlap(start1, end1, start2, end2):
-                            roles1 = _split_compound_positions(obj1)
-                            roles2 = _split_compound_positions(obj2)
-
                             for inc_set in INCOMPATIBLE_POSITIONS:
                                 has_1 = any(any(t in r for t in inc_set) for r in roles1)
                                 has_2 = any(any(t in r for t in inc_set) for r in roles2)
@@ -361,6 +362,23 @@ class InternalVerifier:
                                         sentence_indices=[f1.source_sentence_idx, f2.source_sentence_idx],
                                         verified_by="internal",
                                         evidence="Overlapping incompatible positions."
+                                    ))
+                                    break
+
+                        # Fallback: no temporal data on either fact — flag with LOW severity
+                        elif start1 is None and start2 is None:
+                            for inc_set in INCOMPATIBLE_POSITIONS:
+                                has_1 = any(any(t in r for t in inc_set) for r in roles1)
+                                has_2 = any(any(t in r for t in inc_set) for r in roles2)
+                                if has_1 and has_2:
+                                    inconsistencies.append(Inconsistency(
+                                        inconsistency_type=InconsistencyType.ENTITY_INCONSISTENCY,
+                                        severity=Severity.LOW,
+                                        description=f"Potentially incompatible roles for '{f1.subject.text}': '{f1.object.text}' and '{f2.object.text}' (no temporal data to confirm overlap).",
+                                        facts_involved=[f1, f2],
+                                        sentence_indices=[f1.source_sentence_idx, f2.source_sentence_idx],
+                                        verified_by="internal",
+                                        evidence="Incompatible roles present; no dates available to confirm or deny overlap."
                                     ))
                                     break
 

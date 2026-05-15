@@ -6,6 +6,7 @@ import type {
   ArticlesResponse,
   BatchRequest, BatchResponse,
   CompareRequest, CompareResponse,
+  CrossArticleResponse,
   HealthResponse, ModelsResponse,
 } from "../types";
 
@@ -51,6 +52,13 @@ export async function getArticles(): Promise<ArticlesResponse> {
 
 export async function deleteArticle(articleId: string): Promise<void> {
   await apiClient.delete(`/articles/${encodeURIComponent(articleId)}`);
+}
+
+export async function crossCheckArticle(articleId: string): Promise<CrossArticleResponse> {
+  const { data } = await apiClient.get<CrossArticleResponse>("/articles/cross-check", {
+    params: { article_id: articleId },
+  });
+  return data;
 }
 
 export interface UploadResponse {

@@ -35,7 +35,7 @@ EVAL_DIR = Path(__file__).parent
 BENCHMARK_FILE = EVAL_DIR / "benchmark_articles.json"
 RESULTS_DIR = EVAL_DIR / "results"
 FIGURES_DIR = EVAL_DIR / "figures"
-FAKE_THRESHOLD = 0.6
+FAKE_THRESHOLD = 0.55
 
 LIAR_LABEL_ORDER = ["true", "mostly-true", "half-true", "barely-true", "false", "pants-fire"]
 

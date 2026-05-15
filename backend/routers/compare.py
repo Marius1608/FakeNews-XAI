@@ -11,6 +11,7 @@ from pydantic import BaseModel, Field
 
 from backend.pipeline.graph.models import Article
 from backend.dependencies import get_orchestrator, explainer
+from backend.pipeline.orchestrator import _generate_auto_title
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["compare"])
@@ -94,6 +95,8 @@ async def compare_pipelines(req: CompareRequest) -> CompareResponse:
         text=req.text, title=req.title,
         publication_date=pub_date, source=req.source,
     )
+    if not article.title:
+        article.title = _generate_auto_title(req.text)
 
     resolved_model_a = req.model_a or AVAILABLE_MODELS[req.pipeline_a]["default"]
     resolved_model_b = req.model_b or AVAILABLE_MODELS[req.pipeline_b]["default"]
@@ -103,9 +106,19 @@ async def compare_pipelines(req: CompareRequest) -> CompareResponse:
         f"A={req.pipeline_a}:{resolved_model_a} vs B={req.pipeline_b}:{resolved_model_b}"
     )
 
+    # Always open store when Neo4j is available — used for Wikidata cache; never saves from compare tab
+    from backend.config import NEO4J_ENABLED
+    from backend.pipeline.graph.factory import create_persistent_store
+
+    store = None
+    if NEO4J_ENABLED:
+        store = create_persistent_store()
+
     # Run pipeline A
     try:
         orch_a = get_orchestrator(req.pipeline_a, req.model_a)
+        orch_a._persistent_store = store
+        orch_a.persist = False
         result_a = orch_a.run(article)
     except Exception as e:
         logger.error(f"/compare: pipeline A error ({req.pipeline_a}:{resolved_model_a}) — {e}", exc_info=True)
@@ -114,10 +127,15 @@ async def compare_pipelines(req: CompareRequest) -> CompareResponse:
     # Run pipeline B
     try:
         orch_b = get_orchestrator(req.pipeline_b, req.model_b)
+        orch_b._persistent_store = store
+        orch_b.persist = False
         result_b = orch_b.run(article)
     except Exception as e:
         logger.error(f"/compare: pipeline B error ({req.pipeline_b}:{resolved_model_b}) — {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"Pipeline B error '{req.pipeline_b}:{resolved_model_b}': {e}")
+    finally:
+        if store:
+            store.close()
 
     expl_a = _explainer.explain_structured(result_a)
     expl_b = _explainer.explain_structured(result_b)

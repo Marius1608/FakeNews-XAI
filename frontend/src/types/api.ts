@@ -84,6 +84,7 @@ export interface BatchRequest {
   pipeline: string;
   model?: string;
   persist: boolean;
+  compare_with_neo4j?: boolean;
 }
 
 export interface BatchArticleResult {
@@ -157,6 +158,20 @@ export interface CompareResponse {
   agreement: string;
   model_a: string;
   model_b: string;
+}
+
+// cross-article check schemas
+export interface CrossArticleConflict {
+  entity: string;
+  description: string;
+  conflicting_article_title: string;
+  conflicting_article_date: string;
+}
+
+export interface CrossArticleResponse {
+  article_id: string;
+  conflicts: CrossArticleConflict[];
+  checked_against: number;
 }
 
 // health schema

@@ -100,14 +100,24 @@ class ExternalVerifier:
             return self._compare_with_reference(fact, relevant_ref)
         # If Reference KG has no relevant facts, continue to Wikidata
 
-        # 2. Wikidata
+        # 2. Wikidata — direct comparison
         if not self.use_wikidata:
             return []
 
         wikidata_facts = self._fetch_from_wikidata(fact, result)
-        if wikidata_facts:
-            result.facts_matched += 1
-            return self._compare_with_wikidata(fact, wikidata_facts)
+        if not wikidata_facts:
+            return []
+
+        result.facts_matched += 1
+
+        # Direct comparison (existing logic)
+        direct_incons = self._compare_with_wikidata(fact, wikidata_facts)
+        if direct_incons:
+            return direct_incons
+
+        # Inverse comparison (new logic) — only for HOLDS_POSITION facts
+        if fact.predicate == RelationType.HOLDS_POSITION:
+            return self._verify_inverse_wikidata(fact, wikidata_facts)
 
         return []
 
@@ -145,8 +155,10 @@ class ExternalVerifier:
             self._wikidata_cache[cache_key] = []
             return []
 
-        props = RELATION_TO_WIKIDATA_PROPS.get(fact.predicate, [])
-        wikidata_facts = self.client.get_temporal_facts(entity_id, props)
+        # Inverse Wikidata: fetch ALL temporal facts for the entity at once
+        # (P39=positions held, P463=member of) — not just the matched relation.
+        # This allows detecting contradictions even when C1 misclassifies the relation.
+        wikidata_facts = self.client.get_temporal_facts(entity_id, ["P39", "P463"])
         result.wikidata_queries += 1
 
         for wf in wikidata_facts:
@@ -204,6 +216,84 @@ class ExternalVerifier:
                 w_e = wf.time_end.year if wf.time_end else "?"
                 logger.debug(f"  MISMATCH: article={f_s}->{f_e} vs wikidata={w_s}->{w_e}")
                 inconsistencies.append(incons)
+
+        return inconsistencies
+
+    def _verify_inverse_wikidata(
+        self, fact: TemporalFact, wikidata_facts: list[WikidataFact]
+    ) -> list[Inconsistency]:
+        """
+        Inverse check: verifies that no Wikidata fact for this entity
+        directly contradicts what the article claims.
+
+        Detects two patterns:
+        - CONFLICT: Wikidata has the same position but with a different interval
+        - NOT_FOUND: article claims a position that does not exist in Wikidata at all
+        """
+        if not wikidata_facts:
+            return []
+
+        obj_text = fact.object.text.lower().strip()
+        inconsistencies = []
+
+        # Find Wikidata facts that mention the same position/role
+        matching = [
+            wf for wf in wikidata_facts
+            if _word_overlap(obj_text, wf.value_label.lower())
+        ]
+
+        if not matching:
+            # Position not found in Wikidata at all — flag as LOW severity
+            # (Wikidata may be incomplete, so don't flag as HIGH)
+            fact_time = (
+                fact.time_point.normalized_date if fact.time_point else
+                fact.time_start.normalized_date if fact.time_start else None
+            )
+            if fact_time:
+                inconsistencies.append(Inconsistency(
+                    inconsistency_type=InconsistencyType.ENTITY_INCONSISTENCY,
+                    severity=Severity.LOW,
+                    description=f"Position '{fact.object.text}' for '{fact.subject.text}' not found in Wikidata.",
+                    facts_involved=[fact],
+                    sentence_indices=[fact.source_sentence_idx],
+                    verified_by="wikidata_inverse",
+                    evidence=f"Wikidata has {len(wikidata_facts)} facts for this entity; none match '{fact.object.text}'.",
+                ))
+            return inconsistencies
+
+        # Check if the article's time falls within any matching Wikidata interval
+        fact_time = (
+            fact.time_point.normalized_date if fact.time_point else
+            fact.time_start.normalized_date if fact.time_start else None
+        )
+        if not fact_time:
+            return []
+
+        confirmed = False
+        for wf in matching:
+            wf_start = wf.time_start
+            wf_end = wf.time_end or datetime(datetime.now().year + 1, 1, 1)
+            if wf_start and wf_start <= fact_time <= wf_end:
+                confirmed = True
+                break
+
+        if not confirmed:
+            # The position exists in Wikidata but not in the claimed period
+            best = matching[0]
+            wf_start_y = best.time_start.year if best.time_start else "?"
+            wf_end_y = best.time_end.year if best.time_end else "present"
+            inconsistencies.append(Inconsistency(
+                inconsistency_type=InconsistencyType.DATE_MISMATCH,
+                severity=Severity.HIGH,
+                description=(
+                    f"'{fact.subject.text}' as '{fact.object.text}' in {fact_time.year} "
+                    f"conflicts with Wikidata: that position held [{wf_start_y} -> {wf_end_y}]."
+                ),
+                facts_involved=[fact],
+                sentence_indices=[fact.source_sentence_idx],
+                verified_by="wikidata_inverse",
+                evidence=f"Wikidata: {best.value_label} [{wf_start_y} -> {wf_end_y}].",
+            ))
 
         return inconsistencies
 
@@ -275,6 +365,14 @@ def _compare_temporal_intervals(
 
 def _has_temporal_anchor(fact: TemporalFact) -> bool:
     return any(getattr(fact, f) and getattr(fact, f).normalized_date for f in ("time_point", "time_start", "time_end"))
+
+def _word_overlap(text1: str, text2: str, min_overlap: int = 1) -> bool:
+    """True if the two strings share at least min_overlap meaningful words."""
+    STOPWORDS = {"of", "the", "a", "an", "and", "or", "in", "at", "to", "for",
+                 "united", "states", "u.s.", "us"}
+    words1 = {w for w in text1.lower().split() if w not in STOPWORDS and len(w) > 2}
+    words2 = {w for w in text2.lower().split() if w not in STOPWORDS and len(w) > 2}
+    return len(words1 & words2) >= min_overlap
 
 def _parse_date_str(date_str: Optional[str]) -> Optional[datetime]:
     if not date_str:

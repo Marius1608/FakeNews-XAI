@@ -13,6 +13,7 @@ from pydantic import BaseModel, Field
 from backend.pipeline.graph.models import Article
 from backend.routers.analyze import InconsistencyResponse, _to_inconsistency_response
 from backend.dependencies import explainer, get_orchestrator
+from backend.pipeline.orchestrator import _generate_auto_title
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["batch"])
@@ -32,6 +33,10 @@ class BatchRequest(BaseModel):
     persist: bool = Field(
         default=True,
         description="Save to Neo4j for cross-article analysis",
+    )
+    compare_with_neo4j: bool = Field(
+        default=False,
+        description="Run cross-article verification against existing Neo4j articles",
     )
 
 
@@ -80,7 +85,8 @@ async def analyze_batch(req: BatchRequest) -> BatchResponse:
 
     # open one shared store connection for the whole batch
     store = None
-    if persist:
+    need_store = (persist or req.compare_with_neo4j) and NEO4J_ENABLED
+    if need_store:
         from backend.pipeline.graph.factory import create_persistent_store
         store = create_persistent_store()
         if store is None:
@@ -106,6 +112,8 @@ async def analyze_batch(req: BatchRequest) -> BatchResponse:
                 publication_date=pub_date,
                 source=batch_article.source,
             )
+            if not article.title:
+                article.title = _generate_auto_title(batch_article.text)
 
             try:
                 orchestrator = get_orchestrator(req.pipeline, req.model)
@@ -137,17 +145,23 @@ async def analyze_batch(req: BatchRequest) -> BatchResponse:
             cross_conflicts: list[InconsistencyResponse] = []
             if store is not None:
                 from backend.pipeline.verification.cross_article import CrossArticleVerifier
-
                 try:
-                    # verify BEFORE persisting so current article is not in the store yet
-                    verifier = CrossArticleVerifier(store)
-                    raw_conflicts = verifier.verify(result.facts, article_id)
-                    store.add_facts(result.facts, article_id=article_id)
-                    cross_conflicts = [_to_inconsistency_response(c) for c in raw_conflicts]
-                    total_cross_conflicts += len(cross_conflicts)
+                    if req.compare_with_neo4j:
+                        # Verify BEFORE persisting so current article is not in store yet
+                        verifier = CrossArticleVerifier(store)
+                        raw_conflicts = verifier.verify(result.facts, article_id)
+                        cross_conflicts = [_to_inconsistency_response(c) for c in raw_conflicts]
+                        total_cross_conflicts += len(cross_conflicts)
+                    if persist:
+                        store.add_facts(
+                            result.facts,
+                            article_id=article_id,
+                            title=batch_article.title,
+                            source=batch_article.source,
+                        )
                 except Exception as e:
                     logger.error(
-                        f"/analyze-batch: persistence error for {article_id}: {e}",
+                        f"/analyze-batch: neo4j error for {article_id}: {e}",
                         exc_info=True,
                     )
 
