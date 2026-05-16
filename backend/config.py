@@ -61,6 +61,10 @@ TCS_THRESHOLDS = {
 }
 
 
+# Wikipedia REST API — opt-in fallback when Wikidata finds nothing
+USE_WEB_SEARCH: bool = os.getenv("USE_WEB_SEARCH", "false").lower() == "true"
+
+
 # Neo4j — optional persistent store for cross-article analysis
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
 NEO4J_USER = os.getenv("NEO4J_USER", "neo4j")

@@ -1,243 +1,6121 @@
 {
-  "_meta": {
-    "description": "Reference Knowledge Graph — evenimente verificate manual pentru verificarea externa TCS.",
-    "format": "Cheile sunt numele entitatilor (lowercase). Valorile sunt liste de fapte temporale verificate.",
-    "fields": {
-      "relation": "tipul relatiei (holds_position, member_of, occurred_on)",
-      "value": "valoarea obiectului (pozitia detinuta, organizatia, evenimentul)",
-      "time_start": "data de inceput ISO 8601 (YYYY-MM-DD)",
-      "time_end": "data de sfarsit ISO 8601 (YYYY-MM-DD)",
-      "time_point": "moment punctual ISO 8601 (YYYY-MM-DD) — alternativa la start/end",
-      "source": "sursa verificarii (wikidata Q-ID sau URL)"
-    },
-    "last_updated": "2026-03-27",
-    "version": "1.0"
-  },
-
-  "barack obama": [
+  "generated_at": "2026-05-16T12:06:14.547335",
+  "total_entities": 143,
+  "total_facts": 517,
+  "failed_count": 0,
+  "entities": [
     {
-      "relation": "holds_position",
-      "value": "President of the United States",
-      "time_start": "2009-01-20",
-      "time_end": "2017-01-20",
-      "source": "Q76"
-    },
-    {
-      "relation": "holds_position",
-      "value": "Senator from Illinois",
-      "time_start": "2005-01-03",
-      "time_end": "2008-11-16",
-      "source": "Q76"
-    },
-    {
-      "relation": "member_of",
-      "value": "Democratic Party",
-      "time_start": "1996-01-01",
-      "time_end": null,
-      "source": "Q76"
-    }
-  ],
-
-  "donald trump": [
-    {
-      "relation": "holds_position",
-      "value": "President of the United States",
-      "time_start": "2017-01-20",
-      "time_end": "2021-01-20",
-      "source": "Q22686"
-    },
-    {
-      "relation": "member_of",
-      "value": "Republican Party",
-      "time_start": "2009-01-01",
-      "time_end": null,
-      "source": "Q22686"
-    }
-  ],
-
-  "joe biden": [
-    {
-      "relation": "holds_position",
-      "value": "President of the United States",
-      "time_start": "2021-01-20",
-      "time_end": "2025-01-20",
-      "source": "Q6279"
-    },
-    {
-      "relation": "holds_position",
-      "value": "Vice President of the United States",
-      "time_start": "2009-01-20",
-      "time_end": "2017-01-20",
-      "source": "Q6279"
+      "name": "Barack Obama",
+      "qid": "Q76",
+      "category": "us_president",
+      "facts": [
+        {
+          "entity": "Barack Obama",
+          "entity_id": "Q76",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2007,
+          "start_date": "2007-01-03",
+          "end_year": 2008,
+          "end_date": "2008-11-16"
+        },
+        {
+          "entity": "Barack Obama",
+          "entity_id": "Q76",
+          "position": "member of the State Senate of Illinois",
+          "property": "P39",
+          "start_year": 1997,
+          "start_date": "1997-01-08",
+          "end_year": 2004,
+          "end_date": "2004-11-04"
+        },
+        {
+          "entity": "Barack Obama",
+          "entity_id": "Q76",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-01-03",
+          "end_year": 2007,
+          "end_date": "2007-01-03"
+        },
+        {
+          "entity": "Barack Obama",
+          "entity_id": "Q76",
+          "position": "President-elect of the United States",
+          "property": "P39",
+          "start_year": 2008,
+          "start_date": "2008-11-04",
+          "end_year": 2009,
+          "end_date": "2009-01-20"
+        },
+        {
+          "entity": "Barack Obama",
+          "entity_id": "Q76",
+          "position": "President of the United States",
+          "property": "P39",
+          "start_year": 2009,
+          "start_date": "2009-01-20",
+          "end_year": 2017,
+          "end_date": "2017-01-20"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:57:33.703167"
     },
     {
-      "relation": "holds_position",
-      "value": "Senator from Delaware",
-      "time_start": "1973-01-03",
-      "time_end": "2009-01-15",
-      "source": "Q6279"
-    }
-  ],
-
-  "george w. bush": [
-    {
-      "relation": "holds_position",
-      "value": "President of the United States",
-      "time_start": "2001-01-20",
-      "time_end": "2009-01-20",
-      "source": "Q207"
-    }
-  ],
-
-  "bill clinton": [
-    {
-      "relation": "holds_position",
-      "value": "President of the United States",
-      "time_start": "1993-01-20",
-      "time_end": "2001-01-20",
-      "source": "Q1124"
-    }
-  ],
-
-  "hillary clinton": [
-    {
-      "relation": "holds_position",
-      "value": "Secretary of State",
-      "time_start": "2009-01-21",
-      "time_end": "2013-02-01",
-      "source": "Q6294"
+      "name": "Donald Trump",
+      "qid": "Q22686",
+      "category": "us_president",
+      "facts": [
+        {
+          "entity": "Donald Trump",
+          "entity_id": "Q22686",
+          "position": "The World's Billionaires",
+          "property": "P463",
+          "point_year": 2021,
+          "point_date": "2021-01-01"
+        },
+        {
+          "entity": "Donald Trump",
+          "entity_id": "Q22686",
+          "position": "president",
+          "property": "P39",
+          "start_year": 1971,
+          "start_date": "1971-01-01",
+          "end_year": 2017,
+          "end_date": "2017-01-01"
+        },
+        {
+          "entity": "Donald Trump",
+          "entity_id": "Q22686",
+          "position": "director",
+          "property": "P39",
+          "point_year": 2015,
+          "point_date": "2015-07-15"
+        },
+        {
+          "entity": "Donald Trump",
+          "entity_id": "Q22686",
+          "position": "President of the United States",
+          "property": "P39",
+          "start_year": 2025,
+          "start_date": "2025-01-20"
+        },
+        {
+          "entity": "Donald Trump",
+          "entity_id": "Q22686",
+          "position": "President-elect of the United States",
+          "property": "P39",
+          "start_year": 2016,
+          "start_date": "2016-11-09",
+          "end_year": 2017,
+          "end_date": "2017-01-20"
+        },
+        {
+          "entity": "Donald Trump",
+          "entity_id": "Q22686",
+          "position": "SAG-AFTRA",
+          "property": "P463",
+          "end_year": 2021,
+          "end_date": "2021-02-04"
+        },
+        {
+          "entity": "Donald Trump",
+          "entity_id": "Q22686",
+          "position": "President of the United States",
+          "property": "P39",
+          "start_year": 2017,
+          "start_date": "2017-01-20",
+          "end_year": 2021,
+          "end_date": "2021-01-20"
+        },
+        {
+          "entity": "Donald Trump",
+          "entity_id": "Q22686",
+          "position": "chief executive officer",
+          "property": "P39",
+          "start_year": 1971,
+          "start_date": "1971-01-01"
+        },
+        {
+          "entity": "Donald Trump",
+          "entity_id": "Q22686",
+          "position": "President-elect of the United States",
+          "property": "P39",
+          "start_year": 2024,
+          "start_date": "2024-11-06",
+          "end_year": 2025,
+          "end_date": "2025-01-20"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:57:36.012846"
     },
     {
-      "relation": "holds_position",
-      "value": "Senator from New York",
-      "time_start": "2001-01-03",
-      "time_end": "2009-01-21",
-      "source": "Q6294"
-    }
-  ],
-
-  "angela merkel": [
-    {
-      "relation": "holds_position",
-      "value": "Chancellor of Germany",
-      "time_start": "2005-11-22",
-      "time_end": "2021-12-08",
-      "source": "Q567"
+      "name": "Joe Biden",
+      "qid": "Q6279",
+      "category": "us_president",
+      "facts": [
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1999,
+          "start_date": "1999-01-03",
+          "end_year": 2001,
+          "end_date": "2001-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2003,
+          "start_date": "2003-01-03",
+          "end_year": 2005,
+          "end_date": "2005-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "Vice President of the United States",
+          "property": "P39",
+          "start_year": 2009,
+          "start_date": "2009-01-20",
+          "end_year": 2017,
+          "end_date": "2017-01-20"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "council member",
+          "property": "P39",
+          "start_year": 1970,
+          "start_date": "1970-11-04",
+          "end_year": 1972,
+          "end_date": "1972-11-08"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-01-03",
+          "end_year": 2003,
+          "end_date": "2003-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1995,
+          "start_date": "1995-01-03",
+          "end_year": 1997,
+          "end_date": "1997-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1975,
+          "start_date": "1975-01-03",
+          "end_year": 1977,
+          "end_date": "1977-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2007,
+          "start_date": "2007-01-03",
+          "end_year": 2009,
+          "end_date": "2009-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1997,
+          "start_date": "1997-01-03",
+          "end_year": 1999,
+          "end_date": "1999-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-01-03",
+          "end_year": 2007,
+          "end_date": "2007-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "President-elect of the United States",
+          "property": "P39",
+          "start_year": 2020,
+          "start_date": "2020-11-07",
+          "end_year": 2021,
+          "end_date": "2021-01-20"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1983,
+          "start_date": "1983-01-03",
+          "end_year": 1985,
+          "end_date": "1985-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1977,
+          "start_date": "1977-01-03",
+          "end_year": 1979,
+          "end_date": "1979-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "President of the United States",
+          "property": "P39",
+          "start_year": 2021,
+          "start_date": "2021-01-20",
+          "end_year": 2025,
+          "end_date": "2025-01-20"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1981,
+          "start_date": "1981-01-03",
+          "end_year": 1983,
+          "end_date": "1983-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1993,
+          "start_date": "1993-01-03",
+          "end_year": 1995,
+          "end_date": "1995-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1985,
+          "start_date": "1985-01-03",
+          "end_year": 1987,
+          "end_date": "1987-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1987,
+          "start_date": "1987-01-03",
+          "end_year": 1989,
+          "end_date": "1989-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1989,
+          "start_date": "1989-01-03",
+          "end_year": 1991,
+          "end_date": "1991-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1973,
+          "start_date": "1973-01-03",
+          "end_year": 1975,
+          "end_date": "1975-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1979,
+          "start_date": "1979-01-03",
+          "end_year": 1981,
+          "end_date": "1981-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1991,
+          "start_date": "1991-01-03",
+          "end_year": 1993,
+          "end_date": "1993-01-03"
+        },
+        {
+          "entity": "Joe Biden",
+          "entity_id": "Q6279",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2009,
+          "start_date": "2009-01-03",
+          "end_year": 2009,
+          "end_date": "2009-01-15"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:57:38.266514"
     },
     {
-      "relation": "member_of",
-      "value": "Christian Democratic Union",
-      "time_start": "1990-01-01",
-      "time_end": null,
-      "source": "Q567"
-    }
-  ],
-
-  "vladimir putin": [
-    {
-      "relation": "holds_position",
-      "value": "President of Russia",
-      "time_start": "2000-05-07",
-      "time_end": "2008-05-07",
-      "source": "Q7747"
+      "name": "Bill Clinton",
+      "qid": "Q1124",
+      "category": "us_president",
+      "facts": [
+        {
+          "entity": "Bill Clinton",
+          "entity_id": "Q1124",
+          "position": "Attorney General of Arkansas",
+          "property": "P39",
+          "start_year": 1977,
+          "start_date": "1977-01-03",
+          "end_year": 1979,
+          "end_date": "1979-01-09"
+        },
+        {
+          "entity": "Bill Clinton",
+          "entity_id": "Q1124",
+          "position": "Governor of Arkansas",
+          "property": "P39",
+          "start_year": 1983,
+          "start_date": "1983-01-11",
+          "end_year": 1992,
+          "end_date": "1992-12-12"
+        },
+        {
+          "entity": "Bill Clinton",
+          "entity_id": "Q1124",
+          "position": "President-elect of the United States",
+          "property": "P39",
+          "start_year": 1992,
+          "start_date": "1992-11-03",
+          "end_year": 1993,
+          "end_date": "1993-01-20"
+        },
+        {
+          "entity": "Bill Clinton",
+          "entity_id": "Q1124",
+          "position": "Governor of Arkansas",
+          "property": "P39",
+          "start_year": 1979,
+          "start_date": "1979-01-09",
+          "end_year": 1981,
+          "end_date": "1981-01-19"
+        },
+        {
+          "entity": "Bill Clinton",
+          "entity_id": "Q1124",
+          "position": "President of the United States",
+          "property": "P39",
+          "start_year": 1993,
+          "start_date": "1993-01-20",
+          "end_year": 2001,
+          "end_date": "2001-01-20"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:57:40.518578"
     },
     {
-      "relation": "holds_position",
-      "value": "Prime Minister of Russia",
-      "time_start": "2008-05-08",
-      "time_end": "2012-05-07",
-      "source": "Q7747"
+      "name": "George W. Bush",
+      "qid": "Q207",
+      "category": "us_president",
+      "facts": [
+        {
+          "entity": "George W. Bush",
+          "entity_id": "Q207",
+          "position": "Governor of Texas",
+          "property": "P39",
+          "start_year": 1995,
+          "start_date": "1995-01-17",
+          "end_year": 2000,
+          "end_date": "2000-12-21"
+        },
+        {
+          "entity": "George W. Bush",
+          "entity_id": "Q207",
+          "position": "President-elect of the United States",
+          "property": "P39",
+          "start_year": 2000,
+          "start_date": "2000-12-12",
+          "end_year": 2001,
+          "end_date": "2001-01-20"
+        },
+        {
+          "entity": "George W. Bush",
+          "entity_id": "Q207",
+          "position": "President of the United States",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-01-20",
+          "end_year": 2009,
+          "end_date": "2009-01-20"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:57:43.284426"
     },
     {
-      "relation": "holds_position",
-      "value": "President of Russia",
-      "time_start": "2012-05-07",
-      "time_end": null,
-      "source": "Q7747"
-    }
-  ],
-
-  "elon musk": [
-    {
-      "relation": "holds_position",
-      "value": "CEO of Tesla",
-      "time_start": "2008-10-01",
-      "time_end": null,
-      "source": "Q317521"
+      "name": "George H.W. Bush",
+      "qid": "Q23505",
+      "category": "us_president",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:58:15.339760"
     },
     {
-      "relation": "holds_position",
-      "value": "CEO of SpaceX",
-      "time_start": "2002-05-06",
-      "time_end": null,
-      "source": "Q317521"
+      "name": "Ronald Reagan",
+      "qid": "Q9960",
+      "category": "us_president",
+      "facts": [
+        {
+          "entity": "Ronald Reagan",
+          "entity_id": "Q9960",
+          "position": "President-elect of the United States",
+          "property": "P39",
+          "start_year": 1980,
+          "start_date": "1980-11-04",
+          "end_year": 1981,
+          "end_date": "1981-01-20"
+        },
+        {
+          "entity": "Ronald Reagan",
+          "entity_id": "Q9960",
+          "position": "President of SAG",
+          "property": "P39",
+          "start_year": 1947,
+          "start_date": "1947-01-01",
+          "end_year": 1952,
+          "end_date": "1952-01-01"
+        },
+        {
+          "entity": "Ronald Reagan",
+          "entity_id": "Q9960",
+          "position": "Governor of California",
+          "property": "P39",
+          "start_year": 1967,
+          "start_date": "1967-01-02",
+          "end_year": 1975,
+          "end_date": "1975-01-06"
+        },
+        {
+          "entity": "Ronald Reagan",
+          "entity_id": "Q9960",
+          "position": "President of SAG",
+          "property": "P39",
+          "start_year": 1959,
+          "start_date": "1959-01-01",
+          "end_year": 1960,
+          "end_date": "1960-01-01"
+        },
+        {
+          "entity": "Ronald Reagan",
+          "entity_id": "Q9960",
+          "position": "President of the United States",
+          "property": "P39",
+          "start_year": 1981,
+          "start_date": "1981-01-20",
+          "end_year": 1989,
+          "end_date": "1989-01-20"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:58:17.588745"
     },
     {
-      "relation": "holds_position",
-      "value": "CEO of Twitter",
-      "time_start": "2022-10-27",
-      "time_end": null,
-      "source": "Q317521"
-    }
-  ],
-
-  "apple": [
-    {
-      "relation": "occurred_on",
-      "value": "founded",
-      "time_point": "1976-04-01",
-      "source": "Q312"
-    }
-  ],
-
-  "google": [
-    {
-      "relation": "occurred_on",
-      "value": "founded",
-      "time_point": "1998-09-04",
-      "source": "Q95"
-    }
-  ],
-
-  "microsoft": [
-    {
-      "relation": "occurred_on",
-      "value": "founded",
-      "time_point": "1975-04-04",
-      "source": "Q2283"
-    }
-  ],
-
-  "world war ii": [
-    {
-      "relation": "occurred_on",
-      "value": "started",
-      "time_point": "1939-09-01",
-      "source": "Q362"
+      "name": "Jimmy Carter",
+      "qid": "Q23685",
+      "category": "us_president",
+      "facts": [
+        {
+          "entity": "Jimmy Carter",
+          "entity_id": "Q23685",
+          "position": "The Elders",
+          "property": "P463",
+          "start_year": 2007,
+          "start_date": "2007-01-01",
+          "end_year": 2016,
+          "end_date": "2016-01-01"
+        },
+        {
+          "entity": "Jimmy Carter",
+          "entity_id": "Q23685",
+          "position": "member of the Georgia State Senate",
+          "property": "P39",
+          "start_year": 1963,
+          "start_date": "1963-02-14",
+          "end_year": 1967,
+          "end_date": "1967-01-09"
+        },
+        {
+          "entity": "Jimmy Carter",
+          "entity_id": "Q23685",
+          "position": "President of the United States",
+          "property": "P39",
+          "start_year": 1977,
+          "start_date": "1977-01-20",
+          "end_year": 1981,
+          "end_date": "1981-01-20"
+        },
+        {
+          "entity": "Jimmy Carter",
+          "entity_id": "Q23685",
+          "position": "Governor of Georgia",
+          "property": "P39",
+          "start_year": 1971,
+          "start_date": "1971-01-12",
+          "end_year": 1975,
+          "end_date": "1975-01-14"
+        },
+        {
+          "entity": "Jimmy Carter",
+          "entity_id": "Q23685",
+          "position": "President-elect of the United States",
+          "property": "P39",
+          "start_year": 1976,
+          "start_date": "1976-11-02",
+          "end_year": 1977,
+          "end_date": "1977-01-20"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:58:19.943694"
     },
     {
-      "relation": "occurred_on",
-      "value": "ended",
-      "time_point": "1945-09-02",
-      "source": "Q362"
+      "name": "Gerald Ford",
+      "qid": "Q9916",
+      "category": "us_president",
+      "facts": [
+        {
+          "entity": "Gerald Ford",
+          "entity_id": "Q9916",
+          "position": "Supreme Allied Commander Europe",
+          "property": "P39",
+          "start_year": 1951,
+          "start_date": "1951-04-02",
+          "end_year": 1952,
+          "end_date": "1952-05-30"
+        },
+        {
+          "entity": "Gerald Ford",
+          "entity_id": "Q9916",
+          "position": "Chief of Staff of the United States Army",
+          "property": "P39",
+          "start_year": 1945,
+          "start_date": "1945-11-19",
+          "end_year": 1948,
+          "end_date": "1948-02-06"
+        },
+        {
+          "entity": "Gerald Ford",
+          "entity_id": "Q9916",
+          "position": "President of the United States",
+          "property": "P39",
+          "start_year": 1953,
+          "start_date": "1953-01-20",
+          "end_year": 1961,
+          "end_date": "1961-01-20"
+        },
+        {
+          "entity": "Gerald Ford",
+          "entity_id": "Q9916",
+          "position": "President-elect of the United States",
+          "property": "P39",
+          "start_year": 1952,
+          "start_date": "1952-11-04",
+          "end_year": 1953,
+          "end_date": "1953-01-20"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:58:22.095170"
+    },
+    {
+      "name": "Richard Nixon",
+      "qid": "Q9588",
+      "category": "us_president",
+      "facts": [
+        {
+          "entity": "Richard Nixon",
+          "entity_id": "Q9588",
+          "position": "President of the United States",
+          "property": "P39",
+          "start_year": 1969,
+          "start_date": "1969-01-20",
+          "end_year": 1974,
+          "end_date": "1974-08-09"
+        },
+        {
+          "entity": "Richard Nixon",
+          "entity_id": "Q9588",
+          "position": "President-elect of the United States",
+          "property": "P39",
+          "start_year": 1968,
+          "start_date": "1968-11-05",
+          "end_year": 1969,
+          "end_date": "1969-01-20"
+        },
+        {
+          "entity": "Richard Nixon",
+          "entity_id": "Q9588",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1951,
+          "start_date": "1951-01-03",
+          "end_year": 1953,
+          "end_date": "1953-01-01"
+        },
+        {
+          "entity": "Richard Nixon",
+          "entity_id": "Q9588",
+          "position": "Vice President of the United States",
+          "property": "P39",
+          "start_year": 1953,
+          "start_date": "1953-01-20",
+          "end_year": 1961,
+          "end_date": "1961-01-20"
+        },
+        {
+          "entity": "Richard Nixon",
+          "entity_id": "Q9588",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1950,
+          "start_date": "1950-12-01",
+          "end_year": 1951,
+          "end_date": "1951-01-03"
+        },
+        {
+          "entity": "Richard Nixon",
+          "entity_id": "Q9588",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1947,
+          "start_date": "1947-01-03",
+          "end_year": 1950,
+          "end_date": "1950-12-01"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:58:24.211728"
+    },
+    {
+      "name": "Lyndon B. Johnson",
+      "qid": "Q9640",
+      "category": "us_president",
+      "facts": [
+        {
+          "entity": "Lyndon B. Johnson",
+          "entity_id": "Q9640",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1949,
+          "start_date": "1949-01-03",
+          "end_year": 1951,
+          "end_date": "1951-01-03"
+        },
+        {
+          "entity": "Lyndon B. Johnson",
+          "entity_id": "Q9640",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1951,
+          "start_date": "1951-01-03",
+          "end_year": 1953,
+          "end_date": "1953-01-03"
+        },
+        {
+          "entity": "Lyndon B. Johnson",
+          "entity_id": "Q9640",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1959,
+          "start_date": "1959-01-03",
+          "end_year": 1961,
+          "end_date": "1961-01-03"
+        },
+        {
+          "entity": "Lyndon B. Johnson",
+          "entity_id": "Q9640",
+          "position": "President of the United States",
+          "property": "P39",
+          "start_year": 1963,
+          "start_date": "1963-11-22",
+          "end_year": 1969,
+          "end_date": "1969-01-20"
+        },
+        {
+          "entity": "Lyndon B. Johnson",
+          "entity_id": "Q9640",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1957,
+          "start_date": "1957-01-03",
+          "end_year": 1959,
+          "end_date": "1959-01-03"
+        },
+        {
+          "entity": "Lyndon B. Johnson",
+          "entity_id": "Q9640",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1937,
+          "start_date": "1937-04-10",
+          "end_year": 1949,
+          "end_date": "1949-01-03"
+        },
+        {
+          "entity": "Lyndon B. Johnson",
+          "entity_id": "Q9640",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1953,
+          "start_date": "1953-01-03",
+          "end_year": 1955,
+          "end_date": "1955-01-03"
+        },
+        {
+          "entity": "Lyndon B. Johnson",
+          "entity_id": "Q9640",
+          "position": "Vice President of the United States",
+          "property": "P39",
+          "start_year": 1961,
+          "start_date": "1961-01-20",
+          "end_year": 1963,
+          "end_date": "1963-11-22"
+        },
+        {
+          "entity": "Lyndon B. Johnson",
+          "entity_id": "Q9640",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1955,
+          "start_date": "1955-01-03",
+          "end_year": 1957,
+          "end_date": "1957-01-03"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:58:26.395305"
+    },
+    {
+      "name": "John F. Kennedy",
+      "qid": "Q9696",
+      "category": "us_president",
+      "facts": [
+        {
+          "entity": "John F. Kennedy",
+          "entity_id": "Q9696",
+          "position": "President of the United States",
+          "property": "P39",
+          "start_year": 1961,
+          "start_date": "1961-01-20",
+          "end_year": 1963,
+          "end_date": "1963-11-22"
+        },
+        {
+          "entity": "John F. Kennedy",
+          "entity_id": "Q9696",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1947,
+          "start_date": "1947-01-03",
+          "end_year": 1953,
+          "end_date": "1953-01-03"
+        },
+        {
+          "entity": "John F. Kennedy",
+          "entity_id": "Q9696",
+          "position": "President-elect of the United States",
+          "property": "P39",
+          "start_year": 1960,
+          "start_date": "1960-11-08",
+          "end_year": 1961,
+          "end_date": "1961-01-20"
+        },
+        {
+          "entity": "John F. Kennedy",
+          "entity_id": "Q9696",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1953,
+          "start_date": "1953-01-03",
+          "end_year": 1955,
+          "end_date": "1955-01-03"
+        },
+        {
+          "entity": "John F. Kennedy",
+          "entity_id": "Q9696",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1959,
+          "start_date": "1959-01-03",
+          "end_year": 1960,
+          "end_date": "1960-12-22"
+        },
+        {
+          "entity": "John F. Kennedy",
+          "entity_id": "Q9696",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1955,
+          "start_date": "1955-01-03",
+          "end_year": 1957,
+          "end_date": "1957-01-03"
+        },
+        {
+          "entity": "John F. Kennedy",
+          "entity_id": "Q9696",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1957,
+          "start_date": "1957-01-03",
+          "end_year": 1959,
+          "end_date": "1959-01-03"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:58:28.648272"
+    },
+    {
+      "name": "Dwight Eisenhower",
+      "qid": "Q9916",
+      "category": "us_president",
+      "facts": [
+        {
+          "entity": "Dwight Eisenhower",
+          "entity_id": "Q9916",
+          "position": "Supreme Allied Commander Europe",
+          "property": "P39",
+          "start_year": 1951,
+          "start_date": "1951-04-02",
+          "end_year": 1952,
+          "end_date": "1952-05-30"
+        },
+        {
+          "entity": "Dwight Eisenhower",
+          "entity_id": "Q9916",
+          "position": "Chief of Staff of the United States Army",
+          "property": "P39",
+          "start_year": 1945,
+          "start_date": "1945-11-19",
+          "end_year": 1948,
+          "end_date": "1948-02-06"
+        },
+        {
+          "entity": "Dwight Eisenhower",
+          "entity_id": "Q9916",
+          "position": "President of the United States",
+          "property": "P39",
+          "start_year": 1953,
+          "start_date": "1953-01-20",
+          "end_year": 1961,
+          "end_date": "1961-01-20"
+        },
+        {
+          "entity": "Dwight Eisenhower",
+          "entity_id": "Q9916",
+          "position": "President-elect of the United States",
+          "property": "P39",
+          "start_year": 1952,
+          "start_date": "1952-11-04",
+          "end_year": 1953,
+          "end_date": "1953-01-20"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:58:30.651215"
+    },
+    {
+      "name": "Harry S. Truman",
+      "qid": "Q9682",
+      "category": "us_president",
+      "facts": [
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of the Solomon Islands",
+          "property": "P39",
+          "start_year": 1978,
+          "start_date": "1978-07-07",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of Saint Vincent and the Grenadines",
+          "property": "P39",
+          "start_year": 1979,
+          "start_date": "1979-10-27",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of the commonwealth realm of Uganda",
+          "property": "P39",
+          "start_year": 1962,
+          "start_date": "1962-01-01",
+          "end_year": 1963,
+          "end_date": "1963-01-01"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "Commander-in-Chief of the Canadian Forces",
+          "property": "P39",
+          "start_year": 1952,
+          "start_date": "1952-02-06",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of the Bahamas",
+          "property": "P39",
+          "start_year": 1973,
+          "start_date": "1973-07-10",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of Belize",
+          "property": "P39",
+          "start_year": 1981,
+          "start_date": "1981-09-21",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of Antigua and Barbuda",
+          "property": "P39",
+          "start_year": 1981,
+          "start_date": "1981-11-01",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "Queen of Trinidad and Tobago",
+          "property": "P39",
+          "start_year": 1962,
+          "start_date": "1962-01-01",
+          "end_year": 1976,
+          "end_date": "1976-01-01"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of Saint Kitts and Nevis",
+          "property": "P39",
+          "start_year": 1983,
+          "start_date": "1983-09-19",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of Papua New Guinea",
+          "property": "P39",
+          "start_year": 1975,
+          "start_date": "1975-09-16",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "Head of the Commonwealth",
+          "property": "P39",
+          "start_year": 1952,
+          "start_date": "1952-02-06",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of Tanganyika",
+          "property": "P39",
+          "start_year": 1961,
+          "start_date": "1961-01-01",
+          "end_year": 1962,
+          "end_date": "1962-01-01"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of the State of Malta",
+          "property": "P39",
+          "start_year": 1964,
+          "start_date": "1964-01-01",
+          "end_year": 1974,
+          "end_date": "1974-01-01"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of Canada",
+          "property": "P39",
+          "start_year": 1952,
+          "start_date": "1952-02-06",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of the commonwealth realm of Kenya",
+          "property": "P39",
+          "start_year": 1963,
+          "start_date": "1963-01-01",
+          "end_year": 1964,
+          "end_date": "1964-01-01"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "Royal Society",
+          "property": "P463",
+          "start_year": 1947,
+          "start_date": "1947-01-01"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of the Dominion of Ceylon",
+          "property": "P39",
+          "start_year": 1952,
+          "start_date": "1952-02-06",
+          "end_year": 1972,
+          "end_date": "1972-01-01"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of Malawi",
+          "property": "P39",
+          "start_year": 1964,
+          "start_date": "1964-01-01",
+          "end_year": 1966,
+          "end_date": "1966-01-01"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "heir presumptive",
+          "property": "P39",
+          "start_year": 1936,
+          "start_date": "1936-12-11",
+          "end_year": 1952,
+          "end_date": "1952-02-06"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of New Zealand",
+          "property": "P39",
+          "start_year": 1952,
+          "start_date": "1952-02-06",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of Barbados",
+          "property": "P39",
+          "start_year": 1966,
+          "start_date": "1966-11-30",
+          "end_year": 2021,
+          "end_date": "2021-11-29"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of the commonwealth realm of Sierra Leone",
+          "property": "P39",
+          "start_year": 1961,
+          "start_date": "1961-01-01",
+          "end_year": 1971,
+          "end_date": "1971-01-01"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of the commonwealth realm of Guyana",
+          "property": "P39",
+          "start_year": 1966,
+          "start_date": "1966-01-01",
+          "end_year": 1970,
+          "end_date": "1970-01-01"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of Saint Lucia",
+          "property": "P39",
+          "start_year": 1979,
+          "start_date": "1979-02-22",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of the Federation of Nigeria",
+          "property": "P39",
+          "start_year": 1960,
+          "start_date": "1960-01-01",
+          "end_year": 1963,
+          "end_date": "1963-01-01"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of the Dominion of Fiji",
+          "property": "P39",
+          "start_year": 1970,
+          "start_date": "1970-01-01",
+          "end_year": 1987,
+          "end_date": "1987-10-06"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of the commonwealth realm of the Gambia",
+          "property": "P39",
+          "start_year": 1965,
+          "start_date": "1965-01-01",
+          "end_year": 1970,
+          "end_date": "1970-01-01"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of the United Kingdom",
+          "property": "P39",
+          "start_year": 1952,
+          "start_date": "1952-02-06",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "Lord of Mann",
+          "property": "P39",
+          "start_year": 1952,
+          "start_date": "1952-02-06",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of Trinidad and Tobago",
+          "property": "P39",
+          "start_year": 1962,
+          "start_date": "1962-01-01",
+          "end_year": 1976,
+          "end_date": "1976-01-01"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of the Dominion of Pakistan",
+          "property": "P39",
+          "start_year": 1952,
+          "start_date": "1952-02-06",
+          "end_year": 1956,
+          "end_date": "1956-01-01"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of the commonwealth realm of Mauritius",
+          "property": "P39",
+          "start_year": 1968,
+          "start_date": "1968-03-12",
+          "end_year": 1992,
+          "end_date": "1992-03-12"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "Duke of Lancaster",
+          "property": "P39",
+          "start_year": 1952,
+          "start_date": "1952-02-06",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of the commonwealth realm of Ghana",
+          "property": "P39",
+          "start_year": 1957,
+          "start_date": "1957-01-01",
+          "end_year": 1960,
+          "end_date": "1960-01-01"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "Supreme Governor of the Church of England",
+          "property": "P39",
+          "start_year": 1952,
+          "start_date": "1952-02-06",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of the Union of South Africa",
+          "property": "P39",
+          "start_year": 1952,
+          "start_date": "1952-02-06",
+          "end_year": 1961,
+          "end_date": "1961-01-01"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of Tuvalu",
+          "property": "P39",
+          "start_year": 1978,
+          "start_date": "1978-10-01",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of Jamaica",
+          "property": "P39",
+          "start_year": 1962,
+          "start_date": "1962-08-06",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of Grenada",
+          "property": "P39",
+          "start_year": 1974,
+          "start_date": "1974-02-07",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "monarch of Australia",
+          "property": "P39",
+          "start_year": 1952,
+          "start_date": "1952-02-06",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "Lord High Admiral",
+          "property": "P39",
+          "start_year": 2021,
+          "start_date": "2021-04-09",
+          "end_year": 2022,
+          "end_date": "2022-09-08"
+        },
+        {
+          "entity": "Harry S. Truman",
+          "entity_id": "Q9682",
+          "position": "Lord High Admiral",
+          "property": "P39",
+          "start_year": 1964,
+          "start_date": "1964-04-01",
+          "end_year": 2011,
+          "end_date": "2011-06-10"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:58:33.257315"
+    },
+    {
+      "name": "Mike Pence",
+      "qid": "Q373472",
+      "category": "us_vp",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:58:35.405888"
+    },
+    {
+      "name": "Dick Cheney",
+      "qid": "Q48259",
+      "category": "us_vp",
+      "facts": [
+        {
+          "entity": "Dick Cheney",
+          "entity_id": "Q48259",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1989,
+          "start_date": "1989-01-03",
+          "end_year": 1989,
+          "end_date": "1989-03-17"
+        },
+        {
+          "entity": "Dick Cheney",
+          "entity_id": "Q48259",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1983,
+          "start_date": "1983-01-03",
+          "end_year": 1985,
+          "end_date": "1985-01-03"
+        },
+        {
+          "entity": "Dick Cheney",
+          "entity_id": "Q48259",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1985,
+          "start_date": "1985-01-03",
+          "end_year": 1987,
+          "end_date": "1987-01-03"
+        },
+        {
+          "entity": "Dick Cheney",
+          "entity_id": "Q48259",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1981,
+          "start_date": "1981-01-03",
+          "end_year": 1983,
+          "end_date": "1983-01-03"
+        },
+        {
+          "entity": "Dick Cheney",
+          "entity_id": "Q48259",
+          "position": "White House Chief of Staff",
+          "property": "P39",
+          "start_year": 1975,
+          "start_date": "1975-11-21",
+          "end_year": 1977,
+          "end_date": "1977-01-20"
+        },
+        {
+          "entity": "Dick Cheney",
+          "entity_id": "Q48259",
+          "position": "Vice President of the United States",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-01-20",
+          "end_year": 2009,
+          "end_date": "2009-01-20"
+        },
+        {
+          "entity": "Dick Cheney",
+          "entity_id": "Q48259",
+          "position": "United States Secretary of Defense",
+          "property": "P39",
+          "start_year": 1989,
+          "start_date": "1989-03-21",
+          "end_year": 1993,
+          "end_date": "1993-01-20"
+        },
+        {
+          "entity": "Dick Cheney",
+          "entity_id": "Q48259",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1979,
+          "start_date": "1979-01-03",
+          "end_year": 1981,
+          "end_date": "1981-01-03"
+        },
+        {
+          "entity": "Dick Cheney",
+          "entity_id": "Q48259",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1979,
+          "start_date": "1979-01-03",
+          "end_year": 1989,
+          "end_date": "1989-03-20"
+        },
+        {
+          "entity": "Dick Cheney",
+          "entity_id": "Q48259",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1987,
+          "start_date": "1987-01-03",
+          "end_year": 1989,
+          "end_date": "1989-01-03"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:58:37.507657"
+    },
+    {
+      "name": "Al Gore",
+      "qid": "Q19673",
+      "category": "us_vp",
+      "facts": [
+        {
+          "entity": "Al Gore",
+          "entity_id": "Q19673",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1981,
+          "start_date": "1981-01-03",
+          "end_year": 1983,
+          "end_date": "1983-01-03"
+        },
+        {
+          "entity": "Al Gore",
+          "entity_id": "Q19673",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1977,
+          "start_date": "1977-01-03",
+          "end_year": 1979,
+          "end_date": "1979-01-03"
+        },
+        {
+          "entity": "Al Gore",
+          "entity_id": "Q19673",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1991,
+          "start_date": "1991-01-03",
+          "end_year": 1993,
+          "end_date": "1993-01-02"
+        },
+        {
+          "entity": "Al Gore",
+          "entity_id": "Q19673",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1979,
+          "start_date": "1979-01-03",
+          "end_year": 1981,
+          "end_date": "1981-01-03"
+        },
+        {
+          "entity": "Al Gore",
+          "entity_id": "Q19673",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1985,
+          "start_date": "1985-01-03",
+          "end_year": 1987,
+          "end_date": "1987-01-03"
+        },
+        {
+          "entity": "Al Gore",
+          "entity_id": "Q19673",
+          "position": "Vice President of the United States",
+          "property": "P39",
+          "start_year": 1993,
+          "start_date": "1993-01-20",
+          "end_year": 2001,
+          "end_date": "2001-01-20"
+        },
+        {
+          "entity": "Al Gore",
+          "entity_id": "Q19673",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1987,
+          "start_date": "1987-01-03",
+          "end_year": 1989,
+          "end_date": "1989-01-03"
+        },
+        {
+          "entity": "Al Gore",
+          "entity_id": "Q19673",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1983,
+          "start_date": "1983-01-03",
+          "end_year": 1985,
+          "end_date": "1985-01-03"
+        },
+        {
+          "entity": "Al Gore",
+          "entity_id": "Q19673",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1989,
+          "start_date": "1989-01-03",
+          "end_year": 1991,
+          "end_date": "1991-01-03"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:58:39.708599"
+    },
+    {
+      "name": "Dan Quayle",
+      "qid": "Q48305",
+      "category": "us_vp",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:58:41.859006"
+    },
+    {
+      "name": "Walter Mondale",
+      "qid": "Q223779",
+      "category": "us_vp",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:58:44.008880"
+    },
+    {
+      "name": "Kamala Harris",
+      "qid": "Q185530",
+      "category": "us_vp",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:58:46.158737"
+    },
+    {
+      "name": "Hillary Clinton",
+      "qid": "Q6294",
+      "category": "us_senator",
+      "facts": [
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-01-03",
+          "end_year": 2003,
+          "end_date": "2003-01-03"
+        },
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "intern",
+          "property": "P39",
+          "point_year": 1968,
+          "point_date": "1968-01-01"
+        },
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "board member",
+          "property": "P39",
+          "start_year": 1990,
+          "start_date": "1990-01-01",
+          "end_year": 1992,
+          "end_date": "1992-01-01"
+        },
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2007,
+          "start_date": "2007-01-03",
+          "end_year": 2009,
+          "end_date": "2009-01-03"
+        },
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2003,
+          "start_date": "2003-01-03",
+          "end_year": 2005,
+          "end_date": "2005-01-03"
+        },
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "board member",
+          "property": "P39",
+          "start_year": 1988,
+          "start_date": "1988-01-01",
+          "end_year": 1992,
+          "end_date": "1992-01-01"
+        },
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "board member",
+          "property": "P39",
+          "start_year": 1985,
+          "start_date": "1985-01-01",
+          "end_year": 1992,
+          "end_date": "1992-01-01"
+        },
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "United States Secretary of State",
+          "property": "P39",
+          "start_year": 2009,
+          "start_date": "2009-01-21",
+          "end_year": 2013,
+          "end_date": "2013-02-01"
+        },
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "board member",
+          "property": "P39",
+          "start_year": 1978,
+          "start_date": "1978-01-01",
+          "end_year": 1981,
+          "end_date": "1981-01-01"
+        },
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-01-03",
+          "end_year": 2007,
+          "end_date": "2007-01-03"
+        },
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "chairperson",
+          "property": "P39",
+          "start_year": 1978,
+          "start_date": "1978-01-01",
+          "end_year": 1980,
+          "end_date": "1980-01-01"
+        },
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "board member",
+          "property": "P39",
+          "start_year": 1986,
+          "start_date": "1986-01-01",
+          "end_year": 1992,
+          "end_date": "1992-01-01"
+        },
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "board member",
+          "property": "P39",
+          "start_year": 1982,
+          "start_date": "1982-01-01",
+          "end_year": 1988,
+          "end_date": "1988-01-01"
+        },
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "chairperson",
+          "property": "P39",
+          "start_year": 1986,
+          "start_date": "1986-01-01",
+          "end_year": 1992,
+          "end_date": "1992-01-01"
+        },
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2009,
+          "start_date": "2009-01-03",
+          "end_year": 2009,
+          "end_date": "2009-01-21"
+        },
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "First Lady of the United States",
+          "property": "P39",
+          "start_year": 1993,
+          "start_date": "1993-01-20",
+          "end_year": 2001,
+          "end_date": "2001-01-20"
+        },
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "partner",
+          "property": "P39",
+          "start_year": 1979,
+          "start_date": "1979-01-01"
+        },
+        {
+          "entity": "Hillary Clinton",
+          "entity_id": "Q6294",
+          "position": "intern",
+          "property": "P39",
+          "point_year": 1971,
+          "point_date": "1971-01-01"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:58:48.421245"
+    },
+    {
+      "name": "John McCain",
+      "qid": "Q10390",
+      "category": "us_senator",
+      "facts": [
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1993,
+          "start_date": "1993-01-03",
+          "end_year": 1995,
+          "end_date": "1995-01-03"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2011,
+          "start_date": "2011-01-03",
+          "end_year": 2013,
+          "end_date": "2013-01-03"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1987,
+          "start_date": "1987-01-03",
+          "end_year": 1989,
+          "end_date": "1989-01-03"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-01-03",
+          "end_year": 2003,
+          "end_date": "2003-01-03"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-01-03",
+          "end_year": 2007,
+          "end_date": "2007-01-03"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1997,
+          "start_date": "1997-01-03",
+          "end_year": 1999,
+          "end_date": "1999-01-03"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1989,
+          "start_date": "1989-01-03",
+          "end_year": 1991,
+          "end_date": "1991-01-03"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2009,
+          "start_date": "2009-01-03",
+          "end_year": 2011,
+          "end_date": "2011-01-03"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1983,
+          "start_date": "1983-01-03",
+          "end_year": 1987,
+          "end_date": "1987-01-03"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1991,
+          "start_date": "1991-01-03",
+          "end_year": 1993,
+          "end_date": "1993-01-03"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1983,
+          "start_date": "1983-01-03",
+          "end_year": 1985,
+          "end_date": "1985-01-03"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1995,
+          "start_date": "1995-01-03",
+          "end_year": 1997,
+          "end_date": "1997-01-03"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2017,
+          "start_date": "2017-01-03",
+          "end_year": 2018,
+          "end_date": "2018-08-25"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2003,
+          "start_date": "2003-01-03",
+          "end_year": 2005,
+          "end_date": "2005-01-03"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2013,
+          "start_date": "2013-01-03",
+          "end_year": 2015,
+          "end_date": "2015-01-03"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2015,
+          "start_date": "2015-01-03",
+          "end_year": 2017,
+          "end_date": "2017-01-03"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1999,
+          "start_date": "1999-01-03",
+          "end_year": 2001,
+          "end_date": "2001-01-03"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1985,
+          "start_date": "1985-01-03",
+          "end_year": 1987,
+          "end_date": "1987-01-03"
+        },
+        {
+          "entity": "John McCain",
+          "entity_id": "Q10390",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2007,
+          "start_date": "2007-01-03",
+          "end_year": 2009,
+          "end_date": "2009-01-03"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:58:51.381804"
+    },
+    {
+      "name": "Bernie Sanders",
+      "qid": "Q359442",
+      "category": "us_senator",
+      "facts": [
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2015,
+          "start_date": "2015-01-03",
+          "end_year": 2017,
+          "end_date": "2017-01-03"
+        },
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2023,
+          "start_date": "2023-01-03"
+        },
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2019,
+          "start_date": "2019-01-03",
+          "end_year": 2021,
+          "end_date": "2021-01-03"
+        },
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1991,
+          "start_date": "1991-01-03",
+          "end_year": 1993,
+          "end_date": "1993-01-03"
+        },
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1999,
+          "start_date": "1999-01-06",
+          "end_year": 2001,
+          "end_date": "2001-01-03"
+        },
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "Mayor of Burlington, Vermont",
+          "property": "P39",
+          "start_year": 1981,
+          "start_date": "1981-04-06",
+          "end_year": 1989,
+          "end_date": "1989-04-04"
+        },
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2007,
+          "start_date": "2007-01-03",
+          "end_year": 2009,
+          "end_date": "2009-01-03"
+        },
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2011,
+          "start_date": "2011-01-03",
+          "end_year": 2013,
+          "end_date": "2013-01-03"
+        },
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-01-04",
+          "end_year": 2007,
+          "end_date": "2007-01-03"
+        },
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1997,
+          "start_date": "1997-01-07",
+          "end_year": 1999,
+          "end_date": "1999-01-03"
+        },
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2003,
+          "start_date": "2003-01-07",
+          "end_year": 2005,
+          "end_date": "2005-01-03"
+        },
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2013,
+          "start_date": "2013-01-03",
+          "end_year": 2015,
+          "end_date": "2015-01-03"
+        },
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2017,
+          "start_date": "2017-01-03",
+          "end_year": 2019,
+          "end_date": "2019-01-03"
+        },
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2009,
+          "start_date": "2009-01-03",
+          "end_year": 2011,
+          "end_date": "2011-01-03"
+        },
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-01-03",
+          "end_year": 2003,
+          "end_date": "2003-01-03"
+        },
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1993,
+          "start_date": "1993-01-05",
+          "end_year": 1995,
+          "end_date": "1995-01-03"
+        },
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2021,
+          "start_date": "2021-01-03",
+          "end_year": 2023,
+          "end_date": "2023-01-03"
+        },
+        {
+          "entity": "Bernie Sanders",
+          "entity_id": "Q359442",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1995,
+          "start_date": "1995-01-04",
+          "end_year": 1997,
+          "end_date": "1997-01-03"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:58:53.534769"
+    },
+    {
+      "name": "Elizabeth Warren",
+      "qid": "Q1173433",
+      "category": "us_senator",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:58:55.783882"
+    },
+    {
+      "name": "Mitch McConnell",
+      "qid": "Q355522",
+      "category": "us_senator",
+      "facts": [
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1991,
+          "start_date": "1991-01-03",
+          "end_year": 1993,
+          "end_date": "1993-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2019,
+          "start_date": "2019-01-03",
+          "end_year": 2021,
+          "end_date": "2021-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-01-03",
+          "end_year": 2003,
+          "end_date": "2003-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1989,
+          "start_date": "1989-01-03",
+          "end_year": 1991,
+          "end_date": "1991-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2009,
+          "start_date": "2009-01-03",
+          "end_year": 2011,
+          "end_date": "2011-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1987,
+          "start_date": "1987-01-03",
+          "end_year": 1989,
+          "end_date": "1989-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2017,
+          "start_date": "2017-01-03",
+          "end_year": 2019,
+          "end_date": "2019-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "Jefferson County Judge/Executive",
+          "property": "P39",
+          "start_year": 1977,
+          "start_date": "1977-01-01",
+          "end_year": 1984,
+          "end_date": "1984-01-01"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2003,
+          "start_date": "2003-01-03",
+          "end_year": 2005,
+          "end_date": "2005-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2023,
+          "start_date": "2023-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2013,
+          "start_date": "2013-01-03",
+          "end_year": 2015,
+          "end_date": "2015-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2011,
+          "start_date": "2011-01-03",
+          "end_year": 2013,
+          "end_date": "2013-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-01-03",
+          "end_year": 2007,
+          "end_date": "2007-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2007,
+          "start_date": "2007-01-03",
+          "end_year": 2009,
+          "end_date": "2009-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1985,
+          "start_date": "1985-01-03",
+          "end_year": 1987,
+          "end_date": "1987-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1999,
+          "start_date": "1999-01-03",
+          "end_year": 2001,
+          "end_date": "2001-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1995,
+          "start_date": "1995-01-03",
+          "end_year": 1997,
+          "end_date": "1997-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2021,
+          "start_date": "2021-01-03",
+          "end_year": 2023,
+          "end_date": "2023-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2015,
+          "start_date": "2015-01-03",
+          "end_year": 2017,
+          "end_date": "2017-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1993,
+          "start_date": "1993-01-03",
+          "end_year": 1995,
+          "end_date": "1995-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1997,
+          "start_date": "1997-01-03",
+          "end_year": 1999,
+          "end_date": "1999-01-03"
+        },
+        {
+          "entity": "Mitch McConnell",
+          "entity_id": "Q355522",
+          "position": "United States Assistant Attorney General",
+          "property": "P39",
+          "start_year": 1974,
+          "start_date": "1974-01-01",
+          "end_year": 1975,
+          "end_date": "1975-01-01"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:58:57.948311"
+    },
+    {
+      "name": "Chuck Schumer",
+      "qid": "Q380900",
+      "category": "us_senator",
+      "facts": [
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2009,
+          "start_date": "2009-01-03",
+          "end_year": 2011,
+          "end_date": "2011-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1987,
+          "start_date": "1987-01-03",
+          "end_year": 1989,
+          "end_date": "1989-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1993,
+          "start_date": "1993-01-05",
+          "end_year": 1995,
+          "end_date": "1995-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1991,
+          "start_date": "1991-01-03",
+          "end_year": 1993,
+          "end_date": "1993-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2017,
+          "start_date": "2017-01-03",
+          "end_year": 2019,
+          "end_date": "2019-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2007,
+          "start_date": "2007-01-03",
+          "end_year": 2009,
+          "end_date": "2009-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2013,
+          "start_date": "2013-01-03",
+          "end_year": 2015,
+          "end_date": "2015-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2003,
+          "start_date": "2003-01-03",
+          "end_year": 2005,
+          "end_date": "2005-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2019,
+          "start_date": "2019-01-03",
+          "end_year": 2021,
+          "end_date": "2021-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "Majority Leader of the United States Senate",
+          "property": "P39",
+          "start_year": 2021,
+          "start_date": "2021-01-20",
+          "end_year": 2025,
+          "end_date": "2025-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1983,
+          "start_date": "1983-01-03",
+          "end_year": 1985,
+          "end_date": "1985-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1999,
+          "start_date": "1999-01-03",
+          "end_year": 2001,
+          "end_date": "2001-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-01-03",
+          "end_year": 2003,
+          "end_date": "2003-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2015,
+          "start_date": "2015-01-03",
+          "end_year": 2017,
+          "end_date": "2017-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1995,
+          "start_date": "1995-01-04",
+          "end_year": 1997,
+          "end_date": "1997-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2011,
+          "start_date": "2011-01-03",
+          "end_year": 2013,
+          "end_date": "2013-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2023,
+          "start_date": "2023-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-01-03",
+          "end_year": 2007,
+          "end_date": "2007-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2021,
+          "start_date": "2021-01-03",
+          "end_year": 2023,
+          "end_date": "2023-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1985,
+          "start_date": "1985-01-03",
+          "end_year": 1987,
+          "end_date": "1987-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1997,
+          "start_date": "1997-01-07",
+          "end_year": 1999,
+          "end_date": "1999-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1981,
+          "start_date": "1981-01-03",
+          "end_year": 1983,
+          "end_date": "1983-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1981,
+          "start_date": "1981-01-03",
+          "end_year": 1999,
+          "end_date": "1999-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1989,
+          "start_date": "1989-01-03",
+          "end_year": 1991,
+          "end_date": "1991-01-03"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "member of the New York State Assembly",
+          "property": "P39",
+          "start_year": 1975,
+          "start_date": "1975-01-01",
+          "end_year": 1980,
+          "end_date": "1980-01-01"
+        },
+        {
+          "entity": "Chuck Schumer",
+          "entity_id": "Q380900",
+          "position": "Minority Leader of the United States Senate",
+          "property": "P39",
+          "start_year": 2025,
+          "start_date": "2025-01-03"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:59:00.348211"
+    },
+    {
+      "name": "Marco Rubio",
+      "qid": "Q349455",
+      "category": "us_senator",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:02.544805"
+    },
+    {
+      "name": "Ted Cruz",
+      "qid": "Q905014",
+      "category": "us_senator",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:04.490938"
+    },
+    {
+      "name": "Rand Paul",
+      "qid": "Q671426",
+      "category": "us_senator",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:06.506034"
+    },
+    {
+      "name": "Lindsey Graham",
+      "qid": "Q378702",
+      "category": "us_senator",
+      "facts": [
+        {
+          "entity": "Lindsey Graham",
+          "entity_id": "Q378702",
+          "position": "king of Aquitaine",
+          "property": "P39",
+          "start_year": 843,
+          "start_date": "0843-01-01",
+          "end_year": 848,
+          "end_date": "0848-01-01"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:59:08.687350"
+    },
+    {
+      "name": "Amy Klobuchar",
+      "qid": "Q23714",
+      "category": "us_senator",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:10.985166"
+    },
+    {
+      "name": "Cory Booker",
+      "qid": "Q922820",
+      "category": "us_senator",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:13.397354"
+    },
+    {
+      "name": "Bob Menendez",
+      "qid": "Q539566",
+      "category": "us_senator",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:15.397197"
+    },
+    {
+      "name": "Dianne Feinstein",
+      "qid": "Q231033",
+      "category": "us_senator",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:17.699117"
+    },
+    {
+      "name": "Susan Collins",
+      "qid": "Q276932",
+      "category": "us_senator",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:19.991488"
+    },
+    {
+      "name": "Lisa Murkowski",
+      "qid": "Q230539",
+      "category": "us_senator",
+      "facts": [
+        {
+          "entity": "Lisa Murkowski",
+          "entity_id": "Q230539",
+          "position": "spouse of the President of France",
+          "property": "P39",
+          "start_year": 2012,
+          "start_date": "2012-05-15",
+          "end_year": 2014,
+          "end_date": "2014-01-25"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:59:22.101697"
+    },
+    {
+      "name": "Nancy Pelosi",
+      "qid": "Q170581",
+      "category": "us_representative",
+      "facts": [
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1999,
+          "start_date": "1999-01-06",
+          "end_year": 2001,
+          "end_date": "2001-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-01-04",
+          "end_year": 2007,
+          "end_date": "2007-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "Speaker of the United States House of Representatives",
+          "property": "P39",
+          "start_year": 2007,
+          "start_date": "2007-01-04",
+          "end_year": 2011,
+          "end_date": "2011-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2021,
+          "start_date": "2021-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2013,
+          "start_date": "2013-01-03",
+          "end_year": 2015,
+          "end_date": "2015-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2007,
+          "start_date": "2007-01-04",
+          "end_year": 2009,
+          "end_date": "2009-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1991,
+          "start_date": "1991-01-03",
+          "end_year": 1993,
+          "end_date": "1993-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1993,
+          "start_date": "1993-01-05",
+          "end_year": 1995,
+          "end_date": "1995-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2003,
+          "start_date": "2003-01-07",
+          "end_year": 2005,
+          "end_date": "2005-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2017,
+          "start_date": "2017-01-03",
+          "end_year": 2019,
+          "end_date": "2019-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-01-03",
+          "end_year": 2003,
+          "end_date": "2003-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "chairperson",
+          "property": "P39",
+          "start_year": 1985,
+          "start_date": "1985-01-01",
+          "end_year": 1986,
+          "end_date": "1986-01-01"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "Speaker of the United States House of Representatives",
+          "property": "P39",
+          "start_year": 2019,
+          "start_date": "2019-01-03",
+          "end_year": 2023,
+          "end_date": "2023-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "Democratic National Committee",
+          "property": "P463",
+          "start_year": 1976,
+          "start_date": "1976-01-01",
+          "end_year": 1996,
+          "end_date": "1996-01-01"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "Congressional Progressive Caucus",
+          "property": "P463",
+          "end_year": 2011,
+          "end_date": "2011-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2015,
+          "start_date": "2015-01-06",
+          "end_year": 2017,
+          "end_date": "2017-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2009,
+          "start_date": "2009-01-06",
+          "end_year": 2011,
+          "end_date": "2011-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "party chair",
+          "property": "P39",
+          "start_year": 1981,
+          "start_date": "1981-01-01",
+          "end_year": 1983,
+          "end_date": "1983-01-01"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2011,
+          "start_date": "2011-01-05",
+          "end_year": 2013,
+          "end_date": "2013-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1989,
+          "start_date": "1989-01-03",
+          "end_year": 1991,
+          "end_date": "1991-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1997,
+          "start_date": "1997-01-07",
+          "end_year": 1999,
+          "end_date": "1999-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2019,
+          "start_date": "2019-01-03",
+          "end_year": 2021,
+          "end_date": "2021-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1995,
+          "start_date": "1995-01-04",
+          "end_year": 1997,
+          "end_date": "1997-01-03"
+        },
+        {
+          "entity": "Nancy Pelosi",
+          "entity_id": "Q170581",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1987,
+          "start_date": "1987-06-02",
+          "end_year": 1989,
+          "end_date": "1989-01-03"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:59:24.489644"
+    },
+    {
+      "name": "Kevin McCarthy",
+      "qid": "Q977592",
+      "category": "us_representative",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:26.812334"
+    },
+    {
+      "name": "Paul Ryan",
+      "qid": "Q381812",
+      "category": "us_representative",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:28.853541"
+    },
+    {
+      "name": "John Boehner",
+      "qid": "Q310461",
+      "category": "us_representative",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:30.856071"
+    },
+    {
+      "name": "Newt Gingrich",
+      "qid": "Q313756",
+      "category": "us_representative",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:32.858449"
+    },
+    {
+      "name": "Alexandria Ocasio-Cortez",
+      "qid": "Q55223754",
+      "category": "us_representative",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:34.866708"
+    },
+    {
+      "name": "Ilhan Omar",
+      "qid": "Q55405334",
+      "category": "us_representative",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:36.897113"
+    },
+    {
+      "name": "Matt Gaetz",
+      "qid": "Q24834954",
+      "category": "us_representative",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:39.008403"
+    },
+    {
+      "name": "Jim Jordan",
+      "qid": "Q1689040",
+      "category": "us_representative",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:41.049417"
+    },
+    {
+      "name": "Adam Schiff",
+      "qid": "Q350843",
+      "category": "us_representative",
+      "facts": [
+        {
+          "entity": "Adam Schiff",
+          "entity_id": "Q350843",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2013,
+          "start_date": "2013-01-03",
+          "end_year": 2015,
+          "end_date": "2015-01-03"
+        },
+        {
+          "entity": "Adam Schiff",
+          "entity_id": "Q350843",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2009,
+          "start_date": "2009-01-06",
+          "end_year": 2011,
+          "end_date": "2011-01-03"
+        },
+        {
+          "entity": "Adam Schiff",
+          "entity_id": "Q350843",
+          "position": "member of the State Senate of California",
+          "property": "P39",
+          "start_year": 1996,
+          "start_date": "1996-12-02",
+          "end_year": 2000,
+          "end_date": "2000-11-30"
+        },
+        {
+          "entity": "Adam Schiff",
+          "entity_id": "Q350843",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2003,
+          "start_date": "2003-01-07",
+          "end_year": 2005,
+          "end_date": "2005-01-03"
+        },
+        {
+          "entity": "Adam Schiff",
+          "entity_id": "Q350843",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2021,
+          "start_date": "2021-01-03",
+          "end_year": 2023,
+          "end_date": "2023-01-03"
+        },
+        {
+          "entity": "Adam Schiff",
+          "entity_id": "Q350843",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-01-03",
+          "end_year": 2003,
+          "end_date": "2003-01-03"
+        },
+        {
+          "entity": "Adam Schiff",
+          "entity_id": "Q350843",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2025,
+          "start_date": "2025-01-03"
+        },
+        {
+          "entity": "Adam Schiff",
+          "entity_id": "Q350843",
+          "position": "prosecutor",
+          "property": "P39",
+          "start_year": 1987,
+          "start_date": "1987-01-01",
+          "end_year": 1993,
+          "end_date": "1993-01-01"
+        },
+        {
+          "entity": "Adam Schiff",
+          "entity_id": "Q350843",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2007,
+          "start_date": "2007-01-04",
+          "end_year": 2009,
+          "end_date": "2009-01-03"
+        },
+        {
+          "entity": "Adam Schiff",
+          "entity_id": "Q350843",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2015,
+          "start_date": "2015-01-06",
+          "end_year": 2017,
+          "end_date": "2017-01-03"
+        },
+        {
+          "entity": "Adam Schiff",
+          "entity_id": "Q350843",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2017,
+          "start_date": "2017-01-03",
+          "end_year": 2019,
+          "end_date": "2019-01-03"
+        },
+        {
+          "entity": "Adam Schiff",
+          "entity_id": "Q350843",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2023,
+          "start_date": "2023-01-03",
+          "end_year": 2024,
+          "end_date": "2024-12-08"
+        },
+        {
+          "entity": "Adam Schiff",
+          "entity_id": "Q350843",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 2024,
+          "start_date": "2024-12-08",
+          "end_year": 2025,
+          "end_date": "2025-01-03"
+        },
+        {
+          "entity": "Adam Schiff",
+          "entity_id": "Q350843",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2011,
+          "start_date": "2011-01-05",
+          "end_year": 2013,
+          "end_date": "2013-01-03"
+        },
+        {
+          "entity": "Adam Schiff",
+          "entity_id": "Q350843",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-01-04",
+          "end_year": 2007,
+          "end_date": "2007-01-03"
+        },
+        {
+          "entity": "Adam Schiff",
+          "entity_id": "Q350843",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 2019,
+          "start_date": "2019-01-03",
+          "end_year": 2021,
+          "end_date": "2021-01-03"
+        },
+        {
+          "entity": "Adam Schiff",
+          "entity_id": "Q350843",
+          "position": "chairperson of US House Intelligence committee",
+          "property": "P39",
+          "start_year": 2019,
+          "start_date": "2019-01-01",
+          "end_year": 2023,
+          "end_date": "2023-01-01"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:59:43.197927"
+    },
+    {
+      "name": "Jerry Nadler",
+      "qid": "Q555961",
+      "category": "us_representative",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:45.404714"
+    },
+    {
+      "name": "Maxine Waters",
+      "qid": "Q234302",
+      "category": "us_representative",
+      "facts": [
+        {
+          "entity": "Maxine Waters",
+          "entity_id": "Q234302",
+          "position": "First Lady of the United States",
+          "property": "P39",
+          "start_year": 1849,
+          "start_date": "1849-03-04",
+          "end_year": 1850,
+          "end_date": "1850-07-09"
+        }
+      ],
+      "fetched_at": "2026-05-16T11:59:47.413854"
+    },
+    {
+      "name": "Steny Hoyer",
+      "qid": "Q558566",
+      "category": "us_representative",
+      "facts": [],
+      "fetched_at": "2026-05-16T11:59:49.545336"
+    },
+    {
+      "name": "Eric Cantor",
+      "qid": "Q726155",
+      "category": "us_representative",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:00:21.494198"
+    },
+    {
+      "name": "John Kerry",
+      "qid": "Q33866",
+      "category": "us_cabinet",
+      "facts": [
+        {
+          "entity": "John Kerry",
+          "entity_id": "Q33866",
+          "position": "American Historical Association",
+          "property": "P463",
+          "point_year": 1912,
+          "point_date": "1912-01-01"
+        },
+        {
+          "entity": "John Kerry",
+          "entity_id": "Q33866",
+          "position": "Assistant Secretary of the Navy",
+          "property": "P39",
+          "start_year": 1897,
+          "start_date": "1897-04-19",
+          "end_year": 1898,
+          "end_date": "1898-05-10"
+        },
+        {
+          "entity": "John Kerry",
+          "entity_id": "Q33866",
+          "position": "Phi Beta Kappa Society",
+          "property": "P463",
+          "point_year": 1880,
+          "point_date": "1880-01-01"
+        },
+        {
+          "entity": "John Kerry",
+          "entity_id": "Q33866",
+          "position": "American Philosophical Society",
+          "property": "P463",
+          "start_year": 1906,
+          "start_date": "1906-01-01",
+          "point_year": 1906,
+          "point_date": "1906-01-01"
+        },
+        {
+          "entity": "John Kerry",
+          "entity_id": "Q33866",
+          "position": "American Academy of Arts and Letters",
+          "property": "P463",
+          "point_year": 1898,
+          "point_date": "1898-01-01"
+        },
+        {
+          "entity": "John Kerry",
+          "entity_id": "Q33866",
+          "position": "Vice President of the United States",
+          "property": "P39",
+          "start_year": 1901,
+          "start_date": "1901-03-04",
+          "end_year": 1901,
+          "end_date": "1901-09-14"
+        },
+        {
+          "entity": "John Kerry",
+          "entity_id": "Q33866",
+          "position": "President of the United States",
+          "property": "P39",
+          "start_year": 1901,
+          "start_date": "1901-09-14",
+          "end_year": 1909,
+          "end_date": "1909-03-04"
+        },
+        {
+          "entity": "John Kerry",
+          "entity_id": "Q33866",
+          "position": "Governor of New York",
+          "property": "P39",
+          "start_year": 1899,
+          "start_date": "1899-01-01",
+          "end_year": 1900,
+          "end_date": "1900-12-31"
+        },
+        {
+          "entity": "John Kerry",
+          "entity_id": "Q33866",
+          "position": "member of the New York State Assembly",
+          "property": "P39",
+          "start_year": 1883,
+          "start_date": "1883-01-01",
+          "end_year": 1884,
+          "end_date": "1884-12-31"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:00:23.566679"
+    },
+    {
+      "name": "Rex Tillerson",
+      "qid": "Q7313083",
+      "category": "us_cabinet",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:00:26.160547"
+    },
+    {
+      "name": "Mike Pompeo",
+      "qid": "Q974374",
+      "category": "us_cabinet",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:00:31.615727"
+    },
+    {
+      "name": "Antony Blinken",
+      "qid": "Q720301",
+      "category": "us_cabinet",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:00:34.217369"
+    },
+    {
+      "name": "Condoleezza Rice",
+      "qid": "Q62398",
+      "category": "us_cabinet",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:00:36.216088"
+    },
+    {
+      "name": "Colin Powell",
+      "qid": "Q34296",
+      "category": "us_cabinet",
+      "facts": [
+        {
+          "entity": "Colin Powell",
+          "entity_id": "Q34296",
+          "position": "Accademia Nazionale dei Lincei",
+          "property": "P463",
+          "start_year": 1918,
+          "start_date": "1918-04-04"
+        },
+        {
+          "entity": "Colin Powell",
+          "entity_id": "Q34296",
+          "position": "Governor of New Jersey",
+          "property": "P39",
+          "start_year": 1911,
+          "start_date": "1911-01-17",
+          "end_year": 1913,
+          "end_date": "1913-03-01"
+        },
+        {
+          "entity": "Colin Powell",
+          "entity_id": "Q34296",
+          "position": "Academy of Sciences of Turin",
+          "property": "P463",
+          "start_year": 1918,
+          "start_date": "1918-06-23"
+        },
+        {
+          "entity": "Colin Powell",
+          "entity_id": "Q34296",
+          "position": "American Philosophical Society",
+          "property": "P463",
+          "start_year": 1897,
+          "start_date": "1897-01-01"
+        },
+        {
+          "entity": "Colin Powell",
+          "entity_id": "Q34296",
+          "position": "President of the United States",
+          "property": "P39",
+          "start_year": 1913,
+          "start_date": "1913-03-04",
+          "end_year": 1921,
+          "end_date": "1921-03-04"
+        },
+        {
+          "entity": "Colin Powell",
+          "entity_id": "Q34296",
+          "position": "President-elect of the United States",
+          "property": "P39",
+          "start_year": 1912,
+          "start_date": "1912-11-05",
+          "end_year": 1913,
+          "end_date": "1913-03-04"
+        },
+        {
+          "entity": "Colin Powell",
+          "entity_id": "Q34296",
+          "position": "president of Princeton University",
+          "property": "P39",
+          "start_year": 1902,
+          "start_date": "1902-01-01",
+          "end_year": 1910,
+          "end_date": "1910-01-01"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:00:43.102295"
+    },
+    {
+      "name": "Madeleine Albright",
+      "qid": "Q41225",
+      "category": "us_cabinet",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:00:45.562014"
+    },
+    {
+      "name": "Robert Gates",
+      "qid": "Q312930",
+      "category": "us_cabinet",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:00:47.710711"
+    },
+    {
+      "name": "Donald Rumsfeld",
+      "qid": "Q48259",
+      "category": "us_cabinet",
+      "facts": [
+        {
+          "entity": "Donald Rumsfeld",
+          "entity_id": "Q48259",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1989,
+          "start_date": "1989-01-03",
+          "end_year": 1989,
+          "end_date": "1989-03-17"
+        },
+        {
+          "entity": "Donald Rumsfeld",
+          "entity_id": "Q48259",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1983,
+          "start_date": "1983-01-03",
+          "end_year": 1985,
+          "end_date": "1985-01-03"
+        },
+        {
+          "entity": "Donald Rumsfeld",
+          "entity_id": "Q48259",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1985,
+          "start_date": "1985-01-03",
+          "end_year": 1987,
+          "end_date": "1987-01-03"
+        },
+        {
+          "entity": "Donald Rumsfeld",
+          "entity_id": "Q48259",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1981,
+          "start_date": "1981-01-03",
+          "end_year": 1983,
+          "end_date": "1983-01-03"
+        },
+        {
+          "entity": "Donald Rumsfeld",
+          "entity_id": "Q48259",
+          "position": "White House Chief of Staff",
+          "property": "P39",
+          "start_year": 1975,
+          "start_date": "1975-11-21",
+          "end_year": 1977,
+          "end_date": "1977-01-20"
+        },
+        {
+          "entity": "Donald Rumsfeld",
+          "entity_id": "Q48259",
+          "position": "Vice President of the United States",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-01-20",
+          "end_year": 2009,
+          "end_date": "2009-01-20"
+        },
+        {
+          "entity": "Donald Rumsfeld",
+          "entity_id": "Q48259",
+          "position": "United States Secretary of Defense",
+          "property": "P39",
+          "start_year": 1989,
+          "start_date": "1989-03-21",
+          "end_year": 1993,
+          "end_date": "1993-01-20"
+        },
+        {
+          "entity": "Donald Rumsfeld",
+          "entity_id": "Q48259",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1979,
+          "start_date": "1979-01-03",
+          "end_year": 1981,
+          "end_date": "1981-01-03"
+        },
+        {
+          "entity": "Donald Rumsfeld",
+          "entity_id": "Q48259",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1979,
+          "start_date": "1979-01-03",
+          "end_year": 1989,
+          "end_date": "1989-03-20"
+        },
+        {
+          "entity": "Donald Rumsfeld",
+          "entity_id": "Q48259",
+          "position": "United States representative",
+          "property": "P39",
+          "start_year": 1987,
+          "start_date": "1987-01-03",
+          "end_year": 1989,
+          "end_date": "1989-01-03"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:00:49.589293"
+    },
+    {
+      "name": "Lloyd Austin",
+      "qid": "Q6664165",
+      "category": "us_cabinet",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:00:51.661999"
+    },
+    {
+      "name": "Mitt Romney",
+      "qid": "Q1036",
+      "category": "us_governor",
+      "facts": [
+        {
+          "entity": "Mitt Romney",
+          "entity_id": "Q1036",
+          "position": "Organisation for the Prohibition of Chemical Weapons",
+          "property": "P463",
+          "start_year": 2001,
+          "start_date": "2001-12-30"
+        },
+        {
+          "entity": "Mitt Romney",
+          "entity_id": "Q1036",
+          "position": "International Telecommunication Union",
+          "property": "P463",
+          "start_year": 1963,
+          "start_date": "1963-03-08"
+        },
+        {
+          "entity": "Mitt Romney",
+          "entity_id": "Q1036",
+          "position": "Universal Postal Union",
+          "property": "P463",
+          "start_year": 1964,
+          "start_date": "1964-02-13"
+        },
+        {
+          "entity": "Mitt Romney",
+          "entity_id": "Q1036",
+          "position": "International Development Association",
+          "property": "P463",
+          "start_year": 1963,
+          "start_date": "1963-09-27"
+        },
+        {
+          "entity": "Mitt Romney",
+          "entity_id": "Q1036",
+          "position": "World Meteorological Organization",
+          "property": "P463",
+          "start_year": 1963,
+          "start_date": "1963-03-15"
+        },
+        {
+          "entity": "Mitt Romney",
+          "entity_id": "Q1036",
+          "position": "Interpol",
+          "property": "P463",
+          "start_year": 1966,
+          "start_date": "1966-08-31"
+        },
+        {
+          "entity": "Mitt Romney",
+          "entity_id": "Q1036",
+          "position": "Multilateral Investment Guarantee Agency",
+          "property": "P463",
+          "start_year": 1992,
+          "start_date": "1992-06-10"
+        },
+        {
+          "entity": "Mitt Romney",
+          "entity_id": "Q1036",
+          "position": "International Centre for Settlement of Investment Disputes",
+          "property": "P463",
+          "start_year": 1966,
+          "start_date": "1966-10-14"
+        },
+        {
+          "entity": "Mitt Romney",
+          "entity_id": "Q1036",
+          "position": "UNESCO",
+          "property": "P463",
+          "start_year": 1962,
+          "start_date": "1962-11-09"
+        },
+        {
+          "entity": "Mitt Romney",
+          "entity_id": "Q1036",
+          "position": "Commonwealth of Nations",
+          "property": "P463",
+          "start_year": 1962,
+          "start_date": "1962-01-01"
+        },
+        {
+          "entity": "Mitt Romney",
+          "entity_id": "Q1036",
+          "position": "Organisation of Islamic Cooperation",
+          "property": "P463",
+          "start_year": 1974,
+          "start_date": "1974-01-01"
+        },
+        {
+          "entity": "Mitt Romney",
+          "entity_id": "Q1036",
+          "position": "United Nations",
+          "property": "P463",
+          "start_year": 1962,
+          "start_date": "1962-10-25"
+        },
+        {
+          "entity": "Mitt Romney",
+          "entity_id": "Q1036",
+          "position": "International Bank for Reconstruction and Development",
+          "property": "P463",
+          "start_year": 1963,
+          "start_date": "1963-09-27"
+        },
+        {
+          "entity": "Mitt Romney",
+          "entity_id": "Q1036",
+          "position": "International Finance Corporation",
+          "property": "P463",
+          "start_year": 1963,
+          "start_date": "1963-09-27"
+        },
+        {
+          "entity": "Mitt Romney",
+          "entity_id": "Q1036",
+          "position": "World Customs Organization",
+          "property": "P463",
+          "start_year": 1964,
+          "start_date": "1964-11-03"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:00:54.268328"
+    },
+    {
+      "name": "Arnold Schwarzenegger",
+      "qid": "Q2685",
+      "category": "us_governor",
+      "facts": [
+        {
+          "entity": "Arnold Schwarzenegger",
+          "entity_id": "Q2685",
+          "position": "Governor of California",
+          "property": "P39",
+          "start_year": 2003,
+          "start_date": "2003-11-17",
+          "end_year": 2011,
+          "end_date": "2011-01-03"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:00:56.520079"
+    },
+    {
+      "name": "Andrew Cuomo",
+      "qid": "Q312528",
+      "category": "us_governor",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:00:58.770081"
+    },
+    {
+      "name": "Gavin Newsom",
+      "qid": "Q979879",
+      "category": "us_governor",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:01:01.432827"
+    },
+    {
+      "name": "Ron DeSantis",
+      "qid": "Q20767779",
+      "category": "us_governor",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:01:03.685664"
+    },
+    {
+      "name": "Chris Christie",
+      "qid": "Q1063986",
+      "category": "us_governor",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:01:05.835576"
+    },
+    {
+      "name": "Scott Walker",
+      "qid": "Q2608",
+      "category": "us_governor",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:01:17.817042"
+    },
+    {
+      "name": "Greg Abbott",
+      "qid": "Q1543000",
+      "category": "us_governor",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:01:20.070381"
+    },
+    {
+      "name": "Brian Kemp",
+      "qid": "Q16216063",
+      "category": "us_governor",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:01:22.528322"
+    },
+    {
+      "name": "Boris Johnson",
+      "qid": "Q180589",
+      "category": "uk_pm",
+      "facts": [
+        {
+          "entity": "Boris Johnson",
+          "entity_id": "Q180589",
+          "position": "Leader of the Conservative Party",
+          "property": "P39",
+          "start_year": 2019,
+          "start_date": "2019-07-23",
+          "end_year": 2022,
+          "end_date": "2022-09-05"
+        },
+        {
+          "entity": "Boris Johnson",
+          "entity_id": "Q180589",
+          "position": "Mayor of London",
+          "property": "P39",
+          "start_year": 2008,
+          "start_date": "2008-05-04",
+          "end_year": 2016,
+          "end_date": "2016-05-07"
+        },
+        {
+          "entity": "Boris Johnson",
+          "entity_id": "Q180589",
+          "position": "Minister for the Civil Service",
+          "property": "P39",
+          "start_year": 2019,
+          "start_date": "2019-07-24",
+          "end_year": 2022,
+          "end_date": "2022-09-06"
+        },
+        {
+          "entity": "Boris Johnson",
+          "entity_id": "Q180589",
+          "position": "Prime Minister of the United Kingdom",
+          "property": "P39",
+          "start_year": 2019,
+          "start_date": "2019-07-24",
+          "end_year": 2022,
+          "end_date": "2022-09-06"
+        },
+        {
+          "entity": "Boris Johnson",
+          "entity_id": "Q180589",
+          "position": "Member of the Privy Council of the United Kingdom",
+          "property": "P39",
+          "start_year": 2016,
+          "start_date": "2016-01-01"
+        },
+        {
+          "entity": "Boris Johnson",
+          "entity_id": "Q180589",
+          "position": "Secretary of State for Foreign and Commonwealth Affairs",
+          "property": "P39",
+          "start_year": 2016,
+          "start_date": "2016-07-13",
+          "end_year": 2018,
+          "end_date": "2018-07-09"
+        },
+        {
+          "entity": "Boris Johnson",
+          "entity_id": "Q180589",
+          "position": "First Lord of the Treasury",
+          "property": "P39",
+          "start_year": 2019,
+          "start_date": "2019-07-25",
+          "end_year": 2022,
+          "end_date": "2022-09-06"
+        },
+        {
+          "entity": "Boris Johnson",
+          "entity_id": "Q180589",
+          "position": "Minister for the Union",
+          "property": "P39",
+          "start_year": 2019,
+          "start_date": "2019-07-26",
+          "end_year": 2022,
+          "end_date": "2022-09-06"
+        },
+        {
+          "entity": "Boris Johnson",
+          "entity_id": "Q180589",
+          "position": "member of the 53rd Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-06-07",
+          "end_year": 2005,
+          "end_date": "2005-04-11"
+        },
+        {
+          "entity": "Boris Johnson",
+          "entity_id": "Q180589",
+          "position": "member of the 57th Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 2017,
+          "start_date": "2017-06-08",
+          "end_year": 2019,
+          "end_date": "2019-11-06"
+        },
+        {
+          "entity": "Boris Johnson",
+          "entity_id": "Q180589",
+          "position": "member of the 58th Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 2019,
+          "start_date": "2019-12-12",
+          "end_year": 2023,
+          "end_date": "2023-06-12"
+        },
+        {
+          "entity": "Boris Johnson",
+          "entity_id": "Q180589",
+          "position": "member of the 54th Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-05-05",
+          "end_year": 2008,
+          "end_date": "2008-06-04"
+        },
+        {
+          "entity": "Boris Johnson",
+          "entity_id": "Q180589",
+          "position": "member of the 56th Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 2015,
+          "start_date": "2015-05-07",
+          "end_year": 2017,
+          "end_date": "2017-05-03"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:01:24.986163"
+    },
+    {
+      "name": "Theresa May",
+      "qid": "Q264766",
+      "category": "uk_pm",
+      "facts": [
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "member of the 56th Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 2015,
+          "start_date": "2015-05-07",
+          "end_year": 2017,
+          "end_date": "2017-05-03"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Shadow Leader of the House of Commons",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-12-06",
+          "end_year": 2009,
+          "end_date": "2009-01-19"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Shadow Secretary of State for Work and Pensions",
+          "property": "P39",
+          "start_year": 2009,
+          "start_date": "2009-01-19",
+          "end_year": 2010,
+          "end_date": "2010-05-11"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "member of the 57th Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 2017,
+          "start_date": "2017-06-08",
+          "end_year": 2019,
+          "end_date": "2019-11-06"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "member of the 52nd Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 1997,
+          "start_date": "1997-05-01",
+          "end_year": 2001,
+          "end_date": "2001-05-14"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Minister for Women and Equalities",
+          "property": "P39",
+          "start_year": 2010,
+          "start_date": "2010-05-12",
+          "end_year": 2010,
+          "end_date": "2010-08-18"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Minister for Women and Equalities",
+          "property": "P39",
+          "start_year": 2010,
+          "start_date": "2010-08-18",
+          "end_year": 2010,
+          "end_date": "2010-08-18"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Minister for Women and Equalities",
+          "property": "P39",
+          "start_year": 2010,
+          "start_date": "2010-05-12",
+          "end_year": 2012,
+          "end_date": "2012-09-04"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Minister for Women and Equalities",
+          "property": "P39",
+          "start_year": 2010,
+          "start_date": "2010-08-18",
+          "end_year": 2012,
+          "end_date": "2012-09-04"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "member of the 58th Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 2019,
+          "start_date": "2019-12-12",
+          "end_year": 2024,
+          "end_date": "2024-05-30"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "First Lord of the Treasury",
+          "property": "P39",
+          "start_year": 2016,
+          "start_date": "2016-07-13",
+          "end_year": 2019,
+          "end_date": "2019-07-24"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Shadow Secretary of State for the Family",
+          "property": "P39",
+          "start_year": 2004,
+          "start_date": "2004-06-15",
+          "end_year": 2005,
+          "end_date": "2005-12-08"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "member of Merton London Borough Council",
+          "property": "P39",
+          "start_year": 1986,
+          "start_date": "1986-01-01",
+          "end_year": 1994,
+          "end_date": "1994-01-01"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "member of the 55th Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 2010,
+          "start_date": "2010-05-06",
+          "end_year": 2015,
+          "end_date": "2015-03-30"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Prime Minister of the United Kingdom",
+          "property": "P39",
+          "start_year": 2016,
+          "start_date": "2016-07-13",
+          "end_year": 2019,
+          "end_date": "2019-07-24"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Shadow Secretary of State for Education",
+          "property": "P39",
+          "start_year": 1999,
+          "start_date": "1999-06-15",
+          "end_year": 2001,
+          "end_date": "2001-09-18"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Leader of the Conservative Party",
+          "property": "P39",
+          "start_year": 2016,
+          "start_date": "2016-07-11",
+          "end_year": 2019,
+          "end_date": "2019-06-07"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "member of the 53rd Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-06-07",
+          "end_year": 2005,
+          "end_date": "2005-04-11"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Member of the Privy Council of the United Kingdom",
+          "property": "P39",
+          "start_year": 2003,
+          "start_date": "2003-01-01"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Shadow Secretary of State for Employment",
+          "property": "P39",
+          "start_year": 1999,
+          "start_date": "1999-06-15",
+          "end_year": 2001,
+          "end_date": "2001-09-18"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Chairman of the Conservative Party",
+          "property": "P39",
+          "start_year": 2002,
+          "start_date": "2002-07-23",
+          "end_year": 2003,
+          "end_date": "2003-11-06"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "member of the 54th Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-05-05",
+          "end_year": 2010,
+          "end_date": "2010-04-12"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Home Secretary",
+          "property": "P39",
+          "start_year": 2010,
+          "start_date": "2010-05-12",
+          "end_year": 2016,
+          "end_date": "2016-07-13"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Shadow Secretary of State for Transport",
+          "property": "P39",
+          "start_year": 2002,
+          "start_date": "2002-06-06",
+          "end_year": 2002,
+          "end_date": "2002-07-23"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Shadow Secretary of State for Women and Equalities",
+          "property": "P39",
+          "start_year": 2007,
+          "start_date": "2007-07-02",
+          "end_year": 2010,
+          "end_date": "2010-05-11"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Minister for the Civil Service",
+          "property": "P39",
+          "start_year": 2016,
+          "start_date": "2016-07-13",
+          "end_year": 2019,
+          "end_date": "2019-07-24"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Shadow Secretary of State for Environment, Food and Rural Affairs",
+          "property": "P39",
+          "start_year": 2003,
+          "start_date": "2003-11-06",
+          "end_year": 2004,
+          "end_date": "2004-06-14"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Shadow Secretary of State for Women and Equalities",
+          "property": "P39",
+          "start_year": 1999,
+          "start_date": "1999-06-15",
+          "end_year": 2001,
+          "end_date": "2001-09-14"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Shadow Secretary of State for Culture, Media and Sport",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-05-06",
+          "end_year": 2005,
+          "end_date": "2005-12-08"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Shadow Secretary of State for Transport",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-09-18",
+          "end_year": 2002,
+          "end_date": "2002-06-06"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Shadow Secretary of State for Housing, Communities and Local Government",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-09-18",
+          "end_year": 2002,
+          "end_date": "2002-06-06"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "Shadow Secretary of State for Environment, Food and Rural Affairs",
+          "property": "P39",
+          "start_year": 2003,
+          "start_date": "2003-11-06",
+          "end_year": 2004,
+          "end_date": "2004-06-14"
+        },
+        {
+          "entity": "Theresa May",
+          "entity_id": "Q264766",
+          "position": "member of the House of Lords",
+          "property": "P39",
+          "start_year": 2024,
+          "start_date": "2024-08-21"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:01:32.462530"
+    },
+    {
+      "name": "David Cameron",
+      "qid": "Q192",
+      "category": "uk_pm",
+      "facts": [
+        {
+          "entity": "David Cameron",
+          "entity_id": "Q192",
+          "position": "member of the 56th Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 2015,
+          "start_date": "2015-05-07",
+          "end_year": 2016,
+          "end_date": "2016-09-12"
+        },
+        {
+          "entity": "David Cameron",
+          "entity_id": "Q192",
+          "position": "member of the House of Lords",
+          "property": "P39",
+          "start_year": 2023,
+          "start_date": "2023-11-17"
+        },
+        {
+          "entity": "David Cameron",
+          "entity_id": "Q192",
+          "position": "member of the 54th Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-05-05",
+          "end_year": 2010,
+          "end_date": "2010-04-12"
+        },
+        {
+          "entity": "David Cameron",
+          "entity_id": "Q192",
+          "position": "Shadow Secretary of State for Education",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-05-06",
+          "end_year": 2005,
+          "end_date": "2005-12-06"
+        },
+        {
+          "entity": "David Cameron",
+          "entity_id": "Q192",
+          "position": "Minister for the Civil Service",
+          "property": "P39",
+          "start_year": 2010,
+          "start_date": "2010-05-11",
+          "end_year": 2016,
+          "end_date": "2016-07-13"
+        },
+        {
+          "entity": "David Cameron",
+          "entity_id": "Q192",
+          "position": "member of the 53rd Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-06-07",
+          "end_year": 2005,
+          "end_date": "2005-04-11"
+        },
+        {
+          "entity": "David Cameron",
+          "entity_id": "Q192",
+          "position": "Secretary of State for Foreign and Commonwealth Affairs",
+          "property": "P39",
+          "start_year": 2023,
+          "start_date": "2023-11-13",
+          "end_year": 2024,
+          "end_date": "2024-07-05"
+        },
+        {
+          "entity": "David Cameron",
+          "entity_id": "Q192",
+          "position": "member of the 55th Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 2010,
+          "start_date": "2010-05-06",
+          "end_year": 2015,
+          "end_date": "2015-03-30"
+        },
+        {
+          "entity": "David Cameron",
+          "entity_id": "Q192",
+          "position": "Prime Minister of the United Kingdom",
+          "property": "P39",
+          "start_year": 2010,
+          "start_date": "2010-05-11",
+          "end_year": 2016,
+          "end_date": "2016-07-13"
+        },
+        {
+          "entity": "David Cameron",
+          "entity_id": "Q192",
+          "position": "First Lord of the Treasury",
+          "property": "P39",
+          "start_year": 2010,
+          "start_date": "2010-05-11",
+          "end_year": 2016,
+          "end_date": "2016-07-13"
+        },
+        {
+          "entity": "David Cameron",
+          "entity_id": "Q192",
+          "position": "Leader of the Conservative Party",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-12-06",
+          "end_year": 2016,
+          "end_date": "2016-07-11"
+        },
+        {
+          "entity": "David Cameron",
+          "entity_id": "Q192",
+          "position": "Leader of the Opposition",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-12-06",
+          "end_year": 2010,
+          "end_date": "2010-05-11"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:01:34.716647"
+    },
+    {
+      "name": "Gordon Brown",
+      "qid": "Q3336",
+      "category": "uk_pm",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:01:36.871582"
+    },
+    {
+      "name": "Tony Blair",
+      "qid": "Q9545",
+      "category": "uk_pm",
+      "facts": [
+        {
+          "entity": "Tony Blair",
+          "entity_id": "Q9545",
+          "position": "member of the 51st Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 1992,
+          "start_date": "1992-04-09",
+          "end_year": 1997,
+          "end_date": "1997-04-08"
+        },
+        {
+          "entity": "Tony Blair",
+          "entity_id": "Q9545",
+          "position": "member of the 52nd Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 1997,
+          "start_date": "1997-05-01",
+          "end_year": 2001,
+          "end_date": "2001-05-14"
+        },
+        {
+          "entity": "Tony Blair",
+          "entity_id": "Q9545",
+          "position": "Shadow Secretary of State for Employment",
+          "property": "P39",
+          "start_year": 1989,
+          "start_date": "1989-11-02",
+          "end_year": 1992,
+          "end_date": "1992-07-18"
+        },
+        {
+          "entity": "Tony Blair",
+          "entity_id": "Q9545",
+          "position": "Shadow Home Secretary",
+          "property": "P39",
+          "start_year": 1992,
+          "start_date": "1992-07-24",
+          "end_year": 1994,
+          "end_date": "1994-10-20"
+        },
+        {
+          "entity": "Tony Blair",
+          "entity_id": "Q9545",
+          "position": "Shadow Secretary of State for Energy Security and Net Zero",
+          "property": "P39",
+          "start_year": 1988,
+          "start_date": "1988-11-23",
+          "end_year": 1989,
+          "end_date": "1989-11-02"
+        },
+        {
+          "entity": "Tony Blair",
+          "entity_id": "Q9545",
+          "position": "Member of the Privy Council of the United Kingdom",
+          "property": "P39",
+          "start_year": 1994,
+          "start_date": "1994-01-01"
+        },
+        {
+          "entity": "Tony Blair",
+          "entity_id": "Q9545",
+          "position": "member of the 50th Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 1987,
+          "start_date": "1987-06-11",
+          "end_year": 1992,
+          "end_date": "1992-03-16"
+        },
+        {
+          "entity": "Tony Blair",
+          "entity_id": "Q9545",
+          "position": "member of the 54th Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-05-05",
+          "end_year": 2007,
+          "end_date": "2007-06-27"
+        },
+        {
+          "entity": "Tony Blair",
+          "entity_id": "Q9545",
+          "position": "Prime Minister of the United Kingdom",
+          "property": "P39",
+          "start_year": 1997,
+          "start_date": "1997-05-02",
+          "end_year": 2007,
+          "end_date": "2007-06-27"
+        },
+        {
+          "entity": "Tony Blair",
+          "entity_id": "Q9545",
+          "position": "First Lord of the Treasury",
+          "property": "P39",
+          "start_year": 1997,
+          "start_date": "1997-05-02",
+          "end_year": 2007,
+          "end_date": "2007-06-27"
+        },
+        {
+          "entity": "Tony Blair",
+          "entity_id": "Q9545",
+          "position": "member of the 49th Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 1983,
+          "start_date": "1983-06-09",
+          "end_year": 1987,
+          "end_date": "1987-05-18"
+        },
+        {
+          "entity": "Tony Blair",
+          "entity_id": "Q9545",
+          "position": "Leader of the Opposition",
+          "property": "P39",
+          "start_year": 1994,
+          "start_date": "1994-07-21",
+          "end_year": 1997,
+          "end_date": "1997-05-02"
+        },
+        {
+          "entity": "Tony Blair",
+          "entity_id": "Q9545",
+          "position": "member of the 53rd Parliament of the United Kingdom",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-06-07",
+          "end_year": 2005,
+          "end_date": "2005-04-11"
+        },
+        {
+          "entity": "Tony Blair",
+          "entity_id": "Q9545",
+          "position": "Leader of the Labour Party",
+          "property": "P39",
+          "start_year": 1994,
+          "start_date": "1994-07-21",
+          "end_year": 2007,
+          "end_date": "2007-06-24"
+        },
+        {
+          "entity": "Tony Blair",
+          "entity_id": "Q9545",
+          "position": "Order of the Garter",
+          "property": "P463",
+          "start_year": 2022,
+          "start_date": "2022-01-01"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:01:39.015732"
+    },
+    {
+      "name": "John Major",
+      "qid": "Q9624",
+      "category": "uk_pm",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:01:41.164409"
+    },
+    {
+      "name": "Margaret Thatcher",
+      "qid": "Q7174",
+      "category": "uk_pm",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:01:43.342441"
+    },
+    {
+      "name": "Rishi Sunak",
+      "qid": "Q109404461",
+      "category": "uk_pm",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:01:45.773767"
+    },
+    {
+      "name": "Liz Truss",
+      "qid": "Q220359",
+      "category": "uk_pm",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:01:48.026984"
+    },
+    {
+      "name": "Keir Starmer",
+      "qid": "Q7671853",
+      "category": "uk_pm",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:01:50.279093"
+    },
+    {
+      "name": "Jeremy Corbyn",
+      "qid": "Q186630",
+      "category": "uk_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:02:22.230556"
+    },
+    {
+      "name": "Nigel Farage",
+      "qid": "Q192893",
+      "category": "uk_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:02:24.481298"
+    },
+    {
+      "name": "Sadiq Khan",
+      "qid": "Q3444954",
+      "category": "uk_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:02:56.535301"
+    },
+    {
+      "name": "Angela Merkel",
+      "qid": "Q567",
+      "category": "eu_leader",
+      "facts": [
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "Federal Minister for Education, Family Affairs, Senior Citizens, Women and Youth",
+          "property": "P39",
+          "start_year": 1991,
+          "start_date": "1991-01-18",
+          "end_year": 1994,
+          "end_date": "1994-11-17"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "Party Chairman of the CDU Mecklenburg-Western Pomerania",
+          "property": "P39",
+          "start_year": 1993,
+          "start_date": "1993-01-01",
+          "end_year": 2000,
+          "end_date": "2000-01-01"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "Federal Chancellor of Germany",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-11-22",
+          "end_year": 2021,
+          "end_date": "2021-12-08"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "member of the German Bundestag",
+          "property": "P39",
+          "start_year": 2017,
+          "start_date": "2017-10-24",
+          "end_year": 2021,
+          "end_date": "2021-10-26"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "President-in-Office of the European Council",
+          "property": "P39",
+          "start_year": 2007,
+          "start_date": "2007-01-01",
+          "end_year": 2007,
+          "end_date": "2007-06-30"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "member of the German Bundestag",
+          "property": "P39",
+          "start_year": 2009,
+          "start_date": "2009-10-27",
+          "end_year": 2013,
+          "end_date": "2013-10-22"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "Chairman of the CDU/CSU Bundestag fraction",
+          "property": "P39",
+          "start_year": 2002,
+          "start_date": "2002-09-24",
+          "end_year": 2005,
+          "end_date": "2005-11-21"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "member of the German Bundestag",
+          "property": "P39",
+          "start_year": 1998,
+          "start_date": "1998-10-26",
+          "end_year": 2002,
+          "end_date": "2002-10-17"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "Third Merkel cabinet",
+          "property": "P463",
+          "start_year": 2013,
+          "start_date": "2013-12-17",
+          "end_year": 2018,
+          "end_date": "2018-03-14"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "First Merkel cabinet",
+          "property": "P463",
+          "start_year": 2005,
+          "start_date": "2005-11-22",
+          "end_year": 2009,
+          "end_date": "2009-10-28"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "Second Merkel cabinet",
+          "property": "P463",
+          "start_year": 2009,
+          "start_date": "2009-10-28",
+          "end_year": 2013,
+          "end_date": "2013-12-17"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "Federal Minister for the Environment, Climate Action, Nature Conservation and Nuclear Safety",
+          "property": "P39",
+          "start_year": 1994,
+          "start_date": "1994-11-17",
+          "end_year": 1998,
+          "end_date": "1998-10-26"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "member of the German Bundestag",
+          "property": "P39",
+          "start_year": 2013,
+          "start_date": "2013-10-22",
+          "end_year": 2017,
+          "end_date": "2017-10-24"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "member of the German Bundestag",
+          "property": "P39",
+          "start_year": 2002,
+          "start_date": "2002-10-17",
+          "end_year": 2005,
+          "end_date": "2005-10-18"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "Secretary General of the CDU",
+          "property": "P39",
+          "start_year": 1998,
+          "start_date": "1998-11-07",
+          "end_year": 2000,
+          "end_date": "2000-04-10"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "Fourth Merkel cabinet",
+          "property": "P463",
+          "start_year": 2018,
+          "start_date": "2018-03-14",
+          "end_year": 2021,
+          "end_date": "2021-12-08"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "member of the German Bundestag",
+          "property": "P39",
+          "start_year": 1990,
+          "start_date": "1990-12-20",
+          "end_year": 1994,
+          "end_date": "1994-11-10"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "leader of the Christian Democratic Union",
+          "property": "P39",
+          "start_year": 2000,
+          "start_date": "2000-04-10",
+          "end_year": 2018,
+          "end_date": "2018-12-07"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "Cabinet Kohl V",
+          "property": "P463",
+          "start_year": 1994,
+          "start_date": "1994-11-17",
+          "end_year": 1998,
+          "end_date": "1998-10-27"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "member of the German Bundestag",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-10-18",
+          "end_year": 2009,
+          "end_date": "2009-10-27"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "member of the German Bundestag",
+          "property": "P39",
+          "start_year": 1994,
+          "start_date": "1994-11-10",
+          "end_year": 1998,
+          "end_date": "1998-10-26"
+        },
+        {
+          "entity": "Angela Merkel",
+          "entity_id": "Q567",
+          "position": "Cabinet Kohl IV",
+          "property": "P463",
+          "start_year": 1991,
+          "start_date": "1991-01-12",
+          "end_year": 1994,
+          "end_date": "1994-11-17"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:02:59.095623"
+    },
+    {
+      "name": "Emmanuel Macron",
+      "qid": "Q3052772",
+      "category": "eu_leader",
+      "facts": [
+        {
+          "entity": "Emmanuel Macron",
+          "entity_id": "Q3052772",
+          "position": "Minister of Economy, Industry and Digital",
+          "property": "P39",
+          "start_year": 2014,
+          "start_date": "2014-08-26",
+          "end_year": 2016,
+          "end_date": "2016-08-30"
+        },
+        {
+          "entity": "Emmanuel Macron",
+          "entity_id": "Q3052772",
+          "position": "French co-prince of Andorra",
+          "property": "P39",
+          "start_year": 2017,
+          "start_date": "2017-05-14"
+        },
+        {
+          "entity": "Emmanuel Macron",
+          "entity_id": "Q3052772",
+          "position": "Assistant Secretary General of the Presidency of the French Republic",
+          "property": "P39",
+          "start_year": 2012,
+          "start_date": "2012-05-15",
+          "end_year": 2014,
+          "end_date": "2014-07-15"
+        },
+        {
+          "entity": "Emmanuel Macron",
+          "entity_id": "Q3052772",
+          "position": "chairperson",
+          "property": "P39",
+          "start_year": 2016,
+          "start_date": "2016-04-06",
+          "end_year": 2017,
+          "end_date": "2017-05-08"
+        },
+        {
+          "entity": "Emmanuel Macron",
+          "entity_id": "Q3052772",
+          "position": "President of the French Republic",
+          "property": "P39",
+          "start_year": 2017,
+          "start_date": "2017-05-14"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:03:01.245440"
+    },
+    {
+      "name": "Nicolas Sarkozy",
+      "qid": "Q1631",
+      "category": "eu_leader",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:03.293877"
+    },
+    {
+      "name": "François Hollande",
+      "qid": "Q191360",
+      "category": "eu_leader",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:05.545291"
+    },
+    {
+      "name": "Olaf Scholz",
+      "qid": "Q61221",
+      "category": "eu_leader",
+      "facts": [
+        {
+          "entity": "Olaf Scholz",
+          "entity_id": "Q61221",
+          "position": "Consort of Saxony",
+          "property": "P39",
+          "start_year": 1854,
+          "start_date": "1854-08-09",
+          "end_year": 1873,
+          "end_date": "1873-10-29"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:03:07.900775"
+    },
+    {
+      "name": "Gerhard Schroeder",
+      "qid": "Q2530",
+      "category": "eu_leader",
+      "facts": [
+        {
+          "entity": "Gerhard Schroeder",
+          "entity_id": "Q2530",
+          "position": "chairman of the Social Democratic Party",
+          "property": "P39",
+          "start_year": 1999,
+          "start_date": "1999-03-12",
+          "end_year": 2004,
+          "end_date": "2004-03-21"
+        },
+        {
+          "entity": "Gerhard Schroeder",
+          "entity_id": "Q2530",
+          "position": "member of the German Bundestag",
+          "property": "P39",
+          "start_year": 1980,
+          "start_date": "1980-11-04",
+          "end_year": 1983,
+          "end_date": "1983-03-29"
+        },
+        {
+          "entity": "Gerhard Schroeder",
+          "entity_id": "Q2530",
+          "position": "member of the German Bundestag",
+          "property": "P39",
+          "start_year": 2002,
+          "start_date": "2002-10-17",
+          "end_year": 2005,
+          "end_date": "2005-10-18"
+        },
+        {
+          "entity": "Gerhard Schroeder",
+          "entity_id": "Q2530",
+          "position": "member of the German Bundestag",
+          "property": "P39",
+          "start_year": 1983,
+          "start_date": "1983-03-29",
+          "end_year": 1986,
+          "end_date": "1986-07-01"
+        },
+        {
+          "entity": "Gerhard Schroeder",
+          "entity_id": "Q2530",
+          "position": "member of the German Bundestag",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-10-18",
+          "end_year": 2005,
+          "end_date": "2005-11-24"
+        },
+        {
+          "entity": "Gerhard Schroeder",
+          "entity_id": "Q2530",
+          "position": "Minister-President of Lower Saxony",
+          "property": "P39",
+          "start_year": 1990,
+          "start_date": "1990-01-01",
+          "end_year": 1998,
+          "end_date": "1998-01-01"
+        },
+        {
+          "entity": "Gerhard Schroeder",
+          "entity_id": "Q2530",
+          "position": "Federal Chancellor of Germany",
+          "property": "P39",
+          "start_year": 1998,
+          "start_date": "1998-10-27",
+          "end_year": 2005,
+          "end_date": "2005-11-22"
+        },
+        {
+          "entity": "Gerhard Schroeder",
+          "entity_id": "Q2530",
+          "position": "President of the Bundesrat of Germany",
+          "property": "P39",
+          "start_year": 1997,
+          "start_date": "1997-11-01",
+          "end_year": 1998,
+          "end_date": "1998-10-27"
+        },
+        {
+          "entity": "Gerhard Schroeder",
+          "entity_id": "Q2530",
+          "position": "member of the German Bundestag",
+          "property": "P39",
+          "start_year": 1998,
+          "start_date": "1998-10-26",
+          "end_year": 2002,
+          "end_date": "2002-10-17"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:03:10.256130"
+    },
+    {
+      "name": "Silvio Berlusconi",
+      "qid": "Q11860",
+      "category": "eu_leader",
+      "facts": [
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "Member of the European Parliament",
+          "property": "P39",
+          "start_year": 2019,
+          "start_date": "2019-07-02",
+          "end_year": 2022,
+          "end_date": "2022-10-12"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "Prime Minister of Italy",
+          "property": "P39",
+          "start_year": 1994,
+          "start_date": "1994-05-10",
+          "end_year": 1995,
+          "end_date": "1995-01-17"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "member of the Chamber of Deputies of the Italian Republic",
+          "property": "P39",
+          "start_year": 1994,
+          "start_date": "1994-04-03",
+          "end_year": 1996,
+          "end_date": "1996-05-08"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "Prime Minister of Italy",
+          "property": "P39",
+          "start_year": 2008,
+          "start_date": "2008-05-08",
+          "end_year": 2011,
+          "end_date": "2011-11-16"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "Member of the European Parliament",
+          "property": "P39",
+          "start_year": 1999,
+          "start_date": "1999-07-20",
+          "end_year": 2001,
+          "end_date": "2001-06-10"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "Representative of the Parliamentary Assembly of the Council of Europe",
+          "property": "P39",
+          "start_year": 1998,
+          "start_date": "1998-11-04",
+          "end_year": 2001,
+          "end_date": "2001-06-25"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "Italian Minister of Economy and Finance",
+          "property": "P39",
+          "start_year": 2004,
+          "start_date": "2004-07-03",
+          "end_year": 2004,
+          "end_date": "2004-07-16"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "member of the Senate of the Italian Republic",
+          "property": "P39",
+          "start_year": 2022,
+          "start_date": "2022-10-13",
+          "end_year": 2023,
+          "end_date": "2023-06-12"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "Prime Minister of Italy",
+          "property": "P39",
+          "start_year": 2005,
+          "start_date": "2005-04-23",
+          "end_year": 2006,
+          "end_date": "2006-05-17"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "member of the Chamber of Deputies of the Italian Republic",
+          "property": "P39",
+          "start_year": 1996,
+          "start_date": "1996-05-02",
+          "end_year": 2001,
+          "end_date": "2001-05-29"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "Representative of the Parliamentary Assembly of the Council of Europe",
+          "property": "P39",
+          "start_year": 2006,
+          "start_date": "2006-10-02",
+          "end_year": 2008,
+          "end_date": "2008-09-29"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "Italian Minister of Economic Development",
+          "property": "P39",
+          "start_year": 2010,
+          "start_date": "2010-05-04",
+          "end_year": 2010,
+          "end_date": "2010-10-04"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "member of the Chamber of Deputies of the Italian Republic",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-05-25",
+          "end_year": 2006,
+          "end_date": "2006-04-27"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "Italian Minister of Health",
+          "property": "P39",
+          "start_year": 2006,
+          "start_date": "2006-03-10",
+          "end_year": 2006,
+          "end_date": "2006-05-17"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "President-in-Office of the European Council",
+          "property": "P39",
+          "start_year": 2003,
+          "start_date": "2003-07-01",
+          "end_year": 2003,
+          "end_date": "2003-12-31"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "member of the Senate of the Italian Republic",
+          "property": "P39",
+          "start_year": 2013,
+          "start_date": "2013-03-15",
+          "end_year": 2013,
+          "end_date": "2013-11-27"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "Italian Minister of Foreign Affairs",
+          "property": "P39",
+          "start_year": 2002,
+          "start_date": "2002-01-06",
+          "end_year": 2002,
+          "end_date": "2002-11-14"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "member of the Chamber of Deputies of the Italian Republic",
+          "property": "P39",
+          "start_year": 2006,
+          "start_date": "2006-04-21",
+          "end_year": 2008,
+          "end_date": "2008-04-28"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "member of the Chamber of Deputies of the Italian Republic",
+          "property": "P39",
+          "start_year": 2008,
+          "start_date": "2008-04-22",
+          "end_year": 2013,
+          "end_date": "2013-03-14"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "Italian Minister of Economy and Finance",
+          "property": "P39",
+          "start_year": 2006,
+          "start_date": "2006-05-08",
+          "end_year": 2006,
+          "end_date": "2006-05-17"
+        },
+        {
+          "entity": "Silvio Berlusconi",
+          "entity_id": "Q11860",
+          "position": "Prime Minister of Italy",
+          "property": "P39",
+          "start_year": 2001,
+          "start_date": "2001-06-11",
+          "end_year": 2005,
+          "end_date": "2005-04-23"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:03:12.716201"
+    },
+    {
+      "name": "Mario Draghi",
+      "qid": "Q172572",
+      "category": "eu_leader",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:14.966817"
+    },
+    {
+      "name": "Pedro Sánchez",
+      "qid": "Q58808",
+      "category": "eu_leader",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:17.425471"
+    },
+    {
+      "name": "Mariano Rajoy",
+      "qid": "Q156560",
+      "category": "eu_leader",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:19.574460"
+    },
+    {
+      "name": "Justin Trudeau",
+      "qid": "Q3099714",
+      "category": "eu_leader",
+      "facts": [
+        {
+          "entity": "Justin Trudeau",
+          "entity_id": "Q3099714",
+          "position": "Minister of Intergovernmental Affairs",
+          "property": "P39",
+          "start_year": 2015,
+          "start_date": "2015-11-04",
+          "end_year": 2018,
+          "end_date": "2018-07-18"
+        },
+        {
+          "entity": "Justin Trudeau",
+          "entity_id": "Q3099714",
+          "position": "Prime Minister of Canada",
+          "property": "P39",
+          "start_year": 2015,
+          "start_date": "2015-11-04",
+          "end_year": 2025,
+          "end_date": "2025-03-14"
+        },
+        {
+          "entity": "Justin Trudeau",
+          "entity_id": "Q3099714",
+          "position": "Leader of the Liberal Party of Canada",
+          "property": "P39",
+          "start_year": 2013,
+          "start_date": "2013-04-15",
+          "end_year": 2025,
+          "end_date": "2025-03-09"
+        },
+        {
+          "entity": "Justin Trudeau",
+          "entity_id": "Q3099714",
+          "position": "member of the House of Commons of Canada",
+          "property": "P39",
+          "start_year": 2008,
+          "start_date": "2008-10-14",
+          "end_year": 2011,
+          "end_date": "2011-05-01"
+        },
+        {
+          "entity": "Justin Trudeau",
+          "entity_id": "Q3099714",
+          "position": "member of the House of Commons of Canada",
+          "property": "P39",
+          "start_year": 2015,
+          "start_date": "2015-10-19",
+          "end_year": 2019,
+          "end_date": "2019-10-19"
+        },
+        {
+          "entity": "Justin Trudeau",
+          "entity_id": "Q3099714",
+          "position": "member of the House of Commons of Canada",
+          "property": "P39",
+          "start_year": 2019,
+          "start_date": "2019-10-21",
+          "end_year": 2021,
+          "end_date": "2021-09-19"
+        },
+        {
+          "entity": "Justin Trudeau",
+          "entity_id": "Q3099714",
+          "position": "member of the House of Commons of Canada",
+          "property": "P39",
+          "start_year": 2011,
+          "start_date": "2011-05-02",
+          "end_year": 2015,
+          "end_date": "2015-10-18"
+        },
+        {
+          "entity": "Justin Trudeau",
+          "entity_id": "Q3099714",
+          "position": "member of the House of Commons of Canada",
+          "property": "P39",
+          "start_year": 2021,
+          "start_date": "2021-09-20",
+          "end_year": 2025,
+          "end_date": "2025-04-27"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:03:21.828048"
+    },
+    {
+      "name": "Stephen Harper",
+      "qid": "Q154454",
+      "category": "eu_leader",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:24.182597"
+    },
+    {
+      "name": "Jean Chrétien",
+      "qid": "Q179943",
+      "category": "eu_leader",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:26.839200"
+    },
+    {
+      "name": "Vladimir Putin",
+      "qid": "Q7747",
+      "category": "world_leader",
+      "facts": [
+        {
+          "entity": "Vladimir Putin",
+          "entity_id": "Q7747",
+          "position": "Prime Minister of Russia",
+          "property": "P39",
+          "start_year": 1999,
+          "start_date": "1999-08-16",
+          "end_year": 2000,
+          "end_date": "2000-05-07"
+        },
+        {
+          "entity": "Vladimir Putin",
+          "entity_id": "Q7747",
+          "position": "Director of the Federal Security Service",
+          "property": "P39",
+          "start_year": 1998,
+          "start_date": "1998-07-25",
+          "end_year": 1999,
+          "end_date": "1999-03-29"
+        },
+        {
+          "entity": "Vladimir Putin",
+          "entity_id": "Q7747",
+          "position": "Secretary of the Security Council of Russia",
+          "property": "P39",
+          "start_year": 1999,
+          "start_date": "1999-03-29",
+          "end_year": 1999,
+          "end_date": "1999-08-09"
+        },
+        {
+          "entity": "Vladimir Putin",
+          "entity_id": "Q7747",
+          "position": "Chairman of the Council of CIS Heads of State",
+          "property": "P39",
+          "start_year": 2000,
+          "start_date": "2000-01-25",
+          "end_year": 2003,
+          "end_date": "2003-01-29"
+        },
+        {
+          "entity": "Vladimir Putin",
+          "entity_id": "Q7747",
+          "position": "Chairman of the Council of CIS Heads of State",
+          "property": "P39",
+          "start_year": 2017,
+          "start_date": "2017-01-01",
+          "end_year": 2017,
+          "end_date": "2017-12-31"
+        },
+        {
+          "entity": "Vladimir Putin",
+          "entity_id": "Q7747",
+          "position": "Ozero",
+          "property": "P463",
+          "start_year": 1996,
+          "start_date": "1996-11-11"
+        },
+        {
+          "entity": "Vladimir Putin",
+          "entity_id": "Q7747",
+          "position": "Supreme Commander-in-Chief of the Armed Forces of the Russian Federation",
+          "property": "P39",
+          "start_year": 2012,
+          "start_date": "2012-05-07"
+        },
+        {
+          "entity": "Vladimir Putin",
+          "entity_id": "Q7747",
+          "position": "President of Russia",
+          "property": "P39",
+          "start_year": 2000,
+          "start_date": "2000-05-07",
+          "end_year": 2008,
+          "end_date": "2008-05-07"
+        },
+        {
+          "entity": "Vladimir Putin",
+          "entity_id": "Q7747",
+          "position": "President of Russia",
+          "property": "P39",
+          "start_year": 2012,
+          "start_date": "2012-05-07"
+        },
+        {
+          "entity": "Vladimir Putin",
+          "entity_id": "Q7747",
+          "position": "chairperson",
+          "property": "P39",
+          "start_year": 2012,
+          "start_date": "2012-07-16"
+        },
+        {
+          "entity": "Vladimir Putin",
+          "entity_id": "Q7747",
+          "position": "Chairman of the Council of CIS Heads of State",
+          "property": "P39",
+          "start_year": 2024,
+          "start_date": "2024-01-01",
+          "end_year": 2024,
+          "end_date": "2024-12-31"
+        },
+        {
+          "entity": "Vladimir Putin",
+          "entity_id": "Q7747",
+          "position": "Prime Minister of Russia",
+          "property": "P39",
+          "start_year": 2008,
+          "start_date": "2008-05-08",
+          "end_year": 2012,
+          "end_date": "2012-05-07"
+        },
+        {
+          "entity": "Vladimir Putin",
+          "entity_id": "Q7747",
+          "position": "Chairman of the Council of CIS Heads of State",
+          "property": "P39",
+          "start_year": 2004,
+          "start_date": "2004-09-16",
+          "end_year": 2006,
+          "end_date": "2006-05-20"
+        },
+        {
+          "entity": "Vladimir Putin",
+          "entity_id": "Q7747",
+          "position": "party leader",
+          "property": "P39",
+          "start_year": 1995,
+          "start_date": "1995-01-01",
+          "end_year": 1997,
+          "end_date": "1997-01-01"
+        },
+        {
+          "entity": "Vladimir Putin",
+          "entity_id": "Q7747",
+          "position": "Deputy Chairman of the Government of the Russian Federation",
+          "property": "P39",
+          "start_year": 1999,
+          "start_date": "1999-08-09",
+          "end_year": 1999,
+          "end_date": "1999-08-16"
+        },
+        {
+          "entity": "Vladimir Putin",
+          "entity_id": "Q7747",
+          "position": "Supreme Commander-in-Chief of the Armed Forces of the Russian Federation",
+          "property": "P39",
+          "start_year": 1999,
+          "start_date": "1999-12-31",
+          "end_year": 2008,
+          "end_date": "2008-05-07"
+        },
+        {
+          "entity": "Vladimir Putin",
+          "entity_id": "Q7747",
+          "position": "Acting President of Russia",
+          "property": "P39",
+          "start_year": 1999,
+          "start_date": "1999-12-31",
+          "end_year": 2000,
+          "end_date": "2000-05-07"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:03:29.408473"
+    },
+    {
+      "name": "Volodymyr Zelenskyy",
+      "qid": "Q4328088",
+      "category": "world_leader",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:31.628438"
+    },
+    {
+      "name": "Xi Jinping",
+      "qid": "Q15180",
+      "category": "world_leader",
+      "facts": [
+        {
+          "entity": "Xi Jinping",
+          "entity_id": "Q15180",
+          "position": "COMECON",
+          "property": "P463",
+          "start_year": 1949,
+          "start_date": "1949-01-25",
+          "end_year": 1991,
+          "end_date": "1991-06-28"
+        },
+        {
+          "entity": "Xi Jinping",
+          "entity_id": "Q15180",
+          "position": "Organization for Security and Co-operation in Europe",
+          "property": "P463",
+          "start_year": 1973,
+          "start_date": "1973-06-25",
+          "end_year": 1992,
+          "end_date": "1992-01-01"
+        },
+        {
+          "entity": "Xi Jinping",
+          "entity_id": "Q15180",
+          "position": "Warsaw Pact",
+          "property": "P463",
+          "start_year": 1955,
+          "start_date": "1955-05-14",
+          "end_year": 1991,
+          "end_date": "1991-07-01"
+        },
+        {
+          "entity": "Xi Jinping",
+          "entity_id": "Q15180",
+          "position": "United Nations Security Council",
+          "property": "P463",
+          "start_year": 1946,
+          "start_date": "1946-01-01",
+          "end_year": 1991,
+          "end_date": "1991-01-01"
+        },
+        {
+          "entity": "Xi Jinping",
+          "entity_id": "Q15180",
+          "position": "states with nuclear weapons",
+          "property": "P463",
+          "end_year": 1990,
+          "end_date": "1990-01-01"
+        },
+        {
+          "entity": "Xi Jinping",
+          "entity_id": "Q15180",
+          "position": "United Nations",
+          "property": "P463",
+          "start_year": 1945,
+          "start_date": "1945-10-24",
+          "end_year": 1991,
+          "end_date": "1991-12-24"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:03:33.706941"
+    },
+    {
+      "name": "Narendra Modi",
+      "qid": "Q1058583",
+      "category": "world_leader",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:36.266088"
+    },
+    {
+      "name": "Benjamin Netanyahu",
+      "qid": "Q39455",
+      "category": "world_leader",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:38.514865"
+    },
+    {
+      "name": "Recep Tayyip Erdoğan",
+      "qid": "Q1058589",
+      "category": "world_leader",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:40.878904"
+    },
+    {
+      "name": "John Roberts",
+      "qid": "Q190126",
+      "category": "us_judiciary",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:43.229652"
+    },
+    {
+      "name": "Ruth Bader Ginsburg",
+      "qid": "Q17652",
+      "category": "us_judiciary",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:45.701422"
+    },
+    {
+      "name": "Antonin Scalia",
+      "qid": "Q186171",
+      "category": "us_judiciary",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:47.726129"
+    },
+    {
+      "name": "Clarence Thomas",
+      "qid": "Q186120",
+      "category": "us_judiciary",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:49.989457"
+    },
+    {
+      "name": "Samuel Alito",
+      "qid": "Q329134",
+      "category": "us_judiciary",
+      "facts": [
+        {
+          "entity": "Samuel Alito",
+          "entity_id": "Q329134",
+          "position": "First President of the Paris Court of Appeal",
+          "property": "P39",
+          "start_year": 1852,
+          "start_date": "1852-01-01",
+          "end_year": 1858,
+          "end_date": "1858-01-01"
+        },
+        {
+          "entity": "Samuel Alito",
+          "entity_id": "Q329134",
+          "position": "General Prosecutor of Court of Cassation",
+          "property": "P39",
+          "start_year": 1852,
+          "start_date": "1852-01-01",
+          "end_year": 1853,
+          "end_date": "1853-01-01"
+        },
+        {
+          "entity": "Samuel Alito",
+          "entity_id": "Q329134",
+          "position": "Minister of the Interior of France",
+          "property": "P39",
+          "start_year": 1858,
+          "start_date": "1858-06-14",
+          "end_year": 1859,
+          "end_date": "1859-05-05"
+        },
+        {
+          "entity": "Samuel Alito",
+          "entity_id": "Q329134",
+          "position": "Minister of Justice",
+          "property": "P39",
+          "start_year": 1859,
+          "start_date": "1859-05-05",
+          "end_year": 1863,
+          "end_date": "1863-06-23"
+        },
+        {
+          "entity": "Samuel Alito",
+          "entity_id": "Q329134",
+          "position": "Q138380091",
+          "property": "P39",
+          "start_year": 1836,
+          "start_date": "1836-01-01",
+          "end_year": 1837,
+          "end_date": "1837-01-01"
+        },
+        {
+          "entity": "Samuel Alito",
+          "entity_id": "Q329134",
+          "position": "President of the Paris city council",
+          "property": "P39",
+          "start_year": 1852,
+          "start_date": "1852-01-01",
+          "end_year": 1857,
+          "end_date": "1857-01-01"
+        },
+        {
+          "entity": "Samuel Alito",
+          "entity_id": "Q329134",
+          "position": "General Prosecutor of Court of Cassation",
+          "property": "P39",
+          "start_year": 1865,
+          "start_date": "1865-11-14",
+          "end_year": 1869,
+          "end_date": "1869-12-25"
+        },
+        {
+          "entity": "Samuel Alito",
+          "entity_id": "Q329134",
+          "position": "Académie des Sciences Morales et Politiques",
+          "property": "P463",
+          "start_year": 1859,
+          "start_date": "1859-01-01"
+        },
+        {
+          "entity": "Samuel Alito",
+          "entity_id": "Q329134",
+          "position": "Second Empire senator",
+          "property": "P39",
+          "start_year": 1852,
+          "start_date": "1852-12-31",
+          "end_year": 1869,
+          "end_date": "1869-12-25"
+        },
+        {
+          "entity": "Samuel Alito",
+          "entity_id": "Q329134",
+          "position": "Member of the Chamber of Deputies",
+          "property": "P39",
+          "start_year": 1846,
+          "start_date": "1846-08-01",
+          "end_year": 1848,
+          "end_date": "1848-02-24"
+        },
+        {
+          "entity": "Samuel Alito",
+          "entity_id": "Q329134",
+          "position": "Procureur général près la cour d'appel de Paris",
+          "property": "P39",
+          "start_year": 1847,
+          "start_date": "1847-01-01",
+          "end_year": 1848,
+          "end_date": "1848-01-01"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:03:52.345278"
+    },
+    {
+      "name": "Sonia Sotomayor",
+      "qid": "Q220813",
+      "category": "us_judiciary",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:54.597463"
+    },
+    {
+      "name": "Elena Kagan",
+      "qid": "Q220812",
+      "category": "us_judiciary",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:56.849455"
+    },
+    {
+      "name": "Neil Gorsuch",
+      "qid": "Q22248662",
+      "category": "us_judiciary",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:03:58.915132"
+    },
+    {
+      "name": "Brett Kavanaugh",
+      "qid": "Q2713403",
+      "category": "us_judiciary",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:01.253579"
+    },
+    {
+      "name": "Amy Coney Barrett",
+      "qid": "Q88491423",
+      "category": "us_judiciary",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:03.265891"
+    },
+    {
+      "name": "Ketanji Brown Jackson",
+      "qid": "Q78783",
+      "category": "us_judiciary",
+      "facts": [
+        {
+          "entity": "Ketanji Brown Jackson",
+          "entity_id": "Q78783",
+          "position": "Ban of Croatia",
+          "property": "P39",
+          "start_year": 1806,
+          "start_date": "1806-05-18",
+          "end_year": 1831,
+          "end_date": "1831-11-11"
+        },
+        {
+          "entity": "Ketanji Brown Jackson",
+          "entity_id": "Q78783",
+          "position": "president",
+          "property": "P39",
+          "start_year": 1830,
+          "start_date": "1830-01-01",
+          "end_year": 1831,
+          "end_date": "1831-01-01"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:04:05.400649"
+    },
+    {
+      "name": "Stephen Breyer",
+      "qid": "Q329185",
+      "category": "us_judiciary",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:07.601636"
+    },
+    {
+      "name": "Anthony Kennedy",
+      "qid": "Q329136",
+      "category": "us_judiciary",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:09.856118"
+    },
+    {
+      "name": "David Souter",
+      "qid": "Q329188",
+      "category": "us_judiciary",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:11.825248"
+    },
+    {
+      "name": "Sandra Day O'Connor",
+      "qid": "Q185743",
+      "category": "us_judiciary",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:13.973007"
+    },
+    {
+      "name": "Al Sharpton",
+      "qid": "Q348522",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:16.203698"
+    },
+    {
+      "name": "Jesse Jackson",
+      "qid": "Q254987",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:18.355534"
+    },
+    {
+      "name": "John Lewis",
+      "qid": "Q957110",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:20.572761"
+    },
+    {
+      "name": "Elijah Cummings",
+      "qid": "Q1329428",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:22.963868"
+    },
+    {
+      "name": "Trey Gowdy",
+      "qid": "Q1345735",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:25.112918"
+    },
+    {
+      "name": "Bennie Thompson",
+      "qid": "Q1023040",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:27.364955"
+    },
+    {
+      "name": "Liz Cheney",
+      "qid": "Q1631912",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:29.515887"
+    },
+    {
+      "name": "Adam Kinzinger",
+      "qid": "Q3608736",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:31.526143"
+    },
+    {
+      "name": "Pete Buttigieg",
+      "qid": "Q939894",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:33.817327"
+    },
+    {
+      "name": "Eric Adams",
+      "qid": "Q1328525",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:36.070534"
+    },
+    {
+      "name": "Andrew Yang",
+      "qid": "Q17491546",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:38.317922"
+    },
+    {
+      "name": "Tulsi Gabbard",
+      "qid": "Q16145726",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:40.470985"
+    },
+    {
+      "name": "Beto O'Rourke",
+      "qid": "Q21994992",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:42.623379"
+    },
+    {
+      "name": "Stacey Abrams",
+      "qid": "Q7597777",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:45.593796"
+    },
+    {
+      "name": "Raphael Warnock",
+      "qid": "Q7293064",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:47.608270"
+    },
+    {
+      "name": "Jon Ossoff",
+      "qid": "Q23039098",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:49.791445"
+    },
+    {
+      "name": "Doug Jones",
+      "qid": "Q17496143",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:51.842912"
+    },
+    {
+      "name": "Roy Moore",
+      "qid": "Q7374376",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:53.992943"
+    },
+    {
+      "name": "Luther Strange",
+      "qid": "Q6706827",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:04:56.243086"
+    },
+    {
+      "name": "Jeff Sessions",
+      "qid": "Q310847",
+      "category": "us_politician",
+      "facts": [
+        {
+          "entity": "Jeff Sessions",
+          "entity_id": "Q310847",
+          "position": "United States Secretary of State",
+          "property": "P39",
+          "start_year": 1789,
+          "start_date": "1789-09-15",
+          "end_year": 1790,
+          "end_date": "1790-03-22"
+        },
+        {
+          "entity": "Jeff Sessions",
+          "entity_id": "Q310847",
+          "position": "United States Ambassador to Spain",
+          "property": "P39",
+          "start_year": 1779,
+          "start_date": "1779-09-27",
+          "end_year": 1782,
+          "end_date": "1782-05-20"
+        },
+        {
+          "entity": "Jeff Sessions",
+          "entity_id": "Q310847",
+          "position": "Chief Justice of the United States",
+          "property": "P39",
+          "start_year": 1789,
+          "start_date": "1789-10-19",
+          "end_year": 1795,
+          "end_date": "1795-06-29"
+        },
+        {
+          "entity": "Jeff Sessions",
+          "entity_id": "Q310847",
+          "position": "United States Secretary of Foreign Affairs",
+          "property": "P39",
+          "start_year": 1784,
+          "start_date": "1784-05-07",
+          "end_year": 1789,
+          "end_date": "1789-09-15"
+        },
+        {
+          "entity": "Jeff Sessions",
+          "entity_id": "Q310847",
+          "position": "President of the Continental Congress",
+          "property": "P39",
+          "start_year": 1778,
+          "start_date": "1778-12-10",
+          "end_year": 1779,
+          "end_date": "1779-09-28"
+        },
+        {
+          "entity": "Jeff Sessions",
+          "entity_id": "Q310847",
+          "position": "Governor of New York",
+          "property": "P39",
+          "start_year": 1795,
+          "start_date": "1795-07-01",
+          "end_year": 1801,
+          "end_date": "1801-06-30"
+        },
+        {
+          "entity": "Jeff Sessions",
+          "entity_id": "Q310847",
+          "position": "American Philosophical Society",
+          "property": "P463",
+          "start_year": 1780,
+          "start_date": "1780-01-01"
+        }
+      ],
+      "fetched_at": "2026-05-16T12:04:58.297406"
+    },
+    {
+      "name": "Eric Holder",
+      "qid": "Q866030",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:05:00.543959"
+    },
+    {
+      "name": "Loretta Lynch",
+      "qid": "Q16960752",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:05:02.695148"
+    },
+    {
+      "name": "William Barr",
+      "qid": "Q215082",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:05:04.831871"
+    },
+    {
+      "name": "Merrick Garland",
+      "qid": "Q360413",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:05:36.793486"
+    },
+    {
+      "name": "Robert Mueller",
+      "qid": "Q367626",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:05:38.818818"
+    },
+    {
+      "name": "James Comey",
+      "qid": "Q5028025",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:06:10.896564"
+    },
+    {
+      "name": "Andrew McCabe",
+      "qid": "Q4760695",
+      "category": "us_politician",
+      "facts": [],
+      "fetched_at": "2026-05-16T12:06:13.046598"
     }
   ],
-
-  "covid-19 pandemic": [
-    {
-      "relation": "occurred_on",
-      "value": "declared pandemic by WHO",
-      "time_point": "2020-03-11",
-      "source": "Q81068910"
-    }
-  ],
-
-  "affordable care act": [
-    {
-      "relation": "occurred_on",
-      "value": "signed into law",
-      "time_point": "2010-03-23",
-      "source": "Q744507"
-    }
-  ]
+  "failed": []
 }

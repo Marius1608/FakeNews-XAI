@@ -70,9 +70,6 @@ function App(): React.ReactElement {
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
               TCS — Temporal Coherence Score
             </Typography>
-            <Typography variant="caption" color="text.secondary">
-              Temporal Consistency Analysis
-            </Typography>
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
@@ -91,7 +88,7 @@ function App(): React.ReactElement {
               </Typography>
             </Box>
 
-            <Tooltip title="Article history (Neo4j)">
+            <Tooltip title="Article history">
               <IconButton
                 size="small"
                 onClick={() => setHistoryOpen(true)}
@@ -139,9 +136,6 @@ function App(): React.ReactElement {
           borderTop: "1px solid rgba(148,163,184,0.1)",
         }}
       >
-        <Typography variant="caption" color="text.secondary">
-          Bachelor Thesis — UTCN 2026 — Marius Pantea
-        </Typography>
       </Box>
 
       <ArticleHistory open={historyOpen} onClose={() => setHistoryOpen(false)} />

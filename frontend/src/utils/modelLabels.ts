@@ -7,10 +7,9 @@ export const MODEL_LABELS: Record<string, string> = {
 };
 
 export const MODEL_DESCRIPTIONS: Record<string, string> = {
-  "en_core_web_trf": "RoBERTa-based NER — highest accuracy",
-  "en_core_web_lg": "Word vector NER — faster, slightly less accurate",
-  "en_core_web_sm": "Word vector NER — lightweight",
-  "llama3": "General-purpose large language model",
+  "en_core_web_trf": "RoBERTa-based NER - highest accuracy",
+  "en_core_web_lg": "Word vector NER - faster, slightly less accurate",
+  "llama3": "General purpose large language model",
   "mistral": "Efficient open-source language model",
 };
 

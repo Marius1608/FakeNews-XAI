@@ -1,0 +1,208 @@
+{
+  "generated_at": "2026-05-16T11:59:34.607167",
+  "source": "wikipedia_rest_api",
+  "accuracy": 0.8333333333333334,
+  "results": [
+    {
+      "entity": "Barack Obama",
+      "position": "President",
+      "claimed_year": 2012,
+      "expected": "confirmed",
+      "got": "confirmed",
+      "match": true,
+      "years_found": [
+        1997,
+        2004,
+        2005,
+        2008,
+        2009,
+        2017
+      ],
+      "wiki_title": "Barack Obama",
+      "extract": "Barack Hussein Obama II is an American politician who served as the 44th president of the United States from 2009 to 2017. A member of the Democratic Party, he was the first African American president. Obama previously served as a U.S. senator representing Illinois from 2005 to 2008 and as an Illino"
+    },
+    {
+      "entity": "Joe Biden",
+      "position": "Senator",
+      "claimed_year": 2005,
+      "expected": "confirmed",
+      "got": "confirmed",
+      "match": true,
+      "years_found": [
+        1973,
+        2009,
+        2017,
+        2021,
+        2025
+      ],
+      "wiki_title": "Joe Biden",
+      "extract": "Joseph Robinette Biden Jr. is an American retired politician who was the 46th president of the United States from 2021 to 2025. A member of the Democratic Party, he represented Delaware in the United States Senate from 1973 to 2009 and also served as the 47th vice president under President Barack Ob"
+    },
+    {
+      "entity": "Hillary Clinton",
+      "position": "Secretary of State",
+      "claimed_year": 2011,
+      "expected": "confirmed",
+      "got": "confirmed",
+      "match": true,
+      "years_found": [
+        1993,
+        2001,
+        2009,
+        2013,
+        2016
+      ],
+      "wiki_title": "Hillary Clinton",
+      "extract": "Hillary Diane Rodham Clinton is an American politician, lawyer, and diplomat. She served as Secretary of State in the administration of Barack Obama from 2009 to 2013. She was previously a senator for New York from 2001 to 2009. She held the role of First Lady of the United States when her husband, "
+    },
+    {
+      "entity": "Donald Trump",
+      "position": "President",
+      "claimed_year": 2019,
+      "expected": "confirmed",
+      "got": "confirmed",
+      "match": true,
+      "years_found": [
+        2017,
+        2021
+      ],
+      "wiki_title": "Donald Trump",
+      "extract": "Donald John Trump is an American politician, media personality, and businessman who is the 47th president of the United States. A member of the Republican Party, he served as the 45th president from 2017 to 2021."
+    },
+    {
+      "entity": "Nancy Pelosi",
+      "position": "Speaker",
+      "claimed_year": 2019,
+      "expected": "confirmed",
+      "got": "conflict",
+      "match": false,
+      "years_found": [
+        1987,
+        2003,
+        2007,
+        2011,
+        2019,
+        2023
+      ],
+      "wiki_title": "Nancy Pelosi",
+      "extract": "Nancy Patricia Pelosi is an American politician who was the 52nd speaker of the United States House of Representatives, serving from 2007 to 2011 and again from 2019 to 2023. A member of the Democratic Party, she was the first female elected speaker and the first woman to lead a major political part"
+    },
+    {
+      "entity": "Matt Gaetz",
+      "position": "Representative",
+      "claimed_year": 2020,
+      "expected": "confirmed",
+      "got": "confirmed",
+      "match": true,
+      "years_found": [
+        2017,
+        2023,
+        2024
+      ],
+      "wiki_title": "Matt Gaetz",
+      "extract": "Matthew Louis Gaetz II is an American politician, lawyer, and political commentator who served as the U.S. representative for Florida's 1st congressional district from 2017 until his resignation in 2024. His district included all of Escambia, Okaloosa, and Santa Rosa counties, and portions of Walton"
+    },
+    {
+      "entity": "Angela Merkel",
+      "position": "Chancellor",
+      "claimed_year": 2015,
+      "expected": "confirmed",
+      "got": "confirmed",
+      "match": true,
+      "years_found": [
+        2000,
+        2002,
+        2005,
+        2018,
+        2021
+      ],
+      "wiki_title": "Angela Merkel",
+      "extract": "Angela Dorothea Merkel is a German stateswoman and retired politician who served as Chancellor of Germany from 2005 to 2021. She is the only woman to have held the office and the only from former East Germany. She was Leader of the Opposition from 2002 to 2005 and Leader of the Christian Democratic "
+    },
+    {
+      "entity": "Barack Obama",
+      "position": "President",
+      "claimed_year": 2005,
+      "expected": "conflict",
+      "got": "conflict",
+      "match": true,
+      "years_found": [
+        1997,
+        2004,
+        2005,
+        2008,
+        2009,
+        2017
+      ],
+      "wiki_title": "Barack Obama",
+      "extract": "Barack Hussein Obama II is an American politician who served as the 44th president of the United States from 2009 to 2017. A member of the Democratic Party, he was the first African American president. Obama previously served as a U.S. senator representing Illinois from 2005 to 2008 and as an Illino"
+    },
+    {
+      "entity": "Joe Biden",
+      "position": "Senator",
+      "claimed_year": 2015,
+      "expected": "conflict",
+      "got": "conflict",
+      "match": true,
+      "years_found": [
+        1973,
+        2009,
+        2017,
+        2021,
+        2025
+      ],
+      "wiki_title": "Joe Biden",
+      "extract": "Joseph Robinette Biden Jr. is an American retired politician who was the 46th president of the United States from 2021 to 2025. A member of the Democratic Party, he represented Delaware in the United States Senate from 1973 to 2009 and also served as the 47th vice president under President Barack Ob"
+    },
+    {
+      "entity": "Bill Clinton",
+      "position": "President",
+      "claimed_year": 2004,
+      "expected": "conflict",
+      "got": "conflict",
+      "match": true,
+      "years_found": [
+        1977,
+        1979,
+        1981,
+        1983,
+        1992,
+        1993
+      ],
+      "wiki_title": "Bill Clinton",
+      "extract": "William Jefferson Clinton is an American politician and lawyer who served as the 42nd president of the United States from 1993 to 2001. A member of the Democratic Party, he previously served as the attorney general of Arkansas from 1977 to 1979 and as the governor of Arkansas from 1979 to 1981, and "
+    },
+    {
+      "entity": "Matt Gaetz",
+      "position": "Congressman",
+      "claimed_year": 2013,
+      "expected": "conflict",
+      "got": "conflict",
+      "match": true,
+      "years_found": [
+        2017,
+        2023,
+        2024
+      ],
+      "wiki_title": "Matt Gaetz",
+      "extract": "Matthew Louis Gaetz II is an American politician, lawyer, and political commentator who served as the U.S. representative for Florida's 1st congressional district from 2017 until his resignation in 2024. His district included all of Escambia, Okaloosa, and Santa Rosa counties, and portions of Walton"
+    },
+    {
+      "entity": "Stacey Abrams",
+      "position": "Governor",
+      "claimed_year": 2019,
+      "expected": "conflict",
+      "got": "not_found",
+      "match": false,
+      "years_found": [
+        2007,
+        2011,
+        2017,
+        2018,
+        2020
+      ],
+      "wiki_title": "Stacey Abrams",
+      "extract": "Stacey Yvonne Abrams is an American politician, lawyer, voting rights activist, and author who served in the Georgia House of Representatives from 2007 to 2017, serving as minority leader from 2011 to 2017. A member of the Democratic Party, Abrams founded Fair Fight Action, an organization to addres"
+    }
+  ]
+}

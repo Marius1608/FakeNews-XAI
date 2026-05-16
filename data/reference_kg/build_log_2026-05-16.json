@@ -1,0 +1,864 @@
+{
+  "generated_at": "2026-05-16T12:06:14.556136",
+  "entries": [
+    {
+      "name": "Barack Obama",
+      "qid": "Q76",
+      "facts_count": 5,
+      "status": "ok"
+    },
+    {
+      "name": "Donald Trump",
+      "qid": "Q22686",
+      "facts_count": 9,
+      "status": "ok"
+    },
+    {
+      "name": "Joe Biden",
+      "qid": "Q6279",
+      "facts_count": 23,
+      "status": "ok"
+    },
+    {
+      "name": "Bill Clinton",
+      "qid": "Q1124",
+      "facts_count": 5,
+      "status": "ok"
+    },
+    {
+      "name": "George W. Bush",
+      "qid": "Q207",
+      "facts_count": 3,
+      "status": "ok"
+    },
+    {
+      "name": "George H.W. Bush",
+      "qid": "Q23505",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Ronald Reagan",
+      "qid": "Q9960",
+      "facts_count": 5,
+      "status": "ok"
+    },
+    {
+      "name": "Jimmy Carter",
+      "qid": "Q23685",
+      "facts_count": 5,
+      "status": "ok"
+    },
+    {
+      "name": "Gerald Ford",
+      "qid": "Q9916",
+      "facts_count": 4,
+      "status": "ok"
+    },
+    {
+      "name": "Richard Nixon",
+      "qid": "Q9588",
+      "facts_count": 6,
+      "status": "ok"
+    },
+    {
+      "name": "Lyndon B. Johnson",
+      "qid": "Q9640",
+      "facts_count": 9,
+      "status": "ok"
+    },
+    {
+      "name": "John F. Kennedy",
+      "qid": "Q9696",
+      "facts_count": 7,
+      "status": "ok"
+    },
+    {
+      "name": "Dwight Eisenhower",
+      "qid": "Q9916",
+      "facts_count": 4,
+      "status": "ok"
+    },
+    {
+      "name": "Harry S. Truman",
+      "qid": "Q9682",
+      "facts_count": 42,
+      "status": "ok"
+    },
+    {
+      "name": "Mike Pence",
+      "qid": "Q373472",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Dick Cheney",
+      "qid": "Q48259",
+      "facts_count": 10,
+      "status": "ok"
+    },
+    {
+      "name": "Al Gore",
+      "qid": "Q19673",
+      "facts_count": 9,
+      "status": "ok"
+    },
+    {
+      "name": "Dan Quayle",
+      "qid": "Q48305",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Walter Mondale",
+      "qid": "Q223779",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Kamala Harris",
+      "qid": "Q185530",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Hillary Clinton",
+      "qid": "Q6294",
+      "facts_count": 18,
+      "status": "ok"
+    },
+    {
+      "name": "John McCain",
+      "qid": "Q10390",
+      "facts_count": 19,
+      "status": "ok"
+    },
+    {
+      "name": "Bernie Sanders",
+      "qid": "Q359442",
+      "facts_count": 18,
+      "status": "ok"
+    },
+    {
+      "name": "Elizabeth Warren",
+      "qid": "Q1173433",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Mitch McConnell",
+      "qid": "Q355522",
+      "facts_count": 22,
+      "status": "ok"
+    },
+    {
+      "name": "Chuck Schumer",
+      "qid": "Q380900",
+      "facts_count": 26,
+      "status": "ok"
+    },
+    {
+      "name": "Marco Rubio",
+      "qid": "Q349455",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Ted Cruz",
+      "qid": "Q905014",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Rand Paul",
+      "qid": "Q671426",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Lindsey Graham",
+      "qid": "Q378702",
+      "facts_count": 1,
+      "status": "ok"
+    },
+    {
+      "name": "Amy Klobuchar",
+      "qid": "Q23714",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Cory Booker",
+      "qid": "Q922820",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Bob Menendez",
+      "qid": "Q539566",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Dianne Feinstein",
+      "qid": "Q231033",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Susan Collins",
+      "qid": "Q276932",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Lisa Murkowski",
+      "qid": "Q230539",
+      "facts_count": 1,
+      "status": "ok"
+    },
+    {
+      "name": "Nancy Pelosi",
+      "qid": "Q170581",
+      "facts_count": 24,
+      "status": "ok"
+    },
+    {
+      "name": "Kevin McCarthy",
+      "qid": "Q977592",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Paul Ryan",
+      "qid": "Q381812",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "John Boehner",
+      "qid": "Q310461",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Newt Gingrich",
+      "qid": "Q313756",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Alexandria Ocasio-Cortez",
+      "qid": "Q55223754",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Ilhan Omar",
+      "qid": "Q55405334",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Matt Gaetz",
+      "qid": "Q24834954",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Jim Jordan",
+      "qid": "Q1689040",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Adam Schiff",
+      "qid": "Q350843",
+      "facts_count": 17,
+      "status": "ok"
+    },
+    {
+      "name": "Jerry Nadler",
+      "qid": "Q555961",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Maxine Waters",
+      "qid": "Q234302",
+      "facts_count": 1,
+      "status": "ok"
+    },
+    {
+      "name": "Steny Hoyer",
+      "qid": "Q558566",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Eric Cantor",
+      "qid": "Q726155",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "John Kerry",
+      "qid": "Q33866",
+      "facts_count": 9,
+      "status": "ok"
+    },
+    {
+      "name": "Rex Tillerson",
+      "qid": "Q7313083",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Mike Pompeo",
+      "qid": "Q974374",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Antony Blinken",
+      "qid": "Q720301",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Condoleezza Rice",
+      "qid": "Q62398",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Colin Powell",
+      "qid": "Q34296",
+      "facts_count": 7,
+      "status": "ok"
+    },
+    {
+      "name": "Madeleine Albright",
+      "qid": "Q41225",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Robert Gates",
+      "qid": "Q312930",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Donald Rumsfeld",
+      "qid": "Q48259",
+      "facts_count": 10,
+      "status": "ok"
+    },
+    {
+      "name": "Lloyd Austin",
+      "qid": "Q6664165",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Mitt Romney",
+      "qid": "Q1036",
+      "facts_count": 15,
+      "status": "ok"
+    },
+    {
+      "name": "Arnold Schwarzenegger",
+      "qid": "Q2685",
+      "facts_count": 1,
+      "status": "ok"
+    },
+    {
+      "name": "Andrew Cuomo",
+      "qid": "Q312528",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Gavin Newsom",
+      "qid": "Q979879",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Ron DeSantis",
+      "qid": "Q20767779",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Chris Christie",
+      "qid": "Q1063986",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Scott Walker",
+      "qid": "Q2608",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Greg Abbott",
+      "qid": "Q1543000",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Brian Kemp",
+      "qid": "Q16216063",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Boris Johnson",
+      "qid": "Q180589",
+      "facts_count": 13,
+      "status": "ok"
+    },
+    {
+      "name": "Theresa May",
+      "qid": "Q264766",
+      "facts_count": 33,
+      "status": "ok"
+    },
+    {
+      "name": "David Cameron",
+      "qid": "Q192",
+      "facts_count": 12,
+      "status": "ok"
+    },
+    {
+      "name": "Gordon Brown",
+      "qid": "Q3336",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Tony Blair",
+      "qid": "Q9545",
+      "facts_count": 15,
+      "status": "ok"
+    },
+    {
+      "name": "John Major",
+      "qid": "Q9624",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Margaret Thatcher",
+      "qid": "Q7174",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Rishi Sunak",
+      "qid": "Q109404461",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Liz Truss",
+      "qid": "Q220359",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Keir Starmer",
+      "qid": "Q7671853",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Jeremy Corbyn",
+      "qid": "Q186630",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Nigel Farage",
+      "qid": "Q192893",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Sadiq Khan",
+      "qid": "Q3444954",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Angela Merkel",
+      "qid": "Q567",
+      "facts_count": 22,
+      "status": "ok"
+    },
+    {
+      "name": "Emmanuel Macron",
+      "qid": "Q3052772",
+      "facts_count": 5,
+      "status": "ok"
+    },
+    {
+      "name": "Nicolas Sarkozy",
+      "qid": "Q1631",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "François Hollande",
+      "qid": "Q191360",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Olaf Scholz",
+      "qid": "Q61221",
+      "facts_count": 1,
+      "status": "ok"
+    },
+    {
+      "name": "Gerhard Schroeder",
+      "qid": "Q2530",
+      "facts_count": 9,
+      "status": "ok"
+    },
+    {
+      "name": "Silvio Berlusconi",
+      "qid": "Q11860",
+      "facts_count": 21,
+      "status": "ok"
+    },
+    {
+      "name": "Mario Draghi",
+      "qid": "Q172572",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Pedro Sánchez",
+      "qid": "Q58808",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Mariano Rajoy",
+      "qid": "Q156560",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Justin Trudeau",
+      "qid": "Q3099714",
+      "facts_count": 8,
+      "status": "ok"
+    },
+    {
+      "name": "Stephen Harper",
+      "qid": "Q154454",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Jean Chrétien",
+      "qid": "Q179943",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Vladimir Putin",
+      "qid": "Q7747",
+      "facts_count": 17,
+      "status": "ok"
+    },
+    {
+      "name": "Volodymyr Zelenskyy",
+      "qid": "Q4328088",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Xi Jinping",
+      "qid": "Q15180",
+      "facts_count": 6,
+      "status": "ok"
+    },
+    {
+      "name": "Narendra Modi",
+      "qid": "Q1058583",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Benjamin Netanyahu",
+      "qid": "Q39455",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Recep Tayyip Erdoğan",
+      "qid": "Q1058589",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "John Roberts",
+      "qid": "Q190126",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Ruth Bader Ginsburg",
+      "qid": "Q17652",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Antonin Scalia",
+      "qid": "Q186171",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Clarence Thomas",
+      "qid": "Q186120",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Samuel Alito",
+      "qid": "Q329134",
+      "facts_count": 11,
+      "status": "ok"
+    },
+    {
+      "name": "Sonia Sotomayor",
+      "qid": "Q220813",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Elena Kagan",
+      "qid": "Q220812",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Neil Gorsuch",
+      "qid": "Q22248662",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Brett Kavanaugh",
+      "qid": "Q2713403",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Amy Coney Barrett",
+      "qid": "Q88491423",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Ketanji Brown Jackson",
+      "qid": "Q78783",
+      "facts_count": 2,
+      "status": "ok"
+    },
+    {
+      "name": "Stephen Breyer",
+      "qid": "Q329185",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Anthony Kennedy",
+      "qid": "Q329136",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "David Souter",
+      "qid": "Q329188",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Sandra Day O'Connor",
+      "qid": "Q185743",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Al Sharpton",
+      "qid": "Q348522",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Jesse Jackson",
+      "qid": "Q254987",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "John Lewis",
+      "qid": "Q957110",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Elijah Cummings",
+      "qid": "Q1329428",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Trey Gowdy",
+      "qid": "Q1345735",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Bennie Thompson",
+      "qid": "Q1023040",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Liz Cheney",
+      "qid": "Q1631912",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Adam Kinzinger",
+      "qid": "Q3608736",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Pete Buttigieg",
+      "qid": "Q939894",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Eric Adams",
+      "qid": "Q1328525",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Andrew Yang",
+      "qid": "Q17491546",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Tulsi Gabbard",
+      "qid": "Q16145726",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Beto O'Rourke",
+      "qid": "Q21994992",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Stacey Abrams",
+      "qid": "Q7597777",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Raphael Warnock",
+      "qid": "Q7293064",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Jon Ossoff",
+      "qid": "Q23039098",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Doug Jones",
+      "qid": "Q17496143",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Roy Moore",
+      "qid": "Q7374376",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Luther Strange",
+      "qid": "Q6706827",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Jeff Sessions",
+      "qid": "Q310847",
+      "facts_count": 7,
+      "status": "ok"
+    },
+    {
+      "name": "Eric Holder",
+      "qid": "Q866030",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Loretta Lynch",
+      "qid": "Q16960752",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "William Barr",
+      "qid": "Q215082",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Merrick Garland",
+      "qid": "Q360413",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Robert Mueller",
+      "qid": "Q367626",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "James Comey",
+      "qid": "Q5028025",
+      "facts_count": 0,
+      "status": "ok"
+    },
+    {
+      "name": "Andrew McCabe",
+      "qid": "Q4760695",
+      "facts_count": 0,
+      "status": "ok"
+    }
+  ],
+  "failed": []
+}

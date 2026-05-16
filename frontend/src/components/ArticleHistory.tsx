@@ -131,7 +131,7 @@ function ArticleHistory({ open, onClose }: ArticleHistoryProps): React.ReactElem
           <Box sx={{ p: 2, textAlign: "center" }}>
             <Typography variant="body2" color="text.secondary">
               No articles saved yet. Use{" "}
-              <strong>Save to Neo4j</strong> when analyzing to store results.
+              <strong>Save</strong> when analyzing to store results.
             </Typography>
           </Box>
         )}

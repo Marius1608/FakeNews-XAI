@@ -261,7 +261,7 @@ function BatchTab({ availableModels }: BatchTabProps): React.ReactElement {
                 onChange={(e) => setPersist(e.target.checked)}
               />
             }
-            label="Save to Neo4j"
+            label="Save"
           />
           <FormControlLabel
             control={
@@ -271,7 +271,7 @@ function BatchTab({ availableModels }: BatchTabProps): React.ReactElement {
                 onChange={(e) => setCompareWithNeo4j(e.target.checked)}
               />
             }
-            label="Compare with Neo4j history"
+            label="Compare with history"
           />
 
           <Box sx={{ ml: "auto" }}>

@@ -45,9 +45,11 @@ class PipelineOrchestrator:
         model_name: str | None = None,
         persistent_store: Optional[AbstractTKGStore] = None,
         enable_cross_article: bool = True,
+        use_web_search: bool = False,
         persist: bool = False,
     ):
         self.use_wikidata = use_wikidata
+        self.use_web_search = use_web_search
         self.extractor_name = extractor_name
         self.model_name = model_name
         self.persist = persist
@@ -89,6 +91,7 @@ class PipelineOrchestrator:
         if self._external_verifier is None:
             self._external_verifier = ExternalVerifier(
                 use_wikidata=self.use_wikidata,
+                use_web_search=self.use_web_search,
                 persistent_store=self._persistent_store,
             )
         return self._external_verifier

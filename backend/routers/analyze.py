@@ -27,6 +27,7 @@ class AnalyzeRequest(BaseModel):
     pipeline: str = Field(default="spacy", description="Pipeline: 'spacy' or 'llm'")
     model: Optional[str] = Field(default=None, description="Specific model: en_core_web_trf, llama3, mistral, etc. None = pipeline default")
     persist: bool = Field(default=False, description="Save facts to Neo4j for cross-article analysis")
+    use_web_search: bool = Field(default=False, description="Enable Wikipedia REST API fallback in C3b")
 
 
 class InconsistencyResponse(BaseModel):
@@ -134,6 +135,9 @@ async def analyze_article(req: AnalyzeRequest) -> AnalyzeResponse:
     orchestrator._persistent_store = store
     orchestrator.persist = req.persist
     orchestrator._enable_cross_article = False
+    orchestrator.use_web_search = req.use_web_search
+    if orchestrator._external_verifier is not None:
+        orchestrator._external_verifier.use_web_search = req.use_web_search
 
     try:
         result = orchestrator.run(article)

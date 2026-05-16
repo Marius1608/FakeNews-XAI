@@ -266,12 +266,12 @@ function ArticleInput({
               <FormControlLabel
                 value="spacy"
                 control={<Radio size="small" />}
-                label="Pipeline A — spaCy"
+                label="Pipeline A"
               />
               <FormControlLabel
                 value="llm"
                 control={<Radio size="small" />}
-                label="Pipeline B — LLM"
+                label="Pipeline B"
               />
             </RadioGroup>
           </FormControl>

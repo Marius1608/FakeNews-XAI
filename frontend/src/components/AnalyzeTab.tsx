@@ -90,7 +90,7 @@ function AnalyzeTab(): React.ReactElement {
         }
         label={
           <Typography variant="body2">
-            Save to Neo4j
+            Save
           </Typography>
         }
       />

@@ -753,6 +753,134 @@
     "inconsistency_types": [],
     "notes": "TRUE: Boland Amendment Dec 1982, Lebanon magazine revealed Nov 1986, Reagan denial Nov 13 1986, Reagan acknowledgment March 4 1987, Poindexter resigned and North fired Nov 1986, Walsh investigated 6 years indicted 14 people.",
     "complexity": "high"
+  },
+  {
+    "title": "Trump Second Term — Accurate Timeline",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate timeline of Trump's second term beginning January 2025.",
+    "text": "Donald Trump was inaugurated as the 47th President of the United States on January 20, 2025, beginning his second non-consecutive term in office. Trump had previously served as the 45th President from January 2017 to January 2021. During his first term, Trump signed the Tax Cuts and Jobs Act in December 2017 and was impeached twice by the House of Representatives, in December 2019 and January 2021. After losing the 2020 election to Joe Biden, Trump launched a 2024 presidential campaign and won the Republican nomination. He defeated Democratic nominee Kamala Harris in the November 2024 general election and was inaugurated for his second term in January 2025."
+  },
+  {
+    "title": "Obama — Wrong Nobel Prize Year",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["date_mismatch"],
+    "notes": "Obama won Nobel Peace Prize in 2009, not 2011 as stated.",
+    "text": "Barack Obama made history on multiple fronts during his presidency. In October 2011, the Norwegian Nobel Committee awarded Obama the Nobel Peace Prize, citing his efforts to strengthen international diplomacy and cooperation between peoples. The award came as a surprise to many, as Obama had only been in office for nine months at that point. Obama was inaugurated as the 44th President of the United States on January 20, 2009, succeeding George W. Bush. He signed the American Recovery and Reinvestment Act in February 2009 to address the financial crisis."
+  },
+  {
+    "title": "Clinton — NAFTA Wrong Year",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["date_mismatch"],
+    "notes": "NAFTA was signed in 1993 and took effect January 1994, not 1995.",
+    "text": "Bill Clinton presided over a period of significant economic expansion during the 1990s. One of his landmark achievements was the passage of the North American Free Trade Agreement, which Clinton signed into law in late 1995. The agreement eliminated most trade barriers between the United States, Canada, and Mexico and took effect on January 1, 1996. Clinton had campaigned on economic issues in 1992, defeating incumbent President George H.W. Bush. He was inaugurated on January 20, 1993, and would go on to win re-election in 1996 against Republican Bob Dole."
+  },
+  {
+    "title": "Reagan — Tax Cuts Accurate Timeline",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate account of Reagan's Economic Recovery Tax Act of 1981.",
+    "text": "Ronald Reagan was inaugurated as the 40th President of the United States on January 20, 1981, succeeding Jimmy Carter. Reagan quickly moved to implement his economic agenda, and in August 1981 he signed the Economic Recovery Tax Act, which significantly reduced federal income tax rates. Reagan won re-election in November 1984 in a landslide victory over Democratic candidate Walter Mondale, carrying 49 of 50 states. During his second term, Reagan signed the Tax Reform Act of 1986, which simplified the tax code and further reduced rates. Reagan's presidency ended on January 20, 1989, when George H.W. Bush was inaugurated."
+  },
+  {
+    "title": "Biden — Wrong Inauguration Year",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["date_mismatch"],
+    "notes": "Biden was inaugurated January 20, 2021, not 2022.",
+    "text": "Joe Biden was inaugurated as the 46th President of the United States on January 20, 2022, becoming the oldest person ever to assume the presidency at age 78. Biden defeated incumbent President Donald Trump in the November 2020 election, receiving a record 81 million popular votes. During his first year in office, Biden signed the American Rescue Plan in March 2021, providing $1.9 trillion in COVID-19 relief. He also signed the Infrastructure Investment and Jobs Act in November 2021. Biden had previously served as Vice President under Barack Obama from 2009 to 2017 and represented Delaware in the Senate for 36 years."
+  },
+  {
+    "title": "Bush W — Iraq War Accurate Timeline",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate account of Iraq War timeline.",
+    "text": "George W. Bush authorized the invasion of Iraq on March 19, 2003, following congressional authorization in October 2002. The initial military campaign lasted approximately three weeks, with Baghdad falling on April 9, 2003. Bush declared the end of major combat operations in a speech on May 1, 2003, delivered aboard the USS Abraham Lincoln. The subsequent occupation and insurgency proved far more challenging. Bush had been inaugurated as the 43rd President on January 20, 2001, and was re-elected in November 2004, defeating Democratic Senator John Kerry. The Iraq War continued throughout the remainder of Bush's presidency, which ended on January 20, 2009."
+  },
+  {
+    "title": "Obama — ACA Wrong Supreme Court Date",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["ordering_error"],
+    "notes": "NFIB v. Sebelius was decided June 2012, after ACA passage in 2010.",
+    "text": "The Affordable Care Act represented the most significant healthcare legislation in decades. In March 2010, the Supreme Court upheld the constitutionality of the ACA in NFIB v. Sebelius, ruling that the individual mandate was constitutional as a tax. Following this landmark ruling, Congress passed the Affordable Care Act, which President Obama signed into law on March 23, 2010. The law extended health insurance coverage to millions of uninsured Americans through Medicaid expansion and the creation of health insurance exchanges. Obama had made healthcare reform a central promise of his 2008 campaign."
+  },
+  {
+    "title": "Carter — Camp David Accurate Timeline",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate account of Camp David Accords September 1978.",
+    "text": "Jimmy Carter brokered the Camp David Accords in September 1978, one of the most significant diplomatic achievements of his presidency. The accords were signed by Egyptian President Anwar Sadat and Israeli Prime Minister Menachem Begin after thirteen days of secret negotiations at the presidential retreat. The accords led to the Egypt-Israel Peace Treaty, signed on March 26, 1979, the first peace agreement between Israel and an Arab nation. Carter had been inaugurated as the 39th President on January 20, 1977, and would serve a single term before losing the 1980 election to Ronald Reagan."
+  },
+  {
+    "title": "Trump — Gorsuch Confirmation Wrong Year",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["date_mismatch"],
+    "notes": "Gorsuch was confirmed April 2017, not 2018.",
+    "text": "Donald Trump made his mark on the federal judiciary almost immediately after taking office. In April 2018, the Senate confirmed Neil Gorsuch to the Supreme Court, filling the vacancy left by the death of Justice Antonin Scalia in February 2016. Gorsuch became the first Supreme Court justice confirmed by a simple majority vote after Senate Republicans changed the rules to eliminate the filibuster for Supreme Court nominations. Trump nominated Gorsuch in January 2017, shortly after his inauguration, and the confirmation process took several months before the Senate voted to confirm him."
+  },
+  {
+    "title": "Clinton — Lewinsky Timeline Accurate",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate timeline of Clinton impeachment proceedings.",
+    "text": "Bill Clinton was impeached by the House of Representatives on December 19, 1998, on charges of perjury and obstruction of justice related to his relationship with White House intern Monica Lewinsky. The Senate acquitted Clinton on February 12, 1999, with the perjury charge failing 45-55 and the obstruction charge failing 50-50. Clinton had initially denied having sexual relations with Lewinsky in January 1998 before acknowledging the relationship in August 1998. Independent Counsel Kenneth Starr had been investigating Clinton since 1994 and submitted his report to Congress in September 1998."
+  },
+  {
+    "title": "Obama — Syria Red Line Wrong Date",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["date_mismatch"],
+    "notes": "Obama's red line statement was August 2012, not 2013.",
+    "text": "Barack Obama made his famous red line statement regarding Syria in August 2013, warning that the use of chemical weapons would change his calculus regarding military intervention. In August 2013, a chemical attack occurred in Ghouta, Syria, killing hundreds of civilians. Following this attack, Obama sought congressional authorization for military strikes against Syria but ultimately agreed to a Russian-brokered deal in September 2013 whereby Syria would surrender its chemical weapons stockpile. The situation tested Obama's foreign policy resolve during his second term."
+  },
+  {
+    "title": "Bush H.W. — Desert Storm Accurate",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate account of Gulf War operations.",
+    "text": "George H.W. Bush led an international coalition in response to Iraq's invasion of Kuwait on August 2, 1990. After diplomatic efforts failed, the UN Security Council authorized the use of force if Iraq did not withdraw from Kuwait by January 15, 1991. Operation Desert Storm began on January 17, 1991, with an air campaign, followed by a ground offensive that began on February 24, 1991. The ground war lasted just 100 hours before Bush declared a ceasefire on February 28, 1991. Kuwait was liberated and the coalition achieved its objectives. Bush had been inaugurated as the 41st President on January 20, 1989."
+  },
+  {
+    "title": "Biden — Infrastructure Bill Wrong Vote",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["date_mismatch"],
+    "notes": "Infrastructure bill was signed November 15, 2021, House passed it November 5.",
+    "text": "Joe Biden signed the Infrastructure Investment and Jobs Act into law on November 15, 2021, a landmark piece of legislation that allocated $1.2 trillion for infrastructure improvements across the United States. The Senate had passed the bill in August 2021 with bipartisan support, 69-30. The House of Representatives passed the bill on December 3, 2021, after months of negotiations between progressive and moderate Democrats over its relationship to the larger Build Back Better social spending package. Biden hailed the legislation as a once-in-a-generation investment in America's infrastructure."
+  },
+  {
+    "title": "Reagan — Cold War Accurate Timeline",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate account of Reagan's Cold War policies.",
+    "text": "Ronald Reagan pursued an assertive Cold War strategy throughout his presidency. In March 1983, Reagan proposed the Strategic Defense Initiative, a missile defense system that critics dubbed Star Wars. Reagan met with Soviet leader Mikhail Gorbachev at four summits between 1985 and 1988. The Reykjavik Summit in October 1986 came close to producing an agreement to eliminate nuclear weapons but ultimately failed over SDI. The Intermediate-Range Nuclear Forces Treaty was signed in December 1987, eliminating an entire class of nuclear missiles. Reagan left office on January 20, 1989, as the Cold War was beginning to thaw under Gorbachev's reforms."
+  },
+  {
+    "title": "Trump — Jan 6 Wrong Timeline",
+    "source": "benchmark-fake",
+    "expected_fake": true,
+    "inconsistency_types": ["date_mismatch", "ordering_error"],
+    "notes": "January 6 riot was 2021, second impeachment vote was January 13, 2021.",
+    "text": "Following the November 2020 election, Donald Trump repeatedly claimed the election had been stolen through widespread fraud. On January 6, 2022, a rally near the White House preceded a march to the Capitol, where a mob breached the building while Congress was in the process of certifying the Electoral College results. In response to the riot, the House of Representatives voted on January 10, 2021, to impeach Trump for incitement of insurrection, making him the first president to be impeached twice. The Senate subsequently acquitted Trump on February 13, 2021, with 57 senators voting to convict, short of the two-thirds majority required."
+  },
+  {
+    "title": "Obama — Bin Laden Operation Accurate",
+    "source": "benchmark-true",
+    "expected_fake": false,
+    "inconsistency_types": [],
+    "notes": "Accurate account of Operation Neptune Spear, May 2011.",
+    "text": "President Barack Obama authorized Operation Neptune Spear, the mission that killed al-Qaeda leader Osama bin Laden, on April 29, 2011. Navy SEALs from SEAL Team Six conducted the raid on bin Laden's compound in Abbottabad, Pakistan, on May 2, 2011 (local time), or May 1, 2011, in the United States. Bin Laden was killed during the raid and buried at sea. Obama announced the successful operation to the American public in a late-night address on May 1, 2011. The raid came nearly ten years after the September 11, 2001, attacks that bin Laden had orchestrated. Obama had made finding bin Laden a priority since taking office in January 2009."
   }
 ]
 

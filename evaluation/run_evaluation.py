@@ -1,10 +1,9 @@
-"""Full TCS evaluation: manual benchmark + LIAR subset + FakeNewsNet + pipeline comparison.
+"""Full TCS evaluation: manual benchmark + PolitiFact + pipeline comparison.
 
 Usage:
-  python evaluation/run_evaluation.py                  # all datasets
+  python evaluation/run_evaluation.py                  # all steps
   python evaluation/run_evaluation.py --benchmark-only # only manual benchmark
   python evaluation/run_evaluation.py --no-wikidata    # skip Wikidata lookups
-  python evaluation/run_evaluation.py --threshold 0.5  # custom fake threshold
   python evaluation/run_evaluation.py --pipeline llm   # use LLM extractor
 """
 
@@ -37,9 +36,6 @@ RESULTS_DIR = EVAL_DIR / "results"
 FIGURES_DIR = EVAL_DIR / "figures"
 FAKE_THRESHOLD = 0.55
 
-LIAR_LABEL_ORDER = ["true", "mostly-true", "half-true", "barely-true", "false", "pants-fire"]
-
-
 # section: pipeline helpers
 
 def _resolve_spacy_model(requested: Optional[str]) -> Optional[str]:
@@ -55,7 +51,7 @@ def _resolve_spacy_model(requested: Optional[str]) -> Optional[str]:
     return installed[0]
 
 
-def _build_orchestrator(pipeline: str, use_wikidata: bool, model_name: Optional[str]):
+def _build_orchestrator(pipeline: str, use_wikidata: bool, model_name: Optional[str], use_web_search: bool = False):
     from backend.pipeline.orchestrator import PipelineOrchestrator
     resolved_model = _resolve_spacy_model(model_name) if pipeline == "spacy" else model_name
     if pipeline == "spacy" and resolved_model is None:
@@ -63,6 +59,7 @@ def _build_orchestrator(pipeline: str, use_wikidata: bool, model_name: Optional[
         sys.exit(1)
     return PipelineOrchestrator(
         use_wikidata=use_wikidata,
+        use_web_search=use_web_search,
         extractor_name=pipeline,
         model_name=resolved_model,
         persistent_store=None,
@@ -149,7 +146,7 @@ def run_benchmark(
     pipeline_name: str,
 ) -> dict:
     print("\n" + "=" * 70)
-    print("  STEP 1 — Manual Benchmark")
+    print("  STEP 1 — Manual Benchmark (100 articles)")
     print("=" * 70)
 
     if not BENCHMARK_FILE.exists():
@@ -244,63 +241,11 @@ def _print_metrics(metrics: dict, threshold: float, label: str = "") -> None:
     print()
 
 
-# section: LIAR evaluation
-
-def run_liar(orch, threshold: float, max_articles: int = 50) -> dict:
-    print("\n" + "=" * 70)
-    print("  STEP 2 — LIAR Subset Evaluation")
-    print("=" * 70)
-
-    try:
-        from backend.input.dataset import load_liar
-        articles = load_liar(max_articles=max_articles)
-    except Exception as exc:
-        print(f"  [WARNING] Could not load LIAR dataset: {exc}")
-        return {}
-
-    if not articles:
-        print("  [WARNING] LIAR dataset not found at data/datasets/liar/test.tsv — skipping.")
-        return {}
-
-    print(f"  Loaded {len(articles)} LIAR articles")
-
-    per_label: dict[str, list[float]] = {lbl: [] for lbl in LIAR_LABEL_ORDER}
-    per_label["other"] = []
-
-    for i, article in enumerate(articles):
-        print(f"  [{i+1:2d}/{len(articles)}] {article.title[:55]}", end=" ... ", flush=True)
-        res = _run_article(orch, article)
-        print(f"TCS={res['tcs']:.3f}  label={article.label}")
-        bucket = article.label if article.label in per_label else "other"
-        per_label[bucket].append(res["tcs"])
-
-    summary: dict[str, dict] = {}
-    print("\n  TCS per LIAR category:")
-    print(f"  {'Label':<14} {'N':>4}  {'Avg TCS':>8}  {'Min':>6}  {'Max':>6}")
-    print("  " + "-" * 46)
-    for lbl in LIAR_LABEL_ORDER + ["other"]:
-        scores = per_label[lbl]
-        if not scores:
-            continue
-        avg = sum(scores) / len(scores)
-        summary[lbl] = {
-            "n": len(scores),
-            "avg_tcs": round(avg, 4),
-            "min_tcs": round(min(scores), 4),
-            "max_tcs": round(max(scores), 4),
-            "scores": scores,
-        }
-        print(f"  {lbl:<14} {len(scores):>4}  {avg:>8.4f}  {min(scores):>6.4f}  {max(scores):>6.4f}")
-    print()
-
-    return {"per_label": summary, "total": len(articles)}
-
-
 # section: FakeNewsNet evaluation
 
 def run_fakenewsnet(orch, threshold: float, max_articles: int = 25) -> dict:
     print("\n" + "=" * 70)
-    print("  STEP 3 — FakeNewsNet Evaluation (politifact)")
+    print("  STEP 2 — FakeNewsNet Evaluation (PolitiFact)")
     print("=" * 70)
 
     try:
@@ -469,7 +414,6 @@ def _print_comparison_table(rows: list[dict], has_llm: bool) -> None:
 
 def generate_boxplot(
     benchmark_rows: list[dict],
-    liar_data: dict,
     fnn_data: dict,
     threshold: float,
 ) -> Optional[Path]:
@@ -495,10 +439,6 @@ def generate_boxplot(
         if fake_scores:
             groups.append(("Benchmark\nFAKE", fake_scores))
 
-    for lbl in LIAR_LABEL_ORDER:
-        if lbl in liar_data and liar_data[lbl].get("scores"):
-            groups.append((f"LIAR\n{lbl}", liar_data[lbl]["scores"]))
-
     if fnn_data.get("real", {}).get("scores"):
         groups.append(("FakeNewsNet\nreal", fnn_data["real"]["scores"]))
     if fnn_data.get("fake", {}).get("scores"):
@@ -512,14 +452,10 @@ def generate_boxplot(
     data    = [g[1] for g in groups]
     colors  = []
     for lbl in labels:
-        if "TRUE" in lbl or "real" in lbl or "true" in lbl or "mostly-true" in lbl:
+        if "TRUE" in lbl or "real" in lbl:
             colors.append("#4caf50")
-        elif "FAKE" in lbl or "fake" in lbl or "pants-fire" in lbl or "false" in lbl:
+        elif "FAKE" in lbl or "fake" in lbl:
             colors.append("#f44336")
-        elif "half-true" in lbl:
-            colors.append("#ff9800")
-        elif "barely-true" in lbl:
-            colors.append("#ff5722")
         else:
             colors.append("#9e9e9e")
 
@@ -552,7 +488,6 @@ def generate_boxplot(
 
 def save_full_results(
     benchmark: dict,
-    liar: dict,
     fnn: dict,
     comparison: dict,
     boxplot_path: Optional[Path],
@@ -573,7 +508,7 @@ def save_full_results(
             "metrics": benchmark.get("metrics", {}),
             "articles": benchmark.get("rows", []),
         },
-        "liar": liar,
+        "politifact": {},
         "fakenewsnet": fnn,
         "pipeline_comparison": {
             k: v for k, v in comparison.items() if k != "rows"
@@ -593,7 +528,7 @@ def save_full_results(
 def main() -> None:
     parser = argparse.ArgumentParser(description="Full TCS Evaluation Suite")
     parser.add_argument("--benchmark-only", action="store_true",
-                        help="Run only the manual benchmark (skip LIAR and FakeNewsNet)")
+                        help="Run only the manual benchmark (skip FakeNewsNet and pipeline comparison)")
     parser.add_argument("--no-wikidata", action="store_true",
                         help="Skip Wikidata verification (faster offline runs)")
     parser.add_argument("--threshold", type=float, default=FAKE_THRESHOLD,
@@ -602,6 +537,8 @@ def main() -> None:
                         help="Extractor pipeline to use (default: spacy)")
     parser.add_argument("--model", type=str, default=None,
                         help="Explicit spaCy model name or LLM model name")
+    parser.add_argument("--web-search", action="store_true",
+                        help="Enable Wikipedia web search fallback in C3b")
     args = parser.parse_args()
 
     use_wikidata = not args.no_wikidata
@@ -612,24 +549,22 @@ def main() -> None:
     print(f"  Pipeline  : {args.pipeline}")
     print(f"  Threshold : {args.threshold}")
     print(f"  Wikidata  : {use_wikidata}")
+    print(f"  Web Search: {args.web_search}")
     print(f"  Mode      : {'benchmark-only' if args.benchmark_only else 'full'}")
     print(f"{'='*70}")
 
-    orch = _build_orchestrator(args.pipeline, use_wikidata, args.model)
+    orch = _build_orchestrator(args.pipeline, use_wikidata, args.model, use_web_search=args.web_search)
 
     benchmark_result = run_benchmark(orch, args.threshold, args.pipeline)
 
-    liar_result: dict = {}
     fnn_result: dict = {}
     comparison_result: dict = {}
     boxplot_path: Optional[Path] = None
 
     if not args.benchmark_only:
-        liar_result = run_liar(orch, args.threshold, max_articles=50)
         fnn_result  = run_fakenewsnet(orch, args.threshold, max_articles=25)
         boxplot_path = generate_boxplot(
             benchmark_result.get("rows", []),
-            liar_result.get("per_label", {}),
             fnn_result,
             args.threshold,
         )
@@ -642,13 +577,11 @@ def main() -> None:
         boxplot_path = generate_boxplot(
             benchmark_result.get("rows", []),
             {},
-            {},
             args.threshold,
         )
 
     out_path = save_full_results(
         benchmark=benchmark_result,
-        liar=liar_result,
         fnn=fnn_result,
         comparison=comparison_result,
         boxplot_path=boxplot_path,
