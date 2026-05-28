@@ -119,7 +119,7 @@ def run_benchmark(
 
         elapsed_ms = (time.monotonic() - t0) * 1000
         expected_fake: bool = entry.get("expected_fake", False)
-        predicted_fake: bool = result.score < threshold
+        predicted_fake: bool = result.n_temporal_claims > 0 and result.score < threshold
 
         outcome = _classify_outcome(expected_fake, predicted_fake)
 

@@ -180,7 +180,7 @@ def run_benchmark(
         print(f"TCS={res['tcs']:.3f}")
 
         expected_fake: bool = entry.get("expected_fake", False)
-        predicted_fake: bool = res["tcs"] < threshold
+        predicted_fake: bool = res["n_claims"] > 0 and res["tcs"] < threshold
         outcome = _classify_outcome(expected_fake, predicted_fake) if res["ok"] else "ERROR"
 
         rows.append({

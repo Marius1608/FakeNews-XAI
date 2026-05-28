@@ -1,0 +1,2231 @@
+{
+  "generated_at": "2026-05-23T23:16:34.711689",
+  "pipeline": "spacy",
+  "fake_threshold": 0.55,
+  "metrics": {
+    "total": 100,
+    "tp": 7,
+    "tn": 52,
+    "fp": 4,
+    "fn": 37,
+    "precision": 0.6364,
+    "recall": 0.1591,
+    "f1": 0.2545,
+    "accuracy": 0.59,
+    "avg_tcs_true_articles": 0.8816,
+    "avg_tcs_fake_articles": 0.8182
+  },
+  "articles": [
+    {
+      "idx": 1,
+      "title": "Obama Presidency — Accurate Timeline",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 3,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 16526.5,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 2,
+      "title": "Obama Senate Career and Presidential Campaign",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 4,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8771.7,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 3,
+      "title": "Biden Presidency — Accurate Timeline",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 1,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 7751.8,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 4,
+      "title": "Clinton Presidency — Accurate Record",
+      "tcs": 0.8458,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 3,
+      "n_inconsistencies": 2,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (1992) does not match wikidata interval [1977 -> 1979]."
+        },
+        {
+          "type": "entity_inconsistency",
+          "severity": "low",
+          "description": "Position 'the United States' for 'Bill Clinton' not found in Wikidata."
+        }
+      ],
+      "processing_time_ms": 13003.6,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 5,
+      "title": "George W. Bush Presidency — Accurate Timeline",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 5,
+      "n_inconsistencies": 2,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "entity_inconsistency",
+          "severity": "low",
+          "description": "Position '43rd' for 'George W. Bush' not found in Wikidata."
+        },
+        {
+          "type": "entity_inconsistency",
+          "severity": "low",
+          "description": "Position 'the United States' for 'George W. Bush' not found in Wikidata."
+        }
+      ],
+      "processing_time_ms": 10228.9,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 6,
+      "title": "Trump First Term — Accurate Record",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 5,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8743.6,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 7,
+      "title": "George H.W. Bush Presidency — Accurate Timeline",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 4,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 10399.4,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 8,
+      "title": "Reagan Presidency — Accurate Timeline",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 1,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 7665.9,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 9,
+      "title": "Carter Presidency — Accurate Timeline",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 3,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8028.7,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 10,
+      "title": "Obama Second Term — Accurate Timeline",
+      "tcs": 0.5,
+      "tcs_label": "Insufficient Temporal Data",
+      "n_claims": 0,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 115.5,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 11,
+      "title": "Obama Illinois Career — Fabricated Dual Role",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 2,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [
+        "entity_inconsistency: Obama cannot be Senator and Governor simultaneously — incompatible roles"
+      ],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8066.2,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 12,
+      "title": "Trump Presidency — Inverted Dates and Future Event",
+      "tcs": 0.5185,
+      "tcs_label": "Moderately Consistent",
+      "n_claims": 3,
+      "n_inconsistencies": 1,
+      "coherence_factor": 0.6667,
+      "expected_fake": true,
+      "predicted_fake": true,
+      "outcome": "TP",
+      "known_inconsistencies": [
+        "ordering_error: Trump presidency interval is inverted — end date (2017) precedes start date (2021)",
+        "future_as_past: 2025 forum described as past event but article publication date is 2020"
+      ],
+      "detected_inconsistencies": [
+        {
+          "type": "future_as_past",
+          "severity": "high",
+          "description": "Event from 2021 presented as past, but article is from 2020: 'the United States'."
+        }
+      ],
+      "processing_time_ms": 10964.0,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 13,
+      "title": "Obama Election Timeline — Reversed Cause and Effect",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 1,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [
+        "implicit_contradiction: Obama took office in January 2009 but won the election in November 2012 — office predates the election that supposedly granted it"
+      ],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8968.9,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 14,
+      "title": "Biden Presidency — Inverted Mandate Years",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 3,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [
+        "date_mismatch: Biden presidency stated as 2017-2021, which were Donald Trump's years in office"
+      ],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8073.3,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 15,
+      "title": "Clinton Presidency — Wrong Mandate Years",
+      "tcs": 0.5,
+      "tcs_label": "Insufficient Temporal Data",
+      "n_claims": 0,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [
+        "date_mismatch: Clinton's stated term 1989-1993 belongs to George H.W. Bush",
+        "entity_inconsistency: Clinton did not defeat Dukakis — Clinton defeated Bush in 1992"
+      ],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 83.8,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 16,
+      "title": "Bush Presidency — Wrong Inauguration Year",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 3,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [
+        "date_mismatch: Bush W inaugurated in 1997 is incorrect — he was inaugurated in 2001",
+        "ordering_error: 1996 election winner stated as Bush but 1996 was won by Clinton"
+      ],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 11686.5,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 17,
+      "title": "Biden — Impossible VP and Senator Dual Role",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 2,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [
+        "entity_inconsistency: Biden cannot be Senator and VP simultaneously — he resigned from Senate before taking VP office"
+      ],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 10823.9,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 18,
+      "title": "Clinton — Impossible Governor and President Dual Role",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 2,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [
+        "entity_inconsistency: Clinton cannot be Arkansas Governor and U.S. President simultaneously — he resigned as Governor before inauguration"
+      ],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8968.2,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 19,
+      "title": "Bush W — Impossible Governor and President Dual Role",
+      "tcs": 0.73,
+      "tcs_label": "Moderately Consistent",
+      "n_claims": 5,
+      "n_inconsistencies": 1,
+      "coherence_factor": 0.8,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [
+        "entity_inconsistency: Bush W cannot be Texas Governor and U.S. President simultaneously — he resigned as Governor before inauguration in January 2001"
+      ],
+      "detected_inconsistencies": [
+        {
+          "type": "factual_contradiction",
+          "severity": "high",
+          "description": "Contradiction: 'the United States' and 'Rick Perry' both as 'December' in the same interval."
+        }
+      ],
+      "processing_time_ms": 11398.1,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 20,
+      "title": "Clinton Signs Law in 2004 — After Leaving Office",
+      "tcs": 0.0,
+      "tcs_label": "Severe Violations (Likely Fake)",
+      "n_claims": 1,
+      "n_inconsistencies": 4,
+      "coherence_factor": 0.0,
+      "expected_fake": true,
+      "predicted_fake": true,
+      "outcome": "TP",
+      "known_inconsistencies": [
+        "future_as_past: Clinton signed a law in 2004 but his presidency ended in January 2001"
+      ],
+      "detected_inconsistencies": [
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Bill Clinton' [2004-03-01 -> 2000-01-01]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Interval [2004 -> 2000] does not overlap with wikidata [1977 -> 1979]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Interval [2004 -> 2000] does not overlap with wikidata [1983 -> 1992]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Interval [2004 -> 2000] does not overlap with wikidata [1992 -> 1993]."
+        }
+      ],
+      "processing_time_ms": 13339.2,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 21,
+      "title": "Biden Signs Law in 2018 — Before His Presidency",
+      "tcs": 0.0,
+      "tcs_label": "Severe Violations (Likely Fake)",
+      "n_claims": 2,
+      "n_inconsistencies": 6,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": true,
+      "outcome": "TP",
+      "known_inconsistencies": [
+        "future_as_past: Biden signed a law in 2018 but his presidency did not begin until January 2021"
+      ],
+      "detected_inconsistencies": [
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2018) does not match wikidata interval [1999 -> 2001]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2018) does not match wikidata interval [2003 -> 2005]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2018) does not match wikidata interval [2009 -> 2017]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2018) does not match wikidata interval [1999 -> 2001]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2018) does not match wikidata interval [2003 -> 2005]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2018) does not match wikidata interval [2009 -> 2017]."
+        }
+      ],
+      "processing_time_ms": 10876.0,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 22,
+      "title": "Bush W Signs ACA in 2010 — After Leaving Office",
+      "tcs": 0.0,
+      "tcs_label": "Severe Violations (Likely Fake)",
+      "n_claims": 1,
+      "n_inconsistencies": 3,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": true,
+      "outcome": "TP",
+      "known_inconsistencies": [
+        "future_as_past: Bush W signed a law on March 23, 2010, but his presidency ended in January 2009"
+      ],
+      "detected_inconsistencies": [
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2010) does not match wikidata interval [1995 -> 2000]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2010) does not match wikidata interval [2000 -> 2001]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2010) does not match wikidata interval [2001 -> 2009]."
+        }
+      ],
+      "processing_time_ms": 9093.3,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 23,
+      "title": "Biden Elected in 2024 But Inaugurated in 2021",
+      "tcs": 0.3333,
+      "tcs_label": "Multiple Inconsistencies (Suspicious)",
+      "n_claims": 2,
+      "n_inconsistencies": 1,
+      "coherence_factor": 0.5,
+      "expected_fake": true,
+      "predicted_fake": true,
+      "outcome": "TP",
+      "known_inconsistencies": [
+        "ordering_error: Biden inaugurated in January 2021 after winning a November 2024 election — inauguration precedes the election by 3+ years"
+      ],
+      "detected_inconsistencies": [
+        {
+          "type": "future_as_past",
+          "severity": "high",
+          "description": "Event from 2024 presented as past, but article is from 2022: 'Donald Trump'."
+        }
+      ],
+      "processing_time_ms": 8835.8,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 24,
+      "title": "Clinton Inaugurated in 1993 After Winning 1996 Election",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 1,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [
+        "ordering_error: Clinton inaugurated January 1993 but attributed to winning the 1996 election — first term inauguration precedes the election that supposedly enabled it"
+      ],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 7576.1,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 25,
+      "title": "Trump Signs Tax Bill Before Inauguration",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 1,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [
+        "ordering_error: Trump (President-elect) signed a law on December 22, 2016, one month before his January 20, 2017 inauguration — legislation signed before taking presidential office"
+      ],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 10909.7,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 26,
+      "title": "Obama Healthcare Reform — Passage of the ACA",
+      "tcs": 0.8317,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 11,
+      "n_inconsistencies": 2,
+      "coherence_factor": 0.8182,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Obama' [2009-01-23 -> 1965-05-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Obama' [2009-01-23 -> 1965-05-23]."
+        }
+      ],
+      "processing_time_ms": 11403.0,
+      "source": ""
+    },
+    {
+      "idx": 27,
+      "title": "Obama Foreign Policy — Bin Laden Operation and Nuclear Deal",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 3,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8286.5,
+      "source": ""
+    },
+    {
+      "idx": 28,
+      "title": "Obama Economic Recovery — Stimulus and Dodd-Frank",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 4,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8330.2,
+      "source": ""
+    },
+    {
+      "idx": 29,
+      "title": "Biden Infrastructure and Climate Legislation",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 8,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 10831.9,
+      "source": ""
+    },
+    {
+      "idx": 30,
+      "title": "Biden Foreign Policy — NATO, Ukraine and Afghanistan Withdrawal",
+      "tcs": 0.8715,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 9,
+      "n_inconsistencies": 1,
+      "coherence_factor": 0.8889,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "factual_contradiction",
+          "severity": "high",
+          "description": "Contradiction: 'Biden' and 'Washington' both as 'Washington' in the same interval."
+        }
+      ],
+      "processing_time_ms": 12199.4,
+      "source": ""
+    },
+    {
+      "idx": 31,
+      "title": "Trump First Term — Tax Cuts and Trade Policy",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 6,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 10865.8,
+      "source": ""
+    },
+    {
+      "idx": 32,
+      "title": "Trump Impeachments and COVID Response",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 7,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 13652.3,
+      "source": ""
+    },
+    {
+      "idx": 33,
+      "title": "Clinton Presidency — NAFTA and Welfare Reform",
+      "tcs": 0.8826,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 7,
+      "n_inconsistencies": 1,
+      "coherence_factor": 0.8571,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Clinton' [1996-08-23 -> 1992-05-23]."
+        }
+      ],
+      "processing_time_ms": 12165.9,
+      "source": ""
+    },
+    {
+      "idx": 34,
+      "title": "Clinton Impeachment and Foreign Policy",
+      "tcs": 0.8926,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 11,
+      "n_inconsistencies": 1,
+      "coherence_factor": 0.9091,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'The House Judiciary Committee' [1998-12-23 -> 1998-12-19]."
+        }
+      ],
+      "processing_time_ms": 10264.9,
+      "source": ""
+    },
+    {
+      "idx": 35,
+      "title": "Bush W — September 11 Response and Iraq War",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 13,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 11944.6,
+      "source": ""
+    },
+    {
+      "idx": 36,
+      "title": "Obama Education and Environment Policy",
+      "tcs": 0.7677,
+      "tcs_label": "Moderately Consistent",
+      "n_claims": 8,
+      "n_inconsistencies": 2,
+      "coherence_factor": 0.75,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Obama' [2015-12-23 -> 2001-05-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Obama' [2015-12-23 -> 2001-05-23]."
+        }
+      ],
+      "processing_time_ms": 10264.8,
+      "source": ""
+    },
+    {
+      "idx": 37,
+      "title": "Reagan Presidency — Tax Cuts and Cold War",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 10,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 10407.0,
+      "source": ""
+    },
+    {
+      "idx": 38,
+      "title": "Bush H.W. — Gulf War and Domestic Policy",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 10,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 9144.5,
+      "source": ""
+    },
+    {
+      "idx": 39,
+      "title": "Carter Presidency — Energy Crisis and Iran Hostages",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 9,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8925.7,
+      "source": ""
+    },
+    {
+      "idx": 40,
+      "title": "Obama Second Term — Immigration and Cuba",
+      "tcs": 0.2033,
+      "tcs_label": "Multiple Inconsistencies (Suspicious)",
+      "n_claims": 23,
+      "n_inconsistencies": 23,
+      "coherence_factor": 0.4348,
+      "expected_fake": false,
+      "predicted_fake": true,
+      "outcome": "FP",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Obama' [2014-12-17 -> 1960-05-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Obama' [2014-12-17 -> 1960-05-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Obama' [2014-12-17 -> 1960-05-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Obama' [2014-12-17 -> 1960-05-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Cuban' [2014-12-17 -> 1960-05-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Cuban' [2014-12-17 -> 1960-05-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Cuban' [2014-12-17 -> 1960-05-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Cuban' [2014-12-17 -> 1960-05-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Raul Castro' [2014-12-17 -> 1960-05-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Raul Castro' [2014-12-17 -> 1960-05-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Raul Castro' [2014-12-17 -> 1960-05-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Raul Castro' [2014-12-17 -> 1960-05-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Obama' [2016-03-23 -> 1938-05-23]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Interval [2014 -> 1960] does not overlap with wikidata [2008 -> 2018]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Interval [2014 -> 1960] does not overlap with wikidata [2008 -> 2009]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Interval [2014 -> 1960] does not overlap with wikidata [1959 -> 2008]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Interval [2014 -> 1960] does not overlap with wikidata [2008 -> 2018]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Interval [2014 -> 1960] does not overlap with wikidata [1959 -> 2008]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Interval [2014 -> 1960] does not overlap with wikidata [2008 -> 2018]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Interval [2014 -> 1960] does not overlap with wikidata [2011 -> 2021]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Interval [2014 -> 1960] does not overlap with wikidata [2008 -> 2018]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Interval [2014 -> 1960] does not overlap with wikidata [2008 -> 2009]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Interval [2014 -> 1960] does not overlap with wikidata [1959 -> 2008]."
+        }
+      ],
+      "processing_time_ms": 18208.9,
+      "source": ""
+    },
+    {
+      "idx": 41,
+      "title": "Trump Administration — Immigration and Supreme Court",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 20,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8298.5,
+      "source": ""
+    },
+    {
+      "idx": 42,
+      "title": "Clinton — Budget Surplus and Technology Boom",
+      "tcs": 0.6481,
+      "tcs_label": "Moderately Consistent",
+      "n_claims": 6,
+      "n_inconsistencies": 2,
+      "coherence_factor": 0.6667,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Clinton' [1999-11-12 -> 1933-05-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Clinton' [1999-11-12 -> 1933-05-23]."
+        }
+      ],
+      "processing_time_ms": 9883.7,
+      "source": ""
+    },
+    {
+      "idx": 43,
+      "title": "Bush W — Financial Crisis and TARP",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 4,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8842.3,
+      "source": ""
+    },
+    {
+      "idx": 44,
+      "title": "Obama — Dodd-Frank and Consumer Protection",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 6,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 9539.0,
+      "source": ""
+    },
+    {
+      "idx": 45,
+      "title": "Biden — COVID Response and Economic Recovery",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 7,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 11883.2,
+      "source": ""
+    },
+    {
+      "idx": 46,
+      "title": "Trump — Trade War with China and Phase One Deal",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 5,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 7585.5,
+      "source": ""
+    },
+    {
+      "idx": 47,
+      "title": "Clinton — NAFTA Passage and Economic Policy",
+      "tcs": 0.7444,
+      "tcs_label": "Moderately Consistent",
+      "n_claims": 8,
+      "n_inconsistencies": 2,
+      "coherence_factor": 0.75,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Clinton' [1993-11-30 -> 1993-02-05]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Clinton' [1993-11-30 -> 1993-02-05]."
+        }
+      ],
+      "processing_time_ms": 14519.4,
+      "source": ""
+    },
+    {
+      "idx": 48,
+      "title": "Obama — Syria Red Line and Russian Reset",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 7,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 7802.7,
+      "source": ""
+    },
+    {
+      "idx": 49,
+      "title": "Bush W — Hurricane Katrina and Second Term Challenges",
+      "tcs": 0.7797,
+      "tcs_label": "Moderately Consistent",
+      "n_claims": 9,
+      "n_inconsistencies": 2,
+      "coherence_factor": 0.7778,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Democrats' [2006-11-23 -> 1994-05-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Democrats' [2006-11-23 -> 1994-05-23]."
+        }
+      ],
+      "processing_time_ms": 20145.5,
+      "source": ""
+    },
+    {
+      "idx": 50,
+      "title": "Biden — Supreme Court and Democracy Agenda",
+      "tcs": 0.9245,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 9,
+      "n_inconsistencies": 1,
+      "coherence_factor": 0.8889,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Biden' [2022-12-23 -> 2021-01-06]."
+        }
+      ],
+      "processing_time_ms": 10026.2,
+      "source": ""
+    },
+    {
+      "idx": 51,
+      "title": "Obama — ACA Passage with Wrong Date and Senate Vote",
+      "tcs": 0.8317,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 11,
+      "n_inconsistencies": 2,
+      "coherence_factor": 0.8182,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Obama' [2008-01-23 -> 1965-05-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Obama' [2008-01-23 -> 1965-05-23]."
+        }
+      ],
+      "processing_time_ms": 10258.4,
+      "source": ""
+    },
+    {
+      "idx": 52,
+      "title": "Biden Infrastructure Bill — Wrong Congressional Vote Date",
+      "tcs": 0.615,
+      "tcs_label": "Moderately Consistent",
+      "n_claims": 5,
+      "n_inconsistencies": 3,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2021) does not match wikidata interval [1999 -> 2001]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2021) does not match wikidata interval [2003 -> 2005]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2021) does not match wikidata interval [2009 -> 2017]."
+        }
+      ],
+      "processing_time_ms": 10804.5,
+      "source": ""
+    },
+    {
+      "idx": 53,
+      "title": "Trump Tax Cuts — Wrong Signing Date and Margin",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 2,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8268.6,
+      "source": ""
+    },
+    {
+      "idx": 54,
+      "title": "Clinton NAFTA — Wrong Congressional Timeline",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 4,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8512.2,
+      "source": ""
+    },
+    {
+      "idx": 55,
+      "title": "Obama Bin Laden — Wrong Intelligence Timeline",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 4,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8687.9,
+      "source": ""
+    },
+    {
+      "idx": 56,
+      "title": "Bush — TARP Signing After Market Collapse Described as Preceding It",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 7,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8267.5,
+      "source": ""
+    },
+    {
+      "idx": 57,
+      "title": "Obama — ACA Supreme Court Ruling Precedes Passage",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 8,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 7841.5,
+      "source": ""
+    },
+    {
+      "idx": 58,
+      "title": "Trump — Travel Ban Upheld Before It Was Signed",
+      "tcs": 0.9476,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 7,
+      "n_inconsistencies": 4,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "date_mismatch",
+          "severity": "medium",
+          "description": "Article date (2017) differs from wikidata (2021)."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "medium",
+          "description": "Article date (2017) differs from wikidata (2015)."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "medium",
+          "description": "Article date (2017) differs from wikidata (2021)."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "medium",
+          "description": "Article date (2017) differs from wikidata (2015)."
+        }
+      ],
+      "processing_time_ms": 9443.5,
+      "source": ""
+    },
+    {
+      "idx": 59,
+      "title": "Biden — Infrastructure Bill Signed Before House Vote",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 3,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8823.9,
+      "source": ""
+    },
+    {
+      "idx": 60,
+      "title": "Clinton — Impeachment Acquittal Before House Vote",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 9,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8235.1,
+      "source": ""
+    },
+    {
+      "idx": 61,
+      "title": "Obama — Nobel Prize Awarded for Achievements from Future Presidency",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 4,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8793.2,
+      "source": ""
+    },
+    {
+      "idx": 62,
+      "title": "Trump — COVID Vaccine Approved Before Operation Warp Speed Launched",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 4,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8501.7,
+      "source": ""
+    },
+    {
+      "idx": 63,
+      "title": "Bush — Patriot Act Signed Before 9/11 Authorization",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 4,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 9782.7,
+      "source": ""
+    },
+    {
+      "idx": 64,
+      "title": "Obama — Wrong Timeline for Bin Laden Intelligence",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 11,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8866.1,
+      "source": ""
+    },
+    {
+      "idx": 65,
+      "title": "Clinton — Balanced Budget Agreement Wrong Party Control",
+      "tcs": 0.9061,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 8,
+      "n_inconsistencies": 2,
+      "coherence_factor": 0.875,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Republicans' [1994-05-23 -> 1986-05-23]."
+        },
+        {
+          "type": "entity_inconsistency",
+          "severity": "low",
+          "description": "Position 'House' for 'Republicans' not found in Wikidata."
+        }
+      ],
+      "processing_time_ms": 13428.0,
+      "source": ""
+    },
+    {
+      "idx": 66,
+      "title": "Biden — Withdrawal from Afghanistan Wrong Sequence",
+      "tcs": 0.477,
+      "tcs_label": "Multiple Inconsistencies (Suspicious)",
+      "n_claims": 5,
+      "n_inconsistencies": 3,
+      "coherence_factor": 0.8,
+      "expected_fake": false,
+      "predicted_fake": true,
+      "outcome": "FP",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "factual_contradiction",
+          "severity": "high",
+          "description": "Contradiction: 'Taliban' and 'Kabul' both as 'Kabul' in the same interval."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2021) does not match wikidata interval [2009 -> 2008]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2021) does not match wikidata interval [2021 -> 2008]."
+        }
+      ],
+      "processing_time_ms": 12429.4,
+      "source": ""
+    },
+    {
+      "idx": 67,
+      "title": "Obama — Wrong Sequence on ACA and Dodd-Frank",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 8,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8809.1,
+      "source": ""
+    },
+    {
+      "idx": 68,
+      "title": "Trump — USMCA Signed Before Negotiation Completed",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 10,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 8857.6,
+      "source": ""
+    },
+    {
+      "idx": 69,
+      "title": "Clinton — Rwanda and Bosnia — Inaction and Intervention",
+      "tcs": 0.8488,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 9,
+      "n_inconsistencies": 2,
+      "coherence_factor": 0.8889,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "factual_contradiction",
+          "severity": "high",
+          "description": "Contradiction: 'Dayton' and 'Ohio' both as 'the Bosnian War' in the same interval."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "medium",
+          "description": "Article date (1995) differs from wikidata (2023)."
+        }
+      ],
+      "processing_time_ms": 14902.0,
+      "source": ""
+    },
+    {
+      "idx": 70,
+      "title": "Obama — Wrong Year for Nobel Peace Prize",
+      "tcs": 0.9217,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 5,
+      "n_inconsistencies": 1,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2007) does not match wikidata interval [1997 -> 2004]."
+        }
+      ],
+      "processing_time_ms": 23458.2,
+      "source": ""
+    },
+    {
+      "idx": 71,
+      "title": "Bush W — PATRIOT Act Expanding Surveillance Pre-9/11",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 4,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 16124.6,
+      "source": ""
+    },
+    {
+      "idx": 72,
+      "title": "Biden — Climate and Clean Energy Milestone Timeline",
+      "tcs": 0.6434,
+      "tcs_label": "Moderately Consistent",
+      "n_claims": 6,
+      "n_inconsistencies": 2,
+      "coherence_factor": 0.6667,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Biden' [2021-01-20 -> 2020-11-23]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Biden' [2021-01-20 -> 2020-11-23]."
+        }
+      ],
+      "processing_time_ms": 42806.8,
+      "source": ""
+    },
+    {
+      "idx": 73,
+      "title": "Obama — Wrong Vice President and Cabinet",
+      "tcs": 0.4082,
+      "tcs_label": "Multiple Inconsistencies (Suspicious)",
+      "n_claims": 7,
+      "n_inconsistencies": 3,
+      "coherence_factor": 0.5714,
+      "expected_fake": true,
+      "predicted_fake": true,
+      "outcome": "TP",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "factual_contradiction",
+          "severity": "high",
+          "description": "Contradiction: 'Joe Biden' and 'State' both as 'Obama' in the same interval."
+        },
+        {
+          "type": "factual_contradiction",
+          "severity": "high",
+          "description": "Contradiction: 'Joe Biden' and 'Delaware' both as 'Obama' in the same interval."
+        },
+        {
+          "type": "factual_contradiction",
+          "severity": "high",
+          "description": "Contradiction: 'State' and 'Delaware' both as 'Obama' in the same interval."
+        }
+      ],
+      "processing_time_ms": 25814.9,
+      "source": ""
+    },
+    {
+      "idx": 74,
+      "title": "Trump — First Impeachment Wrong Charges and Outcome",
+      "tcs": 0.6824,
+      "tcs_label": "Moderately Consistent",
+      "n_claims": 5,
+      "n_inconsistencies": 4,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2019) does not match wikidata interval [1971 -> 2017]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "medium",
+          "description": "Article date (2019) differs from wikidata (2015)."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2019) does not match wikidata interval [1971 -> 2017]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "medium",
+          "description": "Article date (2019) differs from wikidata (2015)."
+        }
+      ],
+      "processing_time_ms": 31803.2,
+      "source": ""
+    },
+    {
+      "idx": 75,
+      "title": "Clinton — Osama Bin Laden Missed Opportunities",
+      "tcs": 0.7426,
+      "tcs_label": "Moderately Consistent",
+      "n_claims": 16,
+      "n_inconsistencies": 3,
+      "coherence_factor": 0.8125,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "factual_contradiction",
+          "severity": "high",
+          "description": "Contradiction: 'the United States' and 'America' both as 'America' in the same interval."
+        },
+        {
+          "type": "factual_contradiction",
+          "severity": "high",
+          "description": "Contradiction: 'the United States' and 'U.S.' both as 'U.S.' in the same interval."
+        },
+        {
+          "type": "factual_contradiction",
+          "severity": "high",
+          "description": "Contradiction: 'the United States' and 'America' both as 'Americans' in the same interval."
+        }
+      ],
+      "processing_time_ms": 32700.3,
+      "source": ""
+    },
+    {
+      "idx": 76,
+      "title": "Obama — Paris Agreement Signed Before Negotiations Concluded",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 5,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 39259.9,
+      "source": ""
+    },
+    {
+      "idx": 77,
+      "title": "Bush — Medicare Part D and Domestic Achievements",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 3,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 32211.2,
+      "source": ""
+    },
+    {
+      "idx": 78,
+      "title": "Biden — Supreme Court Nomination Wrong Timeline",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 6,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 36841.4,
+      "source": ""
+    },
+    {
+      "idx": 79,
+      "title": "Obama — Dodd-Frank and Consumer Bureau Wrong Sequence",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 9,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 38494.0,
+      "source": ""
+    },
+    {
+      "idx": 80,
+      "title": "Trump — Gorsuch Confirmation Wrong Vacancy",
+      "tcs": 0.9206,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 12,
+      "n_inconsistencies": 1,
+      "coherence_factor": 0.9167,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "factual_contradiction",
+          "severity": "high",
+          "description": "Contradiction: 'Senate' and 'Republicans' both as 'Senate' in the same interval."
+        }
+      ],
+      "processing_time_ms": 40432.2,
+      "source": ""
+    },
+    {
+      "idx": 81,
+      "title": "Clinton — Wrong Sequence of 1994 Crime Bill and Welfare Reform",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 7,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 26543.8,
+      "source": ""
+    },
+    {
+      "idx": 82,
+      "title": "Obama — Lilly Ledbetter Act as First Legislation",
+      "tcs": 0.6434,
+      "tcs_label": "Moderately Consistent",
+      "n_claims": 3,
+      "n_inconsistencies": 1,
+      "coherence_factor": 0.6667,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Barack Obama's' [2009-05-23 -> 2009-01-29]."
+        }
+      ],
+      "processing_time_ms": 38687.8,
+      "source": ""
+    },
+    {
+      "idx": 83,
+      "title": "Biden — Inflation Reduction Act Wrong Senate Vote Count",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 2,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 28162.7,
+      "source": ""
+    },
+    {
+      "idx": 84,
+      "title": "Reagan — Wrong Iran-Contra Sequence",
+      "tcs": 0.125,
+      "tcs_label": "Severe Violations (Likely Fake)",
+      "n_claims": 4,
+      "n_inconsistencies": 3,
+      "coherence_factor": 0.25,
+      "expected_fake": false,
+      "predicted_fake": true,
+      "outcome": "FP",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "factual_contradiction",
+          "severity": "high",
+          "description": "Contradiction: 'Reagan' and 'Lebanese' both as 'November' in the same interval."
+        },
+        {
+          "type": "factual_contradiction",
+          "severity": "high",
+          "description": "Contradiction: 'Reagan' and 'Oliver North' both as 'November' in the same interval."
+        },
+        {
+          "type": "factual_contradiction",
+          "severity": "high",
+          "description": "Contradiction: 'Lebanese' and 'Oliver North' both as 'November' in the same interval."
+        }
+      ],
+      "processing_time_ms": 44004.6,
+      "source": ""
+    },
+    {
+      "idx": 85,
+      "title": "Trump Second Term — Accurate Timeline",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 7,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 26203.6,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 86,
+      "title": "Obama — Wrong Nobel Prize Year",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 3,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 34653.1,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 87,
+      "title": "Clinton — NAFTA Wrong Year",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 5,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 24763.2,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 88,
+      "title": "Reagan — Tax Cuts Accurate Timeline",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 4,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 29275.1,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 89,
+      "title": "Biden — Wrong Inauguration Year",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 6,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 24739.6,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 90,
+      "title": "Bush W — Iraq War Accurate Timeline",
+      "tcs": 0.8327,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 7,
+      "n_inconsistencies": 1,
+      "coherence_factor": 0.8571,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'George W. Bush' [2003-03-19 -> 2002-10-23]."
+        }
+      ],
+      "processing_time_ms": 26360.5,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 91,
+      "title": "Obama — ACA Wrong Supreme Court Date",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 5,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 26057.7,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 92,
+      "title": "Carter — Camp David Accurate Timeline",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 3,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 25156.7,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 93,
+      "title": "Trump — Gorsuch Confirmation Wrong Year",
+      "tcs": 0.8188,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 5,
+      "n_inconsistencies": 1,
+      "coherence_factor": 0.8,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Senate' [2018-04-23 -> 2016-02-23]."
+        }
+      ],
+      "processing_time_ms": 16700.1,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 94,
+      "title": "Clinton — Lewinsky Timeline Accurate",
+      "tcs": 0.8474,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 8,
+      "n_inconsistencies": 1,
+      "coherence_factor": 0.875,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "factual_contradiction",
+          "severity": "high",
+          "description": "Contradiction: 'Kenneth Starr' and 'Clinton' both as 'Clinton' in the same interval."
+        }
+      ],
+      "processing_time_ms": 29010.1,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 95,
+      "title": "Obama — Syria Red Line Wrong Date",
+      "tcs": 0.6933,
+      "tcs_label": "Moderately Consistent",
+      "n_claims": 5,
+      "n_inconsistencies": 1,
+      "coherence_factor": 0.8,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "factual_contradiction",
+          "severity": "high",
+          "description": "Contradiction: 'Barack Obama' and 'Syria' both as 'Syria' in the same interval."
+        }
+      ],
+      "processing_time_ms": 29929.4,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 96,
+      "title": "Bush H.W. — Desert Storm Accurate",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 5,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 32027.8,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 97,
+      "title": "Biden — Infrastructure Bill Wrong Vote",
+      "tcs": 0.0,
+      "tcs_label": "Severe Violations (Likely Fake)",
+      "n_claims": 5,
+      "n_inconsistencies": 7,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": true,
+      "outcome": "TP",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2021) does not match wikidata interval [1999 -> 2001]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2021) does not match wikidata interval [2003 -> 2005]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2021) does not match wikidata interval [2009 -> 2017]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2021) does not match wikidata interval [1999 -> 2001]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2021) does not match wikidata interval [2003 -> 2005]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2021) does not match wikidata interval [2009 -> 2017]."
+        },
+        {
+          "type": "date_mismatch",
+          "severity": "high",
+          "description": "Article date (2021) does not match wikidata interval [2009 -> 2017]."
+        }
+      ],
+      "processing_time_ms": 41160.8,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 98,
+      "title": "Reagan — Cold War Accurate Timeline",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 3,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": false,
+      "predicted_fake": false,
+      "outcome": "TN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 41971.5,
+      "source": "benchmark-true"
+    },
+    {
+      "idx": 99,
+      "title": "Trump — Jan 6 Wrong Timeline",
+      "tcs": 1.0,
+      "tcs_label": "Highly Consistent (Likely True)",
+      "n_claims": 4,
+      "n_inconsistencies": 0,
+      "coherence_factor": 1.0,
+      "expected_fake": true,
+      "predicted_fake": false,
+      "outcome": "FN",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [],
+      "processing_time_ms": 29978.0,
+      "source": "benchmark-fake"
+    },
+    {
+      "idx": 100,
+      "title": "Obama — Bin Laden Operation Accurate",
+      "tcs": 0.4888,
+      "tcs_label": "Multiple Inconsistencies (Suspicious)",
+      "n_claims": 13,
+      "n_inconsistencies": 6,
+      "coherence_factor": 0.5385,
+      "expected_fake": false,
+      "predicted_fake": true,
+      "outcome": "FP",
+      "known_inconsistencies": [],
+      "detected_inconsistencies": [
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Navy' [2011-05-02 -> 2011-05-01]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Navy' [2011-05-02 -> 2011-05-01]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'Navy' [2011-05-02 -> 2011-05-01]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'SEAL Team Six' [2011-05-02 -> 2011-05-01]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'SEAL Team Six' [2011-05-02 -> 2011-05-01]."
+        },
+        {
+          "type": "ordering_error",
+          "severity": "medium",
+          "description": "Inverted interval: 'SEAL Team Six' [2011-05-02 -> 2011-05-01]."
+        }
+      ],
+      "processing_time_ms": 34249.9,
+      "source": "benchmark-true"
+    }
+  ]
+}

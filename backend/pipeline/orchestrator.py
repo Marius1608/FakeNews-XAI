@@ -25,8 +25,10 @@ def _get_extractor_class(name: str) -> type:
     if not _EXTRACTOR_FACTORIES:
         from backend.pipeline.extraction.spacy_extractor import SpacyExtractor
         from backend.pipeline.extraction.llm_extractor import LLMExtractor
+        from backend.pipeline.extraction.deepke_extractor import DeepKeExtractor
         _EXTRACTOR_FACTORIES["spacy"] = SpacyExtractor
         _EXTRACTOR_FACTORIES["llm"] = LLMExtractor
+        _EXTRACTOR_FACTORIES["deepke"] = DeepKeExtractor
     if name not in _EXTRACTOR_FACTORIES:
         raise ValueError(f"Unknown extractor: '{name}'. Options: {list(_EXTRACTOR_FACTORIES)}")
     return _EXTRACTOR_FACTORIES[name]
@@ -72,7 +74,7 @@ class PipelineOrchestrator:
             if self.model_name:
                 if self.extractor_name == "spacy":
                     kwargs["model_name"] = self.model_name
-                elif self.extractor_name == "llm":
+                elif self.extractor_name in ("llm", "deepke"):
                     kwargs["model"] = self.model_name
             logger.info(f"Orchestrator: initializing {cls.__name__} ({self.model_name or 'default'})...")
             self._extractor = cls(**kwargs)

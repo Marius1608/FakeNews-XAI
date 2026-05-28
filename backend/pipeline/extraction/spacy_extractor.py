@@ -116,8 +116,10 @@ class SpacyExtractor(AbstractExtractor):
         fallback_count = 0
         sent_count = len(list(doc.sents))
 
+        coref_map = self._resolve_coreference(doc)
+
         for sent_idx, sent in enumerate(doc.sents):
-            s_facts, d_cnt, n_cnt, f_cnt = self._extract_from_sentence(sent, sent_idx, article.publication_date)
+            s_facts, d_cnt, n_cnt, f_cnt = self._extract_from_sentence(sent, sent_idx, article.publication_date, coref_map)
             facts.extend(s_facts)
             dep_count += d_cnt
             nominal_count += n_cnt
@@ -130,9 +132,20 @@ class SpacyExtractor(AbstractExtractor):
     # Sentence-level extraction
     def _extract_from_sentence(
         self, sent: Span, sent_idx: int, pub_date: Optional[datetime],
+        coref_map: Optional[dict] = None,
     ) -> tuple[list[TemporalFact], int, int, int]:
         """Extract facts from one sentence; falls back if parsing yields nothing."""
         entities = [self._span_to_entity(ent) for ent in sent.ents if ent.label_ != "DATE"]
+
+        # Coreference: adaugă entități rezolvate dacă propoziția nu conține nicio entitate PERSON
+        if coref_map and not any(e.entity_type == EntityType.PERSON for e in entities):
+            added_texts = {e.text for e in entities}
+            for token in sent:
+                if token.i in coref_map:
+                    resolved = coref_map[token.i]
+                    if resolved.text not in added_texts:
+                        entities.append(resolved)
+                        added_texts.add(resolved.text)
 
         date_spans = [
             (ent.start_char, ent.end_char, ent.text)
@@ -234,6 +247,24 @@ class SpacyExtractor(AbstractExtractor):
                     for entity in entities:
                         if entity.start_char <= desc.idx < entity.end_char:
                             _try_add(entity)
+        # Traversează și subtree-ul copiilor prep (ex: "served as President")
+        for child in root.children:
+            if child.dep_ == "prep":
+                for grandchild in child.children:
+                    if grandchild.dep_ in dep_labels:
+                        for entity in entities:
+                            if entity.start_char <= grandchild.idx < entity.end_char:
+                                _try_add(entity)
+                                break
+                        for desc in grandchild.subtree:
+                            for entity in entities:
+                                if entity.start_char <= desc.idx < entity.end_char:
+                                    _try_add(entity)
+
+        # Preferă PERSON/ORG ca subiect — GPE/LOC sunt obiecte, nu actori
+        if dep_labels == SUBJECT_DEPS:
+            person_org = [e for e in matched if e.entity_type in {EntityType.PERSON, EntityType.ORGANIZATION}]
+            return person_org if person_org else matched
         return matched
 
     # Nominal phrase extraction
@@ -250,7 +281,10 @@ class SpacyExtractor(AbstractExtractor):
             for token in sent:
                 if token.pos_ in {"NOUN", "PROPN"}:
                     if abs(token.i - temp_token.i) <= 2:
-                        subj = min(entities, key=lambda e: abs(e.start_char - temp_expr.start_char), default=None)
+                        # Preferă PERSON/ORG ca subiect în nominal facts
+                        person_entities = [e for e in entities if e.entity_type in {EntityType.PERSON, EntityType.ORGANIZATION}]
+                        candidates = person_entities if person_entities else entities
+                        subj = min(candidates, key=lambda e: abs(e.start_char - temp_expr.start_char), default=None)
                         if subj:
                             obj = Entity(
                                 text=token.text, entity_type=EntityType.OTHER,
@@ -325,11 +359,18 @@ class SpacyExtractor(AbstractExtractor):
         time_start, time_end, time_point = self._assign_temporal(temporal_exprs)
         facts = []
 
-        for i, subj in enumerate(entities):
+        # Sortare: PERSON și ORG au prioritate față de GPE/LOC
+        priority_order = {EntityType.PERSON: 0, EntityType.ORGANIZATION: 1}
+        sorted_entities = sorted(
+            entities,
+            key=lambda e: priority_order.get(e.entity_type, 2)
+        )
+
+        for i, subj in enumerate(sorted_entities):
             if len(facts) >= 5:
                 break
 
-            obj = entities[i+1] if i + 1 < len(entities) else Entity(
+            obj = sorted_entities[i+1] if i + 1 < len(sorted_entities) else Entity(
                 text="[context]", entity_type=EntityType.OTHER,
                 start_char=0, end_char=0,
             )
@@ -348,6 +389,30 @@ class SpacyExtractor(AbstractExtractor):
             ))
 
         return facts
+
+    # Coreference rule-based
+    def _resolve_coreference(self, doc: Doc) -> dict[int, Entity]:
+        """Mapează pronumele la ultima entitate PERSON din context anterior."""
+        coref_map: dict[int, Entity] = {}
+        last_person: Optional[Entity] = None
+        PRONOUNS = {"he", "she", "they", "his", "her", "their", "him", "them", "it"}
+
+        for token in doc:
+            # Actualizează last_person când găsim o entitate PERSON
+            for ent in doc.ents:
+                if ent.start == token.i and ent.label_ == "PERSON":
+                    last_person = Entity(
+                        text=ent.text,
+                        entity_type=EntityType.PERSON,
+                        start_char=ent.start_char,
+                        end_char=ent.end_char,
+                    )
+            # Mapează pronumele la last_person
+            if token.pos_ == "PRON" and token.lemma_.lower() in PRONOUNS:
+                if last_person is not None:
+                    coref_map[token.i] = last_person
+
+        return coref_map
 
     # Utilities
     def _span_to_entity(self, ent: Span) -> Entity:

@@ -26,24 +26,26 @@ class TCSCalculator:
         start_time_ms: Optional[float] = None
     ) -> TCSResult:
         """
-        TCS = 1 - (weighted_penalty / max_possible_penalty) × score_coherence × coverage_factor
+        TCS = (1 - penalty_ratio) × score_coherence
 
-        coverage_factor: fraction of facts that could be verified (0-1)
-        weighted_penalty: sum of severity weights for detected inconsistencies
+        penalty_ratio: weighted_penalty / max_possible_penalty, normalizat în [0, 1]
+        weighted_penalty: suma severity weights pentru inconsistențele detectate
+        score_coherence: scorul de coerență internă din C3
+        Returnează 0.0 explicit când nu există fapte temporale (date insuficiente).
         """
         facts = facts or []
 
         if n_claims == 0:
             return TCSResult(
-                score=0.5, n_inconsistencies=0, n_temporal_claims=0,
+                score=0.0, n_inconsistencies=0, n_temporal_claims=0,
                 coherence_factor=1.0, inconsistencies=[], facts=[],
-                explanation_text="insufficient_data"
+                explanation_text="insufficient_temporal_data"
             )
 
         # Severity weights
         SEVERITY_WEIGHTS = {
-            Severity.LOW: 0.2,
-            Severity.MEDIUM: 0.5,
+            Severity.LOW: 0.0,
+            Severity.MEDIUM: 0.3,
             Severity.HIGH: 1.0,
             Severity.CRITICAL: 1.5,
         }
@@ -53,28 +55,12 @@ class TCSCalculator:
         # Worst-case: every claim has a critical inconsistency
         max_possible_penalty = n_claims * max(SEVERITY_WEIGHTS.values())
 
-        # Coverage factor: sqrt-softened ratio; higher coverage amplifies the raw signal
-        if facts_total > 0:
-            raw_coverage = facts_verified / facts_total
-            coverage_factor = max(0.5, raw_coverage ** 0.5)
-        else:
-            coverage_factor = 0.7
-
-        # Main formula
+        # Formula TCS simplificată: penalizare normalizată × coerență internă
         penalty_ratio = min(1.0, weighted_penalty / max_possible_penalty) if max_possible_penalty > 0 else 0.0
-        raw_tcs = (1.0 - penalty_ratio) * score_coherence
-
-        # Confidence multiplier: amplify deviation from 0.5 proportionally to coverage
-        tcs = raw_tcs + coverage_factor * (raw_tcs - 0.5) * 0.3
-        if facts_verified == 0:
-            tcs = raw_tcs
-
-        # Clamp
-        tcs = max(0.0, min(1.0, tcs))
+        tcs = max(0.0, min(1.0, (1.0 - penalty_ratio) * score_coherence))
 
         logger.info(f"TCS: penalty={weighted_penalty:.2f}/{max_possible_penalty:.2f}, "
-                    f"coherence={score_coherence:.3f}, coverage={coverage_factor:.2f} "
-                    f"-> TCS={tcs:.3f}")
+                    f"coherence={score_coherence:.3f} -> TCS={tcs:.3f}")
 
         timeline = _build_timeline(facts, inconsistencies)
 
