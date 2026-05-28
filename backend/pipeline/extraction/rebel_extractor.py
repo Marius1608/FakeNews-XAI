@@ -62,14 +62,13 @@ class RebelExtractor(AbstractExtractor):
 
     def _load_pipeline(self) -> None:
         """Lazy load: instanțiează pipeline-ul REBEL la primul apel extract()."""
-        import torch
-        from transformers import pipeline as hf_pipeline
-
+        import importlib
+        transformers = importlib.import_module("transformers")
+        hf_pipeline = getattr(transformers, "pipeline")
         self._pipe = hf_pipeline(
             "text2text-generation",
             model="Babelscape/rebel-large",
             tokenizer="Babelscape/rebel-large",
-            device=0 if torch.cuda.is_available() else -1,
         )
         logger.info("REBEL pipeline încărcat.")
 
@@ -138,19 +137,21 @@ class RebelExtractor(AbstractExtractor):
         return chunks
 
     def _parse_rebel_output(self, text: str) -> list[dict]:
-        """Parsează output-ul REBEL: <triplet> subiect <subj> obiect <obj> relație."""
-        triplets: list[dict] = []
-        matches = re.findall(
-            r'<triplet>\s*(.*?)\s*<subj>\s*(.*?)\s*<obj>\s*(.*?)(?=<triplet>|$)',
-            text,
-            re.DOTALL,
-        )
-        for subject, obj, relation in matches:
-            if subject.strip() and obj.strip() and relation.strip():
+        """Parsează outputul REBEL — format cu spații duble ca separatori."""
+        triplets = []
+        # Format real: ' subject  object  relation' (separatori = 2+ spații)
+        import re
+        parts = [p.strip() for p in re.split(r'\s{2,}', text.strip()) if p.strip()]
+        # Grupează câte 3: subject, object, relation
+        for i in range(0, len(parts) - 2, 3):
+            subject = parts[i]
+            obj = parts[i + 1]
+            relation = parts[i + 2]
+            if subject and obj and relation and subject.lower() != obj.lower():
                 triplets.append({
-                    "subject": subject.strip(),
-                    "object": obj.strip(),
-                    "relation": relation.strip(),
+                    "subject": subject,
+                    "object": obj,
+                    "relation": relation,
                 })
         return triplets
 

@@ -25,11 +25,9 @@ def _get_extractor_class(name: str) -> type:
     if not _EXTRACTOR_FACTORIES:
         from backend.pipeline.extraction.spacy_extractor import SpacyExtractor
         from backend.pipeline.extraction.llm_extractor import LLMExtractor
-        from backend.pipeline.extraction.deepke_extractor import DeepKeExtractor
         from backend.pipeline.extraction.rebel_extractor import RebelExtractor
         _EXTRACTOR_FACTORIES["spacy"] = SpacyExtractor
         _EXTRACTOR_FACTORIES["llm"] = LLMExtractor
-        _EXTRACTOR_FACTORIES["deepke"] = DeepKeExtractor
         _EXTRACTOR_FACTORIES["rebel"] = RebelExtractor
     if name not in _EXTRACTOR_FACTORIES:
         raise ValueError(f"Unknown extractor: '{name}'. Options: {list(_EXTRACTOR_FACTORIES)}")
@@ -194,20 +192,13 @@ class PipelineOrchestrator:
         return result
 
     def _run_rebel_parallel(self, article) -> list:
-        """Rulează RebelExtractor în thread separat cu timeout 120s."""
-        from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeout
-
+        """Rulează RebelExtractor direct (fără thread) pentru compatibilitate Windows."""
         extractor = self._get_rebel_extractor()
         if not extractor.is_available():
             logger.warning("REBEL model not available — skipping Pipeline C")
             return []
         try:
-            with ThreadPoolExecutor(max_workers=1) as ex:
-                future = ex.submit(extractor.extract, article)
-                return future.result(timeout=120)
-        except FuturesTimeout:
-            logger.warning("REBEL extraction timed out after 120s")
-            return []
+            return extractor.extract(article)
         except Exception as e:
             logger.warning(f"REBEL extraction failed: {e}")
             return []
@@ -220,17 +211,29 @@ class PipelineOrchestrator:
         return self._rebel_extractor
 
     def _merge_facts(self, primary: list, rebel: list) -> list:
-        """Combină faptele principale cu cele REBEL; deduplicare pe (subiect, predicat, obiect)."""
-        seen = {
-            (f.subject.text.lower(), f.predicate.value, f.object.text.lower())
-            for f in primary
-        }
+        """Combină faptele principale cu cele REBEL; deduplicare + transfer date temporale."""
+        seen = {(f.subject.text.lower(), f.predicate.value, f.object.text.lower()) for f in primary}
         merged = list(primary)
+
         for f in rebel:
             key = (f.subject.text.lower(), f.predicate.value, f.object.text.lower())
             if key not in seen:
                 seen.add(key)
+                # Transferă date temporale de la faptul spaCy cu același subiect și relație
+                if f.time_point is None and f.time_start is None:
+                    match = next(
+                        (p for p in primary
+                         if p.subject.text.lower() == f.subject.text.lower()
+                         and p.predicate == f.predicate
+                         and (p.time_point is not None or p.time_start is not None)),
+                        None
+                    )
+                    if match:
+                        f.time_point = match.time_point
+                        f.time_start = match.time_start
+                        f.time_end = match.time_end
                 merged.append(f)
+
         return merged
 
     def run_batch(self, articles: list[Article]) -> list[TCSResult]:
