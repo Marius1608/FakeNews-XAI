@@ -26,9 +26,11 @@ def _get_extractor_class(name: str) -> type:
         from backend.pipeline.extraction.spacy_extractor import SpacyExtractor
         from backend.pipeline.extraction.llm_extractor import LLMExtractor
         from backend.pipeline.extraction.deepke_extractor import DeepKeExtractor
+        from backend.pipeline.extraction.rebel_extractor import RebelExtractor
         _EXTRACTOR_FACTORIES["spacy"] = SpacyExtractor
         _EXTRACTOR_FACTORIES["llm"] = LLMExtractor
         _EXTRACTOR_FACTORIES["deepke"] = DeepKeExtractor
+        _EXTRACTOR_FACTORIES["rebel"] = RebelExtractor
     if name not in _EXTRACTOR_FACTORIES:
         raise ValueError(f"Unknown extractor: '{name}'. Options: {list(_EXTRACTOR_FACTORIES)}")
     return _EXTRACTOR_FACTORIES[name]
@@ -49,12 +51,14 @@ class PipelineOrchestrator:
         enable_cross_article: bool = True,
         use_web_search: bool = False,
         persist: bool = False,
+        use_rebel: bool = False,
     ):
         self.use_wikidata = use_wikidata
         self.use_web_search = use_web_search
         self.extractor_name = extractor_name
         self.model_name = model_name
         self.persist = persist
+        self.use_rebel = use_rebel
 
         self._persistent_store = persistent_store
         self._enable_cross_article = enable_cross_article
@@ -106,6 +110,12 @@ class PipelineOrchestrator:
         # C1: extraction
         facts = self.extractor.extract(article)
         logger.info(f"C1 done — {len(facts)} facts extracted ({self.extractor_name})")
+
+        # C1c: Pipeline C (REBEL) — augmentare paralelă dacă activat
+        if self.use_rebel:
+            rebel_facts = self._run_rebel_parallel(article)
+            facts = self._merge_facts(facts, rebel_facts)
+            logger.info(f"C1c done — REBEL added {len(rebel_facts)} facts (total: {len(facts)})")
 
         # C2: TKG construction
         tkg: TemporalKnowledgeGraph = self._builder.build(facts)
@@ -182,6 +192,46 @@ class PipelineOrchestrator:
 
         logger.info(f"Pipeline DONE — TCS={result.score:.3f} ({result.label}) in {result.processing_time_ms:.0f}ms")
         return result
+
+    def _run_rebel_parallel(self, article) -> list:
+        """Rulează RebelExtractor în thread separat cu timeout 120s."""
+        from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeout
+
+        extractor = self._get_rebel_extractor()
+        if not extractor.is_available():
+            logger.warning("REBEL model not available — skipping Pipeline C")
+            return []
+        try:
+            with ThreadPoolExecutor(max_workers=1) as ex:
+                future = ex.submit(extractor.extract, article)
+                return future.result(timeout=120)
+        except FuturesTimeout:
+            logger.warning("REBEL extraction timed out after 120s")
+            return []
+        except Exception as e:
+            logger.warning(f"REBEL extraction failed: {e}")
+            return []
+
+    def _get_rebel_extractor(self):
+        """Lazy load RebelExtractor — instanță unică pe orchestrator."""
+        if not hasattr(self, "_rebel_extractor"):
+            from backend.pipeline.extraction.rebel_extractor import RebelExtractor
+            self._rebel_extractor = RebelExtractor()
+        return self._rebel_extractor
+
+    def _merge_facts(self, primary: list, rebel: list) -> list:
+        """Combină faptele principale cu cele REBEL; deduplicare pe (subiect, predicat, obiect)."""
+        seen = {
+            (f.subject.text.lower(), f.predicate.value, f.object.text.lower())
+            for f in primary
+        }
+        merged = list(primary)
+        for f in rebel:
+            key = (f.subject.text.lower(), f.predicate.value, f.object.text.lower())
+            if key not in seen:
+                seen.add(key)
+                merged.append(f)
+        return merged
 
     def run_batch(self, articles: list[Article]) -> list[TCSResult]:
         """Run the pipeline on a list of articles (for dataset evaluation)."""

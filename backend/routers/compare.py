@@ -27,6 +27,7 @@ class CompareRequest(BaseModel):
     model_a: Optional[str] = Field(default=None, description="Specific model A (None = default)")
     pipeline_b: str = Field(default="llm", description="Pipeline B: 'spacy' or 'llm'")
     model_b: Optional[str] = Field(default=None, description="Specific model B (None = default)")
+    use_rebel: bool = Field(default=False, description="Augmentează ambele pipeline-uri cu REBEL-large (Pipeline C)")
 
 
 class PipelineResult(BaseModel):
@@ -119,6 +120,7 @@ async def compare_pipelines(req: CompareRequest) -> CompareResponse:
         orch_a = get_orchestrator(req.pipeline_a, req.model_a)
         orch_a._persistent_store = store
         orch_a.persist = False
+        orch_a.use_rebel = req.use_rebel
         result_a = orch_a.run(article)
     except Exception as e:
         logger.error(f"/compare: pipeline A error ({req.pipeline_a}:{resolved_model_a}) — {e}", exc_info=True)
@@ -129,6 +131,7 @@ async def compare_pipelines(req: CompareRequest) -> CompareResponse:
         orch_b = get_orchestrator(req.pipeline_b, req.model_b)
         orch_b._persistent_store = store
         orch_b.persist = False
+        orch_b.use_rebel = req.use_rebel
         result_b = orch_b.run(article)
     except Exception as e:
         logger.error(f"/compare: pipeline B error ({req.pipeline_b}:{resolved_model_b}) — {e}", exc_info=True)

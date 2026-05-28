@@ -15,6 +15,7 @@ export interface AnalyzeRequest {
   pipeline?: "spacy" | "llm";
   model?: string;
   persist?: boolean;
+  use_rebel?: boolean;
 }
 
 export interface InconsistencyResponse {
@@ -134,6 +135,7 @@ export interface CompareRequest {
   model_a?: string;
   pipeline_b: string;
   model_b?: string;
+  use_rebel?: boolean;
 }
 
 export interface PipelineResult {

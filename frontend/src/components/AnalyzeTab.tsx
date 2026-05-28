@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Box, Button, Checkbox, Chip, CircularProgress, FormControlLabel, Stack, Typography } from "@mui/material";
+import { Alert, Box, Button, Checkbox, Chip, CircularProgress, FormControlLabel, Stack, Switch, Tooltip, Typography } from "@mui/material";
 import { CompareArrows, Psychology } from "@mui/icons-material";
 import axios from "axios";
 import type { AnalyzeRequest, AnalyzeResponse, CrossArticleResponse, ModelsResponse } from "../types";
@@ -18,6 +18,7 @@ function AnalyzeTab(): React.ReactElement {
   const [error, setError] = useState<string | null>(null);
   const [availableModels, setAvailableModels] = useState<ModelsResponse | undefined>(undefined);
   const [persist, setPersist] = useState<boolean>(false);
+  const [useRebel, setUseRebel] = useState<boolean>(false);
   const [crossArticleResult, setCrossArticleResult] = useState<CrossArticleResponse | null>(null);
   const [crossArticleLoading, setCrossArticleLoading] = useState<boolean>(false);
 
@@ -33,7 +34,7 @@ function AnalyzeTab(): React.ReactElement {
     setArticleText(request.text);
     setCrossArticleResult(null);
     try {
-      const result = await analyzeArticle({ ...request, persist });
+      const result = await analyzeArticle({ ...request, persist, use_rebel: useRebel });
       setAnalyzeResult(result);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
@@ -79,21 +80,30 @@ function AnalyzeTab(): React.ReactElement {
         availableModels={availableModels}
       />
 
-      <FormControlLabel
-        sx={{ mt: -1 }}
-        control={
-          <Checkbox
-            size="small"
-            checked={persist}
-            onChange={(e) => setPersist(e.target.checked)}
+      <Stack direction="row" spacing={2} sx={{ mt: -1, alignItems: "center" }}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              size="small"
+              checked={persist}
+              onChange={(e) => setPersist(e.target.checked)}
+            />
+          }
+          label={<Typography variant="body2">Save</Typography>}
+        />
+        <Tooltip title="Adds static relations (position held, member of) extracted by REBEL-large">
+          <FormControlLabel
+            control={
+              <Switch
+                size="small"
+                checked={useRebel}
+                onChange={(e) => setUseRebel(e.target.checked)}
+              />
+            }
+            label={<Typography variant="body2">Pipeline C (REBEL)</Typography>}
           />
-        }
-        label={
-          <Typography variant="body2">
-            Save
-          </Typography>
-        }
-      />
+        </Tooltip>
+      </Stack>
 
       {error && (
         <Alert severity="error" onClose={() => setError(null)}>
