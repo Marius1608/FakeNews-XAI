@@ -72,6 +72,8 @@ def run_benchmark(
     use_wikidata: bool = False,
     threshold: float = FAKE_THRESHOLD,
     model_name: Optional[str] = None,
+    use_rebel: bool = False,
+    use_rss: bool = False,
 ) -> list[dict]:
     """Ruleaza pipeline-ul TCS pe fiecare articol si colecteaza rezultatele."""
     from backend.pipeline.graph.models import Article
@@ -89,6 +91,8 @@ def run_benchmark(
         extractor_name=pipeline,
         model_name=resolved_model,
         persistent_store=None,
+        use_rebel=use_rebel,
+        use_rss=use_rss,
     )
 
     rows = []
@@ -309,6 +313,8 @@ def main() -> None:
     parser.add_argument("--threshold", type=float, default=FAKE_THRESHOLD, help="Threshold TCS fake (default: 0.6)")
     parser.add_argument("--pipeline", choices=["spacy", "llm"], default="spacy", help="Pipeline extractor")
     parser.add_argument("--model", type=str, default=None, help="Model spaCy/LLM explicit (default: auto-detect)")
+    parser.add_argument("--rebel", action="store_true", help="Enable Pipeline C (REBEL)")
+    parser.add_argument("--rss", action="store_true", help="Enable RSS Stream")
     args = parser.parse_args()
 
     print(f"\nBenchmark: pipeline={args.pipeline}, wikidata={args.wikidata}, threshold={args.threshold}")
@@ -321,6 +327,8 @@ def main() -> None:
         use_wikidata=args.wikidata,
         threshold=args.threshold,
         model_name=args.model,
+        use_rebel=args.rebel,
+        use_rss=args.rss,
     )
     metrics = compute_metrics(rows)
 

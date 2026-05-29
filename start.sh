@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Usage: bash start.sh
-# Starts Ollama, pulls required models, verifies spaCy models,
+# Starts Neo4j check, Ollama, pulls required models, verifies spaCy + REBEL models,
 # then launches the backend (FastAPI :8000) and frontend (React :3000).
 
 set -euo pipefail
@@ -13,6 +13,7 @@ RESET="\033[0m"
 
 BACKEND_URL="http://localhost:8000"
 FRONTEND_URL="http://localhost:3000"
+NEO4J_URL="http://localhost:7474"
 
 BACKEND_PID=""
 FRONTEND_PID=""
@@ -53,8 +54,17 @@ check_http() {
     curl -sf -o /dev/null --max-time 5 "$1"
 }
 
-# [1/5] Ollama daemon
-step "[1/5] Checking Ollama..."
+# [1/6] Neo4j
+step "[1/6] Checking Neo4j..."
+if check_http "$NEO4J_URL"; then
+    ok "Neo4j is running at $NEO4J_URL"
+else
+    warn "Neo4j not running — cross-article verification and HITL will be disabled"
+    warn "Start Neo4j manually before running start.sh for full functionality"
+fi
+
+# [2/6] Ollama daemon
+step "[2/6] Checking Ollama..."
 if ! check_http "$OLLAMA_URL/api/tags"; then
     warn "Ollama not running — starting ollama serve"
     ollama serve &>/dev/null &
@@ -66,8 +76,8 @@ if ! check_http "$OLLAMA_URL/api/tags"; then
 fi
 ok "Ollama is running"
 
-# [2/5] Ollama LLM models
-step "[2/5] Checking Ollama LLM models..."
+# [3/6] Ollama LLM models
+step "[3/6] Checking Ollama LLM models..."
 PULLED_MODELS=$(curl -sf "$OLLAMA_URL/api/tags" \
     | grep -o '"name":"[^"]*"' \
     | sed 's/"name":"//;s/"//' \
@@ -88,8 +98,8 @@ for model in "${LLM_MODELS[@]}"; do
     fi
 done
 
-# [3/5] spaCy NLP models
-step "[3/5] Checking spaCy models..."
+# [4/6] spaCy NLP models
+step "[4/6] Checking spaCy models..."
 for model in "${SPACY_MODELS[@]}"; do
     if python -c "import spacy; spacy.load('$model')" 2>/dev/null; then
         ok "spaCy model present: $model"
@@ -103,8 +113,18 @@ for model in "${SPACY_MODELS[@]}"; do
     fi
 done
 
-# [4/5] Backend
-step "[4/5] Activating Python venv..."
+# [5/6] REBEL model (Pipeline C)
+step "[5/6] Checking REBEL-large model (Pipeline C)..."
+REBEL_CACHE="$HOME/.cache/huggingface/hub/models--Babelscape--rebel-large"
+if [[ -d "$REBEL_CACHE" ]]; then
+    ok "REBEL-large model present in HuggingFace cache"
+else
+    warn "REBEL-large not in cache — Pipeline C will download on first use (~1.6GB)"
+    warn "To pre-download: python -c \"from transformers import pipeline; pipeline('text2text-generation', model='Babelscape/rebel-large')\""
+fi
+
+# [6/6] Backend + Frontend
+step "[6/6] Activating Python venv..."
 if [[ -f "$REPO_ROOT/venv/Scripts/activate" ]]; then
     source "$REPO_ROOT/venv/Scripts/activate"
 elif [[ -f "$REPO_ROOT/venv/bin/activate" ]]; then
@@ -115,7 +135,7 @@ else
 fi
 ok "venv activated"
 
-step "[4/5] Starting backend (uvicorn on :8000)..."
+step "[6/6] Starting backend (uvicorn on :8000)..."
 cd "$REPO_ROOT"
 uvicorn backend.main:app --host 0.0.0.0 --port 8000 2>&1 | sed 's/^/[backend]  /' &
 BACKEND_PID=$!
@@ -127,8 +147,7 @@ else
     warn "Backend did not respond in time — check output above"
 fi
 
-# [5/5] Frontend
-step "[5/5] Starting frontend (npm start on :3000)..."
+step "[6/6] Starting frontend (npm start on :3000)..."
 cd "$REPO_ROOT/frontend"
 npm start 2>&1 | sed 's/^/[frontend] /' &
 FRONTEND_PID=$!
@@ -137,12 +156,18 @@ cd "$REPO_ROOT"
 
 # Summary
 echo ""
-echo -e "${CYAN}======================================${RESET}"
-echo -e "${GREEN}  Backend   $BACKEND_URL${RESET}"
-echo -e "${GREEN}  Frontend  $FRONTEND_URL${RESET}"
-echo -e "${GREEN}  Ollama    $OLLAMA_URL${RESET}"
+echo -e "${CYAN}================================================${RESET}"
+echo -e "${GREEN}  Backend    $BACKEND_URL${RESET}"
+echo -e "${GREEN}  Frontend   $FRONTEND_URL${RESET}"
+echo -e "${GREEN}  Ollama     $OLLAMA_URL${RESET}"
+echo -e "${GREEN}  Neo4j      $NEO4J_URL${RESET}"
+echo -e "${CYAN}------------------------------------------------${RESET}"
+echo -e "${YELLOW}  Pipelines: A (spaCy) | B (llama3) | C (REBEL)${RESET}"
+echo -e "${YELLOW}  C3b:       RefKG → Neo4j → Wikidata → RSS${RESET}"
+echo -e "${YELLOW}  HITL:      persist=true → Mark TRUE/FAKE${RESET}"
+echo -e "${CYAN}------------------------------------------------${RESET}"
 echo -e "${YELLOW}  Press Ctrl+C to stop all services${RESET}"
-echo -e "${CYAN}======================================${RESET}"
+echo -e "${CYAN}================================================${RESET}"
 echo ""
 
 wait

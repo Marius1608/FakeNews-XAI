@@ -33,6 +33,7 @@ function AnalyzeTab(): React.ReactElement {
   const handleSubmit = async (request: AnalyzeRequest): Promise<void> => {
     setIsLoading(true);
     setError(null);
+    setAnalyzeResult(null);
     setArticleText(request.text);
     setCrossArticleResult(null);
     setVerdict(null);

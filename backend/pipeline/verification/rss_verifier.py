@@ -14,9 +14,13 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_FEEDS = [
     "http://feeds.bbci.co.uk/news/politics/rss.xml",
-    "https://feeds.reuters.com/Reuters/PoliticsNews",
-    "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
     "https://feeds.npr.org/1014/rss.xml",
+    "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+    "https://thehill.com/homenews/feed/",
+    "https://rss.politico.com/politics-news.xml",
+    "https://www.theguardian.com/politics/rss",
+    "https://www.theguardian.com/us-news/rss",
+    "https://feeds.skynews.com/feeds/rss/politics.xml",
 ]
 
 RELATION_KEYWORDS: dict[RelationType, list[str]] = {

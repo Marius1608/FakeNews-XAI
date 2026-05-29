@@ -208,6 +208,25 @@ class ExternalVerifier:
             )
         ]
 
+    def _subject_matches_wikidata_entity(self, fact_subject: str, wikidata_entity_label: str) -> bool:
+        """Returnează True dacă subiectul faptului corespunde entității Wikidata.
+        Previne cross-entity false positives (ex: 'Biden' vs 'Obama')."""
+        fact_lower = fact_subject.lower().strip()
+        wiki_lower = wikidata_entity_label.lower().strip()
+
+        if not fact_lower or not wiki_lower:
+            return True
+
+        if fact_lower in wiki_lower or wiki_lower in fact_lower:
+            return True
+
+        fact_last = fact_lower.split()[-1] if fact_lower.split() else ""
+        wiki_last = wiki_lower.split()[-1] if wiki_lower.split() else ""
+        if fact_last and wiki_last and fact_last == wiki_last:
+            return True
+
+        return False
+
     def _find_in_reference_kg(self, subject_name: str) -> list[tuple[str, dict]]:
         """Search the Reference KG — returns (kg_entity_key, fact_dict) pairs."""
         pairs: list[tuple[str, dict]] = []
@@ -221,9 +240,10 @@ class ExternalVerifier:
     def _fetch_from_wikidata(self, fact: TemporalFact, result: ExternalVerificationResult) -> list[WikidataFact]:
         cache_key = fact.subject.text.lower().strip()
 
+        logger.debug(f"Wikidata cache {'HIT' if cache_key in self._wikidata_cache else 'MISS'} for entity '{cache_key}'")
+
         # 1. In-memory cache (fastest)
         if cache_key in self._wikidata_cache:
-            logger.debug(f"Wikidata cache hit (memory): '{cache_key}'")
             return self._wikidata_cache[cache_key]
 
         # 2. Neo4j persistent cache (if available)
@@ -232,13 +252,29 @@ class ExternalVerifier:
             if cached is not None:
                 wf_list = [_dict_to_wikidata_fact(d) for d in cached]
                 self._wikidata_cache[cache_key] = wf_list
-                logger.debug(f"Wikidata cache hit (Neo4j): '{cache_key}' ({len(wf_list)} facts)")
+                logger.debug(f"Wikidata Neo4j cache hit: '{cache_key}' ({len(wf_list)} facts)")
                 return wf_list
 
         # 3. Live Wikidata SPARQL query
-        entity_id = self.client.search_entity(fact.subject.text)
+        # search_entity_full returnează {id, label, description} — același apel API ca
+        # search_entity, dar cu label-ul real ("Barack Obama", nu QID-ul "Q76").
+        search_results = self.client.search_entity_full(fact.subject.text)
         result.wikidata_queries += 1
-        if not entity_id:
+        if not search_results:
+            self._wikidata_cache[cache_key] = []
+            return []
+
+        entity_id = search_results[0]["id"]
+        wikidata_entity_label = search_results[0].get("label", "")
+
+        # Cross-entity guard: verifică că Wikidata a găsit entitatea corectă
+        # înainte de SPARQL — economisește un apel dacă entitatea e greșită.
+        # Exemplu corect: "Biden" vs "Joe Biden" → True (match pe ultimul cuvânt)
+        # Exemplu fals pozitiv: "Biden" vs "Barack Obama" → False (skip)
+        if not self._subject_matches_wikidata_entity(fact.subject.text, wikidata_entity_label):
+            logger.debug(
+                f"Cross-entity skip: '{fact.subject.text}' vs Wikidata '{wikidata_entity_label}' — fapte ignorate"
+            )
             self._wikidata_cache[cache_key] = []
             return []
 
@@ -285,9 +321,22 @@ class ExternalVerifier:
         inconsistencies = []
         obj_text = fact.object.text.lower()
 
-        relevant = [wf for wf in wikidata_facts if _fuzzy_entity_match(obj_text, wf.value_label)]
-        if not relevant:
-            relevant = wikidata_facts
+        if fact.predicate == RelationType.HOLDS_POSITION:
+            # Pentru HOLDS_POSITION compară DOAR cu pozițiile similare — fără fallback
+            # la toate pozițiile entității (evită false positives: Biden VP vs Biden Senator).
+            relevant = [
+                wf for wf in wikidata_facts
+                if SequenceMatcher(None, obj_text, wf.value_label.lower()).ratio() > 0.6
+                or obj_text in wf.value_label.lower()
+                or wf.value_label.lower() in obj_text
+            ]
+            if not relevant:
+                logger.debug(f"  HOLDS_POSITION skip: nicio poziție similară cu '{fact.object.text}' în Wikidata")
+                return []
+        else:
+            relevant = [wf for wf in wikidata_facts if _fuzzy_entity_match(obj_text, wf.value_label)]
+            if not relevant:
+                relevant = wikidata_facts
 
         for wf in relevant[:3]:
             logger.debug(f"  Wikidata match: {wf.value_label} [{wf.time_start} -> {wf.time_end}]")

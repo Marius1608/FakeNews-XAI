@@ -144,9 +144,11 @@ class WikidataClient:
     ?propEntity wikibase:statementProperty ?psValue .
     BIND(REPLACE(STR(?propEntity), ".*/(P\\\\d+)$", "$1") AS ?propId)"""
 
-        return f"""SELECT ?propId ?value ?valueLabel ?startTime ?endTime ?pointInTime
+        return f"""SELECT ?propId ?value ?valueLabel ?startTime ?endTime ?pointInTime ?entityLabel
 WHERE {{
 {body}
+  wd:{entity_id} rdfs:label ?entityLabel .
+  FILTER(LANG(?entityLabel) = "en")
   OPTIONAL {{ ?statement pq:P580 ?startTime . }}
   OPTIONAL {{ ?statement pq:P582 ?endTime . }}
   OPTIONAL {{ ?statement pq:P585 ?pointInTime . }}
@@ -174,7 +176,8 @@ LIMIT 50""".strip()
                 continue
 
             facts.append(WikidataFact(
-                entity_id=entity_id, entity_label=entity_id,
+                entity_id=entity_id,
+                entity_label=row.get("entityLabel", {}).get("value", entity_id),
                 property_id=prop_id,
                 property_label=prop_id,
                 value_label=value_label,

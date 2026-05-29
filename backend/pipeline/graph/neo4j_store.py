@@ -36,9 +36,21 @@ class Neo4jTKGStore(AbstractTKGStore):
 
     def __init__(self, uri: str, user: str, password: str) -> None:
         from neo4j import GraphDatabase
+        self._uri = uri
+        self._user = user
+        self._password = password
         self._driver: Driver = GraphDatabase.driver(uri, auth=(user, password))
         self._ensure_indexes()
         logger.info(f"Neo4jTKGStore connected to {uri}")
+
+    def _ensure_connected(self) -> None:
+        """Reconectează driver-ul dacă e închis."""
+        try:
+            self._driver.verify_connectivity()
+        except Exception:
+            from neo4j import GraphDatabase
+            self._driver = GraphDatabase.driver(self._uri, auth=(self._user, self._password))
+            logger.info("Neo4jTKGStore: driver reconectat.")
 
     def _ensure_indexes(self) -> None:
         """Create indexes on first run so lookups on entity_id and article_id are fast."""
@@ -60,6 +72,7 @@ class Neo4jTKGStore(AbstractTKGStore):
         source: str | None = None,
     ) -> None:
         """Store a fact as two Entity nodes + a TEMPORAL_RELATION edge."""
+        self._ensure_connected()
         with self._driver.session() as session:
             session.execute_write(self._create_fact_tx, fact, article_id, title, source)
 
@@ -152,6 +165,7 @@ class Neo4jTKGStore(AbstractTKGStore):
 
     def get_all_facts(self, article_id: str | None = None) -> list[TemporalFact]:
         """Retrieve facts, optionally filtered by article_id."""
+        self._ensure_connected()
         if article_id:
             query = f"""
                 MATCH (s:Entity)-[r:TEMPORAL_RELATION {{article_id: $article_id}}]->(o:Entity)
@@ -171,6 +185,7 @@ class Neo4jTKGStore(AbstractTKGStore):
 
     def get_facts_for_entity(self, entity_name: str) -> list[TemporalFact]:
         """All facts across ALL articles where the entity appears as subject or object."""
+        self._ensure_connected()
         entity_id = entity_name.lower().strip()
         query = f"""
             MATCH (s:Entity)-[r:TEMPORAL_RELATION]->(o:Entity)
@@ -183,6 +198,7 @@ class Neo4jTKGStore(AbstractTKGStore):
 
     def get_articles(self) -> list[dict]:
         """List all analyzed articles with their fact counts."""
+        self._ensure_connected()
         with self._driver.session() as session:
             result = session.run("""
                 MATCH (a:Article)
@@ -198,6 +214,7 @@ class Neo4jTKGStore(AbstractTKGStore):
 
     def delete_article(self, article_id: str) -> bool:
         """Delete an article node and all TEMPORAL_RELATION edges that belong to it."""
+        self._ensure_connected()
         with self._driver.session() as session:
             check = session.run(
                 "MATCH (a:Article {article_id: $id}) RETURN count(a) > 0 AS found",
@@ -219,6 +236,7 @@ class Neo4jTKGStore(AbstractTKGStore):
 
     def cache_wikidata_result(self, entity_name: str, wikidata_facts: list[dict]) -> None:
         """Store a Wikidata query result in Neo4j for persistent caching."""
+        self._ensure_connected()
         import json
         cache_key = entity_name.lower().strip()
         with self._driver.session() as session:
@@ -231,6 +249,7 @@ class Neo4jTKGStore(AbstractTKGStore):
 
     def get_cached_wikidata(self, entity_name: str, max_age_hours: int = 168) -> Optional[list[dict]]:
         """Retrieve a cached Wikidata result. Returns None if absent or expired (default 7 days)."""
+        self._ensure_connected()
         import json
         cache_key = entity_name.lower().strip()
         with self._driver.session() as session:
@@ -256,6 +275,7 @@ class Neo4jTKGStore(AbstractTKGStore):
         annotator: str = "human",
     ) -> bool:
         """Salvează verdictul uman pe nodul Article în Neo4j."""
+        self._ensure_connected()
         query = """
         MATCH (a:Article {article_id: $article_id})
         SET a.human_verdict = $verdict,
@@ -277,6 +297,7 @@ class Neo4jTKGStore(AbstractTKGStore):
             return result.single() is not None
 
     def summary(self) -> dict:
+        self._ensure_connected()
         with self._driver.session() as session:
             result = session.run("""
                 MATCH (e:Entity) WITH count(e) AS nodes
