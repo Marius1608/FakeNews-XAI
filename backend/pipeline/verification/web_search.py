@@ -2,7 +2,6 @@
 
 Used as a fallback in C3b when Reference KG and Wikidata both fail.
 No API key required. Free, stable, good coverage for political entities.
-Accuracy tested: 83.3% on 12 political fact test cases.
 """
 
 from __future__ import annotations

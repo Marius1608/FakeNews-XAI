@@ -12,6 +12,7 @@ from backend.routers import analyze, compare, health
 from backend.routers.articles import router as articles_router
 from backend.routers.batch import router as batch_router
 from backend.routers.upload import router as upload_router
+from backend.routers.verify import router as verify_router
 
 logging.basicConfig(
     level=logging.INFO,
@@ -44,6 +45,7 @@ app.include_router(compare.router)
 app.include_router(articles_router)
 app.include_router(batch_router)
 app.include_router(upload_router)
+app.include_router(verify_router)
 
 
 @app.on_event("startup")

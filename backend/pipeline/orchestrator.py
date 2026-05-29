@@ -50,6 +50,7 @@ class PipelineOrchestrator:
         use_web_search: bool = False,
         persist: bool = False,
         use_rebel: bool = False,
+        use_rss: bool = False,
     ):
         self.use_wikidata = use_wikidata
         self.use_web_search = use_web_search
@@ -57,6 +58,7 @@ class PipelineOrchestrator:
         self.model_name = model_name
         self.persist = persist
         self.use_rebel = use_rebel
+        self.use_rss = use_rss
 
         self._persistent_store = persistent_store
         self._enable_cross_article = enable_cross_article
@@ -97,6 +99,7 @@ class PipelineOrchestrator:
                 use_wikidata=self.use_wikidata,
                 use_web_search=self.use_web_search,
                 persistent_store=self._persistent_store,
+                use_rss=self.use_rss,
             )
         return self._external_verifier
 

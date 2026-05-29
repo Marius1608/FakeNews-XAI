@@ -8,6 +8,7 @@ import type {
   CompareRequest, CompareResponse,
   CrossArticleResponse,
   HealthResponse, ModelsResponse,
+  VerifyRequest, VerifyResponse,
 } from "../types";
 
 // axios instance
@@ -52,6 +53,14 @@ export async function getArticles(): Promise<ArticlesResponse> {
 
 export async function deleteArticle(articleId: string): Promise<void> {
   await apiClient.delete(`/articles/${encodeURIComponent(articleId)}`);
+}
+
+export async function verifyArticle(articleId: string, req: VerifyRequest): Promise<VerifyResponse> {
+  const { data } = await apiClient.post<VerifyResponse>(
+    `/articles/${encodeURIComponent(articleId)}/verify`,
+    req,
+  );
+  return data;
 }
 
 export async function crossCheckArticle(articleId: string): Promise<CrossArticleResponse> {

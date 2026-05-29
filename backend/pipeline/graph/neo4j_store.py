@@ -247,6 +247,35 @@ class Neo4jTKGStore(AbstractTKGStore):
                     return None
         return None
 
+    def save_human_verdict(
+        self,
+        article_id: str,
+        verdict: str,
+        confidence: float = 1.0,
+        notes: str = "",
+        annotator: str = "human",
+    ) -> bool:
+        """Salvează verdictul uman pe nodul Article în Neo4j."""
+        query = """
+        MATCH (a:Article {article_id: $article_id})
+        SET a.human_verdict = $verdict,
+            a.human_confidence = $confidence,
+            a.human_notes = $notes,
+            a.human_annotator = $annotator,
+            a.verified_at = $verified_at
+        RETURN a.article_id AS id
+        """
+        with self._driver.session() as session:
+            result = session.run(query, {
+                "article_id": article_id,
+                "verdict": verdict,
+                "confidence": confidence,
+                "notes": notes,
+                "annotator": annotator,
+                "verified_at": datetime.now().isoformat(),
+            })
+            return result.single() is not None
+
     def summary(self) -> dict:
         with self._driver.session() as session:
             result = session.run("""

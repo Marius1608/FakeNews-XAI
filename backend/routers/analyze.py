@@ -29,6 +29,7 @@ class AnalyzeRequest(BaseModel):
     persist: bool = Field(default=False, description="Save facts to Neo4j for cross-article analysis")
     use_web_search: bool = Field(default=False, description="Enable Wikipedia REST API fallback in C3b")
     use_rebel: bool = Field(default=False, description="Augmentează C1 cu REBEL-large (Pipeline C)")
+    use_rss: bool = Field(default=False, description="Activează RSS Stream fallback în C3b (nivel 5)")
 
 
 class InconsistencyResponse(BaseModel):
@@ -138,8 +139,11 @@ async def analyze_article(req: AnalyzeRequest) -> AnalyzeResponse:
     orchestrator._enable_cross_article = False
     orchestrator.use_web_search = req.use_web_search
     orchestrator.use_rebel = req.use_rebel
+    orchestrator.use_rss = req.use_rss
     if orchestrator._external_verifier is not None:
         orchestrator._external_verifier.use_web_search = req.use_web_search
+        from backend.pipeline.verification.rss_verifier import RSSVerifier
+        orchestrator._external_verifier._rss_verifier = RSSVerifier() if req.use_rss else None
 
     try:
         result = orchestrator.run(article)

@@ -16,6 +16,7 @@ export interface AnalyzeRequest {
   model?: string;
   persist?: boolean;
   use_rebel?: boolean;
+  use_rss?: boolean;
 }
 
 export interface InconsistencyResponse {
@@ -160,6 +161,21 @@ export interface CompareResponse {
   agreement: string;
   model_a: string;
   model_b: string;
+}
+
+// human-in-the-loop schemas
+export interface VerifyRequest {
+  verdict: "true" | "fake";
+  confidence?: number;
+  notes?: string;
+  annotator?: string;
+}
+
+export interface VerifyResponse {
+  article_id: string;
+  verdict: string;
+  saved: boolean;
+  message: string;
 }
 
 // cross-article check schemas

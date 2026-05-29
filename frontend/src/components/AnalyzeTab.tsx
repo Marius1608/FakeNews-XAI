@@ -3,7 +3,7 @@ import { Alert, Box, Button, Checkbox, Chip, CircularProgress, FormControlLabel,
 import { CompareArrows, Psychology } from "@mui/icons-material";
 import axios from "axios";
 import type { AnalyzeRequest, AnalyzeResponse, CrossArticleResponse, ModelsResponse } from "../types";
-import { analyzeArticle, crossCheckArticle, getModels } from "../api/client";
+import { analyzeArticle, crossCheckArticle, getModels, verifyArticle } from "../api/client";
 import ArticleInput from "./ArticleInput";
 import TCSScoreDisplay from "./TCSScoreDisplay";
 import TextHighlight from "./TextHighlight";
@@ -19,8 +19,10 @@ function AnalyzeTab(): React.ReactElement {
   const [availableModels, setAvailableModels] = useState<ModelsResponse | undefined>(undefined);
   const [persist, setPersist] = useState<boolean>(false);
   const [useRebel, setUseRebel] = useState<boolean>(false);
+  const [useRss, setUseRss] = useState<boolean>(false);
   const [crossArticleResult, setCrossArticleResult] = useState<CrossArticleResponse | null>(null);
   const [crossArticleLoading, setCrossArticleLoading] = useState<boolean>(false);
+  const [verdict, setVerdict] = useState<string | null>(null);
 
   useEffect(() => {
     getModels()
@@ -33,8 +35,9 @@ function AnalyzeTab(): React.ReactElement {
     setError(null);
     setArticleText(request.text);
     setCrossArticleResult(null);
+    setVerdict(null);
     try {
-      const result = await analyzeArticle({ ...request, persist, use_rebel: useRebel });
+      const result = await analyzeArticle({ ...request, persist, use_rebel: useRebel, use_rss: useRss });
       setAnalyzeResult(result);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
@@ -71,6 +74,16 @@ function AnalyzeTab(): React.ReactElement {
     }
   };
 
+  const handleVerdict = async (v: string): Promise<void> => {
+    if (!analyzeResult?.article_id) return;
+    try {
+      await verifyArticle(analyzeResult.article_id, { verdict: v as "true" | "fake" });
+      setVerdict(v);
+    } catch {
+      setError("Nu s-a putut salva verdictul.");
+    }
+  };
+
   return (
     <Stack spacing={3}>
       <ArticleInput
@@ -103,6 +116,18 @@ function AnalyzeTab(): React.ReactElement {
             label={<Typography variant="body2">Pipeline C (REBEL)</Typography>}
           />
         </Tooltip>
+        <Tooltip title="Fallback for recent facts not yet in Wikidata — searches live RSS news feeds">
+          <FormControlLabel
+            control={
+              <Switch
+                size="small"
+                checked={useRss}
+                onChange={(e) => setUseRss(e.target.checked)}
+              />
+            }
+            label={<Typography variant="body2">RSS Stream</Typography>}
+          />
+        </Tooltip>
       </Stack>
 
       {error && (
@@ -124,6 +149,40 @@ function AnalyzeTab(): React.ReactElement {
             model={analyzeResult.model}
             processingTimeMs={analyzeResult.processing_time_ms}
           />
+
+          {/* Human validation — apare doar când articolul a fost salvat în Neo4j */}
+          {analyzeResult.article_id && (
+            <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+              <Typography variant="body2" color="text.secondary">
+                Mark as:
+              </Typography>
+              <Button
+                variant="outlined"
+                color="success"
+                size="small"
+                onClick={() => handleVerdict("true")}
+                disabled={verdict !== null}
+              >
+                ✓ TRUE
+              </Button>
+              <Button
+                variant="outlined"
+                color="error"
+                size="small"
+                onClick={() => handleVerdict("fake")}
+                disabled={verdict !== null}
+              >
+                ✗ FAKE
+              </Button>
+              {verdict && (
+                <Chip
+                  label={`Marked as ${verdict.toUpperCase()}`}
+                  color={verdict === "true" ? "success" : "error"}
+                  size="small"
+                />
+              )}
+            </Box>
+          )}
 
           {/* Cross-article check button — only shown when article was saved to Neo4j */}
           {analyzeResult.article_id && (

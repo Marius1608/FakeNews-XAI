@@ -17,6 +17,7 @@ from backend.pipeline.graph.models import (
 from backend.pipeline.graph.store import TemporalKnowledgeGraph
 from backend.pipeline.verification.wikidata import WikidataClient, WikidataFact
 from backend.pipeline.verification.web_search import verify_temporal_fact
+from backend.pipeline.verification.rss_verifier import RSSVerifier
 
 logger = logging.getLogger(__name__)
 
@@ -60,6 +61,7 @@ class ExternalVerifier:
         use_wikidata: bool = True,
         use_web_search: bool = False,
         persistent_store=None,
+        use_rss: bool = False,
     ):
         self.client = wikidata_client or WikidataClient()
         self.use_wikidata = use_wikidata
@@ -67,6 +69,7 @@ class ExternalVerifier:
         self._reference_kg: dict = self._load_reference_kg(reference_kg_path)
         self._wikidata_cache: dict[str, list[WikidataFact]] = {}
         self._persistent_store = persistent_store
+        self._rss_verifier: Optional[RSSVerifier] = RSSVerifier() if use_rss else None
 
     def verify(self, tkg: TemporalKnowledgeGraph) -> ExternalVerificationResult:
         result = ExternalVerificationResult()
@@ -125,9 +128,11 @@ class ExternalVerifier:
         # If Reference KG has no relevant facts, continue to Wikidata
 
         # 2. Wikidata
+        wikidata_confirmed = False
         if self.use_wikidata:
             wikidata_facts = self._fetch_from_wikidata(fact, result)
             if wikidata_facts:
+                wikidata_confirmed = True
                 result.facts_matched += 1
                 direct_incons = self._compare_with_wikidata(fact, wikidata_facts)
                 if direct_incons:
@@ -140,6 +145,13 @@ class ExternalVerifier:
         # 3. Wikipedia fallback (always runs if enabled, regardless of Wikidata result)
         if self.use_web_search:
             return self._verify_with_wikipedia(fact, result)
+
+        # Nivel 5: RSS Stream — fallback pentru fapte recente fără date în Wikidata
+        if self._rss_verifier and not wikidata_confirmed:
+            rss_result = self._rss_verifier.verify_fact(fact)
+            if rss_result and rss_result.get("found"):
+                result.web_search_queries += 1
+                logger.info(f"RSS: confirmed '{fact.subject.text}' via {rss_result['source']}")
 
         return []
 
