@@ -44,7 +44,7 @@ class Neo4jTKGStore(AbstractTKGStore):
         logger.info(f"Neo4jTKGStore connected to {uri}")
 
     def _ensure_connected(self) -> None:
-        """Reconectează driver-ul dacă e închis."""
+        """Reconnects the driver if it has been closed."""
         try:
             self._driver.verify_connectivity()
         except Exception:
@@ -274,7 +274,7 @@ class Neo4jTKGStore(AbstractTKGStore):
         notes: str = "",
         annotator: str = "human",
     ) -> bool:
-        """Salvează verdictul uman pe nodul Article în Neo4j."""
+        """Saves the human verdict on the Article node in Neo4j."""
         self._ensure_connected()
         query = """
         MATCH (a:Article {article_id: $article_id})

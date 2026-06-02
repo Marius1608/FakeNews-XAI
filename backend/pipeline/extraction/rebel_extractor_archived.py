@@ -1,4 +1,6 @@
-"""C1 — Pipeline C: extracție relații via REBEL-large (Babelscape)."""
+# Archived — REBEL-large removed in v1.0 (F1=0.038, not worth the overhead)
+# Kept for thesis documentation purposes.
+"""C1 — Pipeline C: relation extraction via REBEL-large (Babelscape)."""
 
 from __future__ import annotations
 
@@ -40,12 +42,12 @@ EVENT_KEYWORDS = {
     "reform", "act", "bill", "agreement",
 }
 
-# ~450 tokens — marjă de siguranță față de limita de 512
+# ~450 tokens — safety margin below the 512-token limit
 _MAX_CHUNK_CHARS = 1800
 
 
 class RebelExtractor(AbstractExtractor):
-    """Extractor REBEL-large: extrage triplete relație din text în engleză."""
+    """REBEL-large extractor: extracts relation triplets from English text."""
 
     def __init__(self) -> None:
         self._pipe = None
@@ -54,14 +56,14 @@ class RebelExtractor(AbstractExtractor):
         return "rebel"
 
     def is_available(self) -> bool:
-        """Verifică că modelul rebel-large este prezent în cache-ul HuggingFace."""
+        """Checks that the rebel-large model is present in the HuggingFace cache."""
         cache = Path.home() / ".cache" / "huggingface" / "hub"
         if not cache.exists():
             return False
         return any("rebel-large" in str(p) for p in cache.iterdir())
 
     def _load_pipeline(self) -> None:
-        """Lazy load: instanțiează pipeline-ul REBEL la primul apel extract()."""
+        """Lazy load: instantiates the REBEL pipeline on the first extract() call."""
         import importlib
         transformers = importlib.import_module("transformers")
         hf_pipeline = getattr(transformers, "pipeline")
@@ -70,15 +72,15 @@ class RebelExtractor(AbstractExtractor):
             model="Babelscape/rebel-large",
             tokenizer="Babelscape/rebel-large",
         )
-        logger.info("REBEL pipeline încărcat.")
+        logger.info("REBEL pipeline loaded.")
 
     def extract(self, article: Article) -> list[TemporalFact]:
-        """Extrage fapte din articol: chunking → REBEL → parsare triplete → TemporalFact."""
+        """Extracts facts from article: chunking → REBEL → triplet parsing → TemporalFact."""
         if self._pipe is None:
             try:
                 self._load_pipeline()
             except Exception as exc:
-                logger.warning(f"REBEL: imposibil de încărcat modelul — {exc}")
+                logger.warning(f"REBEL: unable to load model — {exc}")
                 return []
 
         chunks = self._split_into_chunks(article.text)
@@ -90,7 +92,7 @@ class RebelExtractor(AbstractExtractor):
                 outputs = self._pipe(chunk, max_length=512, num_beams=3)
                 raw_text = outputs[0]["generated_text"] if outputs else ""
             except Exception as exc:
-                logger.warning(f"REBEL: eroare la chunk {sent_idx} — {exc}")
+                logger.warning(f"REBEL: error on chunk {sent_idx} — {exc}")
                 continue
 
             if not raw_text:
@@ -117,7 +119,7 @@ class RebelExtractor(AbstractExtractor):
         return facts
 
     def _split_into_chunks(self, text: str) -> list[str]:
-        """Împarte textul în chunks de max ~512 tokens prin split pe propoziții."""
+        """Splits text into chunks of max ~512 tokens by splitting on sentence boundaries."""
         sentences = re.split(r'(?<=[.!?])\s+', text.strip())
         chunks: list[str] = []
         current = ""
@@ -137,12 +139,12 @@ class RebelExtractor(AbstractExtractor):
         return chunks
 
     def _parse_rebel_output(self, text: str) -> list[dict]:
-        """Parsează outputul REBEL — format cu spații duble ca separatori."""
+        """Parses REBEL output — format uses double spaces as separators."""
         triplets = []
-        # Format real: ' subject  object  relation' (separatori = 2+ spații)
+        # Real format: ' subject  object  relation' (separators = 2+ spaces)
         import re
         parts = [p.strip() for p in re.split(r'\s{2,}', text.strip()) if p.strip()]
-        # Grupează câte 3: subject, object, relation
+        # Group every 3: subject, object, relation
         for i in range(0, len(parts) - 2, 3):
             subject = parts[i]
             obj = parts[i + 1]
@@ -158,7 +160,7 @@ class RebelExtractor(AbstractExtractor):
     def _triplet_to_fact(
         self, triplet: dict, article: Article, sent_idx: int
     ) -> Optional[TemporalFact]:
-        """Convertește un triplet REBEL la TemporalFact cu confidence 0.75."""
+        """Converts a REBEL triplet to a TemporalFact with confidence 0.75."""
         subject = Entity(
             text=triplet["subject"],
             entity_type=EntityType.PERSON,
@@ -185,7 +187,7 @@ class RebelExtractor(AbstractExtractor):
         )
 
     def _detect_type(self, text: str) -> EntityType:
-        """Detectează tipul entității obiect pe baza keyword-urilor cunoscute."""
+        """Detects the object entity type based on known keywords."""
         lower = text.lower()
         if any(kw in lower for kw in LOCATION_KEYWORDS):
             return EntityType.LOCATION

@@ -1,4 +1,4 @@
-"""C3b Nivel 5 — RSS Stream verifier: caută fapte în feed-uri de știri recente."""
+"""C3b Level 5 — RSS Stream verifier: searches for facts in recent news feeds."""
 
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ _CACHE_TTL_SECONDS = 30 * 60
 
 
 class RSSVerifier:
-    """Caută fapte în feed-uri RSS de știri recente (C3b Nivel 5)."""
+    """Searches for facts in recent RSS news feeds (C3b Level 5)."""
 
     def __init__(self, feeds: list[str] = None):
         self._feeds: list[str] = feeds if feeds is not None else DEFAULT_FEEDS
@@ -41,7 +41,7 @@ class RSSVerifier:
         self._cache_ts: dict[str, float] = {}
 
     def is_available(self) -> bool:
-        """Încearcă primul feed — returnează True dacă răspunde în 5s."""
+        """Tries the first feed — returns True if it responds within 5s."""
         if not self._feeds:
             return False
         try:
@@ -51,7 +51,7 @@ class RSSVerifier:
             return False
 
     def fetch_feed(self, url: str) -> list[dict]:
-        """Descarcă și parsează un feed RSS; returnează lista de articole."""
+        """Downloads and parses an RSS feed; returns the list of articles."""
         with urllib.request.urlopen(url, timeout=10) as resp:
             content = resp.read()
         tree = ET.fromstring(content)
@@ -71,7 +71,7 @@ class RSSVerifier:
         return items
 
     def _get_feed_cached(self, url: str) -> list[dict]:
-        """Returnează cache dacă e valid (< 30 min), altfel fetch nou."""
+        """Returns cached articles if still valid (< 30 min), otherwise fetches fresh."""
         now = time.monotonic()
         if url in self._cache and now - self._cache_ts.get(url, 0) < _CACHE_TTL_SECONDS:
             return self._cache[url]
@@ -81,10 +81,10 @@ class RSSVerifier:
             self._cache_ts[url] = now
             return items
         except ET.ParseError as e:
-            logger.warning(f"RSS XML malformat ({url}): {e}")
+            logger.warning(f"RSS malformed XML ({url}): {e}")
             return []
         except Exception as e:
-            logger.warning(f"RSS feed inaccesibil ({url}): {e}")
+            logger.warning(f"RSS feed unreachable ({url}): {e}")
             return []
 
     def search_fact(
@@ -94,7 +94,7 @@ class RSSVerifier:
         obj: str,
         date_hint: str = None,
     ) -> list[dict]:
-        """Caută în toate feed-urile articole relevante; scor ≥ 3 pentru a fi returnat."""
+        """Searches all feeds for relevant articles; score >= 3 required to be returned."""
         relation_enum: Optional[RelationType] = None
         try:
             relation_enum = RelationType(relation)
@@ -127,7 +127,7 @@ class RSSVerifier:
         return [item for _, item in scored]
 
     def verify_fact(self, fact: TemporalFact) -> Optional[dict]:
-        """Verifică un fapt în feed-urile RSS; returnează dict sau None."""
+        """Verifies a fact against RSS feeds; returns a dict or None."""
         if not fact.subject or not fact.object:
             return None
 

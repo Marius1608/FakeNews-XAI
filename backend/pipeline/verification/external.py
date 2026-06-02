@@ -146,7 +146,7 @@ class ExternalVerifier:
         if self.use_web_search:
             return self._verify_with_wikipedia(fact, result)
 
-        # Nivel 5: RSS Stream — fallback pentru fapte recente fără date în Wikidata
+        # Level 5: RSS Stream — fallback for recent facts not yet in Wikidata
         if self._rss_verifier and not wikidata_confirmed:
             rss_result = self._rss_verifier.verify_fact(fact)
             if rss_result and rss_result.get("found"):
@@ -209,8 +209,8 @@ class ExternalVerifier:
         ]
 
     def _subject_matches_wikidata_entity(self, fact_subject: str, wikidata_entity_label: str) -> bool:
-        """Returnează True dacă subiectul faptului corespunde entității Wikidata.
-        Previne cross-entity false positives (ex: 'Biden' vs 'Obama')."""
+        """Returns True if the fact subject matches the Wikidata entity.
+        Prevents cross-entity false positives (e.g. 'Biden' vs 'Obama')."""
         fact_lower = fact_subject.lower().strip()
         wiki_lower = wikidata_entity_label.lower().strip()
 
@@ -256,8 +256,8 @@ class ExternalVerifier:
                 return wf_list
 
         # 3. Live Wikidata SPARQL query
-        # search_entity_full returnează {id, label, description} — același apel API ca
-        # search_entity, dar cu label-ul real ("Barack Obama", nu QID-ul "Q76").
+        # search_entity_full returns {id, label, description} — same API call as
+        # search_entity, but includes the real label ("Barack Obama", not just QID "Q76").
         search_results = self.client.search_entity_full(fact.subject.text)
         result.wikidata_queries += 1
         if not search_results:
@@ -267,10 +267,10 @@ class ExternalVerifier:
         entity_id = search_results[0]["id"]
         wikidata_entity_label = search_results[0].get("label", "")
 
-        # Cross-entity guard: verifică că Wikidata a găsit entitatea corectă
-        # înainte de SPARQL — economisește un apel dacă entitatea e greșită.
-        # Exemplu corect: "Biden" vs "Joe Biden" → True (match pe ultimul cuvânt)
-        # Exemplu fals pozitiv: "Biden" vs "Barack Obama" → False (skip)
+        # Cross-entity guard: verify Wikidata returned the correct entity before
+        # running SPARQL — saves an API call if there is a mismatch.
+        # Correct: "Biden" vs "Joe Biden" → True (last-word match)
+        # False positive: "Biden" vs "Barack Obama" → False (skip)
         if not self._subject_matches_wikidata_entity(fact.subject.text, wikidata_entity_label):
             logger.debug(
                 f"Cross-entity skip: '{fact.subject.text}' vs Wikidata '{wikidata_entity_label}' — fapte ignorate"
@@ -322,8 +322,8 @@ class ExternalVerifier:
         obj_text = fact.object.text.lower()
 
         if fact.predicate == RelationType.HOLDS_POSITION:
-            # Pentru HOLDS_POSITION compară DOAR cu pozițiile similare — fără fallback
-            # la toate pozițiile entității (evită false positives: Biden VP vs Biden Senator).
+            # For HOLDS_POSITION only compare against similar positions — no fallback
+            # to all entity positions (avoids false positives: Biden VP vs Biden Senator).
             relevant = [
                 wf for wf in wikidata_facts
                 if SequenceMatcher(None, obj_text, wf.value_label.lower()).ratio() > 0.6
@@ -331,7 +331,7 @@ class ExternalVerifier:
                 or wf.value_label.lower() in obj_text
             ]
             if not relevant:
-                logger.debug(f"  HOLDS_POSITION skip: nicio poziție similară cu '{fact.object.text}' în Wikidata")
+                logger.debug(f"  HOLDS_POSITION skip: no similar position for '{fact.object.text}' in Wikidata")
                 return []
         else:
             relevant = [wf for wf in wikidata_facts if _fuzzy_entity_match(obj_text, wf.value_label)]

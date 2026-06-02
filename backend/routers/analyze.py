@@ -28,8 +28,7 @@ class AnalyzeRequest(BaseModel):
     model: Optional[str] = Field(default=None, description="Specific model: en_core_web_trf, llama3, mistral, etc. None = pipeline default")
     persist: bool = Field(default=False, description="Save facts to Neo4j for cross-article analysis")
     use_web_search: bool = Field(default=False, description="Enable Wikipedia REST API fallback in C3b")
-    use_rebel: bool = Field(default=False, description="Augmentează C1 cu REBEL-large (Pipeline C)")
-    use_rss: bool = Field(default=False, description="Activează RSS Stream fallback în C3b (nivel 5)")
+    use_rss: bool = Field(default=False, description="Enables RSS Stream fallback in C3b (level 5)")
 
 
 class InconsistencyResponse(BaseModel):
@@ -138,7 +137,6 @@ async def analyze_article(req: AnalyzeRequest) -> AnalyzeResponse:
     orchestrator.persist = req.persist
     orchestrator._enable_cross_article = False
     orchestrator.use_web_search = req.use_web_search
-    orchestrator.use_rebel = req.use_rebel
     orchestrator.use_rss = req.use_rss
     if orchestrator._external_verifier is not None:
         orchestrator._external_verifier.use_web_search = req.use_web_search

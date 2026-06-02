@@ -137,7 +137,7 @@ class SpacyExtractor(AbstractExtractor):
         """Extract facts from one sentence; falls back if parsing yields nothing."""
         entities = [self._span_to_entity(ent) for ent in sent.ents if ent.label_ != "DATE"]
 
-        # Coreference: adaugă entități rezolvate dacă propoziția nu conține nicio entitate PERSON
+        # Coreference: add resolved entities if the sentence contains no PERSON entity
         if coref_map and not any(e.entity_type == EntityType.PERSON for e in entities):
             added_texts = {e.text for e in entities}
             for token in sent:
@@ -247,7 +247,7 @@ class SpacyExtractor(AbstractExtractor):
                     for entity in entities:
                         if entity.start_char <= desc.idx < entity.end_char:
                             _try_add(entity)
-        # Traversează și subtree-ul copiilor prep (ex: "served as President")
+        # Also traverse the subtree of prep children (e.g. "served as President")
         for child in root.children:
             if child.dep_ == "prep":
                 for grandchild in child.children:
@@ -261,7 +261,7 @@ class SpacyExtractor(AbstractExtractor):
                                 if entity.start_char <= desc.idx < entity.end_char:
                                     _try_add(entity)
 
-        # Preferă PERSON/ORG ca subiect — GPE/LOC sunt obiecte, nu actori
+        # Prefer PERSON/ORG as subject — GPE/LOC are objects, not actors
         if dep_labels == SUBJECT_DEPS:
             person_org = [e for e in matched if e.entity_type in {EntityType.PERSON, EntityType.ORGANIZATION}]
             return person_org if person_org else matched
@@ -281,7 +281,7 @@ class SpacyExtractor(AbstractExtractor):
             for token in sent:
                 if token.pos_ in {"NOUN", "PROPN"}:
                     if abs(token.i - temp_token.i) <= 2:
-                        # Preferă PERSON/ORG ca subiect în nominal facts
+                        # Prefer PERSON/ORG as subject in nominal facts
                         person_entities = [e for e in entities if e.entity_type in {EntityType.PERSON, EntityType.ORGANIZATION}]
                         candidates = person_entities if person_entities else entities
                         subj = min(candidates, key=lambda e: abs(e.start_char - temp_expr.start_char), default=None)
@@ -359,7 +359,7 @@ class SpacyExtractor(AbstractExtractor):
         time_start, time_end, time_point = self._assign_temporal(temporal_exprs)
         facts = []
 
-        # Sortare: PERSON și ORG au prioritate față de GPE/LOC
+        # Sorting: PERSON and ORG have priority over GPE/LOC
         priority_order = {EntityType.PERSON: 0, EntityType.ORGANIZATION: 1}
         sorted_entities = sorted(
             entities,
@@ -392,13 +392,13 @@ class SpacyExtractor(AbstractExtractor):
 
     # Coreference rule-based
     def _resolve_coreference(self, doc: Doc) -> dict[int, Entity]:
-        """Mapează pronumele la ultima entitate PERSON din context anterior."""
+        """Maps pronouns to the most recent PERSON entity seen in prior context."""
         coref_map: dict[int, Entity] = {}
         last_person: Optional[Entity] = None
         PRONOUNS = {"he", "she", "they", "his", "her", "their", "him", "them", "it"}
 
         for token in doc:
-            # Actualizează last_person când găsim o entitate PERSON
+            # Update last_person when a PERSON entity is found
             for ent in doc.ents:
                 if ent.start == token.i and ent.label_ == "PERSON":
                     last_person = Entity(
@@ -407,7 +407,7 @@ class SpacyExtractor(AbstractExtractor):
                         start_char=ent.start_char,
                         end_char=ent.end_char,
                     )
-            # Mapează pronumele la last_person
+            # Map pronoun to last_person
             if token.pos_ == "PRON" and token.lemma_.lower() in PRONOUNS:
                 if last_person is not None:
                     coref_map[token.i] = last_person

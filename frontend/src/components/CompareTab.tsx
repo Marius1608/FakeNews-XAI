@@ -231,7 +231,7 @@ function CompareTab(): React.ReactElement {
             }
             label={
               <Typography variant="body2">
-                Pipeline C (REBEL) — augmentează ambele pipeline-uri
+                Pipeline C (REBEL) — augments both pipelines
               </Typography>
             }
           />

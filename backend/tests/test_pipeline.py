@@ -591,6 +591,7 @@ class TestOrchestratorNoNeo4j:
             extractor_name="spacy",
             persistent_store=mock_store,
             enable_cross_article=True,
+            persist=True,
         )
         result = orch.run(OBAMA_ARTICLE)
 

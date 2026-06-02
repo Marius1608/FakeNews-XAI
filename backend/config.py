@@ -26,15 +26,11 @@ SPACY_DEFAULT = os.getenv("SPACY_DEFAULT_MODEL", "en_core_web_trf")
 SPACY_MODEL = SPACY_DEFAULT
 
 
-# Ollama / LLM models
-LLM_MODELS_LIST = [m.strip() for m in os.getenv("LLM_MODELS", "llama3").split(",")]
-LLM_DEFAULT = os.getenv("LLM_DEFAULT_MODEL", "llama3")
+# Qwen / LLM models
+QWEN_MODEL_ID = os.getenv("QWEN_MODEL_ID", "Qwen/Qwen3-1.7B")
 
-OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
-OLLAMA_TIMEOUT_SECONDS = int(os.getenv("OLLAMA_TIMEOUT_SECONDS", "120"))
-
-# Backward-compatible alias used by Pipeline B
-OLLAMA_MODEL = LLM_DEFAULT
+LLM_MODELS_LIST = [QWEN_MODEL_ID]
+LLM_DEFAULT = QWEN_MODEL_ID
 
 
 # Combined model registry exposed by GET /models
@@ -51,6 +47,9 @@ WIKIDATA_ENDPOINT = os.getenv(
 )
 WIKIDATA_TEMPORAL_PROPERTIES = ["P580", "P582", "P585"]
 
+
+# Binary fake/real threshold — article predicted FAKE if TCS < FAKE_THRESHOLD
+FAKE_THRESHOLD: float = 0.70
 
 # TCS thresholds — score bands for the final verdict label
 TCS_THRESHOLDS = {

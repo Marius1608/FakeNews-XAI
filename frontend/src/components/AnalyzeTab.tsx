@@ -81,7 +81,7 @@ function AnalyzeTab(): React.ReactElement {
       await verifyArticle(analyzeResult.article_id, { verdict: v as "true" | "fake" });
       setVerdict(v);
     } catch {
-      setError("Nu s-a putut salva verdictul.");
+      setError("Failed to save verdict.");
     }
   };
 

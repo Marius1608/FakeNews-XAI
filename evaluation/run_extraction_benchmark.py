@@ -1,11 +1,11 @@
-"""Evaluare calitate extractie C1 (Pipeline A si B) pe articolele din benchmark.
+"""Extraction quality benchmark for Pipelines A and B.
 
-Compara faptele extrase cu inconsistentele cunoscute documentate in benchmark.
+Compares extracted facts against known inconsistencies documented in the benchmark.
 
-Rulare:
+Usage:
   python evaluation/run_extraction_benchmark.py --pipeline spacy
   python evaluation/run_extraction_benchmark.py --pipeline llm
-  python evaluation/run_extraction_benchmark.py --pipeline both
+  python evaluation/run_extraction_benchmark.py --pipeline all
 """
 
 from __future__ import annotations
@@ -34,12 +34,19 @@ EVAL_DIR = Path(__file__).parent
 BENCHMARK_FILE = EVAL_DIR / "benchmark_articles.json"
 RESULTS_DIR = EVAL_DIR / "results"
 
+PIPELINE_CHOICES = ["spacy", "llm", "all"]
+
+PIPELINE_LABELS = {
+    "spacy": "spaCy (A)",
+    "llm":   "Qwen3-1.7B (B)",
+}
+
 
 # // section load
 
 def load_benchmark(path: Path) -> list[dict]:
     if not path.exists():
-        logger.error(f"Fisier benchmark negasit: {path}")
+        logger.error(f"Benchmark file not found: {path}")
         sys.exit(1)
     with open(path, encoding="utf-8") as f:
         return json.load(f)
@@ -52,7 +59,7 @@ def _has_temporal_anchor(fact) -> bool:
 
 
 def _fact_is_valid(fact) -> bool:
-    """Verifica daca un fapt are subject + predicate + ancora temporala (criteriu pentru TRUE)."""
+    """Checks that a fact has subject + object + temporal anchor (criterion for TRUE articles)."""
     return (
         bool(fact.subject.text.strip())
         and bool(fact.object.text.strip())
@@ -61,7 +68,7 @@ def _fact_is_valid(fact) -> bool:
 
 
 def _fact_hits_inconsistency(fact, inconsistency: str) -> bool:
-    """Verifica daca subiectul sau obiectul faptului apare ca substring in descrierea inconsistentei."""
+    """True if the fact's subject or object appears as a substring in the inconsistency description."""
     inc_lower = inconsistency.lower()
     subj = fact.subject.text.lower().strip()
     obj = fact.object.text.lower().strip()
@@ -76,8 +83,8 @@ def _fact_hits_inconsistency(fact, inconsistency: str) -> bool:
 
 def _evaluate_article(facts: list, entry: dict) -> dict:
     """
-    Evalueaza faptele extrase dintr-un articol fata de ground truth-ul din benchmark.
-    Returneaza un dict cu metrici per-articol si sumar al faptelor.
+    Evaluates extracted facts against benchmark ground truth.
+    Returns a per-article metrics dict and a facts summary.
     """
     expected_fake: bool = entry.get("expected_fake", False)
     known_inconsistencies: list[str] = entry.get("known_inconsistencies", [])
@@ -125,13 +132,14 @@ def _evaluate_article(facts: list, entry: dict) -> dict:
                 "time_start": f.time_start.raw_text if f.time_start else None,
                 "time_end": f.time_end.raw_text if f.time_end else None,
                 "confidence": round(f.extraction_confidence, 3),
+                "extractor": getattr(f, "extractor", "unknown"),
             }
             for f in facts
         ],
     }
 
 
-# // section run extractor
+# // section extractors
 
 def _resolve_spacy_model(requested: Optional[str]) -> Optional[str]:
     try:
@@ -149,64 +157,79 @@ def _resolve_spacy_model(requested: Optional[str]) -> Optional[str]:
     return installed[0]
 
 
-def run_extractor(pipeline: str, entries: list[dict], model_name: Optional[str] = None) -> list[dict]:
-    """Ruleaza extractor-ul ales pe toate articolele si colecteaza rezultatele per articol."""
+def _build_article(entry: dict, idx: int):
     from backend.pipeline.graph.models import Article
+    pub_date: Optional[datetime] = None
+    if entry.get("publication_date"):
+        try:
+            pub_date = datetime.strptime(entry["publication_date"], "%Y-%m-%d")
+        except ValueError:
+            pass
+    return Article(
+        text=entry["text"],
+        title=entry.get("title", f"Article {idx + 1}"),
+        publication_date=pub_date,
+        source=entry.get("source", "benchmark"),
+    )
 
+
+def run_extractor(pipeline: str, entries: list[dict], model_name: Optional[str] = None) -> list[dict]:
+    """Runs the chosen pipeline on all articles and returns per-article evaluation rows."""
     if pipeline == "spacy":
-        from backend.pipeline.extraction.spacy_extractor import SpacyExtractor
-        resolved = _resolve_spacy_model(model_name)
-        if resolved is None:
-            print("  [ERROR] Niciun model spaCy gasit. Instaleaza: python -m spacy download en_core_web_sm")
-            sys.exit(1)
-        extractor = SpacyExtractor(model_name=resolved)
-        print(f"  Extractor: SpacyExtractor (model={resolved})")
+        return _run_spacy(entries, model_name)
+    elif pipeline == "llm":
+        return _run_llm(entries, model_name)
     else:
-        from backend.pipeline.extraction.llm_extractor import LLMExtractor
-        extractor = LLMExtractor()
-        if not extractor.is_available():
-            print("  [WARNING] Ollama nu este disponibil sau modelul nu e incarcat — Pipeline B sarit.")
-            return []
-        print(f"  Extractor: LLMExtractor (model={extractor.model})")
+        raise ValueError(f"Unknown pipeline: {pipeline}")
 
+
+def _run_spacy(entries: list[dict], model_name: Optional[str]) -> list[dict]:
+    from backend.pipeline.extraction.spacy_extractor import SpacyExtractor
+    resolved = _resolve_spacy_model(model_name)
+    if resolved is None:
+        print("  [ERROR] No spaCy model found. Install: python -m spacy download en_core_web_sm")
+        sys.exit(1)
+    extractor = SpacyExtractor(model_name=resolved)
+    print(f"  Extractor: SpacyExtractor (model={resolved})")
+    return _run_loop(extractor, entries)
+
+
+def _run_llm(entries: list[dict], model_name: Optional[str]) -> list[dict]:
+    from backend.pipeline.extraction.spacy_llm_extractor import SpacyLLMExtractor
+    extractor = SpacyLLMExtractor()
+    if not extractor.is_available():
+        print("  [WARNING] Qwen model not available — Pipeline B skipped.")
+        return []
+    print("  Extractor: SpacyLLMExtractor (Qwen3-1.7B)")
+    return _run_loop(extractor, entries)
+
+
+def _run_loop(extractor, entries: list[dict]) -> list[dict]:
+    """Generic extraction loop for a single extractor."""
     results = []
     for i, entry in enumerate(entries):
-        pub_date: Optional[datetime] = None
-        if entry.get("publication_date"):
-            try:
-                pub_date = datetime.strptime(entry["publication_date"], "%Y-%m-%d")
-            except ValueError:
-                pass
-
-        article = Article(
-            text=entry["text"],
-            title=entry.get("title", f"Article {i + 1}"),
-            publication_date=pub_date,
-            source=entry.get("source", "benchmark"),
-        )
-
+        article = _build_article(entry, i)
         print(f"  [{i + 1:2d}/{len(entries)}] {article.title[:58]}", end=" ... ", flush=True)
         t0 = time.monotonic()
         try:
             facts = extractor.extract(article)
         except Exception as exc:
-            logger.error(f"Eroare extractor pe '{article.title}': {exc}", exc_info=True)
+            logger.error(f"Extractor error on '{article.title}': {exc}", exc_info=True)
             facts = []
         elapsed_ms = (time.monotonic() - t0) * 1000
 
         row = _evaluate_article(facts, entry)
         row["processing_time_ms"] = round(elapsed_ms, 1)
         label = "FAKE" if entry.get("expected_fake") else "TRUE"
-        print(f"{len(facts)} fapte [{label}]  {elapsed_ms:.0f}ms")
+        print(f"{len(facts)} facts [{label}]  {elapsed_ms:.0f}ms")
         results.append(row)
-
     return results
 
 
 # // section metrics
 
 def compute_global_metrics(results: list[dict]) -> dict:
-    """Calculeaza metrici globale de extractie agregand rezultatele per articol."""
+    """Computes global extraction metrics by aggregating per-article results."""
     if not results:
         return {}
 
@@ -240,7 +263,6 @@ def compute_global_metrics(results: list[dict]) -> dict:
         if fake_articles else 0.0
     )
 
-    # Numarare detectii per tip de inconsistenta (articole FAKE cu cel putin un hit)
     type_counts: dict[str, int] = {}
     for r in fake_articles:
         if r["inconsistencies_hit"] > 0:
@@ -269,59 +291,74 @@ def compute_global_metrics(results: list[dict]) -> dict:
 # // section print
 
 def print_pipeline_summary(pipeline_name: str, metrics: dict) -> None:
-    """Afiseaza un sumar formatat al metricilor pentru un pipeline."""
-    print(f"\n  Pipeline : {pipeline_name.upper()}")
+    """Prints a formatted summary of metrics for one pipeline."""
+    label = PIPELINE_LABELS.get(pipeline_name, pipeline_name.upper())
+    print(f"\n  Pipeline : {label}")
     print(f"  {'=' * 52}")
-    print(f"  Articole totale      : {metrics.get('total_articles', 0)}")
-    print(f"  Articole TRUE        : {metrics.get('true_articles', 0)}")
-    print(f"  Articole FAKE        : {metrics.get('fake_articles', 0)}")
-    print(f"  Fapte extrase total  : {metrics.get('total_facts_extracted', 0)}")
-    print(f"  Fapte corecte        : {metrics.get('total_correct_facts', 0)}")
+    print(f"  Total articles       : {metrics.get('total_articles', 0)}")
+    print(f"  TRUE articles        : {metrics.get('true_articles', 0)}")
+    print(f"  FAKE articles        : {metrics.get('fake_articles', 0)}")
+    print(f"  Facts extracted      : {metrics.get('total_facts_extracted', 0)}")
+    print(f"  Correct facts        : {metrics.get('total_correct_facts', 0)}")
     print(f"  {'-' * 52}")
     print(f"  Precision            : {metrics.get('precision', 0.0):.4f}")
     print(f"  Recall               : {metrics.get('recall', 0.0):.4f}")
     print(f"  F1                   : {metrics.get('f1', 0.0):.4f}")
     print(f"  {'-' * 52}")
-    print(f"  Avg fapte / TRUE     : {metrics.get('avg_facts_true', 0.0):.2f}")
-    print(f"  Avg fapte / FAKE     : {metrics.get('avg_facts_fake', 0.0):.2f}")
+    print(f"  Avg facts / TRUE     : {metrics.get('avg_facts_true', 0.0):.2f}")
+    print(f"  Avg facts / FAKE     : {metrics.get('avg_facts_fake', 0.0):.2f}")
     print(
         f"  Zero-fact rate       : {metrics.get('zero_fact_rate', 0.0):.2%}"
-        f"  ({metrics.get('zero_fact_articles', 0)} articole)"
+        f"  ({metrics.get('zero_fact_articles', 0)} articles)"
     )
 
     type_counts: dict[str, int] = metrics.get("type_detection_counts", {})
     if type_counts:
-        print(f"\n  Detectii per tip inconsistenta (articole FAKE cu cel putin un hit):")
+        print(f"\n  Detections per inconsistency type (FAKE articles with at least one hit):")
         for inc_type, count in sorted(type_counts.items(), key=lambda x: -x[1]):
             print(f"    {inc_type:<38} : {count}")
 
 
-def print_comparison_table(metrics_a: dict, metrics_b: dict) -> None:
-    """Afiseaza tabel comparativ Pipeline A (spaCy) vs Pipeline B (LLM)."""
-    col_a = "Pipeline A (spaCy)"
-    col_b = "Pipeline B (LLM)"
-    print(f"\n  {'Metrica':<28}  {col_a:>20}  {col_b:>18}")
-    print(f"  {'-' * 70}")
+def print_comparison_table(all_results: dict[str, dict]) -> None:
+    """Prints a comparison table across all evaluated pipelines."""
+    pipelines = list(all_results.keys())
+    labels = [PIPELINE_LABELS.get(p, p) for p in pipelines]
+
+    col_w = 20
+    header_pad = 18
+    print(f"\n  {'Pipeline':<{header_pad}}", end="")
+    for lbl in labels:
+        print(f"  {lbl:>{col_w}}", end="")
+    print()
+    print(f"  {'-' * (header_pad + (col_w + 2) * len(pipelines))}")
 
     rows = [
-        ("Precision",        metrics_a.get("precision", 0.0),      metrics_b.get("precision", 0.0)),
-        ("Recall",           metrics_a.get("recall", 0.0),         metrics_b.get("recall", 0.0)),
-        ("F1",               metrics_a.get("f1", 0.0),             metrics_b.get("f1", 0.0)),
-        ("Avg fapte/TRUE",   metrics_a.get("avg_facts_true", 0.0), metrics_b.get("avg_facts_true", 0.0)),
-        ("Avg fapte/FAKE",   metrics_a.get("avg_facts_fake", 0.0), metrics_b.get("avg_facts_fake", 0.0)),
-        ("Zero-fact rate",   metrics_a.get("zero_fact_rate", 0.0), metrics_b.get("zero_fact_rate", 0.0)),
+        ("Precision",      "precision"),
+        ("Recall",         "recall"),
+        ("F1",             "f1"),
+        ("Avg facts/TRUE", "avg_facts_true"),
+        ("Avg facts/FAKE", "avg_facts_fake"),
+        ("Zero-fact %",    "zero_fact_rate"),
     ]
-    for label, val_a, val_b in rows:
-        print(f"  {label:<28}  {val_a:>20.4f}  {val_b:>18.4f}")
+    for row_label, key in rows:
+        print(f"  {row_label:<{header_pad}}", end="")
+        for p in pipelines:
+            val = all_results[p]["metrics"].get(key, 0.0)
+            if key == "zero_fact_rate":
+                print(f"  {val:>{col_w}.2%}", end="")
+            else:
+                print(f"  {val:>{col_w}.4f}", end="")
+        print()
     print()
 
 
 # // section save
 
-def save_results(payload: dict) -> Path:
+def save_results(payload: dict, pipeline: str) -> Path:
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     today = date.today().strftime("%Y-%m-%d")
-    output_path = RESULTS_DIR / f"extraction_benchmark_{today}.json"
+    safe_pipeline = pipeline.replace("+", "_plus_")
+    output_path = RESULTS_DIR / f"extraction_benchmark_{today}_{safe_pipeline}.json"
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2, ensure_ascii=False, default=str)
     return output_path
@@ -330,51 +367,57 @@ def save_results(payload: dict) -> Path:
 # // section main
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Evaluare calitate extractie C1")
+    parser = argparse.ArgumentParser(description="Extraction quality benchmark — Pipelines A / B")
     parser.add_argument(
-        "--pipeline", choices=["spacy", "llm", "both"], default="spacy",
-        help="Pipeline de evaluat: spacy, llm, sau both (default: spacy)",
+        "--pipeline",
+        choices=PIPELINE_CHOICES,
+        default="spacy",
+        help="Pipeline to evaluate (default: spacy)",
     )
     parser.add_argument(
         "--model", type=str, default=None,
-        help="Model spaCy sau LLM explicit (default: auto-detect)",
+        help="Explicit spaCy model (default: auto-detect)",
     )
     args = parser.parse_args()
 
     print(f"\n{'=' * 70}")
-    print("  EXTRACTION BENCHMARK — Evaluare calitate extractie C1")
+    print("  EXTRACTION BENCHMARK — Pipelines A / B")
     print(f"{'=' * 70}")
     print(f"  Pipeline  : {args.pipeline}")
     print(f"  Benchmark : {BENCHMARK_FILE}")
     print(f"{'=' * 70}")
 
     entries = load_benchmark(BENCHMARK_FILE)
-    print(f"  Incarcat {len(entries)} articole\n")
+    print(f"  Loaded {len(entries)} articles\n")
 
-    pipelines_to_run = ["spacy", "llm"] if args.pipeline == "both" else [args.pipeline]
+    pipelines_to_run = (
+        ["spacy", "llm"]
+        if args.pipeline == "all"
+        else [args.pipeline]
+    )
 
     all_results: dict[str, dict] = {}
 
     for pip in pipelines_to_run:
         print(f"\n{'=' * 70}")
-        print(f"  Extractor: {pip.upper()}")
+        print(f"  Extractor: {PIPELINE_LABELS.get(pip, pip.upper())}")
         print(f"{'=' * 70}")
         rows = run_extractor(pip, entries, model_name=args.model)
         if not rows:
-            print(f"  [WARNING] Niciun rezultat pentru pipeline '{pip}' — sarit.\n")
+            print(f"  [WARNING] No results for pipeline '{pip}' — skipped.\n")
             continue
         metrics = compute_global_metrics(rows)
         print_pipeline_summary(pip, metrics)
         all_results[pip] = {"metrics": metrics, "articles": rows}
 
-    if "spacy" in all_results and "llm" in all_results:
+    if len(all_results) > 1:
         print(f"\n{'=' * 70}")
-        print("  COMPARATIE Pipeline A (spaCy) vs Pipeline B (LLM)")
+        print("  COMPARISON TABLE")
         print(f"{'=' * 70}")
-        print_comparison_table(all_results["spacy"]["metrics"], all_results["llm"]["metrics"])
+        print_comparison_table(all_results)
 
     if not all_results:
-        print("\n  [ERROR] Niciun pipeline nu a returnat rezultate.")
+        print("\n  [ERROR] No pipeline returned results.")
         sys.exit(1)
 
     payload = {
@@ -382,8 +425,8 @@ def main() -> None:
         "benchmark_file": str(BENCHMARK_FILE),
         "pipelines": all_results,
     }
-    output_path = save_results(payload)
-    print(f"\n  Rezultate salvate: {output_path}")
+    output_path = save_results(payload, args.pipeline)
+    print(f"\n  Results saved: {output_path}")
     print(f"{'=' * 70}\n")
 
 

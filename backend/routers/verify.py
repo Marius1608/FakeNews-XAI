@@ -15,10 +15,10 @@ router = APIRouter(tags=["articles"])
 
 
 class VerifyRequest(BaseModel):
-    verdict: str = Field(..., description="'true' sau 'fake'")
+    verdict: str = Field(..., description="'true' or 'fake'")
     confidence: float = Field(default=1.0, ge=0.0, le=1.0)
-    notes: str = Field(default="", description="Note opționale")
-    annotator: str = Field(default="human", description="Identificator annotator")
+    notes: str = Field(default="", description="Optional notes")
+    annotator: str = Field(default="human", description="Annotator identifier")
 
 
 class VerifyResponse(BaseModel):
@@ -30,16 +30,16 @@ class VerifyResponse(BaseModel):
 
 @router.post("/articles/{article_id}/verify", response_model=VerifyResponse)
 async def verify_article(article_id: str, req: VerifyRequest) -> VerifyResponse:
-    """Salvează verdictul uman (true/fake) pe un articol analizat anterior."""
+    """Saves the human verdict (true/fake) on a previously analyzed article."""
     if req.verdict not in ("true", "fake"):
-        raise HTTPException(status_code=400, detail="verdict trebuie să fie 'true' sau 'fake'.")
+        raise HTTPException(status_code=400, detail="verdict must be 'true' or 'fake'.")
 
     if not NEO4J_ENABLED:
         return VerifyResponse(
             article_id=article_id,
             verdict=req.verdict,
             saved=False,
-            message="Neo4j nu este disponibil — verdictul nu a putut fi salvat.",
+            message="Neo4j is not available — verdict could not be saved.",
         )
 
     store = create_persistent_store()
@@ -48,7 +48,7 @@ async def verify_article(article_id: str, req: VerifyRequest) -> VerifyResponse:
             article_id=article_id,
             verdict=req.verdict,
             saved=False,
-            message="Neo4j nu este disponibil — verdictul nu a putut fi salvat.",
+            message="Neo4j is not available — verdict could not be saved.",
         )
 
     try:
@@ -60,18 +60,18 @@ async def verify_article(article_id: str, req: VerifyRequest) -> VerifyResponse:
             annotator=req.annotator,
         )
         if not saved:
-            raise HTTPException(status_code=404, detail=f"Articolul '{article_id}' nu există în Neo4j.")
-        logger.info(f"HITL verdict '{req.verdict}' salvat pentru article_id={article_id}")
+            raise HTTPException(status_code=404, detail=f"Article '{article_id}' not found in Neo4j.")
+        logger.info(f"HITL verdict '{req.verdict}' saved for article_id={article_id}")
         return VerifyResponse(
             article_id=article_id,
             verdict=req.verdict,
             saved=True,
-            message=f"Articolul a fost marcat ca {req.verdict.upper()}.",
+            message=f"Article marked as {req.verdict.upper()}.",
         )
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"POST /articles/{article_id}/verify error: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail="Eroare la salvarea verdictului în Neo4j.")
+        raise HTTPException(status_code=500, detail="Error saving verdict to Neo4j.")
     finally:
         store.close()

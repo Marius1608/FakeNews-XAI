@@ -1,16 +1,16 @@
-"""C1 — Pipeline B: temporal fact extraction via local LLM (Ollama)."""
+"""C1 — Pipeline B: temporal fact extraction via spacy-llm + Qwen3-1.7B."""
 
 from __future__ import annotations
 
 import json
 import logging
+import os
 import re
 from datetime import datetime
 from typing import Any, Optional
 
-import requests
+import spacy
 
-from backend.config import OLLAMA_HOST, OLLAMA_MODEL, OLLAMA_TIMEOUT_SECONDS
 from backend.pipeline.extraction.base import AbstractExtractor
 from backend.pipeline.extraction.temporal_parser import TemporalParser
 from backend.pipeline.graph.models import (
@@ -24,7 +24,11 @@ from backend.pipeline.graph.models import (
 
 logger = logging.getLogger(__name__)
 
-# System prompt for temporal fact extraction
+QWEN_MODEL_ID = os.getenv("QWEN_MODEL_ID", "Qwen/Qwen3-1.7B")
+_qwen_model = None
+_qwen_tokenizer = None
+_load_failed = False
+
 SYSTEM_PROMPT = """\
 You are a temporal fact extraction system. Extract ALL temporal facts, not just positions. Include: elections, votes, treaties, appointments, resignations, deaths, wars, sanctions, legislation signing, inaugurations.
 
@@ -57,34 +61,22 @@ Text:
 {text}\
 """
 
-# Few-shot examples
 EXAMPLE_INPUTS = [
-    # Example 1: political position with interval
     "Extract all temporal facts from this article:\nTitle: Obama Presidency\nPublication date: 2017-02-01\nText: Obama served as president from 2009 to 2017.",
-    # Example 2: event with point date
     "Extract all temporal facts from this article:\nTitle: Healthcare Reform\nPublication date: 2010-03-24\nText: The Affordable Care Act was signed into law on March 23, 2010.",
-    # Example 3: election
     "Extract all temporal facts from this article:\nTitle: 2016 Election Results\nPublication date: 2016-11-09\nText: Trump won the 2016 presidential election on November 8, defeating Hillary Clinton.",
-    # Example 4: treaty/legislation
     "Extract all temporal facts from this article:\nTitle: Climate Agreement\nPublication date: 2016-11-05\nText: The Paris Agreement was adopted on December 12, 2015 and entered into force on November 4, 2016.",
-    # Example 5: event with temporal consequence
-    "Extract all temporal facts from this article:\nTitle: Fall of Soviet Union\nPublication date: 2000-01-01\nText: After the Soviet Union dissolved in December 1991, Boris Yeltsin became president of Russia and served until 1999."
+    "Extract all temporal facts from this article:\nTitle: Fall of Soviet Union\nPublication date: 2000-01-01\nText: After the Soviet Union dissolved in December 1991, Boris Yeltsin became president of Russia and served until 1999.",
 ]
 
 EXAMPLE_OUTPUTS = [
-    # Example 1
     '[{"subject": "Obama", "subject_type": "PERSON", "predicate": "holds_position", "object": "president", "object_type": "OTHER", "time_expression": "from 2009 to 2017", "time_start": "2009", "time_end": "2017", "time_point": null, "source_sentence": "Obama served as president from 2009 to 2017.", "confidence": 0.95}]',
-    # Example 2
     '[{"subject": "Affordable Care Act", "subject_type": "EVENT", "predicate": "occurred_on", "object": "signed into law", "object_type": "EVENT", "time_expression": "March 23, 2010", "time_start": null, "time_end": null, "time_point": "2010-03-23", "source_sentence": "The Affordable Care Act was signed into law on March 23, 2010.", "confidence": 0.95}]',
-    # Example 3
     '[{"subject": "Trump", "subject_type": "PERSON", "predicate": "occurred_on", "object": "presidential election", "object_type": "EVENT", "time_expression": "2016", "time_start": null, "time_end": null, "time_point": "2016-11-08", "source_sentence": "Trump won the 2016 presidential election on November 8, defeating Hillary Clinton.", "confidence": 0.9}, {"subject": "Hillary Clinton", "subject_type": "PERSON", "predicate": "occurred_on", "object": "presidential election", "object_type": "EVENT", "time_expression": "2016", "time_start": null, "time_end": null, "time_point": "2016-11-08", "source_sentence": "Trump won the 2016 presidential election on November 8, defeating Hillary Clinton.", "confidence": 0.9}]',
-    # Example 4
     '[{"subject": "Paris Agreement", "subject_type": "EVENT", "predicate": "occurred_on", "object": "adopted", "object_type": "EVENT", "time_expression": "December 12, 2015", "time_start": null, "time_end": null, "time_point": "2015-12-12", "source_sentence": "The Paris Agreement was adopted on December 12, 2015 and entered into force on November 4, 2016.", "confidence": 0.95}, {"subject": "Paris Agreement", "subject_type": "EVENT", "predicate": "occurred_on", "object": "entered into force", "object_type": "EVENT", "time_expression": "November 4, 2016", "time_start": null, "time_end": null, "time_point": "2016-11-04", "source_sentence": "The Paris Agreement was adopted on December 12, 2015 and entered into force on November 4, 2016.", "confidence": 0.95}]',
-    # Example 5
-    '[{"subject": "Soviet Union", "subject_type": "GPE", "predicate": "occurred_on", "object": "dissolved", "object_type": "EVENT", "time_expression": "December 1991", "time_start": null, "time_end": null, "time_point": "1991-12", "source_sentence": "After the Soviet Union dissolved in December 1991, Boris Yeltsin became president of Russia and served until 1999.", "confidence": 0.9}, {"subject": "Boris Yeltsin", "subject_type": "PERSON", "predicate": "holds_position", "object": "president of Russia", "object_type": "OTHER", "time_expression": "until 1999", "time_start": "1991-12", "time_end": "1999", "time_point": null, "source_sentence": "After the Soviet Union dissolved in December 1991, Boris Yeltsin became president of Russia and served until 1999.", "confidence": 0.9}, {"subject": "dissolved", "subject_type": "EVENT", "predicate": "caused", "object": "president of Russia", "object_type": "OTHER", "time_expression": "December 1991", "time_start": null, "time_end": null, "time_point": null, "source_sentence": "After the Soviet Union dissolved in December 1991, Boris Yeltsin became president of Russia and served until 1999.", "confidence": 0.8}]'
+    '[{"subject": "Soviet Union", "subject_type": "GPE", "predicate": "occurred_on", "object": "dissolved", "object_type": "EVENT", "time_expression": "December 1991", "time_start": null, "time_end": null, "time_point": "1991-12", "source_sentence": "After the Soviet Union dissolved in December 1991, Boris Yeltsin became president of Russia and served until 1999.", "confidence": 0.9}, {"subject": "Boris Yeltsin", "subject_type": "PERSON", "predicate": "holds_position", "object": "president of Russia", "object_type": "OTHER", "time_expression": "until 1999", "time_start": "1991-12", "time_end": "1999", "time_point": null, "source_sentence": "After the Soviet Union dissolved in December 1991, Boris Yeltsin became president of Russia and served until 1999.", "confidence": 0.9}, {"subject": "dissolved", "subject_type": "EVENT", "predicate": "caused", "object": "president of Russia", "object_type": "OTHER", "time_expression": "December 1991", "time_start": null, "time_end": null, "time_point": null, "source_sentence": "After the Soviet Union dissolved in December 1991, Boris Yeltsin became president of Russia and served until 1999.", "confidence": 0.8}]',
 ]
 
-# String to EntityType mapping
 _ENTITY_TYPE_MAP: dict[str, EntityType] = {
     "PERSON": EntityType.PERSON,
     "ORG": EntityType.ORGANIZATION,
@@ -108,103 +100,142 @@ _RELATION_TYPE_MAP: dict[str, RelationType] = {
     "followed": RelationType.FOLLOWED,
 }
 
-MAX_RETRIES = 2
+_YEAR_RE = re.compile(r"\b(19|20)\d{2}\b")
 
 
-class LLMExtractor(AbstractExtractor):
-    """Pipeline B — LLM-based extraction via local Ollama."""
+def _load_qwen() -> bool:
+    global _qwen_model, _qwen_tokenizer, _load_failed
+    if _qwen_model is not None:
+        return True
+    if _load_failed:
+        return False
+    try:
+        import torch
+        from transformers import AutoModelForCausalLM, AutoTokenizer
+        dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+        _qwen_tokenizer = AutoTokenizer.from_pretrained(QWEN_MODEL_ID)
+        _qwen_model = AutoModelForCausalLM.from_pretrained(
+            QWEN_MODEL_ID, dtype=dtype, device_map="auto"
+        )
+        logger.info(f"Qwen model loaded: {QWEN_MODEL_ID}")
+        return True
+    except Exception as e:
+        _load_failed = True
+        logger.error(f"Failed to load Qwen model '{QWEN_MODEL_ID}': {e}")
+        return False
 
-    def __init__(
-        self,
-        host: str = OLLAMA_HOST,
-        model: str = OLLAMA_MODEL,
-        timeout: int = OLLAMA_TIMEOUT_SECONDS,
-    ):
-        self.host = host.rstrip("/")
-        self.model = model
-        self.timeout = timeout
+
+def generate_json(messages: list[dict]) -> str | None:
+    """Generate text via Qwen3-1.7B and strip markdown fences from the output."""
+    global _qwen_model, _qwen_tokenizer
+    if _qwen_model is None:
+        if not _load_qwen():
+            return None
+    try:
+        import torch
+        text = _qwen_tokenizer.apply_chat_template(
+            messages,
+            tokenize=False,
+            add_generation_prompt=True,
+            enable_thinking=False,
+        )
+        inputs = _qwen_tokenizer([text], return_tensors="pt").to(_qwen_model.device)
+        with torch.no_grad():
+            outputs = _qwen_model.generate(
+                **inputs,
+                max_new_tokens=512,
+                temperature=0.1,
+                do_sample=True,
+                pad_token_id=_qwen_tokenizer.eos_token_id,
+            )
+        input_len = inputs["input_ids"].shape[1]
+        generated = outputs[0][input_len:]
+        result = _qwen_tokenizer.decode(generated, skip_special_tokens=True).strip()
+        result = re.sub(r"```(?:json)?\s*", "", result).strip()
+        result = result.rstrip("`").strip()
+        return result if result else None
+    except Exception as e:
+        logger.error(f"generate_json error: {e}")
+        return None
+
+
+class SpacyLLMExtractor(AbstractExtractor):
+    """Pipeline B — spaCy NER + Qwen3-1.7B few-shot temporal extraction."""
+
+    def __init__(self, model_name: str = "en_core_web_trf"):
+        self.model_name = model_name
+        self._nlp: Optional[spacy.Language] = None
         self.temporal_parser = TemporalParser()
+
+    @property
+    def nlp(self) -> spacy.Language:
+        if self._nlp is None:
+            logger.info(f"Loading spaCy model: {self.model_name}")
+            self._nlp = spacy.load(self.model_name)
+        return self._nlp
 
     def get_name(self) -> str:
         return "llm"
 
-    # Main extraction entry point
+    def is_available(self) -> bool:
+        return _load_qwen()
+
     def extract(self, article: Article) -> list[TemporalFact]:
-        """Send article to Ollama, parse JSON response, return facts list."""
+        doc = self.nlp(article.text)
+
         pub_date_str = (
             article.publication_date.strftime("%Y-%m-%d")
             if article.publication_date else "unknown"
         )
 
-        user_prompt = USER_PROMPT_TEMPLATE.format(
-            title=article.title,
-            pub_date=pub_date_str,
-            text=article.text[:4000],
+        accumulated: list[TemporalFact] = []
+
+        for sent in doc.sents:
+            if not _YEAR_RE.search(sent.text):
+                continue
+
+            user_prompt = USER_PROMPT_TEMPLATE.format(
+                title=article.title,
+                pub_date=pub_date_str,
+                text=sent.text,
+            )
+
+            messages: list[dict] = [{"role": "system", "content": SYSTEM_PROMPT}]
+            for user_msg, asst_msg in zip(EXAMPLE_INPUTS, EXAMPLE_OUTPUTS):
+                messages.append({"role": "user", "content": user_msg})
+                messages.append({"role": "assistant", "content": asst_msg})
+            messages.append({"role": "user", "content": user_prompt})
+
+            raw_response = generate_json(messages)
+            if not raw_response:
+                continue
+
+            raw_facts = self._parse_json_response(raw_response)
+            if not raw_facts:
+                continue
+
+            facts = self._convert_to_temporal_facts(raw_facts, article.publication_date)
+            accumulated.extend(facts)
+
+        seen: set[tuple[str, str, str]] = set()
+        result: list[TemporalFact] = []
+        for fact in accumulated:
+            key = (
+                fact.subject.text.lower(),
+                fact.predicate.value,
+                fact.object.text.lower(),
+            )
+            if key not in seen:
+                seen.add(key)
+                result.append(fact)
+
+        logger.info(
+            f"SpacyLLMExtractor: {len(result)} facts "
+            f"({len(accumulated)} before dedup, {len(list(doc.sents))} sentences)"
         )
+        return result
 
-        raw_response = self._call_ollama(user_prompt)
-        if raw_response is None:
-            logger.warning("LLMExtractor: no response received, returning empty list.")
-            return []
-
-        logger.debug(f"LLMExtractor raw response (first 500 chars): {raw_response[:500]}")
-
-        raw_facts = self._parse_json_response(raw_response)
-        if not raw_facts:
-            logger.warning("LLMExtractor: invalid or empty JSON response.")
-            return []
-
-        facts = self._convert_to_temporal_facts(raw_facts, article.publication_date)
-
-        parsed_count = len(facts)
-        rejected_count = len(raw_facts) - parsed_count
-        logger.info(f"LLMExtractor: {parsed_count} valid facts from {len(raw_facts)} extracted "
-                    f"({rejected_count} rejected)")
-
-        return facts
-
-    # Ollama HTTP communication
-    def _call_ollama(self, user_prompt: str) -> Optional[str]:
-        """HTTP call to Ollama API, includes few-shot examples."""
-        url = f"{self.host}/api/chat"
-
-        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
-        for user_msg, asst_msg in zip(EXAMPLE_INPUTS, EXAMPLE_OUTPUTS):
-            messages.append({"role": "user", "content": user_msg})
-            messages.append({"role": "assistant", "content": asst_msg})
-        messages.append({"role": "user", "content": user_prompt})
-
-        payload = {
-            "model": self.model,
-            "messages": messages,
-            "stream": False,
-            "options": {
-                "temperature": 0.1,
-                "num_predict": 4096,
-            },
-        }
-
-        for attempt in range(1, MAX_RETRIES + 1):
-            try:
-                resp = requests.post(url, json=payload, timeout=self.timeout)
-                resp.raise_for_status()
-                data = resp.json()
-                content = data.get("message", {}).get("content", "")
-                if content:
-                    return content
-                logger.warning(f"LLMExtractor: empty response (attempt {attempt})")
-            except requests.ConnectionError:
-                logger.error(f"LLMExtractor: connection failed to {self.host} (attempt {attempt})")
-            except requests.Timeout:
-                logger.error(f"LLMExtractor: timeout after {self.timeout}s (attempt {attempt})")
-            except requests.RequestException as e:
-                logger.error(f"LLMExtractor: HTTP error (attempt {attempt}): {e}")
-
-        return None
-
-    # JSON response parsing
     def _parse_json_response(self, raw: str) -> list[dict[str, Any]]:
-        """Extract JSON array from response, stripping markdown fences if present."""
         cleaned = re.sub(r"```(?:json)?\s*", "", raw).strip()
         cleaned = cleaned.rstrip("`").strip()
 
@@ -226,14 +257,12 @@ class LLMExtractor(AbstractExtractor):
             except json.JSONDecodeError:
                 pass
 
-        logger.debug(f"LLMExtractor: JSON parse failed: {raw[:200]}...")
+        logger.debug(f"SpacyLLMExtractor: JSON parse failed: {raw[:200]}...")
         return []
 
-    # Conversion to TemporalFact
     def _convert_to_temporal_facts(
         self, raw_facts: list[dict], pub_date: Optional[datetime],
     ) -> list[TemporalFact]:
-        """Convert raw dicts to TemporalFact objects, filtering invalid entries."""
         facts = []
         for i, raw in enumerate(raw_facts):
             try:
@@ -241,13 +270,12 @@ class LLMExtractor(AbstractExtractor):
                 if fact is not None:
                     facts.append(fact)
             except Exception as e:
-                logger.debug(f"LLMExtractor: fact #{i} error - {e}")
+                logger.debug(f"SpacyLLMExtractor: fact #{i} error - {e}")
         return facts
 
     def _single_fact(
         self, raw: dict, idx: int, pub_date: Optional[datetime],
     ) -> Optional[TemporalFact]:
-        """Process a single raw fact dict; returns None on validation failure."""
         subj_text = raw.get("subject", "").strip()
         obj_text = raw.get("object", "").strip()
 
@@ -303,11 +331,9 @@ class LLMExtractor(AbstractExtractor):
             extractor="llm",
         )
 
-    # Temporal field parsing
     def _parse_time_field(
         self, raw: dict, field: str, pub_date: Optional[datetime],
     ) -> Optional[TemporalExpression]:
-        """Parse a specific temporal field from a raw fact dict."""
         value = raw.get(field)
         if not value or value == "null" or value == "None":
             return None
@@ -316,25 +342,9 @@ class LLMExtractor(AbstractExtractor):
     def _parse_raw_expression(
         self, raw_text: str, pub_date: Optional[datetime],
     ) -> Optional[TemporalExpression]:
-        """Parse a temporal expression string."""
         results = self.temporal_parser.parse_all_in_sentence(
             sentence=raw_text,
             date_spans=[(0, len(raw_text), raw_text)],
             reference_date=pub_date,
         )
         return results[0] if results else None
-
-    # Availability check
-    def is_available(self) -> bool:
-        """Check whether the Ollama API and the configured model are reachable."""
-        try:
-            resp = requests.get(f"{self.host}/api/tags", timeout=5)
-            resp.raise_for_status()
-            models = resp.json().get("models", [])
-            available = any(m.get("name", "").startswith(self.model) for m in models)
-            if not available:
-                logger.warning(f"LLMExtractor: model '{self.model}' not available.")
-            return available
-        except requests.RequestException:
-            logger.warning(f"LLMExtractor: API unreachable at {self.host}")
-            return False

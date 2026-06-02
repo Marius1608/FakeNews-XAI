@@ -28,18 +28,18 @@ class TCSCalculator:
         """
         TCS = (1 - penalty_ratio) × score_coherence
 
-        penalty_ratio: weighted_penalty / max_possible_penalty, normalizat în [0, 1]
-        weighted_penalty: suma severity weights pentru inconsistențele detectate
-        score_coherence: scorul de coerență internă din C3
-        Returnează 0.0 explicit când nu există fapte temporale (date insuficiente).
+        penalty_ratio: weighted_penalty / max_possible_penalty, normalized to [0, 1]
+        weighted_penalty: sum of severity weights for detected inconsistencies
+        score_coherence: internal coherence score from C3
+        Returns 0.5 explicitly when there are no temporal facts (insufficient data).
         """
         facts = facts or []
 
         if n_claims == 0:
             return TCSResult(
-                score=0.0, n_inconsistencies=0, n_temporal_claims=0,
+                score=0.5, n_inconsistencies=0, n_temporal_claims=0,
                 coherence_factor=1.0, inconsistencies=[], facts=[],
-                explanation_text="insufficient_temporal_data"
+                explanation_text="insufficient_data"
             )
 
         # Severity weights
@@ -55,7 +55,7 @@ class TCSCalculator:
         # Worst-case: every claim has a critical inconsistency
         max_possible_penalty = n_claims * max(SEVERITY_WEIGHTS.values())
 
-        # Formula TCS simplificată: penalizare normalizată × coerență internă
+        # Simplified TCS formula: normalized penalty × internal coherence
         penalty_ratio = min(1.0, weighted_penalty / max_possible_penalty) if max_possible_penalty > 0 else 0.0
         tcs = max(0.0, min(1.0, (1.0 - penalty_ratio) * score_coherence))
 

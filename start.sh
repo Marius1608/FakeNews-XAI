@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Usage: bash start.sh
-# Starts Neo4j check, Ollama, pulls required models, verifies spaCy + REBEL models,
-# then launches the backend (FastAPI :8000) and frontend (React :3000).
+# Checks spaCy models and spacy-llm, then launches backend (FastAPI :8000) and frontend (React :3000).
 
 set -euo pipefail
 
@@ -39,14 +38,7 @@ if [[ -f "$ENV_FILE" ]]; then
     export $(grep -v '^\s*#' "$ENV_FILE" | grep '=' | xargs)
 fi
 
-# Resolve values from env with fallbacks
-OLLAMA_URL="${OLLAMA_HOST:-http://localhost:11434}"
-
-IFS=',' read -ra LLM_MODELS   <<< "${LLM_MODELS:-llama3}"
 IFS=',' read -ra SPACY_MODELS <<< "${SPACY_MODELS:-en_core_web_trf}"
-
-# Trim whitespace from each element
-for i in "${!LLM_MODELS[@]}";   do LLM_MODELS[$i]="${LLM_MODELS[$i]// /}";   done
 for i in "${!SPACY_MODELS[@]}"; do SPACY_MODELS[$i]="${SPACY_MODELS[$i]// /}"; done
 
 # Check if a URL responds with HTTP 200
@@ -54,8 +46,8 @@ check_http() {
     curl -sf -o /dev/null --max-time 5 "$1"
 }
 
-# [1/6] Neo4j
-step "[1/6] Checking Neo4j..."
+# [0/3] Neo4j (optional)
+step "[0/3] Checking Neo4j..."
 if check_http "$NEO4J_URL"; then
     ok "Neo4j is running at $NEO4J_URL"
 else
@@ -63,43 +55,8 @@ else
     warn "Start Neo4j manually before running start.sh for full functionality"
 fi
 
-# [2/6] Ollama daemon
-step "[2/6] Checking Ollama..."
-if ! check_http "$OLLAMA_URL/api/tags"; then
-    warn "Ollama not running — starting ollama serve"
-    ollama serve &>/dev/null &
-    sleep 3
-    if ! check_http "$OLLAMA_URL/api/tags"; then
-        err "Ollama failed to start. Is it installed?"
-        exit 1
-    fi
-fi
-ok "Ollama is running"
-
-# [3/6] Ollama LLM models
-step "[3/6] Checking Ollama LLM models..."
-PULLED_MODELS=$(curl -sf "$OLLAMA_URL/api/tags" \
-    | grep -o '"name":"[^"]*"' \
-    | sed 's/"name":"//;s/"//' \
-    | sed 's/:latest//' \
-    || true)
-
-for model in "${LLM_MODELS[@]}"; do
-    short="${model%%:*}"
-    if echo "$PULLED_MODELS" | grep -qxF "$short"; then
-        ok "LLM model present: $model"
-    else
-        warn "Pulling LLM model: $model"
-        if ! ollama pull "$model"; then
-            err "Failed to pull $model"
-            exit 1
-        fi
-        ok "Pulled: $model"
-    fi
-done
-
-# [4/6] spaCy NLP models
-step "[4/6] Checking spaCy models..."
+# [1/3] spaCy models + spacy-llm
+step "[1/3] Checking spaCy models..."
 for model in "${SPACY_MODELS[@]}"; do
     if python -c "import spacy; spacy.load('$model')" 2>/dev/null; then
         ok "spaCy model present: $model"
@@ -113,18 +70,16 @@ for model in "${SPACY_MODELS[@]}"; do
     fi
 done
 
-# [5/6] REBEL model (Pipeline C)
-step "[5/6] Checking REBEL-large model (Pipeline C)..."
-REBEL_CACHE="$HOME/.cache/huggingface/hub/models--Babelscape--rebel-large"
-if [[ -d "$REBEL_CACHE" ]]; then
-    ok "REBEL-large model present in HuggingFace cache"
+if python -c "import spacy_llm" 2>/dev/null; then
+    ok "spacy-llm installed"
 else
-    warn "REBEL-large not in cache — Pipeline C will download on first use (~1.6GB)"
-    warn "To pre-download: python -c \"from transformers import pipeline; pipeline('text2text-generation', model='Babelscape/rebel-large')\""
+    warn "spacy-llm not found — installing..."
+    pip install spacy-llm
+    ok "spacy-llm installed"
 fi
 
-# [6/6] Backend + Frontend
-step "[6/6] Activating Python venv..."
+# [2/3] Backend
+step "[2/3] Activating Python venv..."
 if [[ -f "$REPO_ROOT/venv/Scripts/activate" ]]; then
     source "$REPO_ROOT/venv/Scripts/activate"
 elif [[ -f "$REPO_ROOT/venv/bin/activate" ]]; then
@@ -135,7 +90,7 @@ else
 fi
 ok "venv activated"
 
-step "[6/6] Starting backend (uvicorn on :8000)..."
+step "[2/3] Starting backend (uvicorn on :8000)..."
 cd "$REPO_ROOT"
 uvicorn backend.main:app --host 0.0.0.0 --port 8000 2>&1 | sed 's/^/[backend]  /' &
 BACKEND_PID=$!
@@ -147,7 +102,8 @@ else
     warn "Backend did not respond in time — check output above"
 fi
 
-step "[6/6] Starting frontend (npm start on :3000)..."
+# [3/3] Frontend
+step "[3/3] Starting frontend (npm start on :3000)..."
 cd "$REPO_ROOT/frontend"
 npm start 2>&1 | sed 's/^/[frontend] /' &
 FRONTEND_PID=$!
@@ -159,10 +115,9 @@ echo ""
 echo -e "${CYAN}================================================${RESET}"
 echo -e "${GREEN}  Backend    $BACKEND_URL${RESET}"
 echo -e "${GREEN}  Frontend   $FRONTEND_URL${RESET}"
-echo -e "${GREEN}  Ollama     $OLLAMA_URL${RESET}"
 echo -e "${GREEN}  Neo4j      $NEO4J_URL${RESET}"
 echo -e "${CYAN}------------------------------------------------${RESET}"
-echo -e "${YELLOW}  Pipelines: A (spaCy) | B (llama3) | C (REBEL)${RESET}"
+echo -e "${YELLOW}  Pipelines: A (spaCy) | B (spaCy+Qwen3-1.7B)${RESET}"
 echo -e "${YELLOW}  C3b:       RefKG → Neo4j → Wikidata → RSS${RESET}"
 echo -e "${YELLOW}  HITL:      persist=true → Mark TRUE/FAKE${RESET}"
 echo -e "${CYAN}------------------------------------------------${RESET}"
