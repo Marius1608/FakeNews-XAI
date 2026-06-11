@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-29T11:46:13.300461",
-  "total_entities": 149,
-  "total_facts": 1161,
+  "generated_at": "2026-06-11T17:55:36.452085",
+  "total_entities": 150,
+  "total_facts": 1169,
   "failed_count": 0,
   "entities": [
     {
@@ -12545,6 +12545,94 @@
       "category": "us_politician",
       "facts": [],
       "fetched_at": "2026-05-29T11:20:17.114180"
+    },
+    {
+      "name": "Harry Truman",
+      "qid": "Q11613",
+      "category": "us_president",
+      "facts": [
+        {
+          "entity": "Harry Truman",
+          "entity_id": "Q11613",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1939,
+          "start_date": "1939-01-03",
+          "end_year": 1941,
+          "end_date": "1941-01-03"
+        },
+        {
+          "entity": "Harry Truman",
+          "entity_id": "Q11613",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1945,
+          "start_date": "1945-01-03",
+          "end_year": 1945,
+          "end_date": "1945-01-17"
+        },
+        {
+          "entity": "Harry Truman",
+          "entity_id": "Q11613",
+          "position": "Vice President of the United States",
+          "property": "P39",
+          "start_year": 1945,
+          "start_date": "1945-01-20",
+          "end_year": 1945,
+          "end_date": "1945-04-12"
+        },
+        {
+          "entity": "Harry Truman",
+          "entity_id": "Q11613",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1943,
+          "start_date": "1943-01-03",
+          "end_year": 1945,
+          "end_date": "1945-01-03"
+        },
+        {
+          "entity": "Harry Truman",
+          "entity_id": "Q11613",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1941,
+          "start_date": "1941-01-03",
+          "end_year": 1943,
+          "end_date": "1943-01-03"
+        },
+        {
+          "entity": "Harry Truman",
+          "entity_id": "Q11613",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1935,
+          "start_date": "1935-01-03",
+          "end_year": 1937,
+          "end_date": "1937-01-03"
+        },
+        {
+          "entity": "Harry Truman",
+          "entity_id": "Q11613",
+          "position": "United States senator",
+          "property": "P39",
+          "start_year": 1937,
+          "start_date": "1937-01-03",
+          "end_year": 1939,
+          "end_date": "1939-01-03"
+        },
+        {
+          "entity": "Harry Truman",
+          "entity_id": "Q11613",
+          "position": "President of the United States",
+          "property": "P39",
+          "start_year": 1945,
+          "start_date": "1945-04-12",
+          "end_year": 1953,
+          "end_date": "1953-01-20"
+        }
+      ],
+      "fetched_at": "2026-06-11T17:55:34.951784"
     }
   ],
   "failed": []

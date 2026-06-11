@@ -49,6 +49,7 @@ class ExternalVerificationResult:
     facts_matched: int = 0
     wikidata_queries: int = 0
     web_search_queries: int = 0
+    rss_verifications: list[dict] = field(default_factory=list)
 
 
 class ExternalVerifier:
@@ -151,7 +152,8 @@ class ExternalVerifier:
             rss_result = self._rss_verifier.verify_fact(fact)
             if rss_result and rss_result.get("found"):
                 result.web_search_queries += 1
-                logger.info(f"RSS: confirmed '{fact.subject.text}' via {rss_result['source']}")
+                logger.info(f"RSS: confirmed '{fact.subject.text}' via {rss_result['feed_url']}")
+                result.rss_verifications.append(rss_result)
 
         return []
 

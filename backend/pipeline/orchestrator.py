@@ -153,6 +153,7 @@ class PipelineOrchestrator:
 
         result.article_id = article_id
         result.cross_article_inconsistencies = cross_article_incs
+        result.rss_verifications = external.rss_verifications
 
         # Persist facts after scoring (only when persist=True; store may still be used for Wikidata cache)
         if self._persistent_store is not None and self.persist:

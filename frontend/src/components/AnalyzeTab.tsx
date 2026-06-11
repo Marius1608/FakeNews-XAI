@@ -8,6 +8,7 @@ import ArticleInput from "./ArticleInput";
 import TCSScoreDisplay from "./TCSScoreDisplay";
 import TextHighlight from "./TextHighlight";
 import InconsistencyList from "./InconsistencyList";
+import RSSVerificationPanel from "./RSSVerificationPanel";
 import Timeline from "./Timeline";
 import TemporalGraph from "./TemporalGraph";
 
@@ -18,7 +19,6 @@ function AnalyzeTab(): React.ReactElement {
   const [error, setError] = useState<string | null>(null);
   const [availableModels, setAvailableModels] = useState<ModelsResponse | undefined>(undefined);
   const [persist, setPersist] = useState<boolean>(false);
-  const [useRebel, setUseRebel] = useState<boolean>(false);
   const [useRss, setUseRss] = useState<boolean>(false);
   const [crossArticleResult, setCrossArticleResult] = useState<CrossArticleResponse | null>(null);
   const [crossArticleLoading, setCrossArticleLoading] = useState<boolean>(false);
@@ -38,7 +38,7 @@ function AnalyzeTab(): React.ReactElement {
     setCrossArticleResult(null);
     setVerdict(null);
     try {
-      const result = await analyzeArticle({ ...request, persist, use_rebel: useRebel, use_rss: useRss });
+      const result = await analyzeArticle({ ...request, persist, use_rss: useRss });
       setAnalyzeResult(result);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
@@ -105,18 +105,6 @@ function AnalyzeTab(): React.ReactElement {
           }
           label={<Typography variant="body2">Save</Typography>}
         />
-        <Tooltip title="Adds static relations (position held, member of) extracted by REBEL-large">
-          <FormControlLabel
-            control={
-              <Switch
-                size="small"
-                checked={useRebel}
-                onChange={(e) => setUseRebel(e.target.checked)}
-              />
-            }
-            label={<Typography variant="body2">Pipeline C (REBEL)</Typography>}
-          />
-        </Tooltip>
         <Tooltip title="Fallback for recent facts not yet in Wikidata — searches live RSS news feeds">
           <FormControlLabel
             control={
@@ -285,6 +273,7 @@ function AnalyzeTab(): React.ReactElement {
             annotations={analyzeResult.fact_annotations}
           />
           <InconsistencyList inconsistencies={analyzeResult.inconsistency_details} />
+          <RSSVerificationPanel verifications={analyzeResult.rss_verifications ?? []} />
           <Timeline
             timeline={analyzeResult.timeline}
             annotations={analyzeResult.fact_annotations}

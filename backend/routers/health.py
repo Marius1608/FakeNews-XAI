@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter
 
-from backend.config import AVAILABLE_MODELS, OLLAMA_HOST, OLLAMA_MODEL, SPACY_MODEL
+from backend.config import AVAILABLE_MODELS, QWEN_MODEL_ID, SPACY_MODEL
 
 router = APIRouter(tags=["health"])
 
@@ -16,7 +16,7 @@ async def health_check() -> dict:
         "status": "ok",
         "components": {
             "pipeline_a": {"model": SPACY_MODEL, "type": "spacy"},
-            "pipeline_b": {"host": OLLAMA_HOST, "model": OLLAMA_MODEL, "type": "ollama"},
+            "pipeline_b": {"model": QWEN_MODEL_ID, "type": "qwen"},
         },
     }
 

@@ -38,13 +38,21 @@ NEW_ENTITIES = [
     {"name": "Wes Streeting",         "qid": "Q7983907",  "category": "uk_politician"},
     {"name": "Andy Burnham",          "qid": "Q4759326",  "category": "uk_politician"},
     {"name": "Nicola Sturgeon",       "qid": "Q329938",   "category": "uk_politician"},
+    {"name": "Margaret Thatcher",     "qid": "Q7837",     "category": "uk_politician"},
     # EU Politicians
     {"name": "Donald Tusk",           "qid": "Q946",      "category": "eu_politician"},
     {"name": "Emmanuel Macron",       "qid": "Q3052772",  "category": "eu_politician"},
     {"name": "Olaf Scholz",           "qid": "Q61053",    "category": "eu_politician"},
     {"name": "Ursula von der Leyen",  "qid": "Q21023677", "category": "eu_politician"},
-    # US
+    # US Politicians
     {"name": "Ken Paxton",            "qid": "Q7383626",  "category": "us_politician"},
+    # US Presidents — historical
+    {"name": "Richard Nixon",         "qid": "Q9588",     "category": "us_president"},
+    {"name": "Gerald Ford",           "qid": "Q9582",     "category": "us_president"},
+    {"name": "Lyndon B. Johnson",     "qid": "Q9597",     "category": "us_president"},
+    {"name": "Dwight Eisenhower",     "qid": "Q9586",     "category": "us_president"},
+    {"name": "John F. Kennedy",       "qid": "Q9574",     "category": "us_president"},
+    {"name": "Harry Truman",          "qid": "Q9583",     "category": "us_president"},
 ]
 
 

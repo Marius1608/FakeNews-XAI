@@ -7,6 +7,15 @@ export interface ModelsResponse {
 }
 
 // analyze schemas
+export interface RSSVerification {
+  feed_name: string;
+  feed_url: string;
+  matched_entity: string;
+  headline: string;
+  verified: boolean;
+  timestamp: string;
+}
+
 export interface AnalyzeRequest {
   text: string;
   title?: string;
@@ -15,7 +24,6 @@ export interface AnalyzeRequest {
   pipeline?: "spacy" | "llm";
   model?: string;
   persist?: boolean;
-  use_rebel?: boolean;
   use_rss?: boolean;
 }
 
@@ -71,6 +79,7 @@ export interface AnalyzeResponse {
   article_id?: string | null;
   cross_article_inconsistencies?: InconsistencyResponse[];
   llm_explanation?: string | null;
+  rss_verifications?: RSSVerification[];
 }
 
 // batch schemas
@@ -136,7 +145,6 @@ export interface CompareRequest {
   model_a?: string;
   pipeline_b: string;
   model_b?: string;
-  use_rebel?: boolean;
 }
 
 export interface PipelineResult {
@@ -199,9 +207,8 @@ export interface PipelineAComponent {
 }
 
 export interface PipelineBComponent {
-  host: string;
   model: string;
-  type: "ollama";
+  type: "qwen";
 }
 
 export interface HealthResponse {

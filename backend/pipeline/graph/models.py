@@ -175,6 +175,7 @@ class TCSResult:
     processing_time_ms: float = 0.0
     article_id: Optional[str] = None
     cross_article_inconsistencies: list[Inconsistency] = field(default_factory=list)
+    rss_verifications: list[dict] = field(default_factory=list)
 
     @property
     def label(self) -> str:

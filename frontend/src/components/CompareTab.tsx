@@ -6,7 +6,6 @@ import {
   Chip,
   CircularProgress,
   FormControl,
-  FormControlLabel,
   FormHelperText,
   Grid,
   InputLabel,
@@ -14,8 +13,6 @@ import {
   Paper,
   Select,
   Stack,
-  Switch,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
@@ -55,7 +52,6 @@ function CompareTab(): React.ReactElement {
   const [compareResult, setCompareResult] = useState<CompareResponse | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [useRebel, setUseRebel] = useState<boolean>(false);
 
   useEffect(() => {
     getModels()
@@ -93,7 +89,6 @@ function CompareTab(): React.ReactElement {
       model_a: modelA || undefined,
       pipeline_b: pipelineB,
       model_b: modelB || undefined,
-      use_rebel: useRebel,
     };
     try {
       const result = await comparePipelines(req);
@@ -220,22 +215,6 @@ function CompareTab(): React.ReactElement {
         >
           {isLoading ? "Comparing..." : "Compare"}
         </Button>
-        <Tooltip title="Adds static relations extracted by REBEL-large to both pipelines">
-          <FormControlLabel
-            control={
-              <Switch
-                size="small"
-                checked={useRebel}
-                onChange={(e) => setUseRebel(e.target.checked)}
-              />
-            }
-            label={
-              <Typography variant="body2">
-                Pipeline C (REBEL) — augments both pipelines
-              </Typography>
-            }
-          />
-        </Tooltip>
       </Stack>
 
       {error && (
@@ -279,7 +258,7 @@ function CompareTab(): React.ReactElement {
             <Grid size={{ xs: 12, md: 6 }}>
               <Stack spacing={3}>
                 <Typography variant="h6">
-                  {useRebel ? "Pipeline A+C" : "Model A"} — {getModelLabel(compareResult.model_a)}
+                  Model A — {getModelLabel(compareResult.model_a)}
                 </Typography>
                 <TCSScoreDisplay
                   score={compareResult.pipeline_a.score}
@@ -309,7 +288,7 @@ function CompareTab(): React.ReactElement {
             <Grid size={{ xs: 12, md: 6 }}>
               <Stack spacing={3}>
                 <Typography variant="h6">
-                  {useRebel ? "Pipeline B+C" : "Model B"} — {getModelLabel(compareResult.model_b)}
+                  Model B — {getModelLabel(compareResult.model_b)}
                 </Typography>
                 <TCSScoreDisplay
                   score={compareResult.pipeline_b.score}

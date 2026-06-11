@@ -23,6 +23,21 @@ DEFAULT_FEEDS = [
     "https://feeds.skynews.com/feeds/rss/politics.xml",
 ]
 
+FEED_NAMES: dict[str, str] = {
+    "http://feeds.bbci.co.uk/news/politics/rss.xml": "BBC Politics",
+    "https://feeds.npr.org/1014/rss.xml": "NPR Politics",
+    "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml": "NYT Politics",
+    "https://thehill.com/homenews/feed/": "The Hill",
+    "https://rss.politico.com/politics-news.xml": "Politico",
+    "https://www.theguardian.com/politics/rss": "The Guardian Politics",
+    "https://www.theguardian.com/us-news/rss": "The Guardian US",
+    "https://feeds.skynews.com/feeds/rss/politics.xml": "Sky News Politics",
+}
+
+
+def _feed_name(url: str) -> str:
+    return FEED_NAMES.get(url, url.split("/")[2] if "/" in url else url)
+
 RELATION_KEYWORDS: dict[RelationType, list[str]] = {
     RelationType.HOLDS_POSITION: ["president", "senator", "governor", "minister", "appointed", "elected"],
     RelationType.MEMBER_OF: ["member", "joined", "party", "coalition"],
@@ -141,10 +156,14 @@ class RSSVerifier:
             return None
 
         best = results[0]
-        snippet = best['title'][:120] if best['title'] else best['description'][:120]
+        feed_url = best.get('feed_url', '')
+        headline = best['title'][:200] if best['title'] else best['description'][:200]
         return {
             "found": True,
-            "source": best.get('feed_url', ''),
-            "snippet": snippet,
-            "link": best.get('link', ''),
+            "feed_name": _feed_name(feed_url),
+            "feed_url": feed_url,
+            "matched_entity": fact.subject.text,
+            "headline": headline,
+            "verified": True,
+            "timestamp": best.get('pub_date', ''),
         }
