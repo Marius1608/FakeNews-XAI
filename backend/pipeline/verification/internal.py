@@ -154,6 +154,9 @@ class InternalVerifier:
                 continue
 
             if t_start > t_end:
+                gap_days = (t_start - t_end).days
+                if gap_days < 30:
+                    continue
                 inconsistencies.append(Inconsistency(
                     inconsistency_type=InconsistencyType.ORDERING_ERROR,
                     severity=Severity.MEDIUM,
@@ -179,7 +182,11 @@ class InternalVerifier:
         inconsistencies = []
         for i, f1 in enumerate(facts):
             for j, f2 in enumerate(facts):
-                if i >= j or f1.predicate != f2.predicate:
+                if i >= j:
+                    continue
+                if f1.predicate != f2.predicate:
+                    continue
+                if f1.predicate != RelationType.HOLDS_POSITION:
                     continue
 
                 obj1 = f1.object.text.lower()
@@ -196,6 +203,11 @@ class InternalVerifier:
                         start2, end2 = _extract_bounds(f2)
 
                         if _check_overlap(start1, end1, start2, end2):
+                            if len(obj1.strip()) < 5:
+                                continue
+                            orig_obj1 = f1.object.text.strip()
+                            if orig_obj1 and orig_obj1[0].islower():
+                                continue
                             inconsistencies.append(Inconsistency(
                                 inconsistency_type=InconsistencyType.FACTUAL_CONTRADICTION,
                                 severity=Severity.HIGH,
