@@ -120,6 +120,10 @@ class WikidataClient:
         """P463 — member of."""
         return self.get_temporal_facts(entity_id, relation_properties=["P463"])
 
+    def get_all_positions(self, entity_id: str) -> list[WikidataFact]:
+        """P39 + P463 + P580 + P582 + P585 — all temporal facts for an entity."""
+        return self.get_temporal_facts(entity_id, ["P39", "P463", "P585", "P580", "P582"])
+
     # SPARQL query construction
     def _build_temporal_query(self, entity_id: str, relation_properties: Optional[list[str]]) -> str:
         """

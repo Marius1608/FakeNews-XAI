@@ -22,7 +22,7 @@ from backend.pipeline.verification.rss_verifier import RSSVerifier
 logger = logging.getLogger(__name__)
 
 REFERENCE_KG_FILE = REFERENCE_KG_DIR / "verified_events.json"
-DATE_TOLERANCE_DAYS = 400
+DATE_TOLERANCE_DAYS = 200
 
 # Relations that can be verified against external sources
 EXTERNALLY_VERIFIABLE_RELATIONS = {
@@ -80,7 +80,7 @@ class ExternalVerifier:
         logger.info(f"External verification: {len(verifiable)} eligible facts out of {tkg.fact_count} total.")
 
         for fact in verifiable:
-            result.inconsistencies.extend(self._verify_fact(fact, result))
+            result.inconsistencies.extend(self._verify_fact(fact, result, prefetched_facts={}))
 
         # Wikipedia secondary pass: check GENERIC facts from PERSON entities
         # These are excluded from EXTERNALLY_VERIFIABLE_RELATIONS but may still
@@ -106,7 +106,7 @@ class ExternalVerifier:
         return result
 
     # Fact verification
-    def _verify_fact(self, fact: TemporalFact, result: ExternalVerificationResult) -> list[Inconsistency]:
+    def _verify_fact(self, fact: TemporalFact, result: ExternalVerificationResult, prefetched_facts=None) -> list[Inconsistency]:
         subject_name = fact.subject.text.lower().strip()
         props = RELATION_TO_WIKIDATA_PROPS.get(fact.predicate, [])
 
@@ -128,10 +128,16 @@ class ExternalVerifier:
             return self._compare_with_reference(fact, relevant_ref)
         # If Reference KG has no relevant facts, continue to Wikidata
 
+        # 1b. Cross-entity overlap in Reference KG (HOLDS_POSITION only)
+        if fact.predicate == RelationType.HOLDS_POSITION:
+            cross_incons = self._check_cross_entity_overlap(fact, result)
+            if cross_incons:
+                return cross_incons
+
         # 2. Wikidata
         wikidata_confirmed = False
         if self.use_wikidata:
-            wikidata_facts = self._fetch_from_wikidata(fact, result)
+            wikidata_facts = self._fetch_from_wikidata(fact, result, prefetched_facts=prefetched_facts)
             if wikidata_facts:
                 wikidata_confirmed = True
                 result.facts_matched += 1
@@ -229,6 +235,77 @@ class ExternalVerifier:
 
         return False
 
+    @staticmethod
+    def _same_role_category(role1: str, role2: str) -> bool:
+        US_ROLES = {"president of the united states", "vice president of the united states"}
+        UK_ROLES = {"prime minister of the united kingdom"}
+        EU_ROLES = {"president of france", "prime minister of poland", "president of the european council"}
+
+        r1 = role1.lower()
+        r2 = role2.lower()
+        for role_set in [US_ROLES, UK_ROLES, EU_ROLES]:
+            if any(r in r1 for r in role_set) and any(r in r2 for r in role_set):
+                return True
+        return False
+
+    def _check_cross_entity_overlap(self, fact: TemporalFact, result: ExternalVerificationResult) -> list[Inconsistency]:
+        subject_name = fact.subject.text.lower().strip()
+        fact_start = fact.time_start.normalized_date if fact.time_start else None
+        fact_end = fact.time_end.normalized_date if fact.time_end else None
+        fact_point = fact.time_point.normalized_date if fact.time_point else None
+
+        # Normalise to an interval for the article claim
+        interval_start = fact_start or fact_point
+        interval_end = fact_end or fact_point
+        if not interval_start or not interval_end:
+            return []
+
+        for kg_key, kg_facts in self._reference_kg.items():
+            if not isinstance(kg_facts, list):
+                continue
+            # Skip same-entity entries
+            if SequenceMatcher(None, subject_name, kg_key).ratio() > 0.85:
+                continue
+            for kg_fact in kg_facts:
+                if not isinstance(kg_fact, dict):
+                    continue
+                if kg_fact.get("relation") != fact.predicate.value:
+                    continue
+                other_start = _parse_date_str(kg_fact.get("time_start"))
+                other_end = _parse_date_str(kg_fact.get("time_end"))
+                if not other_start or not other_end:
+                    continue
+                # Only compare roles in the same country/category to avoid
+                # false positives like Reagan (US) vs Thatcher (UK) overlap.
+                fact_role = fact.object.text if fact.object else ""
+                other_role = kg_fact.get("value", "")
+                if not self._same_role_category(fact_role, other_role):
+                    continue
+                # Article interval must fall fully inside the other entity's mandate
+                if other_start <= interval_start and other_end >= interval_end:
+                    fs = interval_start.year
+                    fe = interval_end.year
+                    os_ = other_start.year
+                    oe = other_end.year
+                    other_entity = kg_fact.get("value", kg_key)
+                    logger.debug(
+                        f"Cross-entity overlap: '{fact.subject.text}' [{fs}->{fe}] "
+                        f"inside '{other_entity}' mandate [{os_}->{oe}]"
+                    )
+                    return [Inconsistency(
+                        inconsistency_type=InconsistencyType.DATE_MISMATCH,
+                        severity=Severity.HIGH,
+                        description=(
+                            f"Interval [{fs} -> {fe}] for '{fact.subject.text}' "
+                            f"overlaps with {other_entity}'s known mandate [{os_} -> {oe}]."
+                        ),
+                        facts_involved=[fact],
+                        sentence_indices=[fact.source_sentence_idx],
+                        verified_by="reference_kg_cross",
+                        evidence=f"Reference KG: {other_entity} held this position [{os_} -> {oe}].",
+                    )]
+        return []
+
     def _find_in_reference_kg(self, subject_name: str) -> list[tuple[str, dict]]:
         """Search the Reference KG — returns (kg_entity_key, fact_dict) pairs."""
         pairs: list[tuple[str, dict]] = []
@@ -239,8 +316,13 @@ class ExternalVerifier:
         return pairs
 
     # Wikidata fetch with 3-level cache
-    def _fetch_from_wikidata(self, fact: TemporalFact, result: ExternalVerificationResult) -> list[WikidataFact]:
+    def _fetch_from_wikidata(self, fact: TemporalFact, result: ExternalVerificationResult, prefetched_facts=None) -> list[WikidataFact]:
         cache_key = fact.subject.text.lower().strip()
+
+        # 0. Entity-level prefetch cache (populated by verify() before the main loop)
+        for key, facts in (prefetched_facts or {}).items():
+            if SequenceMatcher(None, cache_key, key.lower()).ratio() > 0.85:
+                return facts
 
         logger.debug(f"Wikidata cache {'HIT' if cache_key in self._wikidata_cache else 'MISS'} for entity '{cache_key}'")
 

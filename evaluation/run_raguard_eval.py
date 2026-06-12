@@ -1,12 +1,16 @@
 """RAGuard dataset evaluation.
 
 RAGuard: UCSC-IRKM/RAGuard on HuggingFace
-Format: parquet files with columns including question, answer, label (0=real, 1=fake or similar)
-Political filter: same POLITICAL_KEYWORDS as ISOT
+CSV format:
+  claims.csv   — Claim ID, Claim, Verdict (bool), Document IDs, Document Labels, Original Verdict
+  documents.csv — Document ID, Title, Full Text, Claim ID, Document Label, Link
+
+Verdict=True means the claim is FAKE/hallucinated in RAGuard.
 
 Usage:
-  python evaluation/run_raguard_eval.py --path data/datasets/raguard/
-  python evaluation/run_raguard_eval.py --path data/datasets/raguard/ --max 50
+  python evaluation/run_raguard_eval.py                          # auto-detects from HF cache or downloads
+  python evaluation/run_raguard_eval.py --path data/raguard/    # explicit directory
+  python evaluation/run_raguard_eval.py --max 50
 """
 
 from __future__ import annotations
@@ -41,90 +45,159 @@ POLITICAL_KEYWORDS = [
     "republican", "democrat", "political", "washington",
 ]
 
-_LABEL_CANDIDATES = ["label", "fake", "is_fake", "ground_truth"]
+_HF_CLAIMS_URL = "https://huggingface.co/datasets/UCSC-IRKM/RAGuard/resolve/main/claims.csv"
+_HF_DOCS_URL   = "https://huggingface.co/datasets/UCSC-IRKM/RAGuard/resolve/main/documents.csv"
+_DEFAULT_DOWNLOAD_DIR = _PROJECT_ROOT / "data" / "datasets" / "raguard"
 
 
 # // section load
 
+def _find_in_hf_cache(filename: str) -> Optional[Path]:
+    """Search the HuggingFace hub cache for a specific filename."""
+    cache_dir = Path.home() / ".cache" / "huggingface" / "hub"
+    if not cache_dir.exists():
+        return None
+    matches = list(cache_dir.rglob(filename))
+    return matches[0] if matches else None
+
+
+def _download_csv(url: str, dest: Path) -> None:
+    """Download a file from url to dest, showing progress."""
+    import requests
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    logger.info(f"Downloading {url} -> {dest}")
+    print(f"  Downloading {dest.name} from HuggingFace ...", end=" ", flush=True)
+    try:
+        resp = requests.get(url, timeout=60, stream=True)
+        resp.raise_for_status()
+        with open(dest, "wb") as f:
+            for chunk in resp.iter_content(chunk_size=65536):
+                f.write(chunk)
+        print("done")
+    except Exception as e:
+        print(f"FAILED: {e}")
+        raise
+
+
+def _resolve_csv_paths(path: Optional[Path]) -> tuple[Path, Path]:
+    """
+    Return (claims_path, docs_path) by:
+      1. Using explicit --path directory if provided and files exist there.
+      2. Searching the HuggingFace cache.
+      3. Downloading to _DEFAULT_DOWNLOAD_DIR.
+    """
+    # 1. Explicit path
+    if path is not None:
+        claims = path / "claims.csv"
+        docs   = path / "documents.csv"
+        if claims.exists() and docs.exists():
+            return claims, docs
+        print(f"  [WARN] claims.csv or documents.csv not found in {path}, trying HF cache ...")
+
+    # 2. HF cache search
+    cached_claims = _find_in_hf_cache("claims.csv")
+    cached_docs   = _find_in_hf_cache("documents.csv")
+    if cached_claims and cached_docs:
+        logger.info(f"RAGuard found in HF cache: {cached_claims.parent}")
+        return cached_claims, cached_docs
+
+    # 3. Download
+    dl_dir = path if path is not None else _DEFAULT_DOWNLOAD_DIR
+    claims_dest = dl_dir / "claims.csv"
+    docs_dest   = dl_dir / "documents.csv"
+
+    if not claims_dest.exists():
+        _download_csv(_HF_CLAIMS_URL, claims_dest)
+    if not docs_dest.exists():
+        _download_csv(_HF_DOCS_URL, docs_dest)
+
+    return claims_dest, docs_dest
+
+
 def load_raguard(
-    path: Path,
+    path: Optional[Path] = None,
     max_per_class: int = 50,
     political_filter: bool = True,
 ) -> list[dict]:
-    """Reads parquet files from path, auto-detects label column, returns article dicts."""
+    """
+    Load RAGuard from CSV files.
+
+    Resolution order:
+      1. CSV files in `path` (if provided)
+      2. HuggingFace hub cache (~/.cache/huggingface/hub/**/claims.csv)
+      3. Download from HuggingFace to `path` or data/datasets/raguard/
+
+    claims.csv  columns: Claim ID, Claim, Verdict (bool), ...
+    documents.csv columns: Document ID, Title, Full Text, Claim ID, ...
+
+    Verdict=True in RAGuard means the claim is FAKE/hallucinated.
+    """
     try:
         import pandas as pd
     except ImportError:
         print("[ERROR] pandas is required: pip install pandas")
         sys.exit(1)
 
-    parquet_files = list(path.glob("*.parquet"))
-    if not parquet_files:
-        # Also try nested train/test splits
-        parquet_files = list(path.glob("**/*.parquet"))
-    if not parquet_files:
-        logger.error(f"No parquet files found in {path}")
-        sys.exit(1)
+    claims_path, docs_path = _resolve_csv_paths(path)
+    logger.info(f"RAGuard claims   : {claims_path}")
+    logger.info(f"RAGuard documents: {docs_path}")
 
-    frames = [pd.read_parquet(f) for f in sorted(parquet_files)]
-    df = pd.concat(frames, ignore_index=True)
-    df.columns = [c.strip().lower() for c in df.columns]
+    claims_df = pd.read_csv(claims_path)
+    docs_df   = pd.read_csv(docs_path)
 
-    # Auto-detect label column
-    label_col = next((c for c in _LABEL_CANDIDATES if c in df.columns), None)
-    if label_col is None:
-        logger.error(f"No label column found. Available columns: {list(df.columns)}")
-        sys.exit(1)
-    logger.info(f"RAGuard: using label column '{label_col}'")
+    # Normalize column names (strip whitespace)
+    claims_df.columns = [c.strip() for c in claims_df.columns]
+    docs_df.columns   = [c.strip() for c in docs_df.columns]
 
-    # Determine text column
-    if "text" in df.columns:
-        text_col = "text"
-    elif "answer" in df.columns and "question" in df.columns:
-        df["text"] = df["question"].fillna("").astype(str) + " " + df["answer"].fillna("").astype(str)
-        text_col = "text"
-    elif "answer" in df.columns:
-        text_col = "answer"
-    elif "question" in df.columns:
-        text_col = "question"
-    else:
-        logger.error(f"No usable text column found. Columns: {list(df.columns)}")
-        sys.exit(1)
+    # Validate required columns
+    for col in ("Claim ID", "Claim", "Verdict"):
+        if col not in claims_df.columns:
+            logger.error(f"claims.csv missing column '{col}'. Found: {list(claims_df.columns)}")
+            sys.exit(1)
+    for col in ("Claim ID", "Full Text"):
+        if col not in docs_df.columns:
+            logger.error(f"documents.csv missing column '{col}'. Found: {list(docs_df.columns)}")
+            sys.exit(1)
 
-    df = df.dropna(subset=[text_col])
-    df = df[df[text_col].astype(str).str.strip().str.len() > 50]
+    # Merge: one row per document, enriched with claim metadata
+    merged = claims_df.merge(docs_df, on="Claim ID", how="left")
 
-    # Normalize label: 1/True/"fake"/"1" → is_fake=True
-    def _to_fake(val) -> bool:
-        if isinstance(val, bool):
-            return val
-        if isinstance(val, (int, float)):
-            return int(val) == 1
-        return str(val).strip().lower() in ("1", "true", "fake", "yes")
-
-    df["_is_fake"] = df[label_col].apply(_to_fake)
-
+    # Political filter on Full Text + Claim
     if political_filter:
-        mask = df[text_col].astype(str).str.lower().apply(
-            lambda t: any(kw in t for kw in POLITICAL_KEYWORDS)
-        )
-        df = df[mask]
-
-    title_col = next((c for c in ("title", "headline", "question") if c in df.columns), None)
+        def _has_kw(row) -> bool:
+            text = " ".join([
+                str(row.get("Full Text", "") or ""),
+                str(row.get("Claim", "") or ""),
+                str(row.get("Title", "") or ""),
+            ]).lower()
+            return any(kw in text for kw in POLITICAL_KEYWORDS)
+        merged = merged[merged.apply(_has_kw, axis=1)]
 
     articles: list[dict] = []
     class_counts: dict[bool, int] = {True: 0, False: 0}
 
-    for _, row in df.iterrows():
-        is_fake = bool(row["_is_fake"])
+    for _, row in merged.iterrows():
+        # Verdict=True → fake; Verdict=False → real/confirmed
+        verdict_raw = row["Verdict"]
+        if isinstance(verdict_raw, bool):
+            is_fake = verdict_raw
+        elif isinstance(verdict_raw, str):
+            is_fake = verdict_raw.strip().lower() in ("true", "1", "yes", "fake")
+        else:
+            is_fake = bool(verdict_raw)
+
         if class_counts[is_fake] >= max_per_class:
             continue
 
-        text = str(row[text_col]).strip()
-        if title_col:
-            title = str(row[title_col]).strip()[:120]
-        else:
-            title = text[:80].replace("\n", " ")
+        full_text = row.get("Full Text", "")
+        claim     = str(row.get("Claim", "")).strip()
+        title_raw = row.get("Title", "")
+
+        text  = str(full_text).strip() if pd.notna(full_text) and str(full_text).strip() else claim
+        title = str(title_raw).strip()[:120] if pd.notna(title_raw) and str(title_raw).strip() else claim[:80]
+
+        if len(text) < 30:
+            continue
 
         articles.append({
             "text": text,
@@ -350,7 +423,11 @@ def save_results(rows: list[dict], metrics: dict, pipeline: str, threshold: floa
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="RAGuard dataset evaluation — TCS pipeline")
-    parser.add_argument("--path", required=True, help="Path to RAGuard directory containing parquet files")
+    parser.add_argument(
+        "--path", default=None,
+        help="Directory containing claims.csv and documents.csv. "
+             "If omitted, auto-detects from HuggingFace cache or downloads to data/datasets/raguard/",
+    )
     parser.add_argument("--pipeline", choices=["spacy", "llm"], default="spacy", help="Pipeline (default: spacy)")
     parser.add_argument("--wikidata", action="store_true", help="Enable Wikidata verification")
     parser.add_argument("--threshold", type=float, default=FAKE_THRESHOLD, help=f"TCS fake threshold (default: {FAKE_THRESHOLD})")
@@ -359,12 +436,12 @@ def main() -> None:
     parser.add_argument("--rss", action="store_true", help="Enable RSS Stream in C3b")
     args = parser.parse_args()
 
-    raguard_dir = Path(args.path)
+    raguard_dir = Path(args.path) if args.path else None
 
     print(f"\n{'=' * 70}")
     print("  RAGuard EVALUATION")
     print(f"{'=' * 70}")
-    print(f"  Path      : {raguard_dir}")
+    print(f"  Path      : {raguard_dir or '(auto — HF cache / download)'}")
     print(f"  Pipeline  : {args.pipeline}")
     print(f"  Threshold : {args.threshold}")
     print(f"  Max/class : {args.max_per_class}")

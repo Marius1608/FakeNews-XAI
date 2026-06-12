@@ -12635,5 +12635,237 @@
       "fetched_at": "2026-06-11T17:55:34.951784"
     }
   ],
-  "failed": []
+  "failed": [],
+  "richard nixon": [
+    {
+      "subject": "Richard Nixon",
+      "relation": "holds_position",
+      "value": "President of the United States",
+      "time_start": "1969-01-20",
+      "time_end": "1974-08-09",
+      "time_point": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Richard Nixon",
+      "relation": "holds_position",
+      "value": "Vice President of the United States",
+      "time_start": "1953-01-20",
+      "time_end": "1961-01-20",
+      "time_point": null,
+      "source": "manual"
+    }
+  ],
+  "gerald ford": [
+    {
+      "subject": "Gerald Ford",
+      "relation": "holds_position",
+      "value": "President of the United States",
+      "time_start": "1974-08-09",
+      "time_end": "1977-01-20",
+      "time_point": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Gerald Ford",
+      "relation": "holds_position",
+      "value": "Vice President of the United States",
+      "time_start": "1973-12-06",
+      "time_end": "1974-08-09",
+      "time_point": null,
+      "source": "manual"
+    }
+  ],
+  "lyndon b. johnson": [
+    {
+      "subject": "Lyndon B. Johnson",
+      "relation": "holds_position",
+      "value": "President of the United States",
+      "time_start": "1963-11-22",
+      "time_end": "1969-01-20",
+      "time_point": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Lyndon B. Johnson",
+      "relation": "holds_position",
+      "value": "Vice President of the United States",
+      "time_start": "1961-01-20",
+      "time_end": "1963-11-22",
+      "time_point": null,
+      "source": "manual"
+    }
+  ],
+  "dwight eisenhower": [
+    {
+      "subject": "Dwight Eisenhower",
+      "relation": "holds_position",
+      "value": "President of the United States",
+      "time_start": "1953-01-20",
+      "time_end": "1961-01-20",
+      "time_point": null,
+      "source": "manual"
+    }
+  ],
+  "john f. kennedy": [
+    {
+      "subject": "John F. Kennedy",
+      "relation": "holds_position",
+      "value": "President of the United States",
+      "time_start": "1961-01-20",
+      "time_end": "1963-11-22",
+      "time_point": null,
+      "source": "manual"
+    }
+  ],
+  "harry truman": [
+    {
+      "subject": "Harry Truman",
+      "relation": "holds_position",
+      "value": "President of the United States",
+      "time_start": "1945-04-12",
+      "time_end": "1953-01-20",
+      "time_point": null,
+      "source": "manual"
+    }
+  ],
+  "barack obama": [
+    {
+      "subject": "Barack Obama",
+      "relation": "holds_position",
+      "value": "Affordable Care Act signing",
+      "time_start": "2010-03-23",
+      "time_end": "2010-03-23",
+      "time_point": null,
+      "source": "manual"
+    }
+  ],
+  "donald trump": [
+    {
+      "subject": "Donald Trump",
+      "relation": "holds_position",
+      "value": "Tax Cuts and Jobs Act signing",
+      "time_start": "2017-12-22",
+      "time_end": "2017-12-22",
+      "time_point": null,
+      "source": "manual"
+    }
+  ],
+  "joe biden": [
+    {
+      "subject": "Joe Biden",
+      "relation": "holds_position",
+      "value": "Infrastructure Investment and Jobs Act signing",
+      "time_start": "2021-11-15",
+      "time_end": "2021-11-15",
+      "time_point": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Joe Biden",
+      "relation": "holds_position",
+      "value": "CHIPS and Science Act signing",
+      "time_start": "2022-08-09",
+      "time_end": "2022-08-09",
+      "time_point": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Joe Biden",
+      "relation": "holds_position",
+      "value": "Inflation Reduction Act signing",
+      "time_start": "2022-08-16",
+      "time_end": "2022-08-16",
+      "time_point": null,
+      "source": "manual"
+    }
+  ],
+  "tony blair": [
+    {
+      "subject": "Tony Blair",
+      "relation": "holds_position",
+      "value": "Prime Minister of the United Kingdom",
+      "time_start": "1997-05-02",
+      "time_end": "2007-06-27",
+      "time_point": null,
+      "source": "manual"
+    }
+  ],
+  "margaret thatcher": [
+    {
+      "subject": "Margaret Thatcher",
+      "relation": "holds_position",
+      "value": "Prime Minister of the United Kingdom",
+      "time_start": "1979-05-04",
+      "time_end": "1990-11-28",
+      "time_point": null,
+      "source": "manual"
+    }
+  ],
+  "keir starmer": [
+    {
+      "subject": "Keir Starmer",
+      "relation": "holds_position",
+      "value": "Prime Minister of the United Kingdom",
+      "time_start": "2024-07-05",
+      "time_end": null,
+      "time_point": null,
+      "source": "manual"
+    }
+  ],
+  "rishi sunak": [
+    {
+      "subject": "Rishi Sunak",
+      "relation": "holds_position",
+      "value": "Prime Minister of the United Kingdom",
+      "time_start": "2022-10-25",
+      "time_end": "2024-07-05",
+      "time_point": null,
+      "source": "manual"
+    }
+  ],
+  "boris johnson": [
+    {
+      "subject": "Boris Johnson",
+      "relation": "holds_position",
+      "value": "Prime Minister of the United Kingdom",
+      "time_start": "2019-07-24",
+      "time_end": "2022-09-06",
+      "time_point": null,
+      "source": "manual"
+    }
+  ],
+  "emmanuel macron": [
+    {
+      "subject": "Emmanuel Macron",
+      "relation": "holds_position",
+      "value": "President of France",
+      "time_start": "2017-05-14",
+      "time_end": null,
+      "time_point": null,
+      "source": "manual"
+    }
+  ],
+  "donald tusk": [
+    {
+      "subject": "Donald Tusk",
+      "relation": "holds_position",
+      "value": "Prime Minister of Poland",
+      "time_start": "2023-12-13",
+      "time_end": null,
+      "time_point": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Donald Tusk",
+      "relation": "holds_position",
+      "value": "President of the European Council",
+      "time_start": "2014-12-01",
+      "time_end": "2019-11-30",
+      "time_point": null,
+      "source": "manual"
+    }
+  ],
+  "manual_facts_count": 22,
+  "updated_at": "2026-06-12T09:31:40.304380"
 }

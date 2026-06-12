@@ -312,9 +312,38 @@ def save_results(rows: list[dict], metrics: dict, pipeline: str, threshold: floa
 
 # // section main
 
+_DEFAULT_ISOT_DIRS = [
+    _PROJECT_ROOT / "data" / "datasets" / "isot",
+    _PROJECT_ROOT / "data" / "isot",
+]
+
+
+def _find_isot_dir(explicit: Optional[Path]) -> tuple[Path, Path]:
+    """Return (True.csv, Fake.csv) paths, searching known locations if --path omitted."""
+    candidates = ([explicit] if explicit else []) + _DEFAULT_ISOT_DIRS
+    for d in candidates:
+        true_csv = d / "True.csv"
+        fake_csv = d / "Fake.csv"
+        if true_csv.exists() and fake_csv.exists():
+            return true_csv, fake_csv
+
+    searched = "\n  ".join(str(d) for d in candidates)
+    print(
+        "[ERROR] ISOT dataset not found. Expected True.csv and Fake.csv in one of:\n"
+        f"  {searched}\n\n"
+        "Download ISOT from https://www.kaggle.com/datasets/clmentbisaillon/fake-and-real-news-dataset\n"
+        "and place True.csv + Fake.csv in data/datasets/isot/ or pass --path <dir>"
+    )
+    sys.exit(1)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="ISOT dataset evaluation — TCS pipeline")
-    parser.add_argument("--path", required=True, help="Path to ISOT directory containing True.csv and Fake.csv")
+    parser.add_argument(
+        "--path", default=None,
+        help="Directory containing True.csv and Fake.csv. "
+             "If omitted, searches data/datasets/isot/ automatically.",
+    )
     parser.add_argument("--pipeline", choices=["spacy", "llm"], default="spacy", help="Pipeline (default: spacy)")
     parser.add_argument("--wikidata", action="store_true", help="Enable Wikidata verification")
     parser.add_argument("--threshold", type=float, default=FAKE_THRESHOLD, help=f"TCS fake threshold (default: {FAKE_THRESHOLD})")
@@ -323,9 +352,8 @@ def main() -> None:
     parser.add_argument("--rss", action="store_true", help="Enable RSS Stream in C3b")
     args = parser.parse_args()
 
-    isot_dir = Path(args.path)
-    true_csv = isot_dir / "True.csv"
-    fake_csv = isot_dir / "Fake.csv"
+    true_csv, fake_csv = _find_isot_dir(Path(args.path) if args.path else None)
+    isot_dir = true_csv.parent
 
     print(f"\n{'=' * 70}")
     print("  ISOT EVALUATION")
