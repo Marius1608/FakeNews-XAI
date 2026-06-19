@@ -1,7 +1,7 @@
 {
   "generated_at": "2026-06-11T17:55:36.452085",
   "total_entities": 150,
-  "total_facts": 1169,
+  "total_facts": 1233,
   "failed_count": 0,
   "entities": [
     {
@@ -12867,5 +12867,583 @@
     }
   ],
   "manual_facts_count": 22,
-  "updated_at": "2026-06-12T09:31:40.304380"
+  "updated_at": "2026-06-12T09:31:40.304380",
+  "historical_events": [
+    {
+      "subject": "ACA signing",
+      "relation": "occurred_on",
+      "value": "Affordable Care Act signed",
+      "time_point": "2010-03-23",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "ACA SCOTUS NFIB",
+      "relation": "occurred_on",
+      "value": "ACA Supreme Court ruling NFIB v Sebelius",
+      "time_point": "2012-06-28",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "ACA SCOTUS King",
+      "relation": "occurred_on",
+      "value": "ACA Supreme Court ruling King v Burwell",
+      "time_point": "2015-06-25",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Paris Agreement adopted",
+      "relation": "occurred_on",
+      "value": "Paris Agreement adopted",
+      "time_point": "2015-12-12",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Paris Agreement signed",
+      "relation": "occurred_on",
+      "value": "Paris Agreement signed",
+      "time_point": "2016-04-22",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "NAFTA signed",
+      "relation": "occurred_on",
+      "value": "NAFTA signed",
+      "time_point": "1993-12-08",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "NAFTA in force",
+      "relation": "occurred_on",
+      "value": "NAFTA entered into force",
+      "time_point": "1994-01-01",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "USMCA signed",
+      "relation": "occurred_on",
+      "value": "USMCA signed",
+      "time_point": "2018-11-30",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "USMCA in force",
+      "relation": "occurred_on",
+      "value": "USMCA entered into force",
+      "time_point": "2020-07-01",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Tax Cuts and Jobs Act",
+      "relation": "occurred_on",
+      "value": "Tax Cuts and Jobs Act signed",
+      "time_point": "2017-12-22",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Infrastructure Investment Act",
+      "relation": "occurred_on",
+      "value": "Infrastructure Investment and Jobs Act signed",
+      "time_point": "2021-11-15",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "CHIPS Act",
+      "relation": "occurred_on",
+      "value": "CHIPS and Science Act signed",
+      "time_point": "2022-08-09",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Inflation Reduction Act",
+      "relation": "occurred_on",
+      "value": "Inflation Reduction Act signed",
+      "time_point": "2022-08-16",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "American Rescue Plan",
+      "relation": "occurred_on",
+      "value": "American Rescue Plan signed",
+      "time_point": "2021-03-11",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Dodd-Frank Act",
+      "relation": "occurred_on",
+      "value": "Dodd-Frank Act signed",
+      "time_point": "2010-07-21",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "PATRIOT Act",
+      "relation": "occurred_on",
+      "value": "USA PATRIOT Act signed",
+      "time_point": "2001-10-26",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "TARP signed",
+      "relation": "occurred_on",
+      "value": "TARP signed",
+      "time_point": "2008-10-03",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Lehman Brothers collapse",
+      "relation": "occurred_on",
+      "value": "Lehman Brothers bankruptcy",
+      "time_point": "2008-09-15",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Clinton impeachment House",
+      "relation": "occurred_on",
+      "value": "Clinton impeachment House vote",
+      "time_point": "1998-12-19",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Clinton Senate acquittal",
+      "relation": "occurred_on",
+      "value": "Clinton Senate acquittal",
+      "time_point": "1999-02-12",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Trump impeachment 1 House",
+      "relation": "occurred_on",
+      "value": "Trump first impeachment House vote",
+      "time_point": "2019-12-18",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Trump impeachment 1 acquittal",
+      "relation": "occurred_on",
+      "value": "Trump first impeachment Senate acquittal",
+      "time_point": "2020-02-05",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Trump impeachment 2 House",
+      "relation": "occurred_on",
+      "value": "Trump second impeachment House vote",
+      "time_point": "2021-01-13",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Trump impeachment 2 acquittal",
+      "relation": "occurred_on",
+      "value": "Trump second impeachment Senate acquittal",
+      "time_point": "2021-02-13",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Gorsuch confirmed",
+      "relation": "occurred_on",
+      "value": "Neil Gorsuch confirmed to Supreme Court",
+      "time_point": "2017-04-07",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Kavanaugh confirmed",
+      "relation": "occurred_on",
+      "value": "Brett Kavanaugh confirmed to Supreme Court",
+      "time_point": "2018-10-06",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "ACB confirmed",
+      "relation": "occurred_on",
+      "value": "Amy Coney Barrett confirmed to Supreme Court",
+      "time_point": "2020-10-26",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "KBJ confirmed",
+      "relation": "occurred_on",
+      "value": "Ketanji Brown Jackson confirmed to Supreme Court",
+      "time_point": "2022-04-07",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "September 11 attacks",
+      "relation": "occurred_on",
+      "value": "September 11 attacks",
+      "time_point": "2001-09-11",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Iraq War started",
+      "relation": "occurred_on",
+      "value": "Iraq War started",
+      "time_point": "2003-03-19",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Iraq War authorization",
+      "relation": "occurred_on",
+      "value": "Iraq War AUMF authorization",
+      "time_point": "2002-10-16",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Afghanistan invasion",
+      "relation": "occurred_on",
+      "value": "Afghanistan invasion started",
+      "time_point": "2001-10-07",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Bin Laden killed",
+      "relation": "occurred_on",
+      "value": "Osama bin Laden killed",
+      "time_point": "2011-05-02",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Gulf War started",
+      "relation": "occurred_on",
+      "value": "Operation Desert Storm started",
+      "time_point": "1991-01-17",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Gulf War ceasefire",
+      "relation": "occurred_on",
+      "value": "Gulf War ceasefire",
+      "time_point": "1991-02-28",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Iran Nuclear Deal",
+      "relation": "occurred_on",
+      "value": "Iran Nuclear Deal JCPOA agreed",
+      "time_point": "2015-07-14",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Operation Warp Speed",
+      "relation": "occurred_on",
+      "value": "Operation Warp Speed launched",
+      "time_point": "2020-05-15",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "COVID vaccine approved",
+      "relation": "occurred_on",
+      "value": "Pfizer COVID vaccine FDA authorization",
+      "time_point": "2020-12-11",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Obama Nobel Prize",
+      "relation": "occurred_on",
+      "value": "Barack Obama Nobel Peace Prize announced",
+      "time_point": "2009-10-09",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Obama Nobel ceremony",
+      "relation": "occurred_on",
+      "value": "Barack Obama Nobel Peace Prize ceremony",
+      "time_point": "2009-12-10",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Berlin Wall fell",
+      "relation": "occurred_on",
+      "value": "Berlin Wall fell",
+      "time_point": "1989-11-09",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "INF Treaty signed",
+      "relation": "occurred_on",
+      "value": "INF Treaty signed",
+      "time_point": "1987-12-08",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Camp David Accords",
+      "relation": "occurred_on",
+      "value": "Camp David Accords signed",
+      "time_point": "1978-09-17",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Iran hostages released",
+      "relation": "occurred_on",
+      "value": "Iran hostages released",
+      "time_point": "1981-01-20",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Watergate break-in",
+      "relation": "occurred_on",
+      "value": "Watergate break-in",
+      "time_point": "1972-06-17",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Nixon resignation",
+      "relation": "occurred_on",
+      "value": "Nixon resigned",
+      "time_point": "1974-08-09",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Nixon pardon",
+      "relation": "occurred_on",
+      "value": "Ford pardoned Nixon",
+      "time_point": "1974-09-08",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Helsinki Accords",
+      "relation": "occurred_on",
+      "value": "Helsinki Accords signed",
+      "time_point": "1975-08-01",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Civil Rights Act 1964",
+      "relation": "occurred_on",
+      "value": "Civil Rights Act of 1964 signed",
+      "time_point": "1964-07-02",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Gulf of Tonkin",
+      "relation": "occurred_on",
+      "value": "Gulf of Tonkin Resolution",
+      "time_point": "1964-08-07",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Kennedy assassination",
+      "relation": "occurred_on",
+      "value": "John F Kennedy assassinated",
+      "time_point": "1963-11-22",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Cuban Missile Crisis start",
+      "relation": "occurred_on",
+      "value": "Cuban Missile Crisis started",
+      "time_point": "1962-10-16",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Cuban Missile Crisis end",
+      "relation": "occurred_on",
+      "value": "Cuban Missile Crisis ended",
+      "time_point": "1962-10-28",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Bay of Pigs",
+      "relation": "occurred_on",
+      "value": "Bay of Pigs invasion",
+      "time_point": "1961-04-17",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Marshall Plan signed",
+      "relation": "occurred_on",
+      "value": "Marshall Plan signed",
+      "time_point": "1948-04-03",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "NATO founded",
+      "relation": "occurred_on",
+      "value": "NATO North Atlantic Treaty signed",
+      "time_point": "1949-04-04",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Korean War started",
+      "relation": "occurred_on",
+      "value": "Korean War started",
+      "time_point": "1950-06-25",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Interstate Highway Act",
+      "relation": "occurred_on",
+      "value": "Federal Aid Highway Act signed",
+      "time_point": "1956-06-29",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "NASA created",
+      "relation": "occurred_on",
+      "value": "NASA established",
+      "time_point": "1958-07-29",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Good Friday Agreement",
+      "relation": "occurred_on",
+      "value": "Good Friday Agreement signed",
+      "time_point": "1998-04-10",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Falklands War start",
+      "relation": "occurred_on",
+      "value": "Falklands War started",
+      "time_point": "1982-04-02",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Falklands War end",
+      "relation": "occurred_on",
+      "value": "Falklands War ended",
+      "time_point": "1982-06-14",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Dayton Accords",
+      "relation": "occurred_on",
+      "value": "Dayton Accords signed",
+      "time_point": "1995-11-21",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Kosovo intervention",
+      "relation": "occurred_on",
+      "value": "NATO Kosovo intervention started",
+      "time_point": "1999-03-24",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    }
+  ]
 }

@@ -99,6 +99,7 @@ class InternalVerifier:
         if publication_date:
             inconsistencies.extend(self._check_future_as_past(all_facts, publication_date))
         inconsistencies.extend(self._check_entity_consistency(all_facts))
+        inconsistencies.extend(self._check_action_before_office(tkg))
 
         # Coherence ignores LOW-severity items: they carry zero penalty weight in
         # the TCS formula and are mostly low-confidence noise (parse artifacts,
@@ -425,6 +426,57 @@ class InternalVerifier:
                                         evidence="Incompatible roles present; no dates available to confirm or deny overlap."
                                     ))
                                     break
+
+        return inconsistencies
+
+    # V8: Action before office
+    def _check_action_before_office(self, tkg) -> list[Inconsistency]:
+        """V8: Entity performed action before holding the relevant office."""
+        inconsistencies = []
+        facts = tkg.get_all_facts()
+
+        # Build map: entity -> list of (office_name, office_start_date)
+        office_starts: dict[str, list[tuple]] = {}
+        for fact in facts:
+            if fact.predicate != RelationType.HOLDS_POSITION:
+                continue
+            if not fact.time_start or not fact.time_start.normalized_date:
+                continue
+            entity = fact.subject.text.lower().strip()
+            office_starts.setdefault(entity, []).append(
+                (fact.object.text, fact.time_start.normalized_date)
+            )
+
+        # Check OCCURRED_ON/GENERIC/STARTED facts for same entities
+        for fact in facts:
+            if fact.predicate not in {RelationType.OCCURRED_ON, RelationType.GENERIC, RelationType.STARTED}:
+                continue
+            entity = fact.subject.text.lower().strip()
+            if entity not in office_starts:
+                continue
+
+            fact_time = None
+            if fact.time_point and fact.time_point.normalized_date:
+                fact_time = fact.time_point.normalized_date
+            elif fact.time_start and fact.time_start.normalized_date:
+                fact_time = fact.time_start.normalized_date
+            if not fact_time:
+                continue
+
+            for office_name, office_start in office_starts[entity]:
+                gap_days = (fact_time - office_start).days
+                # Action more than 90 days before taking office is suspicious
+                if gap_days < -90:
+                    inconsistencies.append(Inconsistency(
+                        inconsistency_type=InconsistencyType.CAUSAL_VIOLATION,
+                        severity=Severity.HIGH,
+                        description=f"'{fact.subject.text}' performed action in {fact_time.year} but only took office ({office_name}) in {office_start.year}.",
+                        facts_involved=[fact],
+                        sentence_indices=[fact.source_sentence_idx],
+                        verified_by="internal_v8",
+                        evidence=f"Office start: {office_start.date()}, action date: {fact_time.date()}",
+                    ))
+                    break
 
         return inconsistencies
 

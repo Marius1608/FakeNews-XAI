@@ -113,6 +113,14 @@ class ExternalVerifier:
 
         logger.debug(f"External verification [{fact.predicate.value}]: '{fact.subject.text}' -> props={props}")
 
+        # 0. Canonical event dates (OCCURRED_ON / GENERIC only) — runs before the
+        # standard Reference KG lookup so a misdated historical event is caught
+        # even when the subject is the event name rather than a known entity.
+        if fact.predicate in {RelationType.OCCURRED_ON, RelationType.GENERIC}:
+            event_incons = self._check_event_date(fact, result)
+            if event_incons:
+                return event_incons
+
         # 1. Local Reference KG
         ref_pairs = self._find_in_reference_kg(subject_name)
         # Keep only pairs where the KG entity is actually the same entity as the article subject.
@@ -304,6 +312,61 @@ class ExternalVerifier:
                         sentence_indices=[fact.source_sentence_idx],
                         verified_by="reference_kg_cross",
                         evidence=f"Reference KG: {other_entity} held this position [{os_} -> {oe}].",
+                    )]
+        return []
+
+    def _check_event_date(self, fact: TemporalFact, result: ExternalVerificationResult) -> list[Inconsistency]:
+        """Check OCCURRED_ON/GENERIC facts against canonical event dates in Reference KG."""
+        if not fact.object or not fact.object.text:
+            return []
+        obj_text = fact.object.text.lower().strip()
+        if len(obj_text) < 4:
+            return []
+
+        fact_time = None
+        if fact.time_point and fact.time_point.normalized_date:
+            fact_time = fact.time_point.normalized_date
+        elif fact.time_start and fact.time_start.normalized_date:
+            fact_time = fact.time_start.normalized_date
+        if not fact_time:
+            return []
+
+        EVENT_TOLERANCE_DAYS = 100
+
+        for kg_key, kg_facts in self._reference_kg.items():
+            if not isinstance(kg_facts, list):
+                continue
+            for kg_fact in kg_facts:
+                if not isinstance(kg_fact, dict):
+                    continue
+                if kg_fact.get("relation") != "occurred_on":
+                    continue
+                kg_value = kg_fact.get("value", "").lower()
+                if not kg_value:
+                    continue
+                # Fuzzy match on event name
+                ratio = SequenceMatcher(None, obj_text, kg_value).ratio()
+                if ratio < 0.60:
+                    # Try substring match
+                    words_obj = set(obj_text.split())
+                    words_kg = set(kg_value.split())
+                    overlap = len(words_obj & words_kg) / max(len(words_obj), 1)
+                    if overlap < 0.5:
+                        continue
+                kg_point = _parse_date_str(kg_fact.get("time_point"))
+                if not kg_point:
+                    continue
+                delta = abs((fact_time - kg_point).days)
+                if delta > EVENT_TOLERANCE_DAYS:
+                    result.wikidata_queries += 1
+                    return [Inconsistency(
+                        inconsistency_type=InconsistencyType.DATE_MISMATCH,
+                        severity=Severity.HIGH,
+                        description=f"Event '{fact.object.text}' dated {fact_time.year} in article but actually occurred {kg_point.year} ({kg_fact.get('value', '')}).",
+                        facts_involved=[fact],
+                        sentence_indices=[fact.source_sentence_idx],
+                        verified_by="reference_kg_event",
+                        evidence=f"Reference KG: {kg_fact.get('value')} = {kg_point.date()}",
                     )]
         return []
 

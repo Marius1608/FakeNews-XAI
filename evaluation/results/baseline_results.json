@@ -1,0 +1,68 @@
+{
+  "generated_at": "2026-06-19T14:14:54.745709",
+  "tcs_f1_reference": 0.393,
+  "n_folds": 5,
+  "vectorizer": {
+    "max_features": 5000,
+    "ngram_range": [
+      1,
+      2
+    ]
+  },
+  "models": {
+    "LogisticRegression": {
+      "precision": {
+        "mean": 0.7833,
+        "std": 0.1944
+      },
+      "recall": {
+        "mean": 0.1806,
+        "std": 0.087
+      },
+      "f1": {
+        "mean": 0.2798,
+        "std": 0.1051
+      },
+      "accuracy": {
+        "mean": 0.61,
+        "std": 0.0374
+      }
+    },
+    "RandomForest": {
+      "precision": {
+        "mean": 0.7005,
+        "std": 0.0779
+      },
+      "recall": {
+        "mean": 0.5,
+        "std": 0.1111
+      },
+      "f1": {
+        "mean": 0.5716,
+        "std": 0.0714
+      },
+      "accuracy": {
+        "mean": 0.68,
+        "std": 0.0245
+      }
+    },
+    "SVM-linear": {
+      "precision": {
+        "mean": 0.7771,
+        "std": 0.1393
+      },
+      "recall": {
+        "mean": 0.4361,
+        "std": 0.1278
+      },
+      "f1": {
+        "mean": 0.5346,
+        "std": 0.1006
+      },
+      "accuracy": {
+        "mean": 0.68,
+        "std": 0.051
+      }
+    }
+  }
+}
