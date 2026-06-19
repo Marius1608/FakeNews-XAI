@@ -25,6 +25,25 @@ logger = logging.getLogger(__name__)
 REFERENCE_KG_FILE = REFERENCE_KG_DIR / "verified_events.json"
 DATE_TOLERANCE_DAYS = 200
 
+# Cuvinte comune ignorate la potrivirea pe nume de eveniment (_check_event_date).
+# Fara ele, suprapuneri precum "the"/"of" ar conta drept potriviri distinctive.
+_EVENT_MATCH_STOPWORDS = {
+    "the", "a", "an", "of", "in", "to", "and", "or", "for", "by",
+    "as", "at", "on", "was", "were", "had", "has", "been",
+}
+
+# Verbe de actiune cerute in obiectul faptului — un nume de persoana fara context
+# de actiune (ex. "Trump", "Bill Clinton") nu descrie un eveniment databil.
+_EVENT_ACTION_VERBS = {
+    "signed", "passed", "killed", "created", "founded", "started", "ended",
+    "adopted", "confirmed", "authorized", "launched", "collapsed", "attacked",
+    "invaded", "approved", "agreed", "established", "resigned", "released",
+    "ruled", "fell", "won", "elected", "inaugurated", "nominated", "impeached",
+    "acquitted", "ratified", "enacted", "declared", "withdrawn", "withdrew",
+    "deployed", "negotiated", "concluded", "reached", "achieved", "overthrown",
+    "liberated",
+}
+
 # Relations that can be verified against external sources
 EXTERNALLY_VERIFIABLE_RELATIONS = {
     RelationType.HOLDS_POSITION,
@@ -320,7 +339,14 @@ class ExternalVerifier:
         if not fact.object or not fact.object.text:
             return []
         obj_text = fact.object.text.lower().strip()
-        if len(obj_text) < 4:
+        # Filtru 1: doar fraze de minim 3 cuvinte — cuvintele singulare si frazele
+        # de 2 cuvinte ("Trump", "Iraq War") produc prea multe potriviri false.
+        if len(obj_text.split()) < 3:
+            return []
+
+        # Filtru 5: obiectul trebuie sa contina un verb de actiune; altfel e doar
+        # un nume de entitate ("Bill Clinton") fara context de eveniment databil.
+        if not (set(obj_text.split()) & _EVENT_ACTION_VERBS):
             return []
 
         fact_time = None
@@ -344,15 +370,21 @@ class ExternalVerifier:
                 kg_value = kg_fact.get("value", "").lower()
                 if not kg_value:
                     continue
-                # Fuzzy match on event name
+
+                # Filtru 4: cel putin 2 cuvinte distinctive (fara stopwords) comune.
+                words_obj = set(obj_text.split())
+                words_kg = set(kg_value.split())
+                shared = (words_obj & words_kg) - _EVENT_MATCH_STOPWORDS
+                if len(shared) < 2:
+                    continue
+
+                # Filtru 2/3: praguri ridicate — fuzzy ratio >= 0.75 sau suprapunere
+                # de cuvinte >= 0.65 din obiectul articolului.
                 ratio = SequenceMatcher(None, obj_text, kg_value).ratio()
-                if ratio < 0.60:
-                    # Try substring match
-                    words_obj = set(obj_text.split())
-                    words_kg = set(kg_value.split())
-                    overlap = len(words_obj & words_kg) / max(len(words_obj), 1)
-                    if overlap < 0.5:
-                        continue
+                overlap = len(words_obj & words_kg) / max(len(words_obj), 1)
+                if ratio < 0.75 and overlap < 0.65:
+                    continue
+
                 kg_point = _parse_date_str(kg_fact.get("time_point"))
                 if not kg_point:
                     continue

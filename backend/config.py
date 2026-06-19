@@ -49,7 +49,7 @@ WIKIDATA_TEMPORAL_PROPERTIES = ["P580", "P582", "P585"]
 
 
 # Binary fake/real threshold — article predicted FAKE if TCS < FAKE_THRESHOLD
-FAKE_THRESHOLD: float = 0.70
+FAKE_THRESHOLD: float = 0.75
 
 # TCS thresholds — score bands for the final verdict label
 TCS_THRESHOLDS = {
