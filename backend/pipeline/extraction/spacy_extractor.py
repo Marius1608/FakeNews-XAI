@@ -344,6 +344,14 @@ class SpacyExtractor(AbstractExtractor):
         elif len(exprs) == 1:
             return None, None, exprs[0]
         else:
+            # Order the interval chronologically, not by position in the sentence.
+            # Two unrelated dates (e.g. an inauguration date and an election date)
+            # must not produce an inverted interval (start > end), which would be
+            # mis-flagged as an ordering error.
+            dated = [e for e in exprs if e.normalized_date is not None]
+            if len(dated) >= 2:
+                dated.sort(key=lambda e: e.normalized_date)
+                return dated[0], dated[-1], None
             sorted_exprs = sorted(exprs, key=lambda e: e.start_char)
             return sorted_exprs[0], sorted_exprs[1], None
 

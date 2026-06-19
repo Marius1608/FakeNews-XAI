@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -386,8 +387,15 @@ class ExternalVerifier:
     # Comparison helpers
     def _compare_with_reference(self, fact: TemporalFact, ref_facts: list[dict]) -> list[Inconsistency]:
         inconsistencies = []
+        obj_text = fact.object.text if fact.object else ""
         for ref in ref_facts:
             if ref.get("relation") != fact.predicate.value:
+                continue
+            # Only compare when the article object refers to the same role/event as
+            # the KG entry. Without this, an entity's unrelated same-relation facts
+            # (e.g. Biden's three distinct bill-signing dates) are cross-compared,
+            # producing spurious date mismatches.
+            if not _value_matches(obj_text, ref.get("value", "")):
                 continue
             incons = _compare_temporal_intervals(
                 fact=fact,
@@ -549,14 +557,32 @@ def _compare_temporal_intervals(
     fact: TemporalFact, ext_start: Optional[datetime], ext_end: Optional[datetime],
     ext_point: Optional[datetime], source: str, evidence: str,
 ) -> Optional[Inconsistency]:
-    """Compare the article interval against an external source."""
+    """Compare the article interval against an external source.
+
+    Two precision rules avoid false positives:
+    - corrupted external intervals (end before start) never yield a verdict;
+    - when the article date is year-granular (a bare year normalises to Jan 1),
+      the comparison is done at year granularity, so "2021" is not flagged
+      against a precise external date of 2021-11-15.
+    """
+    # Guard: corrupted external data (e.g. Wikidata end before start).
+    if ext_start and ext_end and ext_start > ext_end:
+        return None
+
     tolerance = timedelta(days=DATE_TOLERANCE_DAYS)
     fact_start = fact.time_start.normalized_date if fact.time_start else None
     fact_end = fact.time_end.normalized_date if fact.time_end else None
     fact_point = fact.time_point.normalized_date if fact.time_point else None
 
+    year_only = _is_year_granular(fact.time_point) or _is_year_granular(fact.time_start)
+
     if fact_point and ext_start and ext_end:
-        if not (ext_start - tolerance <= fact_point <= ext_end + tolerance):
+        mismatch = (
+            not (ext_start.year <= fact_point.year <= ext_end.year)
+            if year_only
+            else not (ext_start - tolerance <= fact_point <= ext_end + tolerance)
+        )
+        if mismatch:
             return Inconsistency(
                 inconsistency_type=InconsistencyType.DATE_MISMATCH, severity=Severity.HIGH,
                 description=f"Article date ({fact_point.year}) does not match {source} interval [{ext_start.year} -> {ext_end.year}].",
@@ -565,7 +591,12 @@ def _compare_temporal_intervals(
             )
 
     if fact_start and fact_end and ext_start and ext_end:
-        if fact_end < ext_start - tolerance or fact_start > ext_end + tolerance:
+        mismatch = (
+            fact_end.year < ext_start.year or fact_start.year > ext_end.year
+            if year_only
+            else fact_end < ext_start - tolerance or fact_start > ext_end + tolerance
+        )
+        if mismatch:
             return Inconsistency(
                 inconsistency_type=InconsistencyType.DATE_MISMATCH, severity=Severity.HIGH,
                 description=f"Interval [{fact_start.year} -> {fact_end.year}] does not overlap with {source} [{ext_start.year} -> {ext_end.year}].",
@@ -574,7 +605,12 @@ def _compare_temporal_intervals(
             )
 
     if fact_point and ext_point:
-        if abs((fact_point - ext_point).days) > DATE_TOLERANCE_DAYS:
+        mismatch = (
+            fact_point.year != ext_point.year
+            if year_only
+            else abs((fact_point - ext_point).days) > DATE_TOLERANCE_DAYS
+        )
+        if mismatch:
             return Inconsistency(
                 inconsistency_type=InconsistencyType.DATE_MISMATCH, severity=Severity.MEDIUM,
                 description=f"Article date ({fact_point.year}) differs from {source} ({ext_point.year}).",
@@ -582,6 +618,63 @@ def _compare_temporal_intervals(
                 verified_by=source, evidence=evidence,
             )
     return None
+
+
+_BARE_YEAR_RE = re.compile(r"^\s*(?:circa|around|about|c\.)?\s*\d{4}\s*$", re.IGNORECASE)
+
+
+def _is_year_granular(expr) -> bool:
+    """True when a temporal expression carries only year precision.
+
+    A bare year ("2021") or an approximate expression normalises to Jan 1 and
+    must not be compared against a precise external date with a day tolerance.
+    """
+    if expr is None or expr.normalized_date is None:
+        return False
+    raw = (expr.raw_text or "").strip()
+    if _BARE_YEAR_RE.match(raw):
+        return True
+    if getattr(expr, "is_approximate", False):
+        return True
+    # Bare years normalise to Jan 1 with reduced confidence in the parser.
+    nd = expr.normalized_date
+    if nd.month == 1 and nd.day == 1 and getattr(expr, "confidence", 1.0) <= 0.6:
+        return True
+    return False
+
+
+# Generic words shared by unrelated roles/events — matching on these alone would
+# conflate distinct facts (e.g. "Infrastructure Act" vs "Tax Cuts and Jobs Act").
+_VALUE_STOPWORDS = {
+    "act", "signing", "bill", "law", "jobs", "reform", "and", "of", "the",
+    "a", "an", "or", "to", "for", "in", "on", "united", "states", "u.s.", "us",
+}
+
+
+def _value_tokens(text: str) -> set[str]:
+    return {
+        w for w in re.split(r"[^a-z0-9]+", text.lower())
+        if w and w not in _VALUE_STOPWORDS and len(w) > 2
+    }
+
+
+def _value_matches(article_obj: str, kg_value: str) -> bool:
+    """True when the article object refers to the same role/event as a KG value.
+
+    Requires overlap on a *distinctive* token (bill name, office) so an entity's
+    unrelated same-relation facts are not cross-compared.
+    """
+    a = (article_obj or "").lower().strip()
+    k = (kg_value or "").lower().strip()
+    if not a or not k:
+        return False
+    ta, tk = _value_tokens(a), _value_tokens(k)
+    if ta & tk:
+        return True
+    # No distinctive tokens on one side (e.g. a bare fragment) — fall back to substring.
+    if not ta or not tk:
+        return a in k or k in a
+    return False
 
 def _has_temporal_anchor(fact: TemporalFact) -> bool:
     return any(getattr(fact, f) and getattr(fact, f).normalized_date for f in ("time_point", "time_start", "time_end"))

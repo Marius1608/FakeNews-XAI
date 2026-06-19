@@ -21,13 +21,30 @@ logger = logging.getLogger(__name__)
 ORDERING_RELATIONS = {RelationType.PRECEDED, RelationType.FOLLOWED}
 CAUSAL_RELATIONS = {RelationType.CAUSED}
 MAX_PLAUSIBLE_TENURE_YEARS = 50
+# Beyond this, an interval is almost certainly a date-parsing artifact (e.g. a
+# misparsed token resolved to 1960) rather than a real claim — do not flag it.
+ABSURD_DURATION_YEARS = 80
 
 INCOMPATIBLE_POSITIONS = [
     {"senator", "governor", "representative", "mayor", "congressman"},
     {"president", "prime minister", "chancellor", "secretary of state"},
     {"vice president", "senator", "governor"},
     {"speaker", "senator", "governor"},
+    # A head of state/government cannot simultaneously hold a state/legislative
+    # office. Catches fakes like "Clinton was Governor and President at once".
+    {"president", "governor"},
+    {"president", "senator"},
+    {"president", "representative"},
+    {"president", "mayor"},
+    {"prime minister", "mayor"},
 ]
+
+# Object strings that are not real positions — V5 must not treat a party
+# adjective ("Democratic"/"Republican") as a held office.
+NON_POSITION_OBJECTS = {
+    "democratic", "republican", "democrat", "democratic party", "republican party",
+    "labour", "conservative", "tory", "independent", "liberal",
+}
 
 FUTURE_INDICATORS = {"will ", "going to ", "expected to ", "planned for ", "is set to ",
                      "shall ", "is expected", "are expected", "will be ", "would "}
@@ -83,8 +100,13 @@ class InternalVerifier:
             inconsistencies.extend(self._check_future_as_past(all_facts, publication_date))
         inconsistencies.extend(self._check_entity_consistency(all_facts))
 
+        # Coherence ignores LOW-severity items: they carry zero penalty weight in
+        # the TCS formula and are mostly low-confidence noise (parse artifacts,
+        # "no temporal data" fallbacks). Counting them would let a pile of LOW
+        # warnings tank a genuinely consistent article (e.g. a misparsed date).
+        conf_temp = sum(1 for i in inconsistencies if i.severity != Severity.LOW)
         result = InternalVerificationResult(
-            inconsistencies=inconsistencies, conf_temp=len(inconsistencies), rel_temp=rel_temp,
+            inconsistencies=inconsistencies, conf_temp=conf_temp, rel_temp=rel_temp,
         )
         logger.info(f"Internal verification: {result.conf_temp} conflicts / {rel_temp} relations -> score_coherence={result.score_coherence:.3f}")
         return result
@@ -166,6 +188,10 @@ class InternalVerifier:
                 ))
             else:
                 duration_years = (t_end - t_start).days / 365.25
+                if duration_years > ABSURD_DURATION_YEARS:
+                    # Date-parsing artifact (e.g. "Cuba" misparsed to 1960) — skip
+                    # silently so it does not pollute the coherence denominator.
+                    continue
                 if duration_years > MAX_PLAUSIBLE_TENURE_YEARS:
                     inconsistencies.append(Inconsistency(
                         inconsistency_type=InconsistencyType.DURATION_IMPLAUSIBLE,
@@ -233,6 +259,12 @@ class InternalVerifier:
 
         for h_fact in holds_facts:
             subj_h = h_fact.subject.text.lower()
+
+            # Skip non-position objects (party adjectives, fragments) — these are
+            # extraction noise, not held offices, and produce false contradictions.
+            obj_h = h_fact.object.text.lower().strip()
+            if obj_h in NON_POSITION_OBJECTS or len(obj_h) < 4:
+                continue
 
             # V5 only fires for entities that appear in at least 2 distinct facts.
             entity_fact_count = sum(
