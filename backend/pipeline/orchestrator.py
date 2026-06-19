@@ -1,5 +1,8 @@
 """Pipeline Orchestrator — links C1→C2→C3→C4 end-to-end: Article → TCSResult."""
 
+# KNOWN ISSUE (C1/C2): orchestrator singleton carries mutable request-scoped state.
+# Documented in CODE_AUDIT_REPORT.md. Fix: pass persist/store/use_rss as run() args.
+
 from __future__ import annotations
 
 import logging

@@ -12,9 +12,6 @@ from backend.pipeline.graph.models import (
     TCSResult,
     TemporalFact,
 )
-from backend.pipeline.graph.store import TemporalKnowledgeGraph
-from backend.pipeline.verification.internal import InternalVerificationResult
-from backend.pipeline.verification.external import ExternalVerificationResult
 
 logger = logging.getLogger(__name__)
 
@@ -58,16 +55,17 @@ _INCONSISTENCY_TEMPLATES = {
 }
 
 _SEVERITY_LABELS = {
-    Severity.LOW: "minor",
-    Severity.MEDIUM: "moderate",
-    Severity.HIGH: "significant",
-    Severity.CRITICAL: "critical",
+    Severity.LOW: "Low",
+    Severity.MEDIUM: "Medium",
+    Severity.HIGH: "High",
+    Severity.CRITICAL: "Critical",
 }
 
 
 class TCSExplainer:
     """Generates text and structured explanations for a TCSResult."""
 
+    # Legacy method — use explain_structured() instead
     def explain(self, result: TCSResult) -> str:
         """Full explanation: score summary + inconsistency details."""
         parts = [self._explain_score(result)]

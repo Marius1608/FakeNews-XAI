@@ -30,6 +30,10 @@ const TYPE_LABELS: Record<string, string> = {
   date_mismatch: "Date Mismatch",
   anachronism: "Anachronism",
   duration_implausible: "Implausible Duration",
+  factual_contradiction: "Factual Contradiction",
+  implicit_contradiction: "Implicit Contradiction",
+  future_as_past: "Future as Past",
+  entity_inconsistency: "Entity Inconsistency",
 };
 
 function getSeverityColor(severity: string): "error" | "warning" | "default" {

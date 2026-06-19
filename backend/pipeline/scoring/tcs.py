@@ -7,13 +7,8 @@ import time
 from typing import Optional
 
 from backend.pipeline.graph.models import Inconsistency, Severity, TemporalFact, TCSResult
-from backend.pipeline.graph.store import TemporalKnowledgeGraph
-from backend.pipeline.verification.internal import InternalVerificationResult
-from backend.pipeline.verification.external import ExternalVerificationResult
 
 logger = logging.getLogger(__name__)
-
-MIN_TEMPORAL_CLAIMS = 1
 
 
 class TCSCalculator:
@@ -26,11 +21,14 @@ class TCSCalculator:
         start_time_ms: Optional[float] = None
     ) -> TCSResult:
         """
-        TCS = (1 - penalty_ratio) × score_coherence
+        TCS = (1 - penalty_ratio) × score_coherence × (0.85 + 0.15 × coverage_factor)
 
-        penalty_ratio: weighted_penalty / max_possible_penalty, normalized to [0, 1]
-        weighted_penalty: sum of severity weights for detected inconsistencies
-        score_coherence: internal coherence score from C3
+        Three components:
+        - penalty_ratio: weighted_penalty / max_possible_penalty, normalized to [0, 1];
+          weighted_penalty is the sum of severity weights for detected inconsistencies.
+        - score_coherence: internal coherence score from C3a (structural consistency).
+        - coverage_factor: facts_verified / facts_total, proportion of temporal claims
+          externally confirmed (Wikidata / Reference KG); 0.5 when no facts are available.
         Returns 0.5 explicitly when there are no temporal facts (insufficient data).
         """
         facts = facts or []
@@ -55,12 +53,18 @@ class TCSCalculator:
         # Worst-case: every claim has a critical inconsistency
         max_possible_penalty = n_claims * max(SEVERITY_WEIGHTS.values())
 
-        # Simplified TCS formula: normalized penalty × internal coherence
+        # coverage_factor: rewards articles where external sources (Wikidata/RefKG)
+        # verified a higher proportion of temporal claims. Range [0.85, 1.00].
+        coverage_factor = facts_verified / facts_total if facts_total > 0 else 0.5
+
+        # TCS formula: normalized penalty × internal coherence × coverage bonus
         penalty_ratio = min(1.0, weighted_penalty / max_possible_penalty) if max_possible_penalty > 0 else 0.0
-        tcs = max(0.0, min(1.0, (1.0 - penalty_ratio) * score_coherence))
+        tcs_base = (1.0 - penalty_ratio) * score_coherence
+        tcs = max(0.0, min(1.0, tcs_base * (0.85 + 0.15 * coverage_factor)))
 
         logger.info(f"TCS: penalty={weighted_penalty:.2f}/{max_possible_penalty:.2f}, "
-                    f"coherence={score_coherence:.3f} -> TCS={tcs:.3f}")
+                    f"coherence={score_coherence:.3f}, coverage={coverage_factor:.3f} "
+                    f"({facts_verified}/{facts_total}) -> TCS={tcs:.3f}")
 
         timeline = _build_timeline(facts, inconsistencies)
 

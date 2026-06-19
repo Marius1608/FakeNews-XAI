@@ -25,7 +25,7 @@ class AnalyzeRequest(BaseModel):
     publication_date: Optional[str] = Field(default=None, description="Publication date (YYYY-MM-DD)")
     source: str = Field(default="", description="Article source")
     pipeline: str = Field(default="spacy", description="Pipeline: 'spacy' or 'llm'")
-    model: Optional[str] = Field(default=None, description="Specific model: en_core_web_trf, llama3, mistral, etc. None = pipeline default")
+    model: Optional[str] = Field(default=None, description="Specific model: en_core_web_trf (Pipeline A, deterministic) or Qwen/Qwen3-1.7B (Pipeline B, LLM-based)")
     persist: bool = Field(default=False, description="Save facts to Neo4j for cross-article analysis")
     use_web_search: bool = Field(default=False, description="Enable Wikipedia REST API fallback in C3b")
     use_rss: bool = Field(default=False, description="Enables RSS Stream fallback in C3b (level 5)")

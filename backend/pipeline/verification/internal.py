@@ -256,7 +256,6 @@ class InternalVerifier:
         # from "defeating John Kerry") and do not reliably indicate role occupancy.
         holds_facts = [f for f in facts if f.predicate == RelationType.HOLDS_POSITION]
         event_facts = facts
-        ended_facts = [f for f in facts if f.predicate == RelationType.ENDED]
 
         for h_fact in holds_facts:
             subj_h = h_fact.subject.text.lower()
@@ -298,15 +297,6 @@ class InternalVerifier:
                                 verified_by="internal",
                                 evidence="Sequential incompatibility."
                             ))
-
-            # Check against ended facts
-            for end_fact in ended_facts:
-                subj_end = end_fact.subject.text.lower()
-                if SequenceMatcher(None, subj_h, subj_end).ratio() >= 0.85:
-                    point_end = _extract_point_time(end_fact)
-                    if point_end and start_h > point_end:
-                        if (start_h - point_end).days < 30:
-                            pass
 
         return inconsistencies
 

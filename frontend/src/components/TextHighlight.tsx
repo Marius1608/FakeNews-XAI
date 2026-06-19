@@ -66,7 +66,7 @@ const LEGEND_ITEMS = [
 ] as const;
 
 function TextHighlight({ text, annotations }: TextHighlightProps): React.ReactElement {
-  const sentences = text.split(/(?<=[.!?])\s+/).filter((s) => s.trim().length > 0);
+  const sentences = text.split(/(?<=[.!?])\s+(?=[A-Z])/).filter((s) => s.trim().length > 0);
 
   const annotationMap = new Map<number, FactAnnotationResponse>();
   annotations.forEach((ann) => {
