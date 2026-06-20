@@ -11,9 +11,9 @@ import type {
   VerifyRequest, VerifyResponse,
 } from "../types";
 
-// Use relative URL in production (HF Spaces — single port), absolute in dev
-const BASE_URL = process.env.REACT_APP_API_URL ??
-  (process.env.NODE_ENV === "production" ? "" : "http://localhost:8000");
+// Empty string → relative URLs → same origin (works on HF Spaces single-port).
+// Set REACT_APP_API_URL to override (e.g. http://localhost:8000 for local dev).
+const BASE_URL = process.env.REACT_APP_API_URL || "";
 
 // axios instance
 const apiClient = axios.create({
