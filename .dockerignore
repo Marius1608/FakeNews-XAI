@@ -1,0 +1,17 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+.git/
+.gitignore
+node_modules/
+frontend/node_modules/
+frontend/src/
+frontend/public/
+evaluation/
+docs/
+*.pdf
+*.log
+start.sh
+start.ps1

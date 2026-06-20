@@ -6,6 +6,7 @@ import logging
 from datetime import datetime
 from typing import TYPE_CHECKING
 
+from backend.config import NEO4J_DATABASE
 from backend.pipeline.graph.base_store import AbstractTKGStore
 from backend.pipeline.graph.models import (
     Entity, EntityType, RelationType, TemporalExpression, TemporalFact,
@@ -56,7 +57,7 @@ class Neo4jTKGStore(AbstractTKGStore):
 
     def _ensure_indexes(self) -> None:
         """Create indexes on first run so lookups on entity_id and article_id are fast."""
-        with self._driver.session() as session:
+        with self._driver.session(database=NEO4J_DATABASE) as session:
             session.run("CREATE INDEX IF NOT EXISTS FOR (e:Entity) ON (e.entity_id)")
             session.run("CREATE INDEX IF NOT EXISTS FOR (a:Article) ON (a.article_id)")
             session.run("CREATE INDEX IF NOT EXISTS FOR (c:WikidataCache) ON (c.entity_key)")
@@ -75,7 +76,7 @@ class Neo4jTKGStore(AbstractTKGStore):
     ) -> None:
         """Store a fact as two Entity nodes + a TEMPORAL_RELATION edge."""
         self._ensure_connected()
-        with self._driver.session() as session:
+        with self._driver.session(database=NEO4J_DATABASE) as session:
             session.execute_write(self._create_fact_tx, fact, article_id, title, source)
 
     @staticmethod
@@ -181,7 +182,7 @@ class Neo4jTKGStore(AbstractTKGStore):
             """
             params = {}
 
-        with self._driver.session() as session:
+        with self._driver.session(database=NEO4J_DATABASE) as session:
             result = session.run(query, **params)
             return [_record_to_fact(r) for r in result]
 
@@ -202,7 +203,7 @@ class Neo4jTKGStore(AbstractTKGStore):
                OR $name CONTAINS toLower(o.text)
             RETURN {_FACT_RETURN}
         """
-        with self._driver.session() as session:
+        with self._driver.session(database=NEO4J_DATABASE) as session:
             result = session.run(query, name=name_lower)
             facts = [_record_to_fact(r) for r in result]
         logger.debug(
@@ -213,7 +214,7 @@ class Neo4jTKGStore(AbstractTKGStore):
     def get_articles(self) -> list[dict]:
         """List all analyzed articles with their fact counts."""
         self._ensure_connected()
-        with self._driver.session() as session:
+        with self._driver.session(database=NEO4J_DATABASE) as session:
             result = session.run("""
                 MATCH (a:Article)
                 OPTIONAL MATCH ()-[r:TEMPORAL_RELATION {article_id: a.article_id}]->()
@@ -229,7 +230,7 @@ class Neo4jTKGStore(AbstractTKGStore):
     def delete_article(self, article_id: str) -> bool:
         """Delete an article node and all TEMPORAL_RELATION edges that belong to it."""
         self._ensure_connected()
-        with self._driver.session() as session:
+        with self._driver.session(database=NEO4J_DATABASE) as session:
             check = session.run(
                 "MATCH (a:Article {article_id: $id}) RETURN count(a) > 0 AS found",
                 id=article_id,
@@ -253,7 +254,7 @@ class Neo4jTKGStore(AbstractTKGStore):
         self._ensure_connected()
         import json
         cache_key = entity_name.lower().strip()
-        with self._driver.session() as session:
+        with self._driver.session(database=NEO4J_DATABASE) as session:
             session.run("""
                 MERGE (c:WikidataCache {entity_key: $key})
                 SET c.facts_json = $facts_json,
@@ -266,7 +267,7 @@ class Neo4jTKGStore(AbstractTKGStore):
         self._ensure_connected()
         import json
         cache_key = entity_name.lower().strip()
-        with self._driver.session() as session:
+        with self._driver.session(database=NEO4J_DATABASE) as session:
             result = session.run("""
                 MATCH (c:WikidataCache {entity_key: $key})
                 WHERE duration.between(c.cached_at, datetime()).hours < $max_hours
@@ -299,7 +300,7 @@ class Neo4jTKGStore(AbstractTKGStore):
             a.verified_at = $verified_at
         RETURN a.article_id AS id
         """
-        with self._driver.session() as session:
+        with self._driver.session(database=NEO4J_DATABASE) as session:
             result = session.run(query, {
                 "article_id": article_id,
                 "verdict": verdict,
@@ -312,7 +313,7 @@ class Neo4jTKGStore(AbstractTKGStore):
 
     def summary(self) -> dict:
         self._ensure_connected()
-        with self._driver.session() as session:
+        with self._driver.session(database=NEO4J_DATABASE) as session:
             result = session.run("""
                 MATCH (e:Entity) WITH count(e) AS nodes
                 MATCH ()-[r:TEMPORAL_RELATION]->() WITH nodes, count(r) AS edges

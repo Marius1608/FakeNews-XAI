@@ -1,3 +1,14 @@
+---
+title: FakeNews-XAI
+emoji: 📰
+colorFrom: blue
+colorTo: red
+sdk: docker
+app_port: 7860
+pinned: false
+short_description: Explainable fake news detection via Temporal Coherence Score (TCS)
+---
+
 # FakeNews-XAI
 
 **Explainable detection of temporal inconsistencies in political news using Temporal Knowledge Graphs and a coherence score (TCS).**

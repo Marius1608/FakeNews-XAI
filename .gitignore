@@ -28,7 +28,7 @@ data/cache/*
 # Frontend
 node_modules/
 frontend/node_modules/
-frontend/build/
+# frontend/build/    ← commented out — build must be committed for HF Spaces deploy
 frontend/.env
 frontend/.env.local
 
