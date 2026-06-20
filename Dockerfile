@@ -4,7 +4,7 @@
 FROM node:20-slim AS frontend-builder
 
 WORKDIR /frontend
-COPY frontend/package.json frontend/package-lock.json ./
+COPY frontend/package.json frontend/package-lock.json frontend/tsconfig.json ./
 RUN npm ci --silent --legacy-peer-deps
 COPY frontend/src/ ./src/
 COPY frontend/public/ ./public/
