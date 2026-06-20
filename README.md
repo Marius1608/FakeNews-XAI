@@ -6,7 +6,7 @@ colorTo: red
 sdk: docker
 app_port: 7860
 pinned: false
-short_description: Explainable fake news detection via Temporal Coherence Score (TCS)
+short_description: Fake news detection via Temporal Coherence Score
 ---
 
 # FakeNews-XAI
