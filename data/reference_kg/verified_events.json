@@ -1,7 +1,7 @@
 {
   "generated_at": "2026-06-11T17:55:36.452085",
   "total_entities": 150,
-  "total_facts": 1233,
+  "total_facts": 1234,
   "failed_count": 0,
   "entities": [
     {
@@ -13126,6 +13126,15 @@
       "relation": "occurred_on",
       "value": "September 11 attacks",
       "time_point": "2001-09-11",
+      "time_start": null,
+      "time_end": null,
+      "source": "manual"
+    },
+    {
+      "subject": "Capitol attack",
+      "relation": "occurred_on",
+      "value": "United States Capitol attack January 6",
+      "time_point": "2021-01-06",
       "time_start": null,
       "time_end": null,
       "source": "manual"

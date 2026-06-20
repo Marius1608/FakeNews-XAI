@@ -1,4 +1,4 @@
-"""C2 — TKG Construction: filtrare + deduplicare + insertie in graf."""
+"""C2 — TKG Construction: filter, deduplicate, and insert temporal facts into the graph."""
 
 from __future__ import annotations
 

@@ -53,7 +53,12 @@ MEMBERSHIP_VERBS = {
 EVENT_VERBS = {
     "occur", "happen", "take", "hold", "begin", "start", "end", "sign",
     "win", "announce", "publish", "launch", "release", "open", "close", "award",
-    "vote", "ratify", "negotiate", "sanction", "invade", "withdraw", "deploy", "assassinate", "die", "born", "graduate", "marry", "divorce", "arrest", "convict", "acquit", "pardon", "pass", "repeal", "amend", "declare", "inaugurate", "summit", "strike", "protest", "collapse", "merge", "acquire"
+    "vote", "ratify", "negotiate", "sanction", "invade", "withdraw", "deploy",
+    "assassinate", "die", "born", "graduate", "marry", "divorce", "arrest",
+    "convict", "acquit", "pardon", "pass", "repeal", "amend", "declare",
+    "inaugurate", "summit", "strike", "protest", "collapse", "merge", "acquire",
+    # additional occurrence verbs (lemma forms)
+    "erupt", "unfold", "break",
 }
 
 CAUSAL_VERBS = {
@@ -219,6 +224,29 @@ class SpacyExtractor(AbstractExtractor):
                     extraction_confidence=0.8,
                     extractor="spacy",
                 ))
+
+        # "X occurred/happened/erupted on DATE" — event verb but no explicit object entity
+        # (date is a TemporalExpression, not an NER entity). The subject IS the event.
+        if not facts and subjects and relation == RelationType.OCCURRED_ON:
+            for subj in subjects:
+                facts.append(TemporalFact(
+                    subject=subj,
+                    predicate=relation,
+                    object=Entity(
+                        text=subj.text,
+                        entity_type=subj.entity_type,
+                        start_char=subj.start_char,
+                        end_char=subj.end_char,
+                    ),
+                    time_start=time_start,
+                    time_end=time_end,
+                    time_point=time_point if not time_start else None,
+                    source_sentence=sent.text,
+                    source_sentence_idx=sent_idx,
+                    extraction_confidence=0.75,
+                    extractor="spacy",
+                ))
+
         return facts
 
     def _find_entities_by_dep(

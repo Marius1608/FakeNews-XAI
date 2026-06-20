@@ -25,15 +25,32 @@ logger = logging.getLogger(__name__)
 REFERENCE_KG_FILE = REFERENCE_KG_DIR / "verified_events.json"
 DATE_TOLERANCE_DAYS = 200
 
-# Cuvinte comune ignorate la potrivirea pe nume de eveniment (_check_event_date).
-# Fara ele, suprapuneri precum "the"/"of" ar conta drept potriviri distinctive.
+# Reserved key under which canonical events (historical_events) are stored
+# in the loaded Reference KG dict — not a real entity name.
+_EVENTS_KG_KEY = "__historical_events__"
+
+# Metadata keys from the verified_events.json wrapper — not entities.
+_REFERENCE_KG_META_KEYS = {
+    "generated_at", "total_entities", "total_facts", "failed_count",
+    "failed", "manual_facts_count", "updated_at",
+}
+
+# Wikidata property -> normalized relation (for facts in the `entities` list).
+_WIKIDATA_PROP_TO_RELATION = {
+    "P39": "holds_position",
+    "P463": "member_of",
+}
+
+# Common words ignored when matching event names in _check_event_date.
+# Without them, overlaps like "the"/"of" would count as distinctive matches.
 _EVENT_MATCH_STOPWORDS = {
     "the", "a", "an", "of", "in", "to", "and", "or", "for", "by",
     "as", "at", "on", "was", "were", "had", "has", "been",
 }
 
-# Verbe de actiune cerute in obiectul faptului — un nume de persoana fara context
-# de actiune (ex. "Trump", "Bill Clinton") nu descrie un eveniment databil.
+# Action verbs and event nouns required in the fact object — a person name
+# without action context (e.g. "Trump") does not describe a datable event;
+# event nouns (attack, riot) are equally distinctive.
 _EVENT_ACTION_VERBS = {
     "signed", "passed", "killed", "created", "founded", "started", "ended",
     "adopted", "confirmed", "authorized", "launched", "collapsed", "attacked",
@@ -42,6 +59,9 @@ _EVENT_ACTION_VERBS = {
     "acquitted", "ratified", "enacted", "declared", "withdrawn", "withdrew",
     "deployed", "negotiated", "concluded", "reached", "achieved", "overthrown",
     "liberated",
+    # substantive-eveniment distincte — nu apar in simple nume de persoane
+    "attack", "riot", "bombing", "massacre", "assassination", "siege",
+    "coup", "uprising", "invasion", "crash", "collapse", "scandal",
 }
 
 # Relations that can be verified against external sources
@@ -177,7 +197,7 @@ class ExternalVerifier:
                     if inverse_incons:
                         return inverse_incons
 
-        # 3. Wikipedia fallback (always runs if enabled, regardless of Wikidata result)
+        # Wikipedia fallback — disabled in production (introduced false positives)
         if self.use_web_search:
             return self._verify_with_wikipedia(fact, result)
 
@@ -339,14 +359,18 @@ class ExternalVerifier:
         if not fact.object or not fact.object.text:
             return []
         obj_text = fact.object.text.lower().strip()
-        # Filtru 1: doar fraze de minim 3 cuvinte — cuvintele singulare si frazele
-        # de 2 cuvinte ("Trump", "Iraq War") produc prea multe potriviri false.
-        if len(obj_text.split()) < 3:
+        logger.debug(f"_check_event_date: object='{fact.object.text}' predicate={fact.predicate.value}")
+
+        # Filter 1: minimum 2 words — single-word objects ("Trump") produce too
+        # many false positives; 2 distinctive words ("Capitol attack") are safe.
+        if len(obj_text.split()) < 2:
+            logger.debug(f"  skip: object '{obj_text}' has <2 words (Filter 1)")
             return []
 
-        # Filtru 5: obiectul trebuie sa contina un verb de actiune; altfel e doar
-        # un nume de entitate ("Bill Clinton") fara context de eveniment databil.
+        # Filter 5: object must contain an action verb or event noun; otherwise
+        # it is just an entity name ("Bill Clinton") with no datable event context.
         if not (set(obj_text.split()) & _EVENT_ACTION_VERBS):
+            logger.debug(f"  skip: object '{obj_text}' has no action keyword (Filter 5)")
             return []
 
         fact_time = None
@@ -355,8 +379,10 @@ class ExternalVerifier:
         elif fact.time_start and fact.time_start.normalized_date:
             fact_time = fact.time_start.normalized_date
         if not fact_time:
+            logger.debug(f"  skip: object '{obj_text}' has no normalized date")
             return []
 
+        logger.debug(f"  candidate event '{obj_text}' @ {fact_time.date()} — scanning canonical events")
         EVENT_TOLERANCE_DAYS = 100
 
         for kg_key, kg_facts in self._reference_kg.items():
@@ -371,25 +397,37 @@ class ExternalVerifier:
                 if not kg_value:
                     continue
 
-                # Filtru 4: cel putin 2 cuvinte distinctive (fara stopwords) comune.
+                # Filter 4: at least 2 distinctive words (excluding stopwords) must overlap.
                 words_obj = set(obj_text.split())
                 words_kg = set(kg_value.split())
                 shared = (words_obj & words_kg) - _EVENT_MATCH_STOPWORDS
                 if len(shared) < 2:
                     continue
 
-                # Filtru 2/3: praguri ridicate — fuzzy ratio >= 0.75 sau suprapunere
-                # de cuvinte >= 0.65 din obiectul articolului.
+                # Filter 2/3: high thresholds — fuzzy ratio >= 0.75 OR word overlap
+                # >= 0.65 of the article object words.
                 ratio = SequenceMatcher(None, obj_text, kg_value).ratio()
                 overlap = len(words_obj & words_kg) / max(len(words_obj), 1)
                 if ratio < 0.75 and overlap < 0.65:
+                    logger.debug(
+                        f"    skip kg='{kg_value}': shared={shared} but ratio={ratio:.2f} "
+                        f"<0.75 and overlap={overlap:.2f} <0.65 (Filter 2/3)"
+                    )
                     continue
 
+                logger.debug(
+                    f"    matched kg='{kg_value}' shared={shared} ratio={ratio:.2f} overlap={overlap:.2f}"
+                )
                 kg_point = _parse_date_str(kg_fact.get("time_point"))
                 if not kg_point:
+                    logger.debug(f"    skip kg='{kg_value}': no parseable time_point")
                     continue
                 delta = abs((fact_time - kg_point).days)
                 if delta > EVENT_TOLERANCE_DAYS:
+                    logger.debug(
+                        f"    DATE_MISMATCH: article={fact_time.year} vs kg={kg_point.year} "
+                        f"(delta={delta}d > {EVENT_TOLERANCE_DAYS})"
+                    )
                     result.wikidata_queries += 1
                     return [Inconsistency(
                         inconsistency_type=InconsistencyType.DATE_MISMATCH,
@@ -400,6 +438,10 @@ class ExternalVerifier:
                         verified_by="reference_kg_event",
                         evidence=f"Reference KG: {kg_fact.get('value')} = {kg_point.date()}",
                     )]
+                logger.debug(
+                    f"    within tolerance: article={fact_time.year} vs kg={kg_point.year} "
+                    f"(delta={delta}d <= {EVENT_TOLERANCE_DAYS}) — no mismatch"
+                )
         return []
 
     def _find_in_reference_kg(self, subject_name: str) -> list[tuple[str, dict]]:
@@ -453,7 +495,7 @@ class ExternalVerifier:
         # False positive: "Biden" vs "Barack Obama" → False (skip)
         if not self._subject_matches_wikidata_entity(fact.subject.text, wikidata_entity_label):
             logger.debug(
-                f"Cross-entity skip: '{fact.subject.text}' vs Wikidata '{wikidata_entity_label}' — fapte ignorate"
+                f"Cross-entity skip: '{fact.subject.text}' vs Wikidata '{wikidata_entity_label}' — entity mismatch, facts ignored"
             )
             self._wikidata_cache[cache_key] = []
             return []
@@ -482,15 +524,17 @@ class ExternalVerifier:
     # Comparison helpers
     def _compare_with_reference(self, fact: TemporalFact, ref_facts: list[dict]) -> list[Inconsistency]:
         inconsistencies = []
-        obj_text = fact.object.text if fact.object else ""
+        obj_text = (fact.object.text if fact.object else "").lower().strip()
         for ref in ref_facts:
             if ref.get("relation") != fact.predicate.value:
                 continue
-            # Only compare when the article object refers to the same role/event as
-            # the KG entry. Without this, an entity's unrelated same-relation facts
-            # (e.g. Biden's three distinct bill-signing dates) are cross-compared,
-            # producing spurious date mismatches.
-            if not _value_matches(obj_text, ref.get("value", "")):
+            # Skip if the roles are clearly different (e.g. article says "President"
+            # but KG has "Minister of Interior" — no shared content words).
+            # Using _word_overlap (not _value_matches) because _value_matches falls
+            # back to substring when token sets are empty, producing false positives
+            # (e.g. obj_text="the" is a substring of "president of the united states").
+            ref_value = ref.get("value", "").lower()
+            if obj_text and ref_value and not _word_overlap(obj_text, ref_value, min_overlap=1):
                 continue
             incons = _compare_temporal_intervals(
                 fact=fact,
@@ -511,11 +555,14 @@ class ExternalVerifier:
         if fact.predicate == RelationType.HOLDS_POSITION:
             # For HOLDS_POSITION only compare against similar positions — no fallback
             # to all entity positions (avoids false positives: Biden VP vs Biden Senator).
+            # _word_overlap handles short-form titles like "President United States"
+            # matching "President of the United States" via shared content words.
             relevant = [
                 wf for wf in wikidata_facts
-                if SequenceMatcher(None, obj_text, wf.value_label.lower()).ratio() > 0.6
+                if SequenceMatcher(None, obj_text, wf.value_label.lower()).ratio() > 0.5
                 or obj_text in wf.value_label.lower()
                 or wf.value_label.lower() in obj_text
+                or _word_overlap(obj_text, wf.value_label.lower(), min_overlap=2)
             ]
             if not relevant:
                 logger.debug(f"  HOLDS_POSITION skip: no similar position for '{fact.object.text}' in Wikidata")
@@ -622,18 +669,82 @@ class ExternalVerifier:
 
     # Reference KG loading
     def _load_reference_kg(self, path: Path) -> dict:
+        """Load the Reference KG from the verified_events.json wrapper.
+
+        The file mixes three fact representations:
+          - inline per-entity keys (manual facts, normalized schema
+            relation/value/time_start/time_end/time_point);
+          - `entities` list (Wikidata facts, schema property/position/start_date),
+            which holds the bulk of facts;
+          - `historical_events` list (canonical events, occurred_on).
+        Flattens everything into a single {entity_name: [normalized_facts]} dict
+        that the rest of the code can query uniformly.
+        """
+        logger.info(f"Loading Reference KG from: {path.resolve()}")
         if not path.exists():
             logger.warning(f"Reference KG not found at {path}.")
             return {}
         try:
             with open(path, encoding="utf-8") as f:
                 data = json.load(f)
-            normalized = {k.lower(): v for k, v in data.items()}
-            logger.info(f"Reference KG loaded: {len(normalized)} entities.")
-            return normalized
         except (json.JSONDecodeError, OSError) as e:
             logger.error(f"Reference KG load error: {e}")
             return {}
+
+        if not isinstance(data, dict):
+            logger.error(f"Reference KG has unexpected top-level type: {type(data).__name__}")
+            return {}
+
+        logger.debug(f"Reference KG top-level keys: {list(data.keys())}")
+
+        kg: dict[str, list] = {}
+        fact_count = 0
+
+        # 1. Inline per-entity keys (manual facts, already in normalized schema).
+        for key, value in data.items():
+            if key in _REFERENCE_KG_META_KEYS or key in ("entities", "historical_events"):
+                continue
+            if isinstance(value, list):
+                kg.setdefault(key.lower().strip(), []).extend(value)
+                fact_count += len(value)
+
+        # 2. `entities` list — Wikidata facts mapped to normalized schema.
+        for ent in data.get("entities", []):
+            if not isinstance(ent, dict):
+                continue
+            name = (ent.get("name") or "").lower().strip()
+            if not name:
+                continue
+            entry = kg.setdefault(name, [])
+            for wf in ent.get("facts", []):
+                relation = _WIKIDATA_PROP_TO_RELATION.get(wf.get("property"))
+                if not relation:
+                    continue
+                entry.append({
+                    "subject": ent.get("name", ""),
+                    "relation": relation,
+                    "value": wf.get("position", ""),
+                    "time_start": wf.get("start_date"),
+                    "time_end": wf.get("end_date"),
+                    "time_point": wf.get("point_date"),
+                    "source": "wikidata",
+                })
+                fact_count += 1
+
+        # 3. Canonical events — stored under a reserved key; _check_event_date
+        # iterates all list values so no per-entity key is needed.
+        events = [e for e in data.get("historical_events", []) if isinstance(e, dict)]
+        if events:
+            kg[_EVENTS_KG_KEY] = events
+            fact_count += len(events)
+
+        entity_records = len(kg) - (1 if events else 0)
+        logger.info(
+            f"Reference KG loaded: {entity_records} entity records, {fact_count} facts "
+            f"({len(events)} canonical events; declared total_facts={data.get('total_facts')}) "
+            f"from {path.name}."
+        )
+        return kg
 
 
 # Helper functions

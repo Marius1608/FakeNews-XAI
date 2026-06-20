@@ -64,7 +64,7 @@ function RSSVerificationPanel({ verifications }: Props): React.ReactElement | nu
           {verifications.map((v, i) => (
             <Card key={i} variant="outlined" sx={{ bgcolor: "background.default" }}>
               <CardContent sx={{ py: 1.5, "&:last-child": { pb: 1.5 } }}>
-                <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" sx={{ mb: 0.75 }}>
+                <Stack direction="row" spacing={1} sx={{ mb: 0.75, alignItems: "center", flexWrap: "wrap" }}>
                   <Chip label={v.feed_name} size="small" color="primary" variant="outlined" />
                   <Chip
                     icon={v.verified ? <CheckCircle fontSize="small" /> : <Cancel fontSize="small" />}

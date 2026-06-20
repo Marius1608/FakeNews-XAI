@@ -136,7 +136,7 @@ async def analyze_article(req: AnalyzeRequest) -> AnalyzeResponse:
     orchestrator = get_orchestrator(req.pipeline, req.model)
     orchestrator._persistent_store = store
     orchestrator.persist = req.persist
-    orchestrator._enable_cross_article = False
+    orchestrator._enable_cross_article = req.persist and store is not None
     orchestrator.use_web_search = req.use_web_search
     orchestrator.use_rss = req.use_rss
     if orchestrator._external_verifier is not None:

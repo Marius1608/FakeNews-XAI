@@ -40,20 +40,38 @@ class CrossArticleVerifier:
             entity_name = fact.subject.text.lower().strip()
             stored_facts = self.store.get_facts_for_entity(entity_name)
 
-            # safety guard: skip any fact already tagged to this article
+            logger.debug(
+                f"C3c: entity='{fact.subject.text}' ({fact.predicate.value}) "
+                f"→ {len(stored_facts)} stored facts retrieved"
+            )
+
+            # Safety guard: skip any fact already tagged to this article.
+            # Note: TemporalFact has no article_id field; article_id is stored on the
+            # Neo4j edge and not reconstructed into the object. This guard is therefore
+            # a no-op in practice but documents the intended invariant (verify() should
+            # always be called BEFORE persisting the current article).
             other_facts = [
                 f for f in stored_facts
                 if getattr(f, "article_id", None) != current_article_id
             ]
 
+            logger.debug(
+                f"  → {len(other_facts)} facts from prior articles eligible for comparison"
+            )
+
             for stored in other_facts:
+                objects_match = _objects_similar(fact.object.text, stored.object.text)
+                logger.debug(
+                    f"  compare: '{fact.subject.text}' {fact.predicate.value} '{fact.object.text}' "
+                    f"vs stored '{stored.subject.text}' {stored.predicate.value} '{stored.object.text}' "
+                    f"| objects_similar={objects_match}"
+                )
+
                 # check 1: same relation + similar object + conflicting dates
-                if (
-                    fact.predicate == stored.predicate
-                    and _objects_similar(fact.object.text, stored.object.text)
-                ):
+                if fact.predicate == stored.predicate and objects_match:
                     conflict = _check_date_conflict(fact, stored)
                     if conflict:
+                        logger.debug(f"  → DATE CONFLICT: {conflict.description}")
                         inconsistencies.append(conflict)
 
                 # check 2: same entity holds different positions at overlapping times

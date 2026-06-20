@@ -17,10 +17,12 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-# Fields returned by every fact-fetching query — defined once to avoid repetition
+# Fields returned by every fact-fetching query — defined once to avoid repetition.
+# wikidata_id is intentionally omitted: it is an optional property and querying
+# non-existent properties emits spurious Neo4j warnings.
 _FACT_RETURN = """
-    s.entity_id  AS s_id,   s.text AS s_text,   s.entity_type AS s_type,   s.wikidata_id AS s_wikidata,
-    o.entity_id  AS o_id,   o.text AS o_text,   o.entity_type AS o_type,   o.wikidata_id AS o_wikidata,
+    s.entity_id  AS s_id,   s.text AS s_text,   s.entity_type AS s_type,
+    o.entity_id  AS o_id,   o.text AS o_text,   o.entity_type AS o_type,
     r.relation        AS relation,
     r.time_start_iso  AS time_start_iso,  r.time_start_str  AS time_start_str,
     r.time_end_iso    AS time_end_iso,    r.time_end_str    AS time_end_str,
@@ -50,7 +52,7 @@ class Neo4jTKGStore(AbstractTKGStore):
         except Exception:
             from neo4j import GraphDatabase
             self._driver = GraphDatabase.driver(self._uri, auth=(self._user, self._password))
-            logger.info("Neo4jTKGStore: driver reconectat.")
+            logger.info("Neo4jTKGStore: driver reconnected.")
 
     def _ensure_indexes(self) -> None:
         """Create indexes on first run so lookups on entity_id and article_id are fast."""
@@ -184,17 +186,29 @@ class Neo4jTKGStore(AbstractTKGStore):
             return [_record_to_fact(r) for r in result]
 
     def get_facts_for_entity(self, entity_name: str) -> list[TemporalFact]:
-        """All facts across ALL articles where the entity appears as subject or object."""
+        """All facts across ALL articles where the entity text fuzzy-matches the name.
+
+        Uses bidirectional substring matching so "Jackson" matches stored
+        "Ketanji Brown Jackson" and vice versa. The caller is responsible for
+        further filtering (e.g. relation type, object similarity).
+        """
         self._ensure_connected()
-        entity_id = entity_name.lower().strip()
+        name_lower = entity_name.lower().strip()
         query = f"""
             MATCH (s:Entity)-[r:TEMPORAL_RELATION]->(o:Entity)
-            WHERE s.entity_id = $entity_id OR o.entity_id = $entity_id
+            WHERE toLower(s.text) CONTAINS $name
+               OR $name CONTAINS toLower(s.text)
+               OR toLower(o.text) CONTAINS $name
+               OR $name CONTAINS toLower(o.text)
             RETURN {_FACT_RETURN}
         """
         with self._driver.session() as session:
-            result = session.run(query, entity_id=entity_id)
-            return [_record_to_fact(r) for r in result]
+            result = session.run(query, name=name_lower)
+            facts = [_record_to_fact(r) for r in result]
+        logger.debug(
+            f"get_facts_for_entity('{entity_name}'): {len(facts)} facts retrieved"
+        )
+        return facts
 
     def get_articles(self) -> list[dict]:
         """List all analyzed articles with their fact counts."""
@@ -347,14 +361,12 @@ def _record_to_fact(record) -> TemporalFact:
         entity_type=parse_entity_type(record["s_type"]),
         start_char=0,
         end_char=0,
-        wikidata_id=record.get("s_wikidata"),
     )
     obj = Entity(
         text=record["o_text"],
         entity_type=parse_entity_type(record["o_type"]),
         start_char=0,
         end_char=0,
-        wikidata_id=record.get("o_wikidata"),
     )
 
     return TemporalFact(

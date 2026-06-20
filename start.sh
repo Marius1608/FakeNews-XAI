@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Usage: bash start.sh
-# Checks spaCy models and spacy-llm, then launches backend (FastAPI :8000) and frontend (React :3000).
+# Checks spaCy models, then launches backend (FastAPI :8000) and frontend (React :3000).
 
 set -euo pipefail
 
@@ -12,7 +12,8 @@ RESET="\033[0m"
 
 BACKEND_URL="http://localhost:8000"
 FRONTEND_URL="http://localhost:3000"
-NEO4J_URL="http://localhost:7474"
+NEO4J_BOLT_HOST="localhost"
+NEO4J_BOLT_PORT=7687
 
 BACKEND_PID=""
 FRONTEND_PID=""
@@ -46,16 +47,23 @@ check_http() {
     curl -sf -o /dev/null --max-time 5 "$1"
 }
 
+# Check Neo4j Bolt TCP connectivity (port 7687)
+check_neo4j_bolt() {
+    nc -z "$NEO4J_BOLT_HOST" "$NEO4J_BOLT_PORT" 2>/dev/null || \
+    python -c "import socket; s=socket.create_connection(('$NEO4J_BOLT_HOST',$NEO4J_BOLT_PORT),timeout=3); s.close()" 2>/dev/null
+}
+
 # [0/3] Neo4j (optional)
 step "[0/3] Checking Neo4j..."
-if check_http "$NEO4J_URL"; then
-    ok "Neo4j is running at $NEO4J_URL"
+if check_neo4j_bolt; then
+    ok "Neo4j is running (Bolt :$NEO4J_BOLT_PORT)"
+    export NEO4J_ENABLED=true
 else
     warn "Neo4j not running — cross-article verification and HITL will be disabled"
     warn "Start Neo4j manually before running start.sh for full functionality"
 fi
 
-# [1/3] spaCy models + spacy-llm
+# [1/3] spaCy models
 step "[1/3] Checking spaCy models..."
 for model in "${SPACY_MODELS[@]}"; do
     if python -c "import spacy; spacy.load('$model')" 2>/dev/null; then
@@ -69,14 +77,6 @@ for model in "${SPACY_MODELS[@]}"; do
         ok "Downloaded spaCy model: $model"
     fi
 done
-
-if python -c "import spacy_llm" 2>/dev/null; then
-    ok "spacy-llm installed"
-else
-    warn "spacy-llm not found — installing..."
-    pip install spacy-llm
-    ok "spacy-llm installed"
-fi
 
 # [2/3] Backend
 step "[2/3] Activating Python venv..."
@@ -115,9 +115,9 @@ echo ""
 echo -e "${CYAN}================================================${RESET}"
 echo -e "${GREEN}  Backend    $BACKEND_URL${RESET}"
 echo -e "${GREEN}  Frontend   $FRONTEND_URL${RESET}"
-echo -e "${GREEN}  Neo4j      $NEO4J_URL${RESET}"
+echo -e "${GREEN}  Neo4j      bolt://$NEO4J_BOLT_HOST:$NEO4J_BOLT_PORT${RESET}"
 echo -e "${CYAN}------------------------------------------------${RESET}"
-echo -e "${YELLOW}  Pipelines: A (spaCy) | B (spaCy+Qwen3-1.7B)${RESET}"
+echo -e "${YELLOW}  Pipelines: A (spaCy en_core_web_trf) | B (Qwen3-1.7B local LLM)${RESET}"
 echo -e "${YELLOW}  C3b:       RefKG → Neo4j → Wikidata → RSS${RESET}"
 echo -e "${YELLOW}  HITL:      persist=true → Mark TRUE/FAKE${RESET}"
 echo -e "${CYAN}------------------------------------------------${RESET}"

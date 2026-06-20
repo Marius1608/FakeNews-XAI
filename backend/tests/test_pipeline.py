@@ -1,7 +1,7 @@
 """Pytest tests for the TCS pipeline.
 
 Run: pytest backend/tests/test_pipeline.py -v
-Does not require Ollama or Neo4j to be running.
+Does not require Qwen3 or Neo4j to be running.
 """
 
 from __future__ import annotations
@@ -490,11 +490,11 @@ _OBAMA_FACTS = [
 
 
 class TestOrchestratorNoNeo4j:
-    """End-to-end orchestrator tests without Neo4j, Ollama, or spaCy (extractor is mocked)."""
+    """End-to-end orchestrator tests without Neo4j, Qwen3, or spaCy (extractor is mocked)."""
 
     @pytest.fixture(autouse=True)
     def mock_dependencies(self):
-        # Mock Ollama: LLMExplainer.is_available() -> False
+        # Mock LLMExplainer.is_available() -> False to skip Qwen3 inference
         # Mock spaCy extractor: extract() -> predefined Obama facts
         with (
             patch(

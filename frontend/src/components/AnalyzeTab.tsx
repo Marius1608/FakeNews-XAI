@@ -19,6 +19,7 @@ function AnalyzeTab(): React.ReactElement {
   const [error, setError] = useState<string | null>(null);
   const [availableModels, setAvailableModels] = useState<ModelsResponse | undefined>(undefined);
   const [persist, setPersist] = useState<boolean>(false);
+  const [resultWasPersisted, setResultWasPersisted] = useState<boolean>(false);
   const [useRss, setUseRss] = useState<boolean>(false);
   const [crossArticleResult, setCrossArticleResult] = useState<CrossArticleResponse | null>(null);
   const [crossArticleLoading, setCrossArticleLoading] = useState<boolean>(false);
@@ -37,9 +38,11 @@ function AnalyzeTab(): React.ReactElement {
     setArticleText(request.text);
     setCrossArticleResult(null);
     setVerdict(null);
+    setResultWasPersisted(false);
     try {
       const result = await analyzeArticle({ ...request, persist, use_rss: useRss });
       setAnalyzeResult(result);
+      setResultWasPersisted(persist);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         const detail = err.response?.data?.detail as string | undefined;
@@ -139,8 +142,8 @@ function AnalyzeTab(): React.ReactElement {
             processingTimeMs={analyzeResult.processing_time_ms}
           />
 
-          {/* Human validation — apare doar când articolul a fost salvat în Neo4j */}
-          {analyzeResult.article_id && (
+          {/* Human validation — only shown when article was saved to Neo4j */}
+          {analyzeResult.article_id && resultWasPersisted && (
             <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
               <Typography variant="body2" color="text.secondary">
                 Mark as:
@@ -174,7 +177,7 @@ function AnalyzeTab(): React.ReactElement {
           )}
 
           {/* Cross-article check button — only shown when article was saved to Neo4j */}
-          {analyzeResult.article_id && (
+          {analyzeResult.article_id && resultWasPersisted && (
             <Box>
               <Button
                 variant="outlined"
@@ -252,7 +255,7 @@ function AnalyzeTab(): React.ReactElement {
                     • {c.description}
                   </Typography>
                 ))}
-                {analyzeResult.article_id && (
+                {analyzeResult.article_id && resultWasPersisted && (
                   <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: "block" }}>
                     Saved as {analyzeResult.article_id}
                   </Typography>
@@ -262,7 +265,7 @@ function AnalyzeTab(): React.ReactElement {
           )}
 
           {/* Saved without conflicts */}
-          {analyzeResult.article_id && crossArticleConflicts.length === 0 && (
+          {analyzeResult.article_id && resultWasPersisted && crossArticleConflicts.length === 0 && (
             <Alert severity="success" sx={{ py: 0.5 }}>
               Saved to Neo4j — no cross-article conflicts found.
             </Alert>
