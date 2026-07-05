@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Optional
 from difflib import SequenceMatcher
 
+from backend import runtime_settings
 from backend.config import REFERENCE_KG_DIR
 from backend.pipeline.graph.models import (
     EntityType, InconsistencyType, RelationType, Severity, TemporalFact, Inconsistency,
@@ -22,8 +23,11 @@ from backend.pipeline.verification.rss_verifier import RSSVerifier
 
 logger = logging.getLogger(__name__)
 
+# Sentinel: distinguishes "argument not passed to verify()" (keep the value set
+# in the constructor) from an explicit None (e.g. persistent_store=None).
+_UNSET = object()
+
 REFERENCE_KG_FILE = REFERENCE_KG_DIR / "verified_events.json"
-DATE_TOLERANCE_DAYS = 200
 
 # Reserved key under which canonical events (historical_events) are stored
 # in the loaded Reference KG dict — not a real entity name.
@@ -112,7 +116,31 @@ class ExternalVerifier:
         self._persistent_store = persistent_store
         self._rss_verifier: Optional[RSSVerifier] = RSSVerifier() if use_rss else None
 
-    def verify(self, tkg: TemporalKnowledgeGraph) -> ExternalVerificationResult:
+    def verify(
+        self,
+        tkg: TemporalKnowledgeGraph,
+        persistent_store=_UNSET,
+        use_web_search=_UNSET,
+        use_rss=_UNSET,
+    ) -> ExternalVerificationResult:
+        """Verify the TKG facts against external sources.
+
+        Request-scoped options (store, web search, RSS) can be passed per call;
+        the orchestrator passes them on every run, so the long-lived verifier
+        instance never keeps a store that a router has already closed. Callers
+        that omit them (notebooks, direct use) keep the constructor values.
+        """
+        if persistent_store is not _UNSET:
+            self._persistent_store = persistent_store
+        if use_web_search is not _UNSET:
+            self.use_web_search = use_web_search
+        if use_rss is not _UNSET:
+            if use_rss:
+                # Keep an existing verifier so its feed cache survives across requests
+                self._rss_verifier = self._rss_verifier or RSSVerifier()
+            else:
+                self._rss_verifier = None
+
         result = ExternalVerificationResult()
 
         verifiable = [f for f in tkg.get_all_facts() if f.predicate in EXTERNALLY_VERIFIABLE_RELATIONS and _has_temporal_anchor(f)]
@@ -383,7 +411,8 @@ class ExternalVerifier:
             return []
 
         logger.debug(f"  candidate event '{obj_text}' @ {fact_time.date()} — scanning canonical events")
-        EVENT_TOLERANCE_DAYS = 100
+        event_tolerance_days = runtime_settings.get_value("canonical_event_tolerance_days")
+        event_similarity_threshold = runtime_settings.get_value("canonical_event_similarity_threshold")
 
         for kg_key, kg_facts in self._reference_kg.items():
             if not isinstance(kg_facts, list):
@@ -404,14 +433,14 @@ class ExternalVerifier:
                 if len(shared) < 2:
                     continue
 
-                # Filter 2/3: high thresholds — fuzzy ratio >= 0.75 OR word overlap
+                # Filter 2/3: high thresholds — fuzzy ratio >= threshold OR word overlap
                 # >= 0.65 of the article object words.
                 ratio = SequenceMatcher(None, obj_text, kg_value).ratio()
                 overlap = len(words_obj & words_kg) / max(len(words_obj), 1)
-                if ratio < 0.75 and overlap < 0.65:
+                if ratio < event_similarity_threshold and overlap < 0.65:
                     logger.debug(
                         f"    skip kg='{kg_value}': shared={shared} but ratio={ratio:.2f} "
-                        f"<0.75 and overlap={overlap:.2f} <0.65 (Filter 2/3)"
+                        f"<{event_similarity_threshold} and overlap={overlap:.2f} <0.65 (Filter 2/3)"
                     )
                     continue
 
@@ -423,10 +452,10 @@ class ExternalVerifier:
                     logger.debug(f"    skip kg='{kg_value}': no parseable time_point")
                     continue
                 delta = abs((fact_time - kg_point).days)
-                if delta > EVENT_TOLERANCE_DAYS:
+                if delta > event_tolerance_days:
                     logger.debug(
                         f"    DATE_MISMATCH: article={fact_time.year} vs kg={kg_point.year} "
-                        f"(delta={delta}d > {EVENT_TOLERANCE_DAYS})"
+                        f"(delta={delta}d > {event_tolerance_days})"
                     )
                     result.wikidata_queries += 1
                     return [Inconsistency(
@@ -440,7 +469,7 @@ class ExternalVerifier:
                     )]
                 logger.debug(
                     f"    within tolerance: article={fact_time.year} vs kg={kg_point.year} "
-                    f"(delta={delta}d <= {EVENT_TOLERANCE_DAYS}) — no mismatch"
+                    f"(delta={delta}d <= {event_tolerance_days}) — no mismatch"
                 )
         return []
 
@@ -482,6 +511,10 @@ class ExternalVerifier:
         # search_entity, but includes the real label ("Barack Obama", not just QID "Q76").
         search_results = self.client.search_entity_full(fact.subject.text)
         result.wikidata_queries += 1
+        if search_results is None:
+            # Transient network error — do NOT negative-cache, so the entity
+            # can be retried on a later request
+            return []
         if not search_results:
             self._wikidata_cache[cache_key] = []
             return []
@@ -505,6 +538,9 @@ class ExternalVerifier:
         # This allows detecting contradictions even when C1 misclassifies the relation.
         wikidata_facts = self.client.get_temporal_facts(entity_id, ["P39", "P463"])
         result.wikidata_queries += 1
+        if wikidata_facts is None:
+            # Transient SPARQL error — do NOT cache (neither in memory nor Neo4j)
+            return []
 
         for wf in wikidata_facts:
             wf.entity_label = fact.subject.text
@@ -775,7 +811,7 @@ def _compare_temporal_intervals(
     if ext_start and ext_end and ext_start > ext_end:
         return None
 
-    tolerance = timedelta(days=DATE_TOLERANCE_DAYS)
+    tolerance = timedelta(days=runtime_settings.get_value("external_date_tolerance_days"))
     fact_start = fact.time_start.normalized_date if fact.time_start else None
     fact_end = fact.time_end.normalized_date if fact.time_end else None
     fact_point = fact.time_point.normalized_date if fact.time_point else None
@@ -814,7 +850,7 @@ def _compare_temporal_intervals(
         mismatch = (
             fact_point.year != ext_point.year
             if year_only
-            else abs((fact_point - ext_point).days) > DATE_TOLERANCE_DAYS
+            else abs((fact_point - ext_point).days) > tolerance.days
         )
         if mismatch:
             return Inconsistency(

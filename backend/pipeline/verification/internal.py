@@ -11,6 +11,7 @@ import re
 
 import networkx as nx
 
+from backend import runtime_settings
 from backend.pipeline.graph.models import (
     InconsistencyType, RelationType, Severity, TemporalFact, Inconsistency,
 )
@@ -20,10 +21,6 @@ logger = logging.getLogger(__name__)
 
 ORDERING_RELATIONS = {RelationType.PRECEDED, RelationType.FOLLOWED}
 CAUSAL_RELATIONS = {RelationType.CAUSED}
-MAX_PLAUSIBLE_TENURE_YEARS = 50
-# Beyond this, an interval is almost certainly a date-parsing artifact (e.g. a
-# misparsed token resolved to 1960) rather than a real claim — do not flag it.
-ABSURD_DURATION_YEARS = 80
 
 INCOMPATIBLE_POSITIONS = [
     {"senator", "governor", "representative", "mayor", "congressman"},
@@ -168,6 +165,11 @@ class InternalVerifier:
     def _check_ordering_errors(self, facts: list[TemporalFact]) -> list[Inconsistency]:
         """V3: Inverted interval (start > end) and implausible duration (>50 years)."""
         inconsistencies = []
+        inverted_tolerance_days = runtime_settings.get_value("inverted_interval_tolerance_days")
+        max_plausible_tenure_years = runtime_settings.get_value("max_plausible_tenure_years")
+        # Beyond this, an interval is almost certainly a date-parsing artifact (e.g. a
+        # misparsed token resolved to 1960) rather than a real claim — do not flag it.
+        absurd_duration_years = runtime_settings.get_value("absurd_duration_years")
         for fact in facts:
             if not (fact.time_start and fact.time_end):
                 continue
@@ -178,7 +180,7 @@ class InternalVerifier:
 
             if t_start > t_end:
                 gap_days = (t_start - t_end).days
-                if gap_days < 30:
+                if gap_days < inverted_tolerance_days:
                     continue
                 inconsistencies.append(Inconsistency(
                     inconsistency_type=InconsistencyType.ORDERING_ERROR,
@@ -189,11 +191,11 @@ class InternalVerifier:
                 ))
             else:
                 duration_years = (t_end - t_start).days / 365.25
-                if duration_years > ABSURD_DURATION_YEARS:
+                if duration_years > absurd_duration_years:
                     # Date-parsing artifact (e.g. "Cuba" misparsed to 1960) — skip
                     # silently so it does not pollute the coherence denominator.
                     continue
-                if duration_years > MAX_PLAUSIBLE_TENURE_YEARS:
+                if duration_years > max_plausible_tenure_years:
                     inconsistencies.append(Inconsistency(
                         inconsistency_type=InconsistencyType.DURATION_IMPLAUSIBLE,
                         severity=Severity.LOW,
@@ -207,6 +209,7 @@ class InternalVerifier:
     def _check_factual_contradictions(self, facts: list[TemporalFact]) -> list[Inconsistency]:
         """V4: Factual contradictions (same object held by different subjects with temporal overlap)."""
         inconsistencies = []
+        text_sim_threshold = runtime_settings.get_value("text_similarity_threshold_v4")
         for i, f1 in enumerate(facts):
             for j, f2 in enumerate(facts):
                 if i >= j:
@@ -220,11 +223,11 @@ class InternalVerifier:
                 obj2 = f2.object.text.lower()
 
                 # Same object (e.g. 'president') held by different subjects
-                if SequenceMatcher(None, obj1, obj2).ratio() >= 0.85:
+                if SequenceMatcher(None, obj1, obj2).ratio() >= text_sim_threshold:
                     subj1 = f1.subject.text.lower()
                     subj2 = f2.subject.text.lower()
 
-                    if SequenceMatcher(None, subj1, subj2).ratio() < 0.85:
+                    if SequenceMatcher(None, subj1, subj2).ratio() < text_sim_threshold:
                         # Different subjects + same object: check temporal overlap
                         start1, end1 = _extract_bounds(f1)
                         start2, end2 = _extract_bounds(f2)
@@ -256,6 +259,7 @@ class InternalVerifier:
         # from "defeating John Kerry") and do not reliably indicate role occupancy.
         holds_facts = [f for f in facts if f.predicate == RelationType.HOLDS_POSITION]
         event_facts = facts
+        election_buffer_days = runtime_settings.get_value("election_to_office_buffer_days")
 
         for h_fact in holds_facts:
             subj_h = h_fact.subject.text.lower()
@@ -286,8 +290,8 @@ class InternalVerifier:
                 if SequenceMatcher(None, subj_h, subj_e).ratio() >= 0.85:
                     if _is_inauguration_or_election(e_fact):
                         point_e = _extract_point_time(e_fact)
-                        # 180-day buffer: election -> inauguration transition is normal (up to ~6 months)
-                        if point_e and (point_e - start_h).days > 180:
+                        # election -> inauguration transition is normal (up to ~6 months by default)
+                        if point_e and (point_e - start_h).days > election_buffer_days:
                             inconsistencies.append(Inconsistency(
                                 inconsistency_type=InconsistencyType.IMPLICIT_CONTRADICTION,
                                 severity=Severity.MEDIUM,
@@ -438,6 +442,7 @@ class InternalVerifier:
             )
 
         # Check OCCURRED_ON/GENERIC/STARTED facts for same entities
+        action_buffer_days = runtime_settings.get_value("action_before_office_buffer_days")
         for fact in facts:
             if fact.predicate not in {RelationType.OCCURRED_ON, RelationType.GENERIC, RelationType.STARTED}:
                 continue
@@ -455,8 +460,8 @@ class InternalVerifier:
 
             for office_name, office_start in office_starts[entity]:
                 gap_days = (fact_time - office_start).days
-                # Action more than 90 days before taking office is suspicious
-                if gap_days < -90:
+                # Action more than N days before taking office is suspicious
+                if gap_days < -action_buffer_days:
                     inconsistencies.append(Inconsistency(
                         inconsistency_type=InconsistencyType.CAUSAL_VIOLATION,
                         severity=Severity.HIGH,

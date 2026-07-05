@@ -8,6 +8,8 @@ import type {
   CompareRequest, CompareResponse,
   CrossArticleResponse,
   HealthResponse, ModelsResponse,
+  ParametersResponse,
+  RSSFeedsResponse,
   VerifyRequest, VerifyResponse,
 } from "../types";
 
@@ -24,6 +26,10 @@ const apiClient = axios.create({
   },
 });
 
+// /analyze-batch and /compare can run the LLM pipeline over many articles and
+// easily exceed the default 120s — per-request timeout, the global one stays short
+const LONG_RUNNING_TIMEOUT = 600_000;
+
 // typed API functions
 export async function analyzeArticle(req: AnalyzeRequest): Promise<AnalyzeResponse> {
   const { data } = await apiClient.post<AnalyzeResponse>("/analyze", req);
@@ -31,7 +37,9 @@ export async function analyzeArticle(req: AnalyzeRequest): Promise<AnalyzeRespon
 }
 
 export async function comparePipelines(req: CompareRequest): Promise<CompareResponse> {
-  const { data } = await apiClient.post<CompareResponse>("/compare", req);
+  const { data } = await apiClient.post<CompareResponse>("/compare", req, {
+    timeout: LONG_RUNNING_TIMEOUT,
+  });
   return data;
 }
 
@@ -46,7 +54,9 @@ export async function getModels(): Promise<ModelsResponse> {
 }
 
 export async function analyzeBatch(req: BatchRequest): Promise<BatchResponse> {
-  const { data } = await apiClient.post<BatchResponse>("/analyze-batch", req);
+  const { data } = await apiClient.post<BatchResponse>("/analyze-batch", req, {
+    timeout: LONG_RUNNING_TIMEOUT,
+  });
   return data;
 }
 
@@ -88,6 +98,48 @@ export async function uploadFile(file: File): Promise<UploadResponse> {
     headers: { "Content-Type": "multipart/form-data" },
     timeout: 30_000,
   });
+  return data;
+}
+
+// runtime config: RSS feeds
+export async function getRssFeeds(): Promise<RSSFeedsResponse> {
+  const { data } = await apiClient.get<RSSFeedsResponse>("/config/rss-feeds");
+  return data;
+}
+
+export async function updatePredefinedFeeds(flags: Record<string, boolean>): Promise<RSSFeedsResponse> {
+  const { data } = await apiClient.put<RSSFeedsResponse>("/config/rss-feeds/predefined", flags);
+  return data;
+}
+
+export async function addCustomFeed(url: string): Promise<RSSFeedsResponse> {
+  const { data } = await apiClient.post<RSSFeedsResponse>("/config/rss-feeds/custom", { url });
+  return data;
+}
+
+export async function deleteCustomFeed(index: number): Promise<RSSFeedsResponse> {
+  const { data } = await apiClient.delete<RSSFeedsResponse>(`/config/rss-feeds/custom/${index}`);
+  return data;
+}
+
+export async function resetRssFeeds(): Promise<RSSFeedsResponse> {
+  const { data } = await apiClient.post<RSSFeedsResponse>("/config/rss-feeds/reset");
+  return data;
+}
+
+// runtime config: operational parameters
+export async function getParameters(): Promise<ParametersResponse> {
+  const { data } = await apiClient.get<ParametersResponse>("/config/parameters");
+  return data;
+}
+
+export async function updateParameters(updates: Record<string, number>): Promise<ParametersResponse> {
+  const { data } = await apiClient.put<ParametersResponse>("/config/parameters", updates);
+  return data;
+}
+
+export async function resetParameters(): Promise<ParametersResponse> {
+  const { data } = await apiClient.post<ParametersResponse>("/config/parameters/reset");
   return data;
 }
 

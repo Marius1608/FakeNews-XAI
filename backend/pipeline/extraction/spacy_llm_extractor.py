@@ -190,7 +190,7 @@ class SpacyLLMExtractor(AbstractExtractor):
 
         accumulated: list[TemporalFact] = []
 
-        for sent in doc.sents:
+        for sent_idx, sent in enumerate(doc.sents):
             if not _YEAR_RE.search(sent.text):
                 continue
 
@@ -214,7 +214,7 @@ class SpacyLLMExtractor(AbstractExtractor):
             if not raw_facts:
                 continue
 
-            facts = self._convert_to_temporal_facts(raw_facts, article.publication_date)
+            facts = self._convert_to_temporal_facts(raw_facts, article.publication_date, sent_idx)
             accumulated.extend(facts)
 
         seen: set[tuple[str, str, str]] = set()
@@ -261,12 +261,12 @@ class SpacyLLMExtractor(AbstractExtractor):
         return []
 
     def _convert_to_temporal_facts(
-        self, raw_facts: list[dict], pub_date: Optional[datetime],
+        self, raw_facts: list[dict], pub_date: Optional[datetime], sent_idx: int,
     ) -> list[TemporalFact]:
         facts = []
         for i, raw in enumerate(raw_facts):
             try:
-                fact = self._single_fact(raw, i, pub_date)
+                fact = self._single_fact(raw, i, pub_date, sent_idx)
                 if fact is not None:
                     facts.append(fact)
             except Exception as e:
@@ -274,7 +274,7 @@ class SpacyLLMExtractor(AbstractExtractor):
         return facts
 
     def _single_fact(
-        self, raw: dict, idx: int, pub_date: Optional[datetime],
+        self, raw: dict, idx: int, pub_date: Optional[datetime], sent_idx: int,
     ) -> Optional[TemporalFact]:
         subj_text = raw.get("subject", "").strip()
         obj_text = raw.get("object", "").strip()
@@ -326,7 +326,10 @@ class SpacyLLMExtractor(AbstractExtractor):
             time_end=time_end,
             time_point=time_point if not time_start else None,
             source_sentence=source_sent,
-            source_sentence_idx=idx,
+            # Index of the sentence in the article (spaCy doc.sents order), not
+            # the index of the fact inside the LLM JSON response — TextHighlight
+            # and fact_annotations map on this value
+            source_sentence_idx=sent_idx,
             extraction_confidence=confidence,
             extractor="llm",
         )

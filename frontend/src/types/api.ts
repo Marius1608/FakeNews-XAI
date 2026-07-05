@@ -200,6 +200,34 @@ export interface CrossArticleResponse {
   checked_against: number;
 }
 
+// runtime config schemas (RSS feeds + operational parameters)
+export interface RSSFeedPredefined {
+  url: string;
+  name: string;
+  enabled: boolean;
+}
+
+export interface RSSFeedsResponse {
+  predefined: RSSFeedPredefined[];
+  custom: string[];
+}
+
+export interface ParameterInfo {
+  key: string;
+  label: string;
+  group: "classification" | "internal" | "external";
+  unit: "score" | "days" | "years";
+  value: number;
+  default: number;
+  min: number;
+  max: number;
+  step: number;
+}
+
+export interface ParametersResponse {
+  parameters: ParameterInfo[];
+}
+
 // health schema
 export interface PipelineAComponent {
   model: string;

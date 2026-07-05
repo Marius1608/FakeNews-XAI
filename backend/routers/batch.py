@@ -117,7 +117,15 @@ async def analyze_batch(req: BatchRequest) -> BatchResponse:
 
             try:
                 orchestrator = get_orchestrator(req.pipeline, req.model)
-                result = orchestrator.run(article)
+                # persist=False + enable_cross_article=False: the router itself
+                # persists and cross-checks below; the store is passed only so
+                # C3b can reuse the Wikidata cache
+                result = orchestrator.run(
+                    article,
+                    persistent_store=store,
+                    persist=False,
+                    enable_cross_article=False,
+                )
             except Exception as e:
                 logger.error(
                     f"/analyze-batch: pipeline error on '{batch_article.title}': {e}",

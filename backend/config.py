@@ -48,18 +48,18 @@ WIKIDATA_ENDPOINT = os.getenv(
 WIKIDATA_TEMPORAL_PROPERTIES = ["P580", "P582", "P585"]
 
 
-# Binary fake/real threshold — article predicted FAKE if TCS < FAKE_THRESHOLD
+# Binary fake/real threshold — article predicted FAKE if TCS < FAKE_THRESHOLD.
+# Decorative: no endpoint currently reads this to produce a binary label (only
+# the continuous score + the 5-band `label` below). Also exposed as the mutable
+# "fake_threshold" parameter in runtime_settings.py for the UI; that copy does
+# not change this constant's unused status either.
 FAKE_THRESHOLD: float = 0.75
 
-# TCS thresholds — score bands for the final verdict label
-# 0.8–1.0: likely real | 0.5–0.7: moderately consistent
-# 0.2–0.4: multiple inconsistencies | 0.0–0.2: severe violations (likely fake)
-TCS_THRESHOLDS = {
-    "very_consistent": 0.8,
-    "moderate": 0.5,
-    "suspicious": 0.2,
-    "severe": 0.0,
-}
+# TCS score-band thresholds (0.8/0.5/0.2) that used to live here as a decorative,
+# never-read dict have moved to runtime_settings.py ("tcs_very_consistent" /
+# "tcs_moderate" / "tcs_suspicious") — the single source TCSResult.label
+# (pipeline/graph/models.py) and TCSExplainer._explain_score
+# (pipeline/scoring/explainer.py) both read from.
 
 
 # Wikipedia REST API — disabled in production; set USE_WEB_SEARCH=true only for debugging

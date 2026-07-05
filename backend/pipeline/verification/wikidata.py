@@ -75,8 +75,13 @@ class WikidataClient:
             logger.warning(f"Wikidata search failed for '{name}': {e}")
             return None
 
-    def search_entity_full(self, name: str, language: str = "en") -> list[dict]:
-        """Full search with id, label, description. Useful for debugging/notebooks."""
+    def search_entity_full(self, name: str, language: str = "en") -> Optional[list[dict]]:
+        """Full search with id, label, description.
+
+        Returns a list (possibly empty = no results found) on success, or
+        None on a network/transient error — callers must not cache None as
+        "entity has no results".
+        """
         self._wait_rate_limit()
         url = "https://www.wikidata.org/w/api.php"
         params = {"action": "wbsearchentities", "search": name, "language": language, "format": "json", "limit": 5}
@@ -86,13 +91,17 @@ class WikidataClient:
             response.raise_for_status()
             data = response.json()
             return [{"id": item.get("id", ""), "label": item.get("label", ""), "description": item.get("description", "")} for item in data.get("search", [])]
-        except requests.RequestException as e:
+        except (requests.RequestException, ValueError) as e:
             logger.warning(f"Wikidata search failed for '{name}': {e}")
-            return []
+            return None
 
     # Temporal facts — SPARQL query
-    def get_temporal_facts(self, entity_id: str, relation_properties: Optional[list[str]] = None) -> list[WikidataFact]:
-        """Query facts with P580/P582/P585 qualifiers for an entity (QID, e.g. 'Q76')."""
+    def get_temporal_facts(self, entity_id: str, relation_properties: Optional[list[str]] = None) -> Optional[list[WikidataFact]]:
+        """Query facts with P580/P582/P585 qualifiers for an entity (QID, e.g. 'Q76').
+
+        Returns a list (possibly empty) on success, or None on a network/
+        transient error — callers must not cache None as "no facts".
+        """
         self._wait_rate_limit()
         query = self._build_temporal_query(entity_id, relation_properties)
         logger.debug(f"SPARQL query for {entity_id}:\n{query}")
@@ -108,19 +117,19 @@ class WikidataClient:
             bindings = data.get("results", {}).get("bindings", [])
             logger.debug(f"SPARQL: {len(bindings)} results for {entity_id}")
             return self._parse_sparql_results(data, entity_id)
-        except requests.RequestException as e:
+        except (requests.RequestException, ValueError) as e:
             logger.warning(f"Wikidata SPARQL failed for {entity_id}: {e}")
-            return []
+            return None
 
-    def get_position_held(self, entity_id: str) -> list[WikidataFact]:
+    def get_position_held(self, entity_id: str) -> Optional[list[WikidataFact]]:
         """P39 — positions held."""
         return self.get_temporal_facts(entity_id, relation_properties=["P39"])
 
-    def get_membership(self, entity_id: str) -> list[WikidataFact]:
+    def get_membership(self, entity_id: str) -> Optional[list[WikidataFact]]:
         """P463 — member of."""
         return self.get_temporal_facts(entity_id, relation_properties=["P463"])
 
-    def get_all_positions(self, entity_id: str) -> list[WikidataFact]:
+    def get_all_positions(self, entity_id: str) -> Optional[list[WikidataFact]]:
         """P39 + P463 + P580 + P582 + P585 — all temporal facts for an entity."""
         return self.get_temporal_facts(entity_id, ["P39", "P463", "P585", "P580", "P582"])
 

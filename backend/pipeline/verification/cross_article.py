@@ -7,14 +7,13 @@ from datetime import datetime
 from difflib import SequenceMatcher
 from typing import Optional
 
+from backend import runtime_settings
 from backend.pipeline.graph.base_store import AbstractTKGStore
 from backend.pipeline.graph.models import (
     Inconsistency, InconsistencyType, Severity, TemporalFact,
 )
 
 logger = logging.getLogger(__name__)
-
-SIMILARITY_THRESHOLD = 0.80
 
 
 class CrossArticleVerifier:
@@ -109,7 +108,7 @@ def _objects_similar(a: str, b: str) -> bool:
     a_norm, b_norm = a.lower().strip(), b.lower().strip()
     if a_norm == b_norm:
         return True
-    return SequenceMatcher(None, a_norm, b_norm).ratio() >= SIMILARITY_THRESHOLD
+    return SequenceMatcher(None, a_norm, b_norm).ratio() >= runtime_settings.get_value("cross_article_similarity_threshold")
 
 
 def _check_date_conflict(

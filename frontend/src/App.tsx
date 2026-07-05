@@ -17,6 +17,7 @@ import AnalyzeTab from "./components/AnalyzeTab";
 import ArticleHistory from "./components/ArticleHistory";
 import BatchTab from "./components/BatchTab";
 import CompareTab from "./components/CompareTab";
+import SettingsTab from "./components/SettingsTab";
 
 type HealthStatus = "checking" | "ok" | "error";
 
@@ -116,6 +117,7 @@ function App(): React.ReactElement {
             <Tab label="Analyze" />
             <Tab label="Compare" />
             <Tab label="Batch" />
+            <Tab label="Settings" />
           </Tabs>
         </Container>
       </Box>
@@ -125,6 +127,7 @@ function App(): React.ReactElement {
           {activeTab === 0 && <AnalyzeTab />}
           {activeTab === 1 && <CompareTab />}
           {activeTab === 2 && <BatchTab availableModels={availableModels} />}
+          {activeTab === 3 && <SettingsTab />}
         </Container>
       </Box>
 

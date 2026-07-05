@@ -114,25 +114,36 @@ async def compare_pipelines(req: CompareRequest) -> CompareResponse:
     if NEO4J_ENABLED:
         store = create_persistent_store()
 
-    # Run pipeline A
+    # Single try/finally over both runs so the store is closed even when
+    # pipeline A fails (previously the finally only covered pipeline B)
     try:
-        orch_a = get_orchestrator(req.pipeline_a, req.model_a)
-        orch_a._persistent_store = store
-        orch_a.persist = False
-        result_a = orch_a.run(article)
-    except Exception as e:
-        logger.error(f"/compare: pipeline A error ({req.pipeline_a}:{resolved_model_a}) — {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Pipeline A error '{req.pipeline_a}:{resolved_model_a}': {e}")
+        # Run pipeline A
+        try:
+            orch_a = get_orchestrator(req.pipeline_a, req.model_a)
+            result_a = orch_a.run(
+                article,
+                persistent_store=store,
+                persist=False,
+                enable_cross_article=False,
+            )
+        except Exception as e:
+            logger.error(f"/compare: pipeline A error ({req.pipeline_a}:{resolved_model_a}) — {e}", exc_info=True)
+            raise HTTPException(status_code=500, detail=f"Pipeline A error '{req.pipeline_a}:{resolved_model_a}': {e}")
 
-    # Run pipeline B
-    try:
-        orch_b = get_orchestrator(req.pipeline_b, req.model_b)
-        orch_b._persistent_store = store
-        orch_b.persist = False
-        result_b = orch_b.run(article)
-    except Exception as e:
-        logger.error(f"/compare: pipeline B error ({req.pipeline_b}:{resolved_model_b}) — {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Pipeline B error '{req.pipeline_b}:{resolved_model_b}': {e}")
+        # Run pipeline B
+        try:
+            orch_b = get_orchestrator(req.pipeline_b, req.model_b)
+            result_b = orch_b.run(
+                article,
+                persistent_store=store,
+                persist=False,
+                enable_cross_article=False,
+            )
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"/compare: pipeline B error ({req.pipeline_b}:{resolved_model_b}) — {e}", exc_info=True)
+            raise HTTPException(status_code=500, detail=f"Pipeline B error '{req.pipeline_b}:{resolved_model_b}': {e}")
     finally:
         if store:
             store.close()

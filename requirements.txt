@@ -23,6 +23,7 @@ PyPDF2
 # HTTP and env
 requests
 python-dotenv
+feedparser
 
 # Testing
 pytest

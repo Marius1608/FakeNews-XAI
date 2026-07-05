@@ -180,13 +180,15 @@ class TCSResult:
     @property
     def label(self) -> str:
         """Consistency label according to the Score Interpretation table."""
+        from backend import runtime_settings
+
         if self.n_temporal_claims == 0:
             return "Insufficient Temporal Data"
-        elif self.score >= 0.8:
+        elif self.score >= runtime_settings.get_value("tcs_very_consistent"):
             return "Highly Consistent (Likely True)"
-        elif self.score >= 0.5:
+        elif self.score >= runtime_settings.get_value("tcs_moderate"):
             return "Moderately Consistent"
-        elif self.score >= 0.2:
+        elif self.score >= runtime_settings.get_value("tcs_suspicious"):
             return "Multiple Inconsistencies (Suspicious)"
         else:
             return "Severe Violations (Likely Fake)"

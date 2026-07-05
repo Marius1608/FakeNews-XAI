@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 from typing import Optional
 
+from backend import runtime_settings
 from backend.pipeline.graph.models import (
     Inconsistency,
     InconsistencyType,
@@ -107,11 +108,11 @@ class TCSExplainer:
         if result.n_temporal_claims == 0:
             return _SCORE_TEMPLATES["no_data"]
 
-        if result.score >= 0.8:
+        if result.score >= runtime_settings.get_value("tcs_very_consistent"):
             key = "high"
-        elif result.score >= 0.5:
+        elif result.score >= runtime_settings.get_value("tcs_moderate"):
             key = "moderate"
-        elif result.score >= 0.2:
+        elif result.score >= runtime_settings.get_value("tcs_suspicious"):
             key = "suspicious"
         else:
             key = "severe"

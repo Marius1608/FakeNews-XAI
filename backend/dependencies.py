@@ -6,7 +6,10 @@ from backend.pipeline.orchestrator import PipelineOrchestrator
 from backend.pipeline.scoring.explainer import TCSExplainer
 
 
-# One orchestrator per pipeline variant, shared across routers
+# One orchestrator per pipeline variant, shared across routers.
+# The cached instance holds only expensive-to-build objects (spaCy/Qwen models,
+# extractors, Reference KG); request-scoped state (store, persist, RSS, web
+# search) is passed as arguments to run() and never stored on the instance.
 _orchestrators: dict[str, PipelineOrchestrator] = {}
 
 # Single explainer instance, shared across routers

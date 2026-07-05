@@ -1,14 +1,12 @@
 """Pipeline Orchestrator — links C1→C2→C3→C4 end-to-end: Article → TCSResult."""
 
-# KNOWN ISSUE (C1/C2): orchestrator singleton carries mutable request-scoped state.
-# Documented in CODE_AUDIT_REPORT.md. Fix: pass persist/store/use_rss as run() args.
-
 from __future__ import annotations
 
 import logging
 import time
 from typing import Optional
 
+from backend import runtime_settings
 from backend.pipeline.extraction.base import AbstractExtractor
 from backend.pipeline.graph.base_store import AbstractTKGStore
 from backend.pipeline.graph.builder import TKGBuilder
@@ -20,6 +18,17 @@ from backend.pipeline.verification.external import ExternalVerifier
 from backend.pipeline.verification.internal import InternalVerifier
 
 logger = logging.getLogger(__name__)
+
+# Sentinel: distinguishes "parameter not passed to run()" (fall back to the
+# constructor value) from an explicit None (e.g. persistent_store=None).
+_UNSET = object()
+
+
+def _format_effective_parameters() -> str:
+    """One-line, grep-able snapshot of the 15 runtime_settings values in effect."""
+    def fmt(p: dict) -> str:
+        return f"{p['value']:.2f}" if p["unit"] == "score" else str(int(p["value"]))
+    return ", ".join(f"{p['key']}={fmt(p)}" for p in runtime_settings.get_parameters())
 
 _EXTRACTOR_FACTORIES: dict[str, type] = {}
 
@@ -99,10 +108,35 @@ class PipelineOrchestrator:
             )
         return self._external_verifier
 
-    def run(self, article: Article) -> TCSResult:
-        """Run the full pipeline on a single article."""
+    def run(
+        self,
+        article: Article,
+        *,
+        persistent_store=_UNSET,
+        persist=_UNSET,
+        use_web_search=_UNSET,
+        use_rss=_UNSET,
+        enable_cross_article=_UNSET,
+    ) -> TCSResult:
+        """Run the full pipeline on a single article.
+
+        Request-scoped options are passed as keyword arguments so a cached
+        orchestrator instance carries no residual state between requests.
+        Omitted arguments fall back to the values set in the constructor
+        (used by evaluation scripts and notebooks that call run(article)).
+        """
+        store = self._persistent_store if persistent_store is _UNSET else persistent_store
+        do_persist = self.persist if persist is _UNSET else persist
+        web_search = self.use_web_search if use_web_search is _UNSET else use_web_search
+        rss = self.use_rss if use_rss is _UNSET else use_rss
+        cross_article = self._enable_cross_article if enable_cross_article is _UNSET else enable_cross_article
+
         start_ms = time.monotonic() * 1000
         logger.info(f"Pipeline START [{self.extractor_name}]: '{article.title[:60]}' ({len(article.text)} chars)")
+        logger.info(f"Effective parameters: {_format_effective_parameters()}")
+        if rss:
+            feed_urls = runtime_settings.get_effective_feed_urls()
+            logger.info(f"Effective RSS feeds ({len(feed_urls)}): {', '.join(feed_urls)}")
 
         # C1: extraction
         facts = self.extractor.extract(article)
@@ -120,8 +154,11 @@ class PipelineOrchestrator:
         internal = self._internal_verifier.verify(tkg, publication_date=article.publication_date)
         logger.info(f"C3a done — {len(internal.inconsistencies)} inconsistencies, coherence={internal.score_coherence:.3f}")
 
-        # C3b: external verification
-        external = self.external_verifier.verify(tkg)
+        # C3b: external verification — request-scoped state passed per call,
+        # so the cached verifier never reuses a store closed by a previous request
+        external = self.external_verifier.verify(
+            tkg, persistent_store=store, use_web_search=web_search, use_rss=rss,
+        )
         logger.info(f"C3b done — {len(external.inconsistencies)} inconsistencies ({external.wikidata_queries} Wikidata queries)")
 
         all_facts = tkg.get_all_facts()
@@ -130,11 +167,11 @@ class PipelineOrchestrator:
         # C3c: cross-article verification (optional, requires Neo4j)
         cross_article_incs: list = []
         article_id = None
-        if self._persistent_store:
+        if store:
             import uuid
             article_id = str(uuid.uuid4())
-        if self._persistent_store and self._enable_cross_article:
-            cross_verifier = CrossArticleVerifier(self._persistent_store)
+        if store and cross_article:
+            cross_verifier = CrossArticleVerifier(store)
             cross_article_incs = cross_verifier.verify(all_facts, article_id)
             logger.info(f"C3c done — {len(cross_article_incs)} cross-article conflicts")
             all_inconsistencies.extend(cross_article_incs)
@@ -159,9 +196,9 @@ class PipelineOrchestrator:
         result.rss_verifications = external.rss_verifications
 
         # Persist facts after scoring (only when persist=True; store may still be used for Wikidata cache)
-        if self._persistent_store is not None and self.persist:
+        if store is not None and do_persist:
             try:
-                self._persistent_store.add_facts(
+                store.add_facts(
                     all_facts,
                     article_id=article_id,
                     title=article.title or "",

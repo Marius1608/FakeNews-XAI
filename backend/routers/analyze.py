@@ -134,18 +134,18 @@ async def analyze_article(req: AnalyzeRequest) -> AnalyzeResponse:
         logger.warning("/analyze: persist=True but NEO4J_ENABLED=false")
 
     orchestrator = get_orchestrator(req.pipeline, req.model)
-    orchestrator._persistent_store = store
-    orchestrator.persist = req.persist
-    orchestrator._enable_cross_article = req.persist and store is not None
-    orchestrator.use_web_search = req.use_web_search
-    orchestrator.use_rss = req.use_rss
-    if orchestrator._external_verifier is not None:
-        orchestrator._external_verifier.use_web_search = req.use_web_search
-        from backend.pipeline.verification.rss_verifier import RSSVerifier
-        orchestrator._external_verifier._rss_verifier = RSSVerifier() if req.use_rss else None
 
     try:
-        result = orchestrator.run(article)
+        # Request-scoped state is passed as run() arguments — the cached
+        # orchestrator instance is never mutated between requests
+        result = orchestrator.run(
+            article,
+            persistent_store=store,
+            persist=req.persist,
+            use_web_search=req.use_web_search,
+            use_rss=req.use_rss,
+            enable_cross_article=req.persist and store is not None,
+        )
     except Exception as e:
         logger.error(f"/analyze: pipeline error — {e}", exc_info=True)
         raise HTTPException(status_code=500, detail="Internal pipeline error.")

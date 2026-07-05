@@ -5,13 +5,13 @@ from __future__ import annotations
 import logging
 from typing import Optional
 
+from backend import runtime_settings
 from backend.pipeline.graph.models import EntityType, RelationType, TemporalFact
 from backend.pipeline.graph.store import TemporalKnowledgeGraph
 
 logger = logging.getLogger(__name__)
 
 IGNORED_SUBJECT_TYPES = {EntityType.DATE, EntityType.OTHER}
-MIN_CONFIDENCE_THRESHOLD = 0.3
 
 
 class TKGBuilder:
@@ -20,7 +20,9 @@ class TKGBuilder:
     Steps: filter -> deduplicate -> insert into graph.
     """
 
-    def __init__(self, min_confidence: float = MIN_CONFIDENCE_THRESHOLD, require_temporal_anchor: bool = True):
+    def __init__(self, min_confidence: Optional[float] = None, require_temporal_anchor: bool = True):
+        # None -> read min_fact_confidence from runtime_settings at each use, so
+        # UI changes take effect on the next request. An explicit value overrides.
         self.min_confidence = min_confidence
         self.require_temporal_anchor = require_temporal_anchor
 
@@ -62,7 +64,11 @@ class TKGBuilder:
             return "empty object"
         if fact.subject.entity_type in IGNORED_SUBJECT_TYPES:
             return f"ignored subject type ({fact.subject.entity_type.value})"
-        if fact.extraction_confidence < self.min_confidence:
+        min_confidence = (
+            self.min_confidence if self.min_confidence is not None
+            else runtime_settings.get_value("min_fact_confidence")
+        )
+        if fact.extraction_confidence < min_confidence:
             return f"confidence too low ({fact.extraction_confidence:.2f})"
         if self.require_temporal_anchor and not _has_temporal_anchor(fact):
             return "no parsed temporal anchor"

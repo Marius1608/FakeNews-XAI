@@ -5,38 +5,14 @@ from __future__ import annotations
 import logging
 import time
 import urllib.request
-import xml.etree.ElementTree as ET
 from typing import Optional
 
+import feedparser
+
 from backend.pipeline.graph.models import RelationType, TemporalFact
+from backend.runtime_settings import feed_name, get_effective_feed_urls
 
 logger = logging.getLogger(__name__)
-
-DEFAULT_FEEDS = [
-    "http://feeds.bbci.co.uk/news/politics/rss.xml",
-    "https://feeds.npr.org/1014/rss.xml",
-    "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
-    "https://thehill.com/homenews/feed/",
-    "https://rss.politico.com/politics-news.xml",
-    "https://www.theguardian.com/politics/rss",
-    "https://www.theguardian.com/us-news/rss",
-    "https://feeds.skynews.com/feeds/rss/politics.xml",
-]
-
-FEED_NAMES: dict[str, str] = {
-    "http://feeds.bbci.co.uk/news/politics/rss.xml": "BBC Politics",
-    "https://feeds.npr.org/1014/rss.xml": "NPR Politics",
-    "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml": "NYT Politics",
-    "https://thehill.com/homenews/feed/": "The Hill",
-    "https://rss.politico.com/politics-news.xml": "Politico",
-    "https://www.theguardian.com/politics/rss": "The Guardian Politics",
-    "https://www.theguardian.com/us-news/rss": "The Guardian US",
-    "https://feeds.skynews.com/feeds/rss/politics.xml": "Sky News Politics",
-}
-
-
-def _feed_name(url: str) -> str:
-    return FEED_NAMES.get(url, url.split("/")[2] if "/" in url else url)
 
 RELATION_KEYWORDS: dict[RelationType, list[str]] = {
     RelationType.HOLDS_POSITION: ["president", "senator", "governor", "minister", "appointed", "elected"],
@@ -51,37 +27,53 @@ class RSSVerifier:
     """Searches for facts in recent RSS news feeds (C3b Level 5)."""
 
     def __init__(self, feeds: list[str] = None):
-        self._feeds: list[str] = feeds if feeds is not None else DEFAULT_FEEDS
+        # None -> read the effective (predefined enabled + custom) list from
+        # runtime_settings on every call, so UI changes take effect immediately.
+        # An explicit list locks the instance to that list (used by callers that
+        # want a fixed feed set regardless of runtime config).
+        self._feeds: Optional[list[str]] = feeds
         self._cache: dict[str, list[dict]] = {}
         self._cache_ts: dict[str, float] = {}
 
+    def _effective_feeds(self) -> list[str]:
+        return self._feeds if self._feeds is not None else get_effective_feed_urls()
+
     def is_available(self) -> bool:
         """Tries the first feed — returns True if it responds within 5s."""
-        if not self._feeds:
+        feeds = self._effective_feeds()
+        if not feeds:
             return False
         try:
-            with urllib.request.urlopen(self._feeds[0], timeout=5) as resp:
+            with urllib.request.urlopen(feeds[0], timeout=5) as resp:
                 return resp.status == 200
         except Exception:
             return False
 
     def fetch_feed(self, url: str) -> list[dict]:
-        """Downloads and parses an RSS feed; returns the list of articles."""
+        """Downloads an RSS/Atom feed and parses it with feedparser; returns the list of articles.
+
+        Fetches raw bytes via urllib (bounded by a 10s timeout) rather than
+        handing the URL directly to feedparser.parse(), since feedparser has no
+        built-in per-request timeout and could otherwise hang indefinitely on an
+        unresponsive feed.
+        """
         with urllib.request.urlopen(url, timeout=10) as resp:
             content = resp.read()
-        tree = ET.fromstring(content)
+        parsed = feedparser.parse(content)
+        if parsed.bozo:
+            logger.debug(f"RSS feed parsed with warnings ({url}): {parsed.get('bozo_exception')}")
         items = []
-        for item in tree.findall('.//item'):
-            title = item.findtext('title', '')
-            description = item.findtext('description', '')
-            pub_date = item.findtext('pubDate', '')
-            link = item.findtext('link', '')
+        for entry in parsed.entries:
+            title = entry.get("title", "")
+            description = entry.get("summary", "") or entry.get("description", "")
+            pub_date = entry.get("published", "") or entry.get("updated", "")
+            link = entry.get("link", "")
             items.append({
-                'title': title,
-                'description': description,
-                'pub_date': pub_date,
-                'link': link,
-                'text': f"{title} {description}",
+                "title": title,
+                "description": description,
+                "pub_date": pub_date,
+                "link": link,
+                "text": f"{title} {description}",
             })
         return items
 
@@ -95,9 +87,6 @@ class RSSVerifier:
             self._cache[url] = items
             self._cache_ts[url] = now
             return items
-        except ET.ParseError as e:
-            logger.warning(f"RSS malformed XML ({url}): {e}")
-            return []
         except Exception as e:
             logger.warning(f"RSS feed unreachable ({url}): {e}")
             return []
@@ -122,7 +111,7 @@ class RSSVerifier:
 
         scored: list[tuple[int, dict]] = []
 
-        for url in self._feeds:
+        for url in self._effective_feeds():
             items = self._get_feed_cached(url)
             for item in items:
                 text_lower = item['text'].lower()
@@ -160,7 +149,7 @@ class RSSVerifier:
         headline = best['title'][:200] if best['title'] else best['description'][:200]
         return {
             "found": True,
-            "feed_name": _feed_name(feed_url),
+            "feed_name": feed_name(feed_url),
             "feed_url": feed_url,
             "matched_entity": fact.subject.text,
             "headline": headline,

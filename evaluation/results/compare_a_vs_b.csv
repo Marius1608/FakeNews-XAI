@@ -1,0 +1,21 @@
+idx,title,label,dataset,tcs_a,claims_a,inc_a,label_a,time_a_ms,tcs_b,claims_b,inc_b,label_b,time_b_ms,delta,agree
+1,"Three doctors from the same hospital 'die suddenly' in the same week,"" after the",mostly-true,LIAR,0.5,0,0,Insufficient Temporal Data,5509.7,0.5,0,0,Insufficient Temporal Data,1494.7,0.0,True
+2,Say Joe Biden is a pedophile.,true,LIAR,0.5,0,0,Insufficient Temporal Data,52.8,0.5,0,0,Insufficient Temporal Data,53.0,0.0,True
+3,A photo shows President Joe Biden and Ukrainian President Volodymyr Zelenskyy ho,mostly-true,LIAR,0.5,0,0,Insufficient Temporal Data,68.8,0.5,0,0,Insufficient Temporal Data,69.0,0.0,True
+4,"It will cost $50,000 per enrollee in Obamacare over the next 10 years.",mostly-true,LIAR,0.5,0,0,Insufficient Temporal Data,72.0,0.5,0,0,Insufficient Temporal Data,70.9,0.0,True
+5,"The Federal Register - which houses all Washington regulations - is 34,000 pages",barely-true,LIAR,0.5,0,0,Insufficient Temporal Data,80.0,0.5,0,0,Insufficient Temporal Data,102.1,0.0,True
+6,"Following the 2009 session,"" Texas House Speaker Joe Straus ""was acknowledged an",pants-fire,LIAR,0.85,1,0,Highly Consistent (Likely True),142.2,0.5,0,0,Insufficient Temporal Data,80.8,0.35,False
+7,"America was the ONLY country that ended"" slavery",mostly-true,LIAR,0.5,0,0,Insufficient Temporal Data,47.7,0.5,0,0,Insufficient Temporal Data,48.8,0.0,True
+8,Says Wisconsin Gov. Scott Walker is making voting more difficult by closing Depa,mostly-true,LIAR,0.5,0,0,Insufficient Temporal Data,73.8,0.5,0,0,Insufficient Temporal Data,70.9,0.0,True
+9,"Says if the AHCA replaces Obamacare it will ""significantly reduce insurance prem",barely-true,LIAR,0.5,0,0,Insufficient Temporal Data,61.4,0.5,0,0,Insufficient Temporal Data,63.7,0.0,True
+10,"Republican challenger Bill Flores ""has never once voted in a general election in",pants-fire,LIAR,0.5,0,0,Insufficient Temporal Data,60.4,0.5,0,0,Insufficient Temporal Data,58.8,0.0,True
+11,"Facebook changed its name because it is a ""dead entity"" whose assets were seized",mostly-true,LIAR,0.5,0,0,Insufficient Temporal Data,58.3,0.5,0,0,Insufficient Temporal Data,58.0,0.0,True
+12,"Hillary Clinton has taken over $800,000 from lobbyists.",pants-fire,LIAR,0.5,0,0,Insufficient Temporal Data,54.3,0.5,0,0,Insufficient Temporal Data,54.9,0.0,True
+13,Says an image shows a satellite view of fires in Australia.,mostly-true,LIAR,0.5,0,0,Insufficient Temporal Data,54.8,0.5,0,0,Insufficient Temporal Data,55.2,0.0,True
+14,More businesses went out of business last year than were started for the first t,mostly-true,LIAR,0.5,0,0,Insufficient Temporal Data,63.0,0.5,0,0,Insufficient Temporal Data,64.0,0.0,True
+15,"Brazil built a $300 million stadium in the Amazon rainforest that ""is only going",pants-fire,LIAR,0.5,0,0,Insufficient Temporal Data,83.3,0.5,0,0,Insufficient Temporal Data,81.6,0.0,True
+16,"The Democratic health care law ""added 12 years of solvency to Medicare.",barely-true,LIAR,0.85,2,0,Highly Consistent (Likely True),60.0,0.5,0,0,Insufficient Temporal Data,59.5,0.35,False
+17,"Says Bernie Sanders is going to ""tax you people at 90 percent.",true,LIAR,0.5,0,0,Insufficient Temporal Data,54.1,0.5,0,0,Insufficient Temporal Data,56.8,0.0,True
+18,"Biden failed to condemn far-left violent groups like Antifa, instead faulting on",mostly-true,LIAR,0.5,0,0,Insufficient Temporal Data,72.7,0.5,0,0,Insufficient Temporal Data,73.7,0.0,True
+19,"There have been at least 100 shootings each year [Angel Taveras] has been mayor""",false,LIAR,0.5,0,0,Insufficient Temporal Data,64.5,0.5,0,0,Insufficient Temporal Data,65.8,0.0,True
+20,Says Obama broke his promise to help homeowners facing foreclosure.,false,LIAR,0.5,0,0,Insufficient Temporal Data,56.4,0.5,0,0,Insufficient Temporal Data,55.4,0.0,True
