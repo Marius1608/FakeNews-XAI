@@ -6,7 +6,7 @@ import logging
 from typing import Optional
 
 from backend import runtime_settings
-from backend.pipeline.graph.models import EntityType, RelationType, TemporalFact
+from backend.pipeline.graph.models import EntityType, TemporalFact
 from backend.pipeline.graph.store import TemporalKnowledgeGraph
 
 logger = logging.getLogger(__name__)

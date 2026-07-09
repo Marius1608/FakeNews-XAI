@@ -14,7 +14,7 @@ from difflib import SequenceMatcher
 from backend import runtime_settings
 from backend.config import REFERENCE_KG_DIR
 from backend.pipeline.graph.models import (
-    EntityType, InconsistencyType, RelationType, Severity, TemporalFact, Inconsistency,
+    InconsistencyType, RelationType, Severity, TemporalFact, Inconsistency,
 )
 from backend.pipeline.graph.store import TemporalKnowledgeGraph
 from backend.pipeline.verification.wikidata import WikidataClient, WikidataFact

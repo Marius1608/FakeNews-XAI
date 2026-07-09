@@ -262,7 +262,7 @@ class Neo4jTKGStore(AbstractTKGStore):
                     c.entity_name = $entity_name
             """, key=cache_key, facts_json=json.dumps(wikidata_facts), entity_name=entity_name)
 
-    def get_cached_wikidata(self, entity_name: str, max_age_hours: int = 168) -> Optional[list[dict]]:
+    def get_cached_wikidata(self, entity_name: str, max_age_hours: int = 168) -> list[dict] | None:
         """Retrieve a cached Wikidata result. Returns None if absent or expired (default 7 days)."""
         self._ensure_connected()
         import json

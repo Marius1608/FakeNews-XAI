@@ -10,7 +10,7 @@ import networkx as nx
 
 from backend.pipeline.graph.base_store import AbstractTKGStore
 from backend.pipeline.graph.models import (
-    Entity, EntityType, RelationType, TemporalExpression, TemporalFact,
+    Entity, EntityType, RelationType, TemporalFact,
 )
 
 logger = logging.getLogger(__name__)

@@ -15,7 +15,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from threading import Lock
-from typing import Optional
 from urllib.parse import urlparse
 
 # RSS feeds
