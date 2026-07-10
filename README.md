@@ -64,9 +64,9 @@ Political news article
 
 [C3b — External Verification — 5 hierarchical levels]
   L1: Local Reference KG (1,233 facts: political mandates + 64 canonical events + 22 manual)
-  L2: Neo4j cache (cross-article, active when NEO4J_ENABLED=true)
-  L3: Wikidata SPARQL live (P39, P463)
-  L4: Wikidata inverse query (interval validation)
+  L2: Cross-article contradiction check (Neo4j, active when NEO4J_ENABLED=true)
+  L3: Wikidata SPARQL live (P39, P463) + inverse interval validation
+  L4: Wikipedia REST API fallback (disabled by default, USE_WEB_SEARCH=false)
   L5: RSS Stream (8 active political feeds, 30-min cache)
          |
          v  Inconsistencies (type, severity, evidence)
@@ -232,7 +232,7 @@ cp .env.example .env
 
 ### Step 7 — (Optional) Set up Neo4j
 
-Neo4j is optional. Without it the system runs fully (L1, L3, L4, L5 remain active), but L2 (cross-article cache) and HITL verification are unavailable.
+Neo4j is optional. Without it the system runs fully (L1, L3, L4, L5 remain active), but L2 (cross-article contradiction check) and HITL verification are unavailable.
 
 **Option A — Neo4j Desktop:** download from [neo4j.com/download](https://neo4j.com/download/), create a local database, and start it.
 
@@ -373,7 +373,7 @@ curl -X POST http://localhost:8000/analyze \
 | `pipeline` | string | `"spacy"` | Extraction pipeline: `"spacy"` (A) or `"llm"` (B) |
 | `model` | string | `null` | Specific model (default: `en_core_web_trf` / `Qwen/Qwen3-1.7B`) |
 | `persist` | bool | `false` | Save facts to Neo4j for cross-article analysis (requires `NEO4J_ENABLED=true`) |
-| `use_wikidata` | bool | `true` | Enable live Wikidata SPARQL verification (L3+L4) |
+| `use_wikidata` | bool | `true` | Enable live Wikidata SPARQL verification (L3) |
 | `use_rss` | bool | `false` | Enable RSS Stream verification (L5) |
 | `use_web_search` | bool | `false` | Enable Wikipedia REST API fallback (disabled in production) |
 
@@ -487,7 +487,7 @@ FakeNews-XAI/
 │   │   │   └── factory.py           # create_persistent_store()
 │   │   ├── verification/
 │   │   │   ├── internal.py          # C3a: InternalVerifier (V1–V8)
-│   │   │   ├── external.py          # C3b: ExternalVerifier (L1 RefKG, L3+L4 Wikidata)
+│   │   │   ├── external.py          # C3b: ExternalVerifier (L1 RefKG, L3 Wikidata + inverse, L4 Wikipedia fallback)
 │   │   │   ├── cross_article.py     # C3c: CrossArticleVerifier (L2 Neo4j)
 │   │   │   ├── rss_verifier.py      # C3b L5: RSSVerifier (8 political feeds)
 │   │   │   ├── wikidata.py          # WikidataClient (SPARQL queries)
