@@ -1,4 +1,4 @@
-"""Input — Dataset loaders pentru LIAR (TSV), FakeNewsNet (JSON), VER-1 (CSV)."""
+"""Input — Dataset loaders for LIAR (TSV), FakeNewsNet (JSON), VER-1 (CSV)."""
 
 from __future__ import annotations
 from backend.pipeline.graph.models import Article

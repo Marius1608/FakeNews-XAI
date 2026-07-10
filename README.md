@@ -585,3 +585,10 @@ FakeNews-XAI/
 | Synthetic benchmark | 150 articles (75T/75F) with ground truth | Primary evaluation |
 | ISOT (political subset) | 50T/50F | External evaluation (documented limitation) |
 | RAGuard (political subset) | 50T/50F | External evaluation (documented limitation) |
+
+## Note on language
+
+Core application code (`backend/`, `frontend/`) is documented in English.
+Development notebooks (`notebooks/`) and internal evaluation scripts
+(`evaluation/`) were written in Romanian during development and are kept
+as-is for authenticity of the research process.

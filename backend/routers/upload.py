@@ -16,21 +16,21 @@ async def upload_file(file: UploadFile = File(...)) -> dict:
     ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
     content = await file.read()
 
-    # Validare dimensiune — peste 5MB se respinge inainte de parsare
+    # Size validation — files over 5MB are rejected before parsing
     if len(content) > MAX_FILE_SIZE:
         raise HTTPException(
             status_code=413,
             detail="File too large. Maximum allowed size is 5MB.",
         )
 
-    # Validare extensie — tipuri nesuportate respinse inainte de parsare
+    # Extension validation — unsupported types rejected before parsing
     if ext not in SUPPORTED_EXTENSIONS:
         raise HTTPException(
             status_code=415,
             detail="Unsupported file type. Supported formats: PDF, DOCX, TXT.",
         )
 
-    # Parsarea efectiva — orice eroare (fisier corupt/criptat) devine HTTP 400
+    # Actual parsing — any error (corrupted/encrypted file) becomes HTTP 400
     try:
         if ext == "txt":
             text = content.decode("utf-8", errors="replace")
