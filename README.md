@@ -155,8 +155,8 @@ TCS is a specialized metric for temporal inconsistencies in narrative political 
 
 | Component | Minimum version | Notes |
 |---|---|---|
-| Python | 3.11+ | Tested with 3.11 (Dockerfile) and 3.13 (local) |
-| Node.js | 18+ | Required to compile the React frontend |
+| Python | 3.13 | Same version locally and in Docker (`python:3.13-slim`); dependencies pinned in `requirements.txt` |
+| Node.js | 20.19+ or 22.12+ | Required by Vite 8 to run/build the React frontend |
 | Git | any recent version | — |
 | Neo4j Community Edition | 5.x (optional) | Only for cross-article persistence and Wikidata cache |
 
@@ -225,10 +225,15 @@ If Qwen3 is unavailable (no GPU or insufficient memory), the system continues to
 ### Step 6 — Configure environment variables
 
 ```bash
-cp .env.example .env
+cp env.example .env
 # Edit .env to change ports, models, or enable Neo4j if needed.
 # Default values work out of the box.
+
+# Frontend → backend URL for local development (Vite reads frontend/.env)
+echo "VITE_API_URL=http://localhost:8000" > frontend/.env
 ```
+
+In production (Docker / HuggingFace Spaces) `VITE_API_URL` is left unset, so the frontend calls the API on the same origin.
 
 ### Step 7 — (Optional) Set up Neo4j
 
@@ -271,7 +276,7 @@ The script:
 - detects whether Neo4j is running and sets `NEO4J_ENABLED` accordingly
 - activates the Python virtual environment
 - starts the FastAPI backend on port 8000
-- starts the React frontend on port 3000
+- starts the React frontend (Vite dev server) on port 3000
 - prints a summary of active components
 
 > **Windows (PowerShell):** run `bash start.sh` from Git Bash, or `wsl bash start.sh` if you have WSL.
@@ -287,13 +292,15 @@ source venv/Scripts/activate   # Windows Git Bash
 uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-**Terminal 2 — React Frontend**
+**Terminal 2 — React Frontend (Vite)**
 
 ```bash
 cd frontend
-npm install    # only needed on first run or after package.json changes
-npm start
+npm ci         # only needed on first run or after package-lock.json changes
+npm run dev    # (npm start is an alias)
 ```
+
+Other frontend scripts: `npm run build` (type-check + production build into `frontend/build/`), `npm run preview`, `npm run typecheck`.
 
 ### Service URLs
 
@@ -310,14 +317,15 @@ npm start
 
 ### Web interface
 
-The interface has four main tabs:
+The interface has a sidebar with four sections, a history panel and a light/dark theme toggle (defaults to the OS setting):
 
-| Tab | Functionality |
+| Section | Functionality |
 |---|---|
-| **Analyze** | Analyze an article entered as text or uploaded as a file (PDF, DOCX, TXT); select pipeline (A/B), publication date, Wikidata/RSS options |
+| **Analyze** | Analyze an article entered as text or uploaded as a file (PDF, DOCX, TXT); ready-made example articles; select pipeline (A/B), publication date, RSS option; `Ctrl+Enter` to run. Results: TCS gauge, highlighted sentences, inconsistencies, timeline, knowledge graph, explanation |
 | **Compare** | Compare Pipeline A vs. Pipeline B on the same article; shows score delta and agreement level |
 | **Batch** | Analyze multiple articles at once; optional Neo4j persistence and cross-article verification |
-| **History** | Browse articles saved in Neo4j (requires `NEO4J_ENABLED=true` and `persist=true`) |
+| **Settings** | RSS feeds and temporal verification parameters |
+| **History** (panel) | Browse articles saved in Neo4j (requires `NEO4J_ENABLED=true` and saving enabled) |
 
 **Visualizations available per article:**
 - Circular TCS score display with coherence label
@@ -454,10 +462,17 @@ docker run -p 7860:7860 -e HF_SPACES=true fakenews-xai
 ```
 
 The Dockerfile uses a two-stage build:
-1. **Stage 1** (`node:20-slim`): compiles the React frontend via `npm run build`
-2. **Stage 2** (`python:3.11-slim`): installs Python deps, downloads the spaCy model, copies the backend and the compiled React build
+1. **Stage 1** (`node:24-slim`): `npm ci` + `npm run build` (Vite) → `frontend/build/`
+2. **Stage 2** (`python:3.13-slim`): installs the pinned Python deps (CPU-only PyTorch wheels — the free Spaces tier has no GPU), downloads the spaCy model, copies the backend and the compiled React build
 
-On HuggingFace Spaces, the FastAPI backend serves both the API routes (`/analyze`, `/health`, etc.) and the compiled React SPA (catch-all `/{path}`), all on port 7860.
+On HuggingFace Spaces, the FastAPI backend serves both the API routes (`/analyze`, `/health`, etc.) and the compiled React SPA (hashed assets under `/assets`, catch-all `/{path}` for the app), all on port 7860. The catch-all only serves files inside `frontend/build/` (see `backend/spa.py`).
+
+To deploy, push the repository to the Space:
+
+```bash
+git remote add hf https://huggingface.co/spaces/Marius16/FakeNews-XAI
+git push hf main
+```
 
 Neo4j Aura credentials (if used) are injected at runtime via Spaces Secrets as environment variables — they are never hardcoded in the image.
 
@@ -504,23 +519,32 @@ FakeNews-XAI/
 │   │   ├── articles.py              # GET /articles
 │   │   ├── verify.py                # POST /articles/{id}/verify (HITL)
 │   │   └── health.py                # GET /health, GET /models
+│   ├── spa.py                       # Safe file resolution for serving the built SPA
 │   └── tests/
-│       └── test_pipeline.py         # 33 pytest tests (no Qwen3 or Neo4j required)
-├── frontend/
+│       ├── test_pipeline.py         # Pipeline unit + integration tests (no Qwen3 or Neo4j required)
+│       └── test_spa_security.py     # Path traversal regression tests
+├── frontend/                        # React 19 + TypeScript + Vite
+│   ├── index.html                   # Vite entry HTML
+│   ├── vite.config.ts               # Dev server on :3000, build output in frontend/build/
+│   ├── public/                      # Favicon, app icons, manifest
 │   └── src/
+│       ├── App.tsx                  # Layout: sidebar navigation, theme toggle, lazy-loaded tabs
 │       ├── components/
 │       │   ├── AnalyzeTab.tsx       # Article analysis tab
 │       │   ├── CompareTab.tsx       # Pipeline comparison tab
 │       │   ├── BatchTab.tsx         # Batch analysis tab
-│       │   ├── ArticleHistory.tsx   # Article history (Neo4j)
-│       │   ├── TCSScoreDisplay.tsx  # Circular score display
+│       │   ├── SettingsTab.tsx      # RSS feeds and verification parameters
+│       │   ├── ArticleHistory.tsx   # Article history panel (Neo4j)
+│       │   ├── TCSScoreDisplay.tsx  # TCS gauge + metrics
 │       │   ├── Timeline.tsx         # Fact chronological timeline
 │       │   ├── TemporalGraph.tsx    # Force-directed knowledge graph
-│       │   ├── TextHighlight.tsx    # Annotated article text
-│       │   ├── InconsistencyList.tsx  # Inconsistency list
-│       │   └── ArticleInput.tsx     # Text input / file upload
-│       ├── api.ts                   # HTTP client for the backend
-│       └── theme.ts                 # Material UI theme
+│       │   ├── TextHighlight.tsx    # Annotated article text (backend sentence spans)
+│       │   ├── InconsistencyList.tsx  # Inconsistency cards
+│       │   ├── ArticleInput.tsx     # Text input / file upload / examples
+│       │   └── ui/SectionCard.tsx   # Shared card layout
+│       ├── api/client.ts            # HTTP client for the backend
+│       ├── data/examples.ts         # Example articles for the Analyze tab
+│       └── theme/                   # Material UI theme (light + dark) and color helpers
 ├── evaluation/
 │   ├── run_benchmark.py             # Main benchmark (150 articles)
 │   ├── run_threshold_sweep.py       # Threshold sweep 0.50 → 0.90
@@ -539,7 +563,8 @@ FakeNews-XAI/
 │   ├── THESIS_EVALUATION_REPORT.md
 │   └── GIT_EVOLUTION_REPORT.md
 ├── .env.example                     # Documented environment variables with defaults
-├── requirements.txt                 # Python dependencies
+├── requirements.txt                 # Python dependencies (pinned versions)
+├── pytest.ini                       # Test discovery limited to backend/tests
 ├── start.sh                         # Auto-startup script (backend + frontend)
 └── Dockerfile                       # Multi-stage build for HuggingFace Spaces
 ```
@@ -550,14 +575,14 @@ FakeNews-XAI/
 
 | Layer | Technology |
 |---|---|
-| Backend | Python 3.11+, FastAPI, uvicorn, Pydantic v2 |
+| Backend | Python 3.13, FastAPI, uvicorn, Pydantic v2 |
 | Pipeline A (NLP) | spaCy `en_core_web_trf` (RoBERTa-based transformer) + dateparser |
 | Pipeline B (LLM) | Qwen3-1.7B (HuggingFace, local inference, few-shot) |
 | Graph | networkx MultiDiGraph (in-memory) + Neo4j Community Edition (optional) |
 | External verification | Wikidata SPARQL (public endpoint, no API key) + RSS (8 feeds) |
 | Reference KG | 1,233 facts: 150 political entities + 64 canonical events + 22 manual |
-| Frontend | React 19, TypeScript, Material UI v6, recharts, react-force-graph-2d |
-| Testing | pytest (33 tests — unit + integration, no GPU or Neo4j required) |
+| Frontend | React 19, TypeScript 5.9, Vite 8, Material UI 9 (light/dark), recharts, react-force-graph-2d |
+| Testing | pytest (42 tests — unit, integration and security regression; no GPU or Neo4j required) |
 | Deployment | Docker (multi-stage build), HuggingFace Spaces |
 
 ---
@@ -591,4 +616,4 @@ FakeNews-XAI/
 Core application code (`backend/`, `frontend/`) is documented in English.
 Development notebooks (`notebooks/`) and internal evaluation scripts
 (`evaluation/`) were written in Romanian during development and are kept
-as-is for authenticity of the research process.
+as-is for authenticity of the research process.
