@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Box, Button, Checkbox, Chip, CircularProgress, FormControlLabel, Skeleton, Stack, Switch, Tooltip, Typography } from "@mui/material";
-import { CheckCircleOutlined, CompareArrows, HighlightOff, Psychology } from "@mui/icons-material";
+import { Alert, Box, Button, Checkbox, Chip, CircularProgress, Collapse, FormControlLabel, Paper, Skeleton, Stack, Switch, Tooltip, Typography } from "@mui/material";
+import { Add, CheckCircleOutlined, CompareArrows, EditOutlined, HighlightOff, Psychology } from "@mui/icons-material";
+import { getModelLabel } from "../utils/modelLabels";
 import axios from "axios";
 import type { AnalyzeRequest, AnalyzeResponse, CrossArticleResponse, ModelsResponse } from "../types";
 import { analyzeArticle, crossCheckArticle, getModels, verifyArticle } from "../api/client";
@@ -25,6 +26,27 @@ function AnalyzeTab(): React.ReactElement {
   const [crossArticleResult, setCrossArticleResult] = useState<CrossArticleResponse | null>(null);
   const [crossArticleLoading, setCrossArticleLoading] = useState<boolean>(false);
   const [verdict, setVerdict] = useState<string | null>(null);
+  // Input collapses to a summary bar once a result is shown
+  const [inputCollapsed, setInputCollapsed] = useState<boolean>(false);
+  const [inputKey, setInputKey] = useState<number>(0); // bump → fresh, empty ArticleInput
+  const [lastRequest, setLastRequest] = useState<AnalyzeRequest | null>(null);
+  // Elapsed time while the pipeline runs (Pipeline B can take a minute on CPU)
+  const [elapsed, setElapsed] = useState<number>(0);
+
+  useEffect(() => {
+    if (!isLoading) return;
+    setElapsed(0);
+    const started = Date.now();
+    const t = window.setInterval(() => setElapsed(Math.floor((Date.now() - started) / 1000)), 1000);
+    return () => window.clearInterval(t);
+  }, [isLoading]);
+
+  const startNewAnalysis = (): void => {
+    setInputKey((k) => k + 1);
+    setInputCollapsed(false);
+    setAnalyzeResult(null);
+    setError(null);
+  };
 
   useEffect(() => {
     getModels()
@@ -40,10 +62,12 @@ function AnalyzeTab(): React.ReactElement {
     setCrossArticleResult(null);
     setVerdict(null);
     setResultWasPersisted(false);
+    setLastRequest(request);
     try {
       const result = await analyzeArticle({ ...request, persist, use_rss: useRss });
       setAnalyzeResult(result);
       setResultWasPersisted(persist);
+      setInputCollapsed(true);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         const detail = err.response?.data?.detail as string | undefined;
@@ -93,32 +117,94 @@ function AnalyzeTab(): React.ReactElement {
 
   return (
     <Stack spacing={3}>
-      <SectionCard title="Article input">
-        <ArticleInput
-          onSubmit={handleSubmit}
-          isLoading={isLoading}
-          showPipelineSelector={true}
-          availableModels={availableModels}
-        />
+      {/* One Stack child for bar + input, so the hidden input leaves no extra gap */}
+      <Box>
+        {/* Compact summary of the analyzed article — replaces the input card after a result */}
+        {inputCollapsed && lastRequest && (
+          <Paper sx={{ px: { xs: 2, sm: 3 }, py: 1.5, display: "flex", alignItems: "center", gap: 2, flexWrap: "wrap" }}>
+            <Box sx={{ flex: "1 1 260px", minWidth: 0 }}>
+              <Typography variant="body2" sx={{ fontWeight: 600 }} noWrap>
+                {lastRequest.title || lastRequest.text.slice(0, 90) + (lastRequest.text.length > 90 ? "…" : "")}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                {lastRequest.text.length} characters
+                {lastRequest.publication_date ? ` · published ${lastRequest.publication_date}` : ""}
+                {" · "}
+                {lastRequest.pipeline === "llm" ? "Pipeline B" : "Pipeline A"}
+                {lastRequest.model ? ` · ${getModelLabel(lastRequest.model)}` : ""}
+              </Typography>
+            </Box>
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <Button variant="outlined" size="small" startIcon={<EditOutlined />} onClick={() => setInputCollapsed(false)}>
+                Edit
+              </Button>
+              <Button variant="contained" size="small" startIcon={<Add />} onClick={startNewAnalysis}>
+                New analysis
+              </Button>
+            </Box>
+          </Paper>
+        )}
 
-        <Stack direction="row" spacing={2} sx={{ alignItems: "center", flexWrap: "wrap", pt: 0.5, borderTop: 1, borderColor: "divider" }}>
-          <FormControlLabel
-            control={<Checkbox size="small" checked={persist} onChange={(e) => setPersist(e.target.checked)} />}
-            label={<Typography variant="body2">Save to Neo4j</Typography>}
-          />
-          <Tooltip title="Fallback for recent facts not yet in Wikidata — searches live RSS news feeds">
-            <FormControlLabel
-              control={<Switch size="small" checked={useRss} onChange={(e) => setUseRss(e.target.checked)} />}
-              label={<Typography variant="body2">RSS stream</Typography>}
+        {/* Kept mounted while collapsed so "Edit" restores text, metadata and pipeline */}
+        <Collapse in={!inputCollapsed} unmountOnExit={false}>
+          <SectionCard
+            title="Article input"
+            meta={
+              analyzeResult && (
+                <>
+                  <Button size="small" onClick={() => setInputCollapsed(true)}>
+                    Hide
+                  </Button>
+                  <Button size="small" variant="outlined" startIcon={<Add />} onClick={startNewAnalysis}>
+                    New analysis
+                  </Button>
+                </>
+              )
+            }
+          >
+            <ArticleInput
+              key={inputKey}
+              onSubmit={handleSubmit}
+              isLoading={isLoading}
+              showPipelineSelector={true}
+              availableModels={availableModels}
+              showExamples={true}
             />
-          </Tooltip>
-        </Stack>
-      </SectionCard>
+
+            <Stack direction="row" spacing={2} sx={{ alignItems: "center", flexWrap: "wrap", pt: 0.5, borderTop: 1, borderColor: "divider" }}>
+              <FormControlLabel
+                control={<Checkbox size="small" checked={persist} onChange={(e) => setPersist(e.target.checked)} />}
+                label={<Typography variant="body2">Save to Neo4j</Typography>}
+              />
+              <Tooltip title="Fallback for recent facts not yet in Wikidata — searches live RSS news feeds">
+                <FormControlLabel
+                  control={<Switch size="small" checked={useRss} onChange={(e) => setUseRss(e.target.checked)} />}
+                  label={<Typography variant="body2">RSS stream</Typography>}
+                />
+              </Tooltip>
+            </Stack>
+          </SectionCard>
+        </Collapse>
+      </Box>
 
       {error && (
         <Alert severity="error" onClose={() => setError(null)}>
           {error}
         </Alert>
+      )}
+
+      {isLoading && (
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }} role="status">
+          <CircularProgress size={18} />
+          <Typography variant="body2">
+            Analyzing… <Box component="span" sx={{ fontFamily: "monospace" }}>{elapsed} s</Box>
+          </Typography>
+          {lastRequest?.pipeline === "llm" && (
+            <Typography variant="caption" color="text.secondary">
+              Pipeline B runs a local LLM — it can take a minute or more.
+            </Typography>
+          )}
+        </Box>
       )}
 
       {isLoading && (

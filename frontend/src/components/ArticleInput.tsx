@@ -15,6 +15,7 @@ import {
   TextField,
   ToggleButton,
   ToggleButtonGroup,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
@@ -22,6 +23,7 @@ import { Clear, ExpandMore, PlayArrow, Upload } from "@mui/icons-material";
 import type { AnalyzeRequest, ModelsResponse } from "../types";
 import { getModelDescription, getModelLabel } from "../utils/modelLabels";
 import { FONT_MONO } from "../theme/theme";
+import { EXAMPLE_ARTICLES } from "../data/examples";
 import { uploadFile } from "../api/client";
 
 // Fields that ArticleInput owns (text, metadata — no pipeline/model)
@@ -36,6 +38,8 @@ interface ArticleInputProps {
   hideSubmitButton?: boolean;
   // Fires on every text/metadata change so parent can track current content
   onRequestChange?: (request: ArticleFields) => void;
+  // Show "Try an example" chips (Analyze tab)
+  showExamples?: boolean;
 }
 
 function ArticleInput({
@@ -45,6 +49,7 @@ function ArticleInput({
   availableModels,
   hideSubmitButton = false,
   onRequestChange,
+  showExamples = false,
 }: ArticleInputProps): React.ReactElement {
   const [inputMode, setInputMode] = useState<"text" | "file">("text");
   const [textValue, setTextValue] = useState<string>("");
@@ -117,8 +122,21 @@ function ArticleInput({
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
+  const loadExample = (id: string): void => {
+    const ex = EXAMPLE_ARTICLES.find((e) => e.id === id);
+    if (!ex) return;
+    setInputMode("text");
+    setExtractedInfo(null);
+    setTextValue(ex.text);
+    setTitle(ex.title);
+    setPublicationDate(ex.publication_date);
+    setSource("");
+  };
+
+  const canSubmit = textValue.length >= 20 && !isLoading;
+
   const handleSubmit = (): void => {
-    if (!onSubmit) return;
+    if (!onSubmit || !canSubmit) return;
     const request: AnalyzeRequest = {
       text: textValue,
       title: title || undefined,
@@ -142,6 +160,19 @@ function ArticleInput({
         <ToggleButton value="file">Upload File</ToggleButton>
       </ToggleButtonGroup>
 
+      {showExamples && (
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
+          <Typography variant="caption" color="text.secondary" sx={{ mr: 0.5 }}>
+            Try an example:
+          </Typography>
+          {EXAMPLE_ARTICLES.map((ex) => (
+            <Tooltip key={ex.id} title={ex.hint} describeChild>
+              <Chip label={ex.label} size="small" variant="outlined" clickable onClick={() => loadExample(ex.id)} disabled={isLoading} />
+            </Tooltip>
+          ))}
+        </Box>
+      )}
+
       {inputMode === "text" && (
         <Box>
           <TextField
@@ -151,6 +182,13 @@ function ArticleInput({
             placeholder="Paste article text here..."
             value={textValue}
             onChange={(e) => setTextValue(e.target.value)}
+            onKeyDown={(e) => {
+              // Ctrl/Cmd + Enter submits from the textarea
+              if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && !hideSubmitButton) {
+                e.preventDefault();
+                handleSubmit();
+              }
+            }}
             sx={{ "& .MuiInputBase-input": { fontFamily: FONT_MONO, fontSize: 14, lineHeight: 1.7 } }}
           />
           <Box sx={{ mt: 0.5, display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
@@ -301,11 +339,14 @@ function ArticleInput({
                 <PlayArrow />
               )
             }
-            disabled={textValue.length < 20 || isLoading}
+            disabled={!canSubmit}
             onClick={handleSubmit}
           >
             {isLoading ? "Analyzing..." : "Analyze"}
           </Button>
+          <Typography variant="caption" color="text.secondary" sx={{ ml: 1.5, display: { xs: "none", sm: "inline" } }}>
+            or Ctrl + Enter
+          </Typography>
         </Box>
       )}
     </Box>
