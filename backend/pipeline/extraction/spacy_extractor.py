@@ -114,6 +114,7 @@ class SpacyExtractor(AbstractExtractor):
     def extract(self, article: Article) -> list[TemporalFact]:
         """Extract temporal facts from an article by processing each sentence."""
         doc = self.nlp(article.text)
+        article.sentence_spans = [(s.start_char, s.end_char) for s in doc.sents]
         facts: list[TemporalFact] = []
 
         dep_count = 0

@@ -138,7 +138,7 @@ function AnalyzeTab(): React.ReactElement {
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3, alignItems: "flex-start" }}>
           {/* Left column — the article and where its claims sit in time */}
           <Box sx={{ flex: "3 1 520px", minWidth: 0, display: "flex", flexDirection: "column", gap: 3 }}>
-            <TextHighlight text={articleText} annotations={analyzeResult.fact_annotations} />
+            <TextHighlight text={articleText} annotations={analyzeResult.fact_annotations} sentences={analyzeResult.sentences} />
             <Timeline timeline={analyzeResult.timeline} annotations={analyzeResult.fact_annotations} />
             <TemporalGraph annotations={analyzeResult.fact_annotations} />
           </Box>

@@ -182,6 +182,7 @@ class SpacyLLMExtractor(AbstractExtractor):
 
     def extract(self, article: Article) -> list[TemporalFact]:
         doc = self.nlp(article.text)
+        article.sentence_spans = [(s.start_char, s.end_char) for s in doc.sents]
 
         pub_date_str = (
             article.publication_date.strftime("%Y-%m-%d")

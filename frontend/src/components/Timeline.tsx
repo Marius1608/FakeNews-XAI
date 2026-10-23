@@ -166,7 +166,9 @@ function Timeline({ timeline, annotations }: TimelineProps): React.ReactElement 
             type="number"
             dataKey="x"
             name="Year"
-            domain={["auto", "auto"]}
+            domain={["dataMin", "dataMax"]}
+            allowDecimals={false}
+            padding={{ left: 24, right: 24 }}
             tickFormatter={(v: number) => String(v)}
             tick={{ fill: axisColor, fontSize: 12, fontFamily: FONT_MONO }}
             axisLine={{ stroke: gridColor }}

@@ -276,6 +276,7 @@ function CompareTab(): React.ReactElement {
                 <TextHighlight
                   text={articleText}
                   annotations={compareResult.pipeline_a.fact_annotations}
+                  sentences={compareResult.pipeline_a.sentences}
                 />
                 <InconsistencyList
                   inconsistencies={compareResult.pipeline_a.inconsistency_details}
@@ -306,6 +307,7 @@ function CompareTab(): React.ReactElement {
                 <TextHighlight
                   text={articleText}
                   annotations={compareResult.pipeline_b.fact_annotations}
+                  sentences={compareResult.pipeline_b.sentences}
                 />
                 <InconsistencyList
                   inconsistencies={compareResult.pipeline_b.inconsistency_details}

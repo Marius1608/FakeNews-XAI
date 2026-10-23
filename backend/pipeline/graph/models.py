@@ -129,6 +129,10 @@ class Article:
     # Ground truth label: "true", "false", etc.
     label: Optional[str] = None
     dataset: Optional[str] = None
+    # Sentence boundaries as (start_char, end_char), set by the C1 extractor from
+    # spaCy's doc.sents — the same segmentation that defines source_sentence_idx,
+    # so the UI can highlight exactly the sentence a fact/inconsistency refers to
+    sentence_spans: list[tuple[int, int]] = field(default_factory=list)
 
 
 # C3: Verification output

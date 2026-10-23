@@ -63,6 +63,12 @@ export interface TimelineEvent {
   extractor: string;
 }
 
+// Sentence boundaries from the backend (spaCy doc.sents), in Unicode code points
+export interface SentenceSpan {
+  start: number;
+  end: number;
+}
+
 export interface AnalyzeResponse {
   score: number;
   label: string;
@@ -80,6 +86,7 @@ export interface AnalyzeResponse {
   cross_article_inconsistencies?: InconsistencyResponse[];
   llm_explanation?: string | null;
   rss_verifications?: RSSVerification[];
+  sentences?: SentenceSpan[];
 }
 
 // batch schemas
@@ -160,6 +167,7 @@ export interface PipelineResult {
   fact_annotations: FactAnnotationResponse[];
   timeline: TimelineEvent[];
   processing_time_ms: number;
+  sentences?: SentenceSpan[];
 }
 
 export interface CompareResponse {

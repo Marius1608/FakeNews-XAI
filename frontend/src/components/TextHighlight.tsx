@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Tooltip, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import type { Theme } from "@mui/material/styles";
-import type { FactAnnotationResponse } from "../types";
+import type { FactAnnotationResponse, SentenceSpan } from "../types";
 import { tint, toneColor } from "../theme/tint";
 import { FONT_MONO } from "../theme/theme";
 import SectionCard from "./ui/SectionCard";
@@ -10,6 +10,32 @@ import SectionCard from "./ui/SectionCard";
 interface TextHighlightProps {
   text: string;
   annotations: FactAnnotationResponse[];
+  // Backend sentence spans — the same segmentation as sentence_idx. Optional for older backends.
+  sentences?: SentenceSpan[];
+}
+
+interface Segment {
+  text: string;
+  idx: number | null; // sentence index, or null for whitespace between sentences
+}
+
+/** Cut the text exactly where the backend did. Spans are in code points (Python str), so slice code points, not UTF-16 units. */
+function segmentText(text: string, spans?: SentenceSpan[]): Segment[] {
+  if (spans && spans.length > 0) {
+    const chars = Array.from(text);
+    const out: Segment[] = [];
+    let pos = 0;
+    spans.forEach((sp, idx) => {
+      if (sp.start > pos) out.push({ text: chars.slice(pos, sp.start).join(""), idx: null });
+      out.push({ text: chars.slice(sp.start, sp.end).join(""), idx });
+      pos = sp.end;
+    });
+    if (pos < chars.length) out.push({ text: chars.slice(pos).join(""), idx: null });
+    return out;
+  }
+  // Fallback: approximate split (may disagree with spaCy on abbreviations like "U.S.")
+  const parts = text.split(/(?<=[.!?])\s+(?=[A-Z])/).filter((s) => s.trim().length > 0);
+  return parts.flatMap((p, idx) => (idx < parts.length - 1 ? [{ text: p, idx }, { text: " ", idx: null }] : [{ text: p, idx }]));
 }
 
 // "yellow" has no palette slot — a fixed amber that reads on both schemes
@@ -50,9 +76,9 @@ function TooltipContent({ ann }: { ann: FactAnnotationResponse }): React.ReactEl
   );
 }
 
-function TextHighlight({ text, annotations }: TextHighlightProps): React.ReactElement {
+function TextHighlight({ text, annotations, sentences }: TextHighlightProps): React.ReactElement {
   const theme = useTheme();
-  const sentences = text.split(/(?<=[.!?])\s+(?=[A-Z])/).filter((s) => s.trim().length > 0);
+  const segments = segmentText(text, sentences);
 
   const annotationMap = new Map<number, FactAnnotationResponse>();
   annotations.forEach((ann) => {
@@ -72,22 +98,20 @@ function TextHighlight({ text, annotations }: TextHighlightProps): React.ReactEl
     <SectionCard title="Article">
       <Box sx={{ maxHeight: 520, overflowY: "auto", pr: 0.5 }}>
         <Typography component="div" sx={{ fontSize: 15, lineHeight: 1.85, color: "text.primary", whiteSpace: "pre-wrap" }}>
-          {sentences.map((sentence, idx) => {
-            const ann = annotationMap.get(idx);
-            const sep = idx < sentences.length - 1 ? " " : "";
+          {segments.map((seg, k) => {
+            if (seg.idx === null) return <React.Fragment key={k}>{seg.text}</React.Fragment>;
+            const ann = annotationMap.get(seg.idx);
+            const sentence = seg.text;
             if (!ann) {
               return (
-                <React.Fragment key={idx}>
-                  <Box component="span" sx={{ color: "text.secondary" }}>
-                    {sentence}
-                  </Box>
-                  {sep}
-                </React.Fragment>
+                <Box component="span" key={k} sx={{ color: "text.secondary" }}>
+                  {sentence}
+                </Box>
               );
             }
             const c = markColor(theme, ann.color);
             return (
-              <React.Fragment key={idx}>
+              <React.Fragment key={k}>
                 <Tooltip title={<TooltipContent ann={ann} />} arrow placement="top">
                   <Box
                     component="mark"
@@ -105,7 +129,6 @@ function TextHighlight({ text, annotations }: TextHighlightProps): React.ReactEl
                     {sentence}
                   </Box>
                 </Tooltip>
-                {sep}
               </React.Fragment>
             );
           })}

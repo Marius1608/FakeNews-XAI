@@ -18,7 +18,6 @@ import {
   History,
   LightModeOutlined,
   ManageSearch,
-  ScheduleOutlined,
   TuneOutlined,
   ViewAgendaOutlined,
 } from "@mui/icons-material";
@@ -117,21 +116,7 @@ function App(): React.ReactElement {
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, px: 1 }}>
-          <Box
-            sx={{
-              width: 34,
-              height: 34,
-              borderRadius: "8px",
-              bgcolor: "primary.main",
-              color: "primary.contrastText",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
-            }}
-          >
-            <ScheduleOutlined fontSize="small" />
-          </Box>
+          <Box component="img" src="/favicon.svg" alt="" sx={{ width: 34, height: 34, flexShrink: 0, display: "block" }} />
           <Box sx={{ minWidth: 0 }}>
             <Typography sx={{ fontWeight: 600, fontSize: 15, lineHeight: 1.2 }}>FakeNews-XAI</Typography>
             <Typography variant="caption" color="text.secondary">

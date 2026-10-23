@@ -185,6 +185,18 @@ class TestSpacyExtractor:
         assert len(facts) >= 1, "Extractor must find at least one temporal fact"
 
     @_spacy_available
+    def test_sets_sentence_spans_matching_source_sentence(self):
+        """sentence_spans[i] must slice the article to the sentence behind source_sentence_idx == i."""
+        import dataclasses
+        from backend.pipeline.extraction.spacy_extractor import SpacyExtractor
+        article = dataclasses.replace(OBAMA_ARTICLE)
+        facts = SpacyExtractor(model_name=_SPACY_MODEL).extract(article)
+        assert article.sentence_spans, "Extractor must record sentence spans"
+        for f in facts:
+            start, end = article.sentence_spans[f.source_sentence_idx]
+            assert article.text[start:end] == f.source_sentence
+
+    @_spacy_available
     def test_facts_have_temporal_anchor(self):
         from backend.pipeline.extraction.spacy_extractor import SpacyExtractor
         extractor = SpacyExtractor(model_name=_SPACY_MODEL)
