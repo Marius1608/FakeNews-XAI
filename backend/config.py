@@ -68,7 +68,8 @@ USE_WEB_SEARCH: bool = os.getenv("USE_WEB_SEARCH", "false").lower() == "true"
 
 # Neo4j — optional persistent store for cross-article analysis
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
-NEO4J_USER = os.getenv("NEO4J_USER", "neo4j")
+# Aura's downloaded credentials file uses NEO4J_USERNAME; accept both names
+NEO4J_USER = os.getenv("NEO4J_USER") or os.getenv("NEO4J_USERNAME") or "neo4j"
 NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "password")
 NEO4J_DATABASE = os.getenv("NEO4J_DATABASE", "neo4j")
 NEO4J_ENABLED = os.getenv("NEO4J_ENABLED", "false").lower() == "true"

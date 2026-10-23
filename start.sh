@@ -12,8 +12,7 @@ RESET="\033[0m"
 
 BACKEND_URL="http://localhost:8000"
 FRONTEND_URL="http://localhost:3000"
-NEO4J_BOLT_HOST="localhost"
-NEO4J_BOLT_PORT=7687
+NEO4J_STATUS="disabled"
 
 BACKEND_PID=""
 FRONTEND_PID=""
@@ -35,8 +34,11 @@ trap cleanup EXIT INT TERM
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ENV_FILE="$REPO_ROOT/.env"
 if [[ -f "$ENV_FILE" ]]; then
-    # shellcheck disable=SC2046
-    export $(grep -v '^\s*#' "$ENV_FILE" | grep '=' | xargs)
+    # strip Windows CRLF so values (e.g. NEO4J_PASSWORD) don't end in \r
+    set -a
+    # shellcheck disable=SC1090
+    source <(tr -d '\r' < "$ENV_FILE")
+    set +a
 fi
 
 IFS=',' read -ra SPACY_MODELS <<< "${SPACY_MODELS:-en_core_web_trf}"
@@ -47,20 +49,31 @@ check_http() {
     curl -sf -o /dev/null --max-time 5 "$1"
 }
 
-# Check Neo4j Bolt TCP connectivity (port 7687)
-check_neo4j_bolt() {
-    nc -z "$NEO4J_BOLT_HOST" "$NEO4J_BOLT_PORT" 2>/dev/null || \
-    python -c "import socket; s=socket.create_connection(('$NEO4J_BOLT_HOST',$NEO4J_BOLT_PORT),timeout=3); s.close()" 2>/dev/null
-}
-
-# [0/3] Neo4j (optional)
-step "[0/3] Checking Neo4j..."
-if check_neo4j_bolt; then
-    ok "Neo4j is running (Bolt :$NEO4J_BOLT_PORT)"
-    export NEO4J_ENABLED=true
+# [0/3] Python venv (needed by the Neo4j check and the backend)
+step "[0/3] Activating Python venv..."
+if [[ -f "$REPO_ROOT/venv/Scripts/activate" ]]; then
+    source "$REPO_ROOT/venv/Scripts/activate"
+elif [[ -f "$REPO_ROOT/venv/bin/activate" ]]; then
+    source "$REPO_ROOT/venv/bin/activate"
 else
-    warn "Neo4j not running — cross-article verification and HITL will be disabled"
-    warn "Start Neo4j manually before running start.sh for full functionality"
+    err "venv not found. Run: python -m venv venv && pip install -r requirements.txt"
+    exit 1
+fi
+ok "venv activated"
+
+# [0/3] Neo4j (optional) — checks the instance in NEO4J_URI (local or Aura)
+step "[0/3] Checking Neo4j..."
+if [[ "${NEO4J_ENABLED:-false}" == "true" ]]; then
+    if NEO4J_MSG=$(python "$REPO_ROOT/scripts/check_neo4j.py" --timeout 20); then
+        ok "Neo4j connected: $NEO4J_MSG"
+        NEO4J_STATUS="$NEO4J_MSG"
+    else
+        warn "Neo4j check failed: $NEO4J_MSG"
+        warn "Continuing with NEO4J_ENABLED=false — persistence, cross-article and HITL disabled"
+        export NEO4J_ENABLED=false
+    fi
+else
+    warn "NEO4J_ENABLED is not true in .env — persistence, cross-article and HITL disabled"
 fi
 
 # [1/3] spaCy models
@@ -79,17 +92,6 @@ for model in "${SPACY_MODELS[@]}"; do
 done
 
 # [2/3] Backend
-step "[2/3] Activating Python venv..."
-if [[ -f "$REPO_ROOT/venv/Scripts/activate" ]]; then
-    source "$REPO_ROOT/venv/Scripts/activate"
-elif [[ -f "$REPO_ROOT/venv/bin/activate" ]]; then
-    source "$REPO_ROOT/venv/bin/activate"
-else
-    err "venv not found. Run: python -m venv venv && pip install -r requirements.txt"
-    exit 1
-fi
-ok "venv activated"
-
 step "[2/3] Starting backend (uvicorn on :8000)..."
 cd "$REPO_ROOT"
 uvicorn backend.main:app --host 0.0.0.0 --port 8000 2>&1 | sed 's/^/[backend]  /' &
@@ -115,7 +117,7 @@ echo ""
 echo -e "${CYAN}================================================${RESET}"
 echo -e "${GREEN}  Backend    $BACKEND_URL${RESET}"
 echo -e "${GREEN}  Frontend   $FRONTEND_URL${RESET}"
-echo -e "${GREEN}  Neo4j      bolt://$NEO4J_BOLT_HOST:$NEO4J_BOLT_PORT${RESET}"
+echo -e "${GREEN}  Neo4j      $NEO4J_STATUS${RESET}"
 echo -e "${CYAN}------------------------------------------------${RESET}"
 echo -e "${YELLOW}  Pipelines: A (spaCy en_core_web_trf) | B (Qwen3-1.7B local LLM)${RESET}"
 echo -e "${YELLOW}  C3b:       RefKG → Neo4j → Wikidata → RSS${RESET}"

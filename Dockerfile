@@ -31,6 +31,8 @@ RUN python -m spacy download en_core_web_trf
 # Copy project
 COPY backend/ ./backend/
 COPY data/ ./data/
+COPY scripts/check_neo4j.py scripts/docker-entrypoint.sh ./scripts/
+RUN sed -i 's/\r$//' ./scripts/docker-entrypoint.sh && chmod +x ./scripts/docker-entrypoint.sh
 COPY --from=frontend-builder /frontend/build/ ./frontend/build/
 
 # Neo4j Aura credentials injected via Spaces Secrets at runtime
@@ -43,4 +45,6 @@ ENV HF_SPACES=true
 
 EXPOSE 7860
 
-CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "7860"]
+# Entrypoint verifies the Neo4j instance from Secrets (Aura) before starting uvicorn;
+# if unreachable, the API starts with NEO4J_ENABLED=false.
+CMD ["./scripts/docker-entrypoint.sh"]
