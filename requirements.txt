@@ -1,31 +1,34 @@
-# Core pipeline
-spacy
-spacy-llm
-dateparser
-networkx
-neo4j
+# Pinned versions — tested on Python 3.13 (local venv and Docker python:3.13-slim).
+# Update deliberately: bump a version, run pytest + an analysis on both pipelines, then commit.
 
-# LLM inference
-transformers>=4.51.0
-torch
-accelerate
+# Core pipeline
+spacy==3.8.16
+spacy-llm==0.7.4
+dateparser==1.4.3
+networkx==3.7
+neo4j==6.4.1
+
+# LLM inference (Pipeline B — Qwen3-1.7B)
+transformers==5.20.2
+torch==2.14.1
+accelerate==1.15.0  # required by device_map="auto" in spacy_llm_extractor.py
 
 # API
-fastapi
-uvicorn[standard]
-pydantic
-python-multipart
+fastapi==0.161.1
+uvicorn[standard]==0.54.0
+pydantic==2.14.1
+python-multipart==0.0.32
 
 # File upload extraction
-python-docx
-PyPDF2
+python-docx==1.2.0
+pypdf==6.21.2  # replaces PyPDF2 (unmaintained, PYSEC-2026-1835)
 
 # HTTP and env
-requests
-python-dotenv
-feedparser
+requests==2.34.2
+python-dotenv==1.2.4
+feedparser==6.0.14
 
 # Testing
-pytest
-pytest-asyncio
-httpx
+pytest==9.1.1
+pytest-asyncio==1.4.0
+httpx==0.28.1

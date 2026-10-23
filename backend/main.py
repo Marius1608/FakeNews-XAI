@@ -62,7 +62,7 @@ async def _shutdown() -> None:
 
 # Serve React build in HuggingFace Spaces (single-port deployment).
 # Local dev: frontend runs on :3000 via Vite (npm run dev) — this block is skipped entirely
-# when HF_SPACES is not set, so no import of aiofiles/StaticFiles happens locally.
+# when HF_SPACES is not set, so no import of StaticFiles happens locally.
 import os
 from pathlib import Path
 

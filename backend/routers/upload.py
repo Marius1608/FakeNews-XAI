@@ -36,7 +36,7 @@ async def upload_file(file: UploadFile = File(...)) -> dict:
             text = content.decode("utf-8", errors="replace")
 
         elif ext == "pdf":
-            from PyPDF2 import PdfReader
+            from pypdf import PdfReader
             import io
             reader = PdfReader(io.BytesIO(content))
             text = "\n\n".join(page.extract_text() or "" for page in reader.pages)
