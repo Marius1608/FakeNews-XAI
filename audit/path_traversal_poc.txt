@@ -1,0 +1,16 @@
+Path traversal in SPA catch-all (backend/main.py, active when HF_SPACES=true)
+Reproduced with FastAPI TestClient on a copy of the route; secret file placed one level above the app.
+
+== BEFORE (file_path = _FRONTEND_BUILD / full_path) ==
+/../../.env                         200 '<html>app</html>'
+/..%2f..%2f.env                     200 'NEO4J_PASSWORD=supersecret'
+/%2e%2e/%2e%2e/.env                 200 'NEO4J_PASSWORD=supersecret'
+/static/..%2f..%2f..%2f.env         200 '<html>app</html>'
+
+== AFTER (safe_build_path: resolve + is_relative_to(build) + is_file) ==
+/../../.env                         200 '<html>app</html>'
+/..%2f..%2f.env                     200 '<html>app</html>'
+/%2e%2e/%2e%2e/.env                 200 '<html>app</html>'
+/static/..%2f..%2f..%2f.env         200 '<html>app</html>'
+
+Regression tests: backend/tests/test_spa_security.py

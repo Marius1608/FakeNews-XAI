@@ -66,7 +66,11 @@ async def _shutdown() -> None:
 import os
 from pathlib import Path
 
+from backend.spa import safe_build_path
+
 _FRONTEND_BUILD = Path(__file__).parent.parent / "frontend" / "build"
+
+
 
 if _FRONTEND_BUILD.exists() and os.getenv("HF_SPACES") == "true":
     from fastapi.staticfiles import StaticFiles
@@ -83,7 +87,7 @@ if _FRONTEND_BUILD.exists() and os.getenv("HF_SPACES") == "true":
     @app.get("/{full_path:path}", include_in_schema=False)
     async def _serve_spa(full_path: str) -> FileResponse:
         # API routes registered above take priority over this catch-all
-        file_path = _FRONTEND_BUILD / full_path
-        if file_path.exists() and file_path.is_file():
+        file_path = safe_build_path(_FRONTEND_BUILD, full_path)
+        if file_path is not None:
             return FileResponse(str(file_path))
         return FileResponse(str(_FRONTEND_BUILD / "index.html"))
