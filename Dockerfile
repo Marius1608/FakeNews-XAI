@@ -23,7 +23,9 @@ WORKDIR /app
 
 # Python deps first (layer cache)
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# CPU-only torch wheels (HF Spaces free tier has no GPU) — avoids several GB of CUDA libraries.
+# "torch==2.14.1" in requirements.txt matches the "+cpu" build from this index.
+RUN pip install --no-cache-dir --extra-index-url https://download.pytorch.org/whl/cpu -r requirements.txt
 
 # spaCy model
 RUN python -m spacy download en_core_web_trf
