@@ -25,6 +25,11 @@ data/cache/*
 # Notebooks checkpoints
 .ipynb_checkpoints/
 
+# Security experiments — raw outputs and operator-authored attack sets
+evaluation/security/results/
+evaluation/security/payloads.json
+evaluation/security/poison.json
+
 # Frontend
 node_modules/
 frontend/node_modules/
