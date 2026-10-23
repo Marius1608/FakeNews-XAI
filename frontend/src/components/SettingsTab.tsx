@@ -163,7 +163,7 @@ function SettingsTab(): React.ReactElement {
       )}
 
       {/* RSS feeds */}
-      <Paper variant="outlined" sx={{ p: 2.5 }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         <Stack direction="row" sx={{ mb: 1.5, justifyContent: "space-between", alignItems: "center" }}>
           <Typography variant="h6">RSS Feeds</Typography>
           <Button
@@ -241,7 +241,7 @@ function SettingsTab(): React.ReactElement {
       </Paper>
 
       {/* Operational parameters */}
-      <Paper variant="outlined" sx={{ p: 2.5 }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         <Stack direction="row" sx={{ mb: 1.5, justifyContent: "space-between", alignItems: "center" }}>
           <Typography variant="h6">Temporal Parameters</Typography>
           <Button

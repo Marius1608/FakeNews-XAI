@@ -43,7 +43,7 @@ function RSSVerificationPanel({ verifications }: Props): React.ReactElement | nu
   const iconColor = anyContradicted ? "warning.main" : anyVerified ? "success.main" : "text.secondary";
 
   return (
-    <Accordion defaultExpanded={false} variant="outlined">
+    <Accordion defaultExpanded={false} disableGutters sx={{ border: 1, borderColor: "divider", borderRadius: "14px !important", bgcolor: "background.paper" }}>
       <AccordionSummary expandIcon={<ExpandMore />}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <WifiTethering sx={{ color: iconColor, fontSize: 20 }} />
@@ -62,7 +62,7 @@ function RSSVerificationPanel({ verifications }: Props): React.ReactElement | nu
       <AccordionDetails>
         <Stack spacing={1.5}>
           {verifications.map((v, i) => (
-            <Card key={i} variant="outlined" sx={{ bgcolor: "background.default" }}>
+            <Card key={i} sx={{ bgcolor: "background.default" }}>
               <CardContent sx={{ py: 1.5, "&:last-child": { pb: 1.5 } }}>
                 <Stack direction="row" spacing={1} sx={{ mb: 0.75, alignItems: "center", flexWrap: "wrap" }}>
                   <Chip label={v.feed_name} size="small" color="primary" variant="outlined" />

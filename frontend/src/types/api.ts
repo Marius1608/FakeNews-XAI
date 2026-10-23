@@ -244,5 +244,6 @@ export interface HealthResponse {
   components: {
     pipeline_a: PipelineAComponent;
     pipeline_b: PipelineBComponent;
+    neo4j?: { enabled: boolean; host: string | null; database: string | null };
   };
 }

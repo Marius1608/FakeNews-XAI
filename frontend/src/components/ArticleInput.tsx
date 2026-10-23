@@ -8,13 +8,9 @@ import {
   Chip,
   CircularProgress,
   FormControl,
-  FormControlLabel,
   FormHelperText,
-  FormLabel,
   InputLabel,
   MenuItem,
-  Radio,
-  RadioGroup,
   Select,
   TextField,
   ToggleButton,
@@ -25,6 +21,7 @@ import type { SelectChangeEvent } from "@mui/material";
 import { Clear, ExpandMore, PlayArrow, Upload } from "@mui/icons-material";
 import type { AnalyzeRequest, ModelsResponse } from "../types";
 import { getModelDescription, getModelLabel } from "../utils/modelLabels";
+import { FONT_MONO } from "../theme/theme";
 import { uploadFile } from "../api/client";
 
 // Fields that ArticleInput owns (text, metadata — no pipeline/model)
@@ -154,7 +151,7 @@ function ArticleInput({
             placeholder="Paste article text here..."
             value={textValue}
             onChange={(e) => setTextValue(e.target.value)}
-            sx={{ "& .MuiInputBase-input": { fontFamily: "IBM Plex Mono, monospace" } }}
+            sx={{ "& .MuiInputBase-input": { fontFamily: FONT_MONO, fontSize: 14, lineHeight: 1.7 } }}
           />
           <Box sx={{ mt: 0.5, display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
             <Typography variant="caption" color="text.secondary">
@@ -216,17 +213,15 @@ function ArticleInput({
       <Accordion
         disableGutters
         elevation={0}
-        sx={{
-          "&:before": { display: "none" },
-          border: "1px solid rgba(148,163,184,0.15)",
-          borderRadius: 1,
-        }}
+        sx={{ border: 1, borderColor: "divider", borderRadius: "10px", bgcolor: "transparent", "&.Mui-expanded": { m: 0 } }}
       >
         <AccordionSummary expandIcon={<ExpandMore />}>
-          <Typography variant="body2">Article Metadata</Typography>
+          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+            Article metadata <Box component="span" sx={{ color: "text.secondary", fontWeight: 400 }}>· optional</Box>
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(3, minmax(0, 1fr))" }, gap: 2 }}>
             <TextField
               label="Title"
               fullWidth
@@ -255,29 +250,25 @@ function ArticleInput({
       </Accordion>
 
       {showPipelineSelector && (
-        <>
-          <FormControl>
-            <FormLabel>Pipeline</FormLabel>
-            <RadioGroup
+        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", alignItems: "flex-start" }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 0.75 }}>
+            <Typography variant="caption" color="text.secondary" id="pipeline-label">
+              Pipeline
+            </Typography>
+            <ToggleButtonGroup
               value={pipeline}
-              onChange={(e) => setPipeline(e.target.value as "spacy" | "llm")}
-              row
+              exclusive
+              size="small"
+              aria-labelledby="pipeline-label"
+              onChange={(_, v: "spacy" | "llm" | null) => v && setPipeline(v)}
             >
-              <FormControlLabel
-                value="spacy"
-                control={<Radio size="small" />}
-                label="Pipeline A"
-              />
-              <FormControlLabel
-                value="llm"
-                control={<Radio size="small" />}
-                label="Pipeline B"
-              />
-            </RadioGroup>
-          </FormControl>
+              <ToggleButton value="spacy">A · spaCy</ToggleButton>
+              <ToggleButton value="llm">B · LLM</ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
 
           {availableModels && (
-            <FormControl size="small" sx={{ maxWidth: 360 }}>
+            <FormControl size="small" sx={{ minWidth: 240, flex: "1 1 240px", maxWidth: 380, mt: 2.75 }}>
               <InputLabel>Model</InputLabel>
               <Select
                 value={model}
@@ -295,7 +286,7 @@ function ArticleInput({
               )}
             </FormControl>
           )}
-        </>
+        </Box>
       )}
 
       {!hideSubmitButton && (

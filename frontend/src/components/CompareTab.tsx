@@ -111,14 +111,16 @@ function CompareTab(): React.ReactElement {
 
   return (
     <Stack spacing={3}>
-      <ArticleInput
-        isLoading={isLoading}
-        showPipelineSelector={false}
-        hideSubmitButton={true}
-        onRequestChange={(content) => setArticleContent(content)}
-      />
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
+        <ArticleInput
+          isLoading={isLoading}
+          showPipelineSelector={false}
+          hideSubmitButton={true}
+          onRequestChange={(content) => setArticleContent(content)}
+        />
+      </Paper>
 
-      <Paper variant="outlined" sx={{ p: 2.5 }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         <Typography variant="subtitle2" sx={{ mb: 2 }}>
           Model Selection
         </Typography>
@@ -225,7 +227,7 @@ function CompareTab(): React.ReactElement {
 
       {compareResult && (
         <>
-          <Paper sx={{ p: 2 }}>
+          <Paper sx={{ p: { xs: 2, sm: 3 } }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5, flexWrap: "wrap" }}>
               <Typography variant="body2">
                 <strong>{getModelLabel(compareResult.model_a)}</strong>

@@ -1,56 +1,48 @@
 import React from "react";
-import { Box, Paper, Tooltip, Typography } from "@mui/material";
+import { Box, Tooltip, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import type { Theme } from "@mui/material/styles";
 import type { FactAnnotationResponse } from "../types";
+import { tint, toneColor } from "../theme/tint";
+import { FONT_MONO } from "../theme/theme";
+import SectionCard from "./ui/SectionCard";
 
 interface TextHighlightProps {
   text: string;
   annotations: FactAnnotationResponse[];
 }
 
-interface AnnotationStyle {
-  bgcolor: string;
-  borderColor: string;
-}
+// "yellow" has no palette slot — a fixed amber that reads on both schemes
+const MINOR = "#EAAA08";
 
-function getAnnotationStyle(color: string): AnnotationStyle {
+function markColor(theme: Theme, color: string): string {
   switch (color.toLowerCase()) {
     case "green":
-      return { bgcolor: "rgba(74, 222, 128, 0.15)", borderColor: "#4ade80" };
+      return toneColor(theme, "success");
     case "yellow":
-      return { bgcolor: "rgba(251, 191, 36, 0.15)", borderColor: "#fbbf24" };
+      return MINOR;
     case "orange":
-      return { bgcolor: "rgba(249, 115, 22, 0.25)", borderColor: "#f97316" };
+      return toneColor(theme, "warning");
     case "red":
-      return { bgcolor: "rgba(248, 113, 113, 0.15)", borderColor: "#f87171" };
+      return toneColor(theme, "error");
     default:
-      return { bgcolor: "rgba(148, 163, 184, 0.10)", borderColor: "#94a3b8" };
+      return (theme.vars ?? theme).palette.text.secondary;
   }
 }
 
 function TooltipContent({ ann }: { ann: FactAnnotationResponse }): React.ReactElement {
   return (
-    <Box sx={{ p: 0.5 }}>
-      <Typography variant="body2" sx={{ fontWeight: "bold", mb: 0.5 }}>
+    <Box sx={{ p: 0.5, display: "flex", flexDirection: "column", gap: 0.25 }}>
+      <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.25 }}>
         {ann.subject} → {ann.predicate} → {ann.object}
       </Typography>
-      <Typography variant="caption" sx={{ display: "block" }}>
-        Time: {ann.time}
+      <Typography variant="caption" sx={{ fontFamily: FONT_MONO }}>
+        time {ann.time} · confidence {Math.round(ann.confidence * 100)}%
       </Typography>
-      <Typography
-        variant="caption"
-        sx={{
-          display: "block",
-          color: ann.status === "consistent" ? "#4ade80" : "#f87171",
-        }}
-      >
-        Status: {ann.status}
-      </Typography>
-      <Typography variant="caption" sx={{ display: "block" }}>
-        Confidence: {Math.round(ann.confidence * 100)}%
-      </Typography>
+      <Typography variant="caption">Status: {ann.status}</Typography>
       {ann.status === "inconsistent" &&
         ann.inconsistencies.map((desc, i) => (
-          <Typography key={i} variant="caption" sx={{ display: "block", mt: 0.25 }}>
+          <Typography key={i} variant="caption">
             • {desc}
           </Typography>
         ))}
@@ -58,14 +50,8 @@ function TooltipContent({ ann }: { ann: FactAnnotationResponse }): React.ReactEl
   );
 }
 
-const LEGEND_ITEMS = [
-  { color: "#4ade80", label: "Consistent" },
-  { color: "#fbbf24", label: "Minor" },
-  { color: "#f97316", label: "Moderate" },
-  { color: "#f87171", label: "Severe" },
-] as const;
-
 function TextHighlight({ text, annotations }: TextHighlightProps): React.ReactElement {
+  const theme = useTheme();
   const sentences = text.split(/(?<=[.!?])\s+(?=[A-Z])/).filter((s) => s.trim().length > 0);
 
   const annotationMap = new Map<number, FactAnnotationResponse>();
@@ -75,75 +61,68 @@ function TextHighlight({ text, annotations }: TextHighlightProps): React.ReactEl
     }
   });
 
-  return (
-    <Paper elevation={2} sx={{ p: 2 }}>
-      <Typography variant="h6" sx={{ mb: 1.5 }}>
-        Article Text
-      </Typography>
+  const legend = [
+    { color: toneColor(theme, "success"), label: "Consistent" },
+    { color: MINOR, label: "Minor" },
+    { color: toneColor(theme, "warning"), label: "Moderate" },
+    { color: toneColor(theme, "error"), label: "Severe" },
+  ];
 
-      <Box sx={{ display: "flex", gap: 2, mb: 1.5, flexWrap: "wrap" }}>
-        {LEGEND_ITEMS.map(({ color, label }) => (
+  return (
+    <SectionCard title="Article">
+      <Box sx={{ maxHeight: 520, overflowY: "auto", pr: 0.5 }}>
+        <Typography component="div" sx={{ fontSize: 15, lineHeight: 1.85, color: "text.primary", whiteSpace: "pre-wrap" }}>
+          {sentences.map((sentence, idx) => {
+            const ann = annotationMap.get(idx);
+            const sep = idx < sentences.length - 1 ? " " : "";
+            if (!ann) {
+              return (
+                <React.Fragment key={idx}>
+                  <Box component="span" sx={{ color: "text.secondary" }}>
+                    {sentence}
+                  </Box>
+                  {sep}
+                </React.Fragment>
+              );
+            }
+            const c = markColor(theme, ann.color);
+            return (
+              <React.Fragment key={idx}>
+                <Tooltip title={<TooltipContent ann={ann} />} arrow placement="top">
+                  <Box
+                    component="mark"
+                    tabIndex={0}
+                    sx={{
+                      color: "inherit",
+                      bgcolor: theme.alpha(c, 0.14),
+                      borderBottom: `2px solid ${c}`,
+                      borderRadius: "3px",
+                      px: 0.25,
+                      cursor: "help",
+                      "&:focus-visible": { outline: `2px solid ${tint(theme, "primary", 0.6)}`, outlineOffset: 2 },
+                    }}
+                  >
+                    {sentence}
+                  </Box>
+                </Tooltip>
+                {sep}
+              </React.Fragment>
+            );
+          })}
+        </Typography>
+      </Box>
+
+      <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+        {legend.map(({ color, label }) => (
           <Box key={label} sx={{ display: "flex", alignItems: "center", gap: 0.75 }}>
-            <Box
-              sx={{
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                bgcolor: color,
-                flexShrink: 0,
-              }}
-            />
+            <Box sx={{ width: 10, height: 10, borderRadius: "3px", bgcolor: color, flexShrink: 0 }} />
             <Typography variant="caption" color="text.secondary">
               {label}
             </Typography>
           </Box>
         ))}
       </Box>
-
-      <Box sx={{ maxHeight: 500, overflowY: "auto" }}>
-        {sentences.map((sentence, idx) => {
-          const ann = annotationMap.get(idx);
-          if (ann) {
-            const { bgcolor, borderColor } = getAnnotationStyle(ann.color);
-            return (
-              <Tooltip
-                key={idx}
-                title={<TooltipContent ann={ann} />}
-                arrow
-                placement="top"
-              >
-                <Typography
-                  variant="body1"
-                  sx={{
-                    lineHeight: 1.8,
-                    whiteSpace: "pre-wrap",
-                    bgcolor,
-                    borderLeft: `3px solid ${borderColor}`,
-                    px: 1,
-                    py: 0.5,
-                    mb: 0.5,
-                    borderRadius: 0.5,
-                    cursor: "default",
-                    display: "block",
-                  }}
-                >
-                  {sentence}
-                </Typography>
-              </Tooltip>
-            );
-          }
-          return (
-            <Typography
-              key={idx}
-              variant="body1"
-              sx={{ lineHeight: 1.8, whiteSpace: "pre-wrap", mb: 0.5 }}
-            >
-              {sentence}
-            </Typography>
-          );
-        })}
-      </Box>
-    </Paper>
+    </SectionCard>
   );
 }
 

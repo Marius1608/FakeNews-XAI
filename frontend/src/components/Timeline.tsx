@@ -8,6 +8,9 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+import { useResolvedPalette } from "../theme/tint";
+import { FONT_MONO } from "../theme/theme";
+import SectionCard from "./ui/SectionCard";
 import {
   CartesianGrid,
   Cell,
@@ -17,6 +20,7 @@ import {
   Tooltip as RechartsTooltip,
   XAxis,
   YAxis,
+  ZAxis,
 } from "recharts";
 import type { FactAnnotationResponse, TimelineEvent } from "../types";
 
@@ -28,17 +32,22 @@ interface TimelineProps {
 interface PlotPoint {
   x: number;
   y: number;
+  z: number;
   year: number;
   label: string;
   hasInconsistency: boolean;
   color: string;
 }
 
-function getEventColor(event: TimelineEvent, ann?: FactAnnotationResponse): string {
+type Palette = ReturnType<typeof useResolvedPalette>;
+
+function getEventColor(pal: Palette, event: TimelineEvent, ann?: FactAnnotationResponse): string {
+  const ok = pal.success.main;
+  const bad = pal.error.main;
   if (ann) {
-    return ann.status === "consistent" ? "#22c55e" : "#ef4444";
+    return ann.status === "consistent" ? ok : bad;
   }
-  return event.has_inconsistency ? "#ef4444" : "#94a3b8";
+  return event.has_inconsistency ? bad : pal.text.disabled;
 }
 
 // Typed loosely so recharts can inject active/payload via cloneElement
@@ -50,15 +59,15 @@ function ScatterTooltip(props: object): React.ReactElement | null {
   if (!active || !payload?.length) return null;
   const pt = payload[0].payload;
   return (
-    <Paper sx={{ p: 1.5, bgcolor: "background.paper" }}>
+    <Paper sx={{ p: 1.5, bgcolor: "background.paper", borderRadius: "10px" }}>
       <Typography variant="body2" sx={{ fontWeight: "bold", mb: 0.25 }}>
         {pt.label}
       </Typography>
-      <Typography variant="caption" sx={{ display: "block" }}>
-        Year: {pt.year}
+      <Typography variant="caption" sx={{ display: "block", fontFamily: FONT_MONO }}>
+        {pt.year}
       </Typography>
       {pt.hasInconsistency && (
-        <Typography variant="caption" sx={{ display: "block", color: "#ef4444", mt: 0.25 }}>
+        <Typography variant="caption" sx={{ display: "block", color: "error.main", mt: 0.25 }}>
           Inconsistency detected
         </Typography>
       )}
@@ -67,14 +76,17 @@ function ScatterTooltip(props: object): React.ReactElement | null {
 }
 
 function Timeline({ timeline, annotations }: TimelineProps): React.ReactElement {
+  const pal = useResolvedPalette();
+  const axisColor = pal.text.secondary;
+  const gridColor = pal.divider;
+
   if (timeline.length === 0) {
     return (
-      <Paper elevation={2} sx={{ p: 2 }}>
-        <Typography variant="h6" sx={{ mb: 1 }}>
-          Temporal Timeline
+      <SectionCard title="Timeline">
+        <Typography variant="body2" color="text.secondary">
+          No temporal events to display.
         </Typography>
-        <Typography color="text.secondary">No temporal events to display.</Typography>
-      </Paper>
+      </SectionCard>
     );
   }
 
@@ -90,14 +102,11 @@ function Timeline({ timeline, annotations }: TimelineProps): React.ReactElement 
   // Fallback list when not enough parseable years for a chart
   if (validEvents.length < 2) {
     return (
-      <Paper elevation={2} sx={{ p: 2 }}>
-        <Typography variant="h6" sx={{ mb: 1.5 }}>
-          Temporal Timeline
-        </Typography>
+      <SectionCard title="Timeline">
         <List dense disablePadding>
           {timeline.map((event, idx) => {
             const ann = annotationMap.get(event.sentence_idx);
-            const color = getEventColor(event, ann);
+            const color = getEventColor(pal, event, ann);
             return (
               <ListItem key={idx} sx={{ pl: 0 }}>
                 <ListItemIcon sx={{ minWidth: 28 }}>
@@ -124,7 +133,7 @@ function Timeline({ timeline, annotations }: TimelineProps): React.ReactElement 
             );
           })}
         </List>
-      </Paper>
+      </SectionCard>
     );
   }
 
@@ -133,49 +142,52 @@ function Timeline({ timeline, annotations }: TimelineProps): React.ReactElement 
     return {
       x: event.year as number,
       y: idx,
+      z: 1,
       year: event.year as number,
       label: event.label,
       hasInconsistency: event.has_inconsistency,
-      color: getEventColor(event, ann),
+      color: getEventColor(pal, event, ann),
     };
   });
 
   return (
-    <Paper elevation={2} sx={{ p: 2 }}>
-      <Typography variant="h6" sx={{ mb: 1.5 }}>
-        Temporal Timeline
-      </Typography>
+    <SectionCard
+      title="Timeline"
+      meta={
+        <Typography variant="caption" color="text.secondary">
+          {plotData.length} dated claims · {Math.min(...plotData.map((p) => p.year))} – {Math.max(...plotData.map((p) => p.year))}
+        </Typography>
+      }
+    >
       <ResponsiveContainer width="100%" height={250}>
         <ScatterChart margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
-          <CartesianGrid
-            strokeDasharray="3 3"
-            stroke="rgba(148,163,184,0.1)"
-          />
+          <CartesianGrid strokeDasharray="3 3" stroke={gridColor} vertical={false} />
           <XAxis
             type="number"
             dataKey="x"
             name="Year"
             domain={["auto", "auto"]}
             tickFormatter={(v: number) => String(v)}
-            tick={{ fill: "#94a3b8", fontSize: 12 }}
-            axisLine={{ stroke: "rgba(148,163,184,0.3)" }}
-            tickLine={{ stroke: "rgba(148,163,184,0.3)" }}
+            tick={{ fill: axisColor, fontSize: 12, fontFamily: FONT_MONO }}
+            axisLine={{ stroke: gridColor }}
+            tickLine={{ stroke: gridColor }}
           />
-          <YAxis type="number" dataKey="y" hide />
+          <YAxis type="number" dataKey="y" hide domain={[-0.5, plotData.length - 0.5]} />
+          <ZAxis type="number" dataKey="z" range={[140, 140]} />
           <RechartsTooltip content={<ScatterTooltip />} cursor={false} />
           <Scatter data={plotData}>
             {plotData.map((entry, index) => (
-              <Cell key={index} fill={entry.color} />
+              <Cell key={index} fill={entry.color} stroke={pal.background.paper} strokeWidth={2} />
             ))}
           </Scatter>
         </ScatterChart>
       </ResponsiveContainer>
 
-      <Box sx={{ display: "flex", gap: 2, mt: 1.5, flexWrap: "wrap" }}>
+      <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
         {[
-          { color: "#22c55e", label: "Consistent" },
-          { color: "#ef4444", label: "Inconsistent" },
-          { color: "#94a3b8", label: "Unverified" },
+          { color: pal.success.main, label: "Consistent" },
+          { color: pal.error.main, label: "Inconsistent" },
+          { color: pal.text.disabled, label: "Unverified" },
         ].map(({ color, label }) => (
           <Box key={label} sx={{ display: "flex", alignItems: "center", gap: 0.75 }}>
             <Box
@@ -193,7 +205,7 @@ function Timeline({ timeline, annotations }: TimelineProps): React.ReactElement 
           </Box>
         ))}
       </Box>
-    </Paper>
+    </SectionCard>
   );
 }
 

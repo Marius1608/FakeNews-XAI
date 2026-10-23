@@ -1,16 +1,9 @@
 import React from "react";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Alert,
-  Box,
-  Chip,
-  Paper,
-  Typography,
-} from "@mui/material";
-import { ExpandMore } from "@mui/icons-material";
+import { Alert, Box, Chip, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { tint, toneColor } from "../theme/tint";
 import type { InconsistencyResponse } from "../types";
+import SectionCard from "./ui/SectionCard";
 
 interface InconsistencyListProps {
   inconsistencies: InconsistencyResponse[];
@@ -36,97 +29,92 @@ const TYPE_LABELS: Record<string, string> = {
   entity_inconsistency: "Entity Inconsistency",
 };
 
-function getSeverityColor(severity: string): "error" | "warning" | "default" {
-  if (severity === "critical") return "error";
-  if (severity === "high") return "warning";
-  return "default";
-}
+type Tone = "error" | "warning" | "info";
 
-function getVerifiedByColor(verifiedBy: string): "default" | "info" | "secondary" {
-  const v = verifiedBy.toLowerCase();
-  if (v.includes("wikidata")) return "info";
-  if (v.includes("reference") || v.includes("kg")) return "secondary";
-  return "default";
+function getTone(severity: string): Tone {
+  if (severity === "critical" || severity === "high") return "error";
+  if (severity === "medium") return "warning";
+  return "info";
 }
 
 function InconsistencyList({ inconsistencies }: InconsistencyListProps): React.ReactElement {
+  const theme = useTheme();
+
   if (inconsistencies.length === 0) {
-    return (
-      <Alert severity="success">No temporal inconsistencies detected ✓</Alert>
-    );
+    return <Alert severity="success">No temporal inconsistencies detected.</Alert>;
   }
 
   const sorted = [...inconsistencies].sort(
-    (a, b) =>
-      (SEVERITY_ORDER[a.severity] ?? 99) - (SEVERITY_ORDER[b.severity] ?? 99),
+    (a, b) => (SEVERITY_ORDER[a.severity] ?? 99) - (SEVERITY_ORDER[b.severity] ?? 99),
   );
 
   return (
-    <Paper elevation={2} sx={{ p: 2 }}>
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 2 }}>
-        <Typography variant="h6">Inconsistencies Detected</Typography>
-        <Chip label={inconsistencies.length} color="error" size="small" />
-      </Box>
-
-      {sorted.map((item, idx) => (
-        <Accordion
-          key={idx}
-          disableGutters
-          elevation={0}
-          sx={{
-            "&:before": { display: "none" },
-            border: "1px solid rgba(148,163,184,0.15)",
-            borderRadius: 1,
-            mb: 1,
-            "&:last-child": { mb: 0 },
-          }}
-        >
-          <AccordionSummary expandIcon={<ExpandMore />}>
+    <SectionCard
+      title="Inconsistencies"
+      meta={
+        <Typography variant="caption" color="text.secondary">
+          {inconsistencies.length} found
+        </Typography>
+      }
+    >
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
+        {sorted.map((item, idx) => {
+          const tone = getTone(item.severity);
+          const main = toneColor(theme, tone);
+          return (
             <Box
+              component="article"
+              key={idx}
               sx={{
+                border: 1,
+                borderColor: tint(theme, tone, 0.35),
+                bgcolor: tint(theme, tone, 0.06),
+                borderRadius: "10px",
+                p: 2,
                 display: "flex",
-                alignItems: "center",
-                gap: 1,
-                flexWrap: "wrap",
-                width: "100%",
-                pr: 1,
+                flexDirection: "column",
+                gap: 1.25,
               }}
             >
-              <Chip
-                label={item.severity_label}
-                color={getSeverityColor(item.severity)}
-                size="small"
-              />
-              <Typography variant="body2" sx={{ flex: 1, minWidth: 120 }}>
-                {TYPE_LABELS[item.type] ?? item.type}
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
+                <Chip
+                  label={item.severity_label}
+                  size="small"
+                  sx={{ bgcolor: main, color: (theme.vars ?? theme).palette.background.paper, borderRadius: "6px", height: 22, fontWeight: 600 }}
+                />
+                <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                  {TYPE_LABELS[item.type] ?? item.type}
+                </Typography>
+              </Box>
+
+              <Typography variant="body2" sx={{ lineHeight: 1.6 }}>
+                {item.description}
               </Typography>
-              <Chip
-                label={item.verified_by}
-                color={getVerifiedByColor(item.verified_by)}
-                size="small"
-                variant="outlined"
-              />
+
+              {item.evidence && (
+                <Typography variant="body2" color="text.secondary" sx={{ fontStyle: "italic", lineHeight: 1.6 }}>
+                  Evidence: {item.evidence}
+                </Typography>
+              )}
+
+              <Box sx={{ display: "flex", gap: 0.75, flexWrap: "wrap" }}>
+                {item.sentence_indices.length > 0 && (
+                  <Chip
+                    size="small"
+                    variant="outlined"
+                    sx={{ borderRadius: "6px" }}
+                    label={`Sentence${item.sentence_indices.length > 1 ? "s" : ""} ${item.sentence_indices.map((i) => i + 1).join(", ")}`}
+                  />
+                )}
+                {item.verified_by && (
+                  <Chip size="small" variant="outlined" sx={{ borderRadius: "6px" }} label={`Verified by ${item.verified_by}`} />
+                )}
+              </Box>
             </Box>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography variant="body2" sx={{ mb: 1 }}>
-              {item.description}
-            </Typography>
-            {item.evidence && (
-              <Typography
-                variant="body2"
-                sx={{ fontStyle: "italic", mb: 1, color: "text.secondary" }}
-              >
-                Evidence: {item.evidence}
-              </Typography>
-            )}
-            <Typography variant="caption" color="text.secondary">
-              Affects sentences: {item.sentence_indices.join(", ")}
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-      ))}
-    </Paper>
+          );
+        })}
+      </Box>
+    </SectionCard>
   );
 }
 

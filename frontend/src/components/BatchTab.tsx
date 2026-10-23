@@ -30,6 +30,7 @@ import { Add, Delete, PlayArrow } from "@mui/icons-material";
 import axios from "axios";
 import type { BatchArticleResult, BatchResponse, ModelsResponse } from "../types";
 import { analyzeBatch } from "../api/client";
+import { FONT_MONO } from "../theme/theme";
 import { getModelLabel } from "../utils/modelLabels";
 
 interface BatchTabProps {
@@ -158,7 +159,7 @@ function BatchTab({ availableModels }: BatchTabProps): React.ReactElement {
   return (
     <Stack spacing={3}>
       {/* Input section */}
-      <Paper variant="outlined" sx={{ p: 2.5 }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         <Typography variant="subtitle2" sx={{ mb: 2 }}>
           Articles
         </Typography>
@@ -190,7 +191,7 @@ function BatchTab({ availableModels }: BatchTabProps): React.ReactElement {
                   onChange={(e) => updateRow(row.id, "text", e.target.value)}
                   error={row.text.length > 0 && row.text.trim().length < 20}
                   helperText={row.text.length > 0 ? `${row.text.length} characters` : undefined}
-                  sx={{ "& .MuiInputBase-input": { fontFamily: "IBM Plex Mono, monospace", fontSize: 13 } }}
+                  sx={{ "& .MuiInputBase-input": { fontFamily: FONT_MONO, fontSize: 13 } }}
                 />
               </Box>
               <IconButton
@@ -311,7 +312,7 @@ function BatchTab({ availableModels }: BatchTabProps): React.ReactElement {
 
       {/* Results section */}
       {result && (
-        <Paper variant="outlined" sx={{ p: 2.5 }}>
+        <Paper sx={{ p: { xs: 2, sm: 3 } }}>
           {/* Aggregate stats */}
           <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap", mb: 2.5 }}>
             <StatBox label="Articles" value={result.total_articles} />
