@@ -1,0 +1,8 @@
+Name   Version ID              Fix Versions
+------ ------- --------------- ------------
+pypdf2 3.0.1   PYSEC-2026-1835 3.9.0
+
+Name            Skip Reason
+--------------- ------------------------------------------------------------------------------
+en-core-web-lg  Dependency not found on PyPI and could not be audited: en-core-web-lg (3.8.0)
+en-core-web-trf Dependency not found on PyPI and could not be audited: en-core-web-trf (3.8.0)

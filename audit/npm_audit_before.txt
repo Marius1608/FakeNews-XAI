@@ -1,0 +1,448 @@
+# npm audit report
+
+@tootallnate/once  <2.0.1
+@tootallnate/once vulnerable to Incorrect Control Flow Scoping - https://github.com/advisories/GHSA-vpq2-c234-7xj6
+fix available via `npm audit fix`
+node_modules/@tootallnate/once
+  http-proxy-agent  4.0.1
+  Depends on vulnerable versions of @tootallnate/once
+  node_modules/http-proxy-agent
+    jsdom  16.6.0 - 17.0.0
+    Depends on vulnerable versions of http-proxy-agent
+    node_modules/jsdom
+      jest-environment-jsdom  24.2.0-alpha.0 - 30.2.0
+      Depends on vulnerable versions of @jest/environment
+      Depends on vulnerable versions of @jest/fake-timers
+      Depends on vulnerable versions of jsdom
+      node_modules/jest-environment-jsdom
+        jest-config  18.1.0 - 30.2.0
+        Depends on vulnerable versions of @jest/test-sequencer
+        Depends on vulnerable versions of babel-jest
+        Depends on vulnerable versions of jest-circus
+        Depends on vulnerable versions of jest-environment-jsdom
+        Depends on vulnerable versions of jest-environment-node
+        Depends on vulnerable versions of jest-jasmine2
+        Depends on vulnerable versions of jest-resolve
+        Depends on vulnerable versions of jest-runner
+        Depends on vulnerable versions of micromatch
+        node_modules/jest-config
+          jest-cli  23.5.0 - 30.2.0
+          Depends on vulnerable versions of @jest/core
+          Depends on vulnerable versions of @jest/test-result
+          Depends on vulnerable versions of jest-config
+          node_modules/jest-cli
+            jest  23.5.0 - 30.2.0
+            Depends on vulnerable versions of @jest/core
+            Depends on vulnerable versions of jest-cli
+            node_modules/jest
+              jest-watch-typeahead  0.6.0 - 2.2.2
+              Depends on vulnerable versions of jest
+              Depends on vulnerable versions of jest-watcher
+              node_modules/jest-watch-typeahead
+        jest-runner  21.0.0-alpha.1 - 30.2.0
+        Depends on vulnerable versions of @jest/console
+        Depends on vulnerable versions of @jest/environment
+        Depends on vulnerable versions of @jest/test-result
+        Depends on vulnerable versions of @jest/transform
+        Depends on vulnerable versions of jest-environment-jsdom
+        Depends on vulnerable versions of jest-environment-node
+        Depends on vulnerable versions of jest-haste-map
+        Depends on vulnerable versions of jest-message-util
+        Depends on vulnerable versions of jest-resolve
+        Depends on vulnerable versions of jest-runtime
+        node_modules/jest-runner
+
+braces  *
+Severity: high
+braces vulnerable to stack-exhaustion denial of service through deeply nested patterns - https://github.com/advisories/GHSA-vfj7-8cjw-p6xm
+fix available via `npm audit fix --force`
+Will install react-scripts@0.0.0, which is a breaking change
+node_modules/braces
+  chokidar  2.0.0 - 3.6.0
+  Depends on vulnerable versions of braces
+  node_modules/chokidar
+    fork-ts-checker-webpack-plugin  0.4.7 - 4.0.0-beta.5 || 6.0.0-alpha.1 - 9.0.3
+    Depends on vulnerable versions of chokidar
+    node_modules/fork-ts-checker-webpack-plugin
+      react-dev-utils  6.0.0-next.03604a46 - 6.0.0-next.a671462c || >=6.0.6-next.9b4009d7
+      Depends on vulnerable versions of fork-ts-checker-webpack-plugin
+      Depends on vulnerable versions of globby
+      node_modules/react-dev-utils
+        react-scripts  >=0.1.0
+        Depends on vulnerable versions of @svgr/webpack
+        Depends on vulnerable versions of babel-jest
+        Depends on vulnerable versions of css-minimizer-webpack-plugin
+        Depends on vulnerable versions of eslint-config-react-app
+        Depends on vulnerable versions of eslint-webpack-plugin
+        Depends on vulnerable versions of jest
+        Depends on vulnerable versions of jest-resolve
+        Depends on vulnerable versions of jest-watch-typeahead
+        Depends on vulnerable versions of react-dev-utils
+        Depends on vulnerable versions of resolve-url-loader
+        Depends on vulnerable versions of tailwindcss
+        Depends on vulnerable versions of webpack-dev-server
+        Depends on vulnerable versions of workbox-webpack-plugin
+        node_modules/react-scripts
+    tailwindcss  <=0.0.0-oxide-insiders.ff2c25f || 0.5.0 - 3.4.19
+    Depends on vulnerable versions of chokidar
+    Depends on vulnerable versions of fast-glob
+    Depends on vulnerable versions of micromatch
+    Depends on vulnerable versions of postcss-nested
+    Depends on vulnerable versions of postcss-selector-parser
+    node_modules/tailwindcss
+    webpack-dev-server  *
+    Depends on vulnerable versions of chokidar
+    Depends on vulnerable versions of http-proxy-middleware
+    Depends on vulnerable versions of selfsigned
+    Depends on vulnerable versions of sockjs
+    Depends on vulnerable versions of webpack-dev-middleware
+    node_modules/webpack-dev-server
+  micromatch  >=0.2.0
+  Depends on vulnerable versions of braces
+  node_modules/micromatch
+    @jest/core  <=30.2.0
+    Depends on vulnerable versions of @jest/console
+    Depends on vulnerable versions of @jest/reporters
+    Depends on vulnerable versions of @jest/test-result
+    Depends on vulnerable versions of @jest/transform
+    Depends on vulnerable versions of jest-config
+    Depends on vulnerable versions of jest-haste-map
+    Depends on vulnerable versions of jest-message-util
+    Depends on vulnerable versions of jest-resolve
+    Depends on vulnerable versions of jest-resolve-dependencies
+    Depends on vulnerable versions of jest-runner
+    Depends on vulnerable versions of jest-runtime
+    Depends on vulnerable versions of jest-snapshot
+    Depends on vulnerable versions of jest-watcher
+    Depends on vulnerable versions of micromatch
+    node_modules/@jest/core
+    @jest/transform  <=30.2.0
+    Depends on vulnerable versions of jest-haste-map
+    Depends on vulnerable versions of micromatch
+    node_modules/@jest/transform
+      @jest/reporters  <=30.2.0
+      Depends on vulnerable versions of @jest/console
+      Depends on vulnerable versions of @jest/test-result
+      Depends on vulnerable versions of @jest/transform
+      Depends on vulnerable versions of jest-haste-map
+      Depends on vulnerable versions of jest-resolve
+      node_modules/@jest/reporters
+      babel-jest  24.2.0-alpha.0 - 30.2.0
+      Depends on vulnerable versions of @jest/transform
+      node_modules/babel-jest
+      jest-runtime  18.1.0 - 30.2.0
+      Depends on vulnerable versions of @jest/environment
+      Depends on vulnerable versions of @jest/fake-timers
+      Depends on vulnerable versions of @jest/globals
+      Depends on vulnerable versions of @jest/test-result
+      Depends on vulnerable versions of @jest/transform
+      Depends on vulnerable versions of jest-haste-map
+      Depends on vulnerable versions of jest-message-util
+      Depends on vulnerable versions of jest-resolve
+      Depends on vulnerable versions of jest-snapshot
+      node_modules/jest-runtime
+        @jest/test-sequencer  <=30.2.0
+        Depends on vulnerable versions of @jest/test-result
+        Depends on vulnerable versions of jest-haste-map
+        Depends on vulnerable versions of jest-runtime
+        node_modules/@jest/test-sequencer
+        jest-circus  20.1.0-alpha.1 - 30.2.0
+        Depends on vulnerable versions of @jest/environment
+        Depends on vulnerable versions of @jest/test-result
+        Depends on vulnerable versions of expect
+        Depends on vulnerable versions of jest-message-util
+        Depends on vulnerable versions of jest-runtime
+        Depends on vulnerable versions of jest-snapshot
+        node_modules/jest-circus
+        jest-jasmine2  18.5.0-alpha.7da3df39 - 30.2.0
+        Depends on vulnerable versions of @jest/environment
+        Depends on vulnerable versions of @jest/test-result
+        Depends on vulnerable versions of expect
+        Depends on vulnerable versions of jest-message-util
+        Depends on vulnerable versions of jest-runtime
+        Depends on vulnerable versions of jest-snapshot
+        node_modules/jest-jasmine2
+      jest-snapshot  23.3.0 - 30.2.0
+      Depends on vulnerable versions of @jest/transform
+      Depends on vulnerable versions of expect
+      Depends on vulnerable versions of jest-haste-map
+      Depends on vulnerable versions of jest-message-util
+      node_modules/jest-snapshot
+        jest-resolve-dependencies  23.3.0 - 30.2.0
+        Depends on vulnerable versions of jest-snapshot
+        node_modules/jest-resolve-dependencies
+    eslint-webpack-plugin  *
+    Depends on vulnerable versions of micromatch
+    node_modules/eslint-webpack-plugin
+    fast-glob  *
+    Depends on vulnerable versions of micromatch
+    node_modules/fast-glob
+      globby  >=8.0.0
+      Depends on vulnerable versions of fast-glob
+      node_modules/globby
+        @typescript-eslint/typescript-estree  3.10.2-alpha.0 - 8.2.1-alpha.25
+        Depends on vulnerable versions of globby
+        node_modules/@typescript-eslint/typescript-estree
+          @typescript-eslint/parser  3.10.2-alpha.0 - 8.2.1-alpha.25
+          Depends on vulnerable versions of @typescript-eslint/typescript-estree
+          node_modules/@typescript-eslint/parser
+            @typescript-eslint/eslint-plugin  4.0.1-alpha.0 - 8.2.1-alpha.25
+            Depends on vulnerable versions of @typescript-eslint/parser
+            Depends on vulnerable versions of @typescript-eslint/type-utils
+            Depends on vulnerable versions of @typescript-eslint/utils
+            node_modules/@typescript-eslint/eslint-plugin
+            eslint-config-react-app  >=6.0.0-next.64
+            Depends on vulnerable versions of @typescript-eslint/parser
+            node_modules/eslint-config-react-app
+          @typescript-eslint/type-utils  5.9.2-alpha.0 - 8.2.1-alpha.25
+          Depends on vulnerable versions of @typescript-eslint/typescript-estree
+          Depends on vulnerable versions of @typescript-eslint/utils
+          node_modules/@typescript-eslint/type-utils
+          @typescript-eslint/utils  <=8.2.1-alpha.25
+          Depends on vulnerable versions of @typescript-eslint/typescript-estree
+          node_modules/@typescript-eslint/utils
+            @typescript-eslint/experimental-utils  >=5.9.2-alpha.0
+            Depends on vulnerable versions of @typescript-eslint/utils
+            node_modules/@typescript-eslint/experimental-utils
+            eslint-plugin-testing-library  5.0.5 - 7.0.0-beta.6
+            Depends on vulnerable versions of @typescript-eslint/utils
+            node_modules/eslint-plugin-testing-library
+    http-proxy-middleware  >=0.3.0
+    Depends on vulnerable versions of micromatch
+    node_modules/http-proxy-middleware
+    jest-haste-map  18.1.0 - 30.2.0
+    Depends on vulnerable versions of micromatch
+    node_modules/jest-haste-map
+      jest-resolve  18.1.0 - 19.0.2 || 24.2.0-alpha.0 - 24.5.0 || 27.1.0 - 30.2.0
+      Depends on vulnerable versions of jest-haste-map
+      node_modules/jest-resolve
+    jest-message-util  18.5.0-alpha.7da3df39 - 30.2.0
+    Depends on vulnerable versions of micromatch
+    node_modules/jest-message-util
+    node_modules/jest-watch-typeahead/node_modules/jest-message-util
+      @jest/console  25.4.0 - 30.2.0
+      Depends on vulnerable versions of jest-message-util
+      node_modules/@jest/console
+      node_modules/jest-watch-typeahead/node_modules/@jest/console
+        @jest/test-result  25.4.0 - 30.2.0
+        Depends on vulnerable versions of @jest/console
+        node_modules/@jest/test-result
+        node_modules/jest-watch-typeahead/node_modules/@jest/test-result
+          jest-watcher  25.4.0 - 30.2.0
+          Depends on vulnerable versions of @jest/test-result
+          node_modules/jest-watch-typeahead/node_modules/jest-watcher
+          node_modules/jest-watcher
+      @jest/fake-timers  <=30.2.0
+      Depends on vulnerable versions of jest-message-util
+      node_modules/@jest/fake-timers
+        @jest/environment  <=30.2.0
+        Depends on vulnerable versions of @jest/fake-timers
+        node_modules/@jest/environment
+          @jest/globals  <=30.2.0
+          Depends on vulnerable versions of @jest/environment
+          Depends on vulnerable versions of expect
+          node_modules/@jest/globals
+        jest-environment-node  24.2.0-alpha.0 - 30.2.0
+        Depends on vulnerable versions of @jest/environment
+        Depends on vulnerable versions of @jest/fake-timers
+        node_modules/jest-environment-node
+      expect  21.0.0-beta.1 - 30.2.0
+      Depends on vulnerable versions of jest-message-util
+      node_modules/expect
+
+node-forge  *
+Severity: high
+node-forge RSA PKCS#1 v1.5 signature verification accepts extra nested DigestAlgorithm elements - https://github.com/advisories/GHSA-86w9-cpqp-85rv
+fix available via `npm audit fix --force`
+Will install react-scripts@0.0.0, which is a breaking change
+node_modules/node-forge
+  selfsigned  1.1.1 - 4.0.1
+  Depends on vulnerable versions of node-forge
+  node_modules/selfsigned
+
+nth-check  <2.0.1
+Severity: high
+Inefficient Regular Expression Complexity in nth-check - https://github.com/advisories/GHSA-rp65-9cf3-cjxr
+fix available via `npm audit fix --force`
+Will install react-scripts@0.0.0, which is a breaking change
+node_modules/svgo/node_modules/nth-check
+  css-select  <=3.1.0
+  Depends on vulnerable versions of nth-check
+  node_modules/svgo/node_modules/css-select
+    svgo  1.0.0 - 2.8.3
+    Depends on vulnerable versions of css-select
+    node_modules/svgo
+      @svgr/plugin-svgo  <=5.5.0
+      Depends on vulnerable versions of svgo
+      node_modules/@svgr/plugin-svgo
+        @svgr/webpack  4.0.0 - 5.5.0
+        Depends on vulnerable versions of @svgr/plugin-svgo
+        node_modules/@svgr/webpack
+
+postcss  <=8.5.22
+Severity: high
+PostCSS line return parsing error - https://github.com/advisories/GHSA-7fh5-64p2-3v2j
+PostCSS has XSS via Unescaped </style> in its CSS Stringify Output - https://github.com/advisories/GHSA-qx2v-qp2m-jg93
+PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments - https://github.com/advisories/GHSA-6g55-p6wh-862q
+PostCSS: incomplete fix of GHSA-6g55-p6wh-862q — attacker-controlled sourceMappingURL reads arbitrary .map files when `from` is unset - https://github.com/advisories/GHSA-fxqj-rqcc-2cmp
+PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure - https://github.com/advisories/GHSA-r28c-9q8g-f849
+fix available via `npm audit fix --force`
+Will install react-scripts@0.0.0, which is a breaking change
+node_modules/resolve-url-loader/node_modules/postcss
+  resolve-url-loader  0.0.1-experiment-postcss || 3.0.0-alpha.1 - 4.0.0
+  Depends on vulnerable versions of postcss
+  node_modules/resolve-url-loader
+
+postcss-selector-parser  <7.1.6
+Severity: moderate
+PostCSS: Quadratic complexity in flat selector parsing allows CPU exhaustion - https://github.com/advisories/GHSA-rj75-hqrm-r3gf
+fix available via `npm audit fix --force`
+Will install react-scripts@0.0.0, which is a breaking change
+node_modules/postcss-selector-parser
+  @csstools/postcss-cascade-layers  <=5.0.0
+  Depends on vulnerable versions of @csstools/selector-specificity
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/@csstools/postcss-cascade-layers
+    postcss-preset-env  <=9.6.0
+    Depends on vulnerable versions of @csstools/postcss-cascade-layers
+    Depends on vulnerable versions of @csstools/postcss-is-pseudo-class
+    Depends on vulnerable versions of css-blank-pseudo
+    Depends on vulnerable versions of css-has-pseudo
+    Depends on vulnerable versions of postcss-attribute-case-insensitive
+    Depends on vulnerable versions of postcss-custom-selectors
+    Depends on vulnerable versions of postcss-dir-pseudo-class
+    Depends on vulnerable versions of postcss-focus-visible
+    Depends on vulnerable versions of postcss-focus-within
+    Depends on vulnerable versions of postcss-nesting
+    Depends on vulnerable versions of postcss-pseudo-class-any-link
+    Depends on vulnerable versions of postcss-selector-not
+    node_modules/postcss-preset-env
+  @csstools/postcss-is-pseudo-class  <=5.0.0
+  Depends on vulnerable versions of @csstools/selector-specificity
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/@csstools/postcss-is-pseudo-class
+  @csstools/selector-specificity  <=4.0.0
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/@csstools/selector-specificity
+    postcss-nesting  0.1.0 || 10.0.0 - 13.0.0
+    Depends on vulnerable versions of @csstools/selector-specificity
+    Depends on vulnerable versions of postcss-selector-parser
+    node_modules/postcss-nesting
+  css-blank-pseudo  3.0.0 - 7.0.0
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/css-blank-pseudo
+  css-has-pseudo  <=7.0.0
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/css-has-pseudo
+  postcss-attribute-case-insensitive  <=7.0.0
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/postcss-attribute-case-insensitive
+  postcss-calc  6.0.0 - 10.0.2
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/postcss-calc
+    cssnano-preset-default  <=7.0.0
+    Depends on vulnerable versions of postcss-calc
+    Depends on vulnerable versions of postcss-merge-longhand
+    Depends on vulnerable versions of postcss-merge-rules
+    Depends on vulnerable versions of postcss-minify-selectors
+    Depends on vulnerable versions of postcss-unique-selectors
+    node_modules/cssnano-preset-default
+      cssnano  4.0.0-nightly.2020.1.9 - 6.1.2
+      Depends on vulnerable versions of cssnano-preset-default
+      node_modules/cssnano
+        css-minimizer-webpack-plugin  <=7.0.4
+        Depends on vulnerable versions of cssnano
+        Depends on vulnerable versions of serialize-javascript
+        node_modules/css-minimizer-webpack-plugin
+  postcss-custom-selectors  5.0.0 - 8.0.2
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/postcss-custom-selectors
+  postcss-dir-pseudo-class  <=9.0.0
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/postcss-dir-pseudo-class
+  postcss-focus-visible  6.0.2 - 10.0.0
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/postcss-focus-visible
+  postcss-focus-within  5.0.2 - 9.0.0
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/postcss-focus-within
+  postcss-merge-rules  2.1.0 - 7.0.4
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/postcss-merge-rules
+  postcss-minify-selectors  1.4.0 - 7.0.4
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/postcss-minify-selectors
+  postcss-nested  2.0.3 - 6.2.0
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/postcss-nested
+  postcss-pseudo-class-any-link  0.2.1 - 10.0.0
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/postcss-pseudo-class-any-link
+  postcss-selector-not  6.0.0 - 8.0.0
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/postcss-selector-not
+  postcss-unique-selectors  4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 5.0.0-rc.0 - 7.0.3
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/postcss-unique-selectors
+  stylehacks  <=7.0.4
+  Depends on vulnerable versions of postcss-selector-parser
+  node_modules/stylehacks
+    postcss-merge-longhand  3.0.0 - 6.0.5
+    Depends on vulnerable versions of stylehacks
+    node_modules/postcss-merge-longhand
+
+serialize-javascript  <=7.0.4
+Severity: high
+Serialize JavaScript is Vulnerable to RCE via RegExp.flags and Date.prototype.toISOString() - https://github.com/advisories/GHSA-5c6j-r48x-rmvq
+Serialize JavaScript has CPU Exhaustion Denial of Service via crafted array-like objects - https://github.com/advisories/GHSA-qj8w-gfj5-8c6v
+fix available via `npm audit fix`
+node_modules/rollup-plugin-terser/node_modules/serialize-javascript
+node_modules/serialize-javascript
+  rollup-plugin-terser  3.0.0 || >=4.0.4
+  Depends on vulnerable versions of serialize-javascript
+  node_modules/rollup-plugin-terser
+    workbox-build  5.0.0-alpha.0 - 7.0.0
+    Depends on vulnerable versions of rollup-plugin-terser
+    node_modules/workbox-build
+      workbox-webpack-plugin  5.0.0-alpha.0 - 7.0.0
+      Depends on vulnerable versions of workbox-build
+      node_modules/workbox-webpack-plugin
+
+
+underscore  <=1.13.7
+Severity: high
+Underscore has unlimited recursion in _.flatten and _.isEqual, potential for DoS attack - https://github.com/advisories/GHSA-qpx9-hpmf-5gmw
+fix available via `npm audit fix`
+node_modules/underscore
+  jsonpath  *
+  Depends on vulnerable versions of underscore
+  node_modules/jsonpath
+    bfj  7.1.0 - 9.1.2
+    Depends on vulnerable versions of jsonpath
+    node_modules/bfj
+
+uuid  <11.1.1
+Severity: moderate
+uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided - https://github.com/advisories/GHSA-w5hq-g745-h8pq
+fix available via `npm audit fix --force`
+Will install react-scripts@0.0.0, which is a breaking change
+node_modules/uuid
+  sockjs  >=0.3.17
+  Depends on vulnerable versions of uuid
+  node_modules/sockjs
+
+webpack-dev-middleware  <7.4.5
+Severity: high
+webpack-dev-middleware vulnerable to Path Traversal via non-slash-terminated publicPath - https://github.com/advisories/GHSA-g84c-rxfj-3j2c
+fix available via `npm audit fix --force`
+Will install react-scripts@0.0.0, which is a breaking change
+node_modules/webpack-dev-middleware
+
+
+94 vulnerabilities (3 low, 28 moderate, 63 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force

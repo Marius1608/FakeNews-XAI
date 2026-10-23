@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Usage: bash start.sh
-# Checks spaCy models, then launches backend (FastAPI :8000) and frontend (React :3000).
+# Checks spaCy models, then launches backend (FastAPI :8000) and frontend (Vite :3000).
 
 set -euo pipefail
 
@@ -105,9 +105,9 @@ else
 fi
 
 # [3/3] Frontend
-step "[3/3] Starting frontend (npm start on :3000)..."
+step "[3/3] Starting frontend (Vite dev server on :3000)..."
 cd "$REPO_ROOT/frontend"
-npm start 2>&1 | sed 's/^/[frontend] /' &
+npm run dev 2>&1 | sed 's/^/[frontend] /' &
 FRONTEND_PID=$!
 
 cd "$REPO_ROOT"

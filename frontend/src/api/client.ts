@@ -14,8 +14,8 @@ import type {
 } from "../types";
 
 // Empty string → relative URLs → same origin (works on HF Spaces single-port).
-// Set REACT_APP_API_URL to override (e.g. http://localhost:8000 for local dev).
-const BASE_URL = process.env.REACT_APP_API_URL || "";
+// Set VITE_API_URL in frontend/.env to override (e.g. http://localhost:8000 for local dev).
+const BASE_URL = import.meta.env.VITE_API_URL || "";
 
 // axios instance
 const apiClient = axios.create({

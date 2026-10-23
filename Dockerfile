@@ -1,11 +1,12 @@
 # Stage 1 — build React frontend without any local .env files
-# REACT_APP_API_URL is intentionally NOT set here so BASE_URL compiles to ""
+# VITE_API_URL is intentionally NOT set here so BASE_URL compiles to ""
 # (relative URLs → same-origin API calls on HF Spaces single-port deployment)
-FROM node:20-slim AS frontend-builder
+FROM node:24-slim AS frontend-builder
 
 WORKDIR /frontend
-COPY frontend/package.json frontend/package-lock.json frontend/tsconfig.json ./
-RUN npm ci --silent --legacy-peer-deps
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci --silent
+COPY frontend/tsconfig.json frontend/vite.config.ts frontend/index.html ./
 COPY frontend/src/ ./src/
 COPY frontend/public/ ./public/
 RUN npm run build

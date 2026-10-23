@@ -1,0 +1,2179 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "@csstools/postcss-cascade-layers": {
+      "name": "@csstools/postcss-cascade-layers",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@csstools/selector-specificity",
+        "postcss-selector-parser"
+      ],
+      "effects": [
+        "postcss-preset-env"
+      ],
+      "range": "<=5.0.0",
+      "nodes": [
+        "node_modules/@csstools/postcss-cascade-layers"
+      ],
+      "fixAvailable": true
+    },
+    "@csstools/postcss-is-pseudo-class": {
+      "name": "@csstools/postcss-is-pseudo-class",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@csstools/selector-specificity",
+        "postcss-selector-parser"
+      ],
+      "effects": [
+        "postcss-preset-env"
+      ],
+      "range": "<=5.0.0",
+      "nodes": [
+        "node_modules/@csstools/postcss-is-pseudo-class"
+      ],
+      "fixAvailable": true
+    },
+    "@csstools/selector-specificity": {
+      "name": "@csstools/selector-specificity",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss-selector-parser"
+      ],
+      "effects": [
+        "@csstools/postcss-is-pseudo-class",
+        "postcss-nesting"
+      ],
+      "range": "<=4.0.0",
+      "nodes": [
+        "node_modules/@csstools/selector-specificity"
+      ],
+      "fixAvailable": true
+    },
+    "@jest/console": {
+      "name": "@jest/console",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "jest-message-util"
+      ],
+      "effects": [
+        "@jest/core",
+        "@jest/reporters",
+        "@jest/test-result",
+        "jest-runner"
+      ],
+      "range": "25.4.0 - 30.2.0",
+      "nodes": [
+        "node_modules/@jest/console",
+        "node_modules/jest-watch-typeahead/node_modules/@jest/console"
+      ],
+      "fixAvailable": true
+    },
+    "@jest/core": {
+      "name": "@jest/core",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/console",
+        "@jest/reporters",
+        "@jest/test-result",
+        "@jest/transform",
+        "jest-config",
+        "jest-haste-map",
+        "jest-message-util",
+        "jest-resolve",
+        "jest-resolve-dependencies",
+        "jest-runner",
+        "jest-runtime",
+        "jest-snapshot",
+        "jest-watcher",
+        "micromatch"
+      ],
+      "effects": [
+        "jest",
+        "jest-cli"
+      ],
+      "range": "<=30.2.0",
+      "nodes": [
+        "node_modules/@jest/core"
+      ],
+      "fixAvailable": true
+    },
+    "@jest/environment": {
+      "name": "@jest/environment",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/fake-timers"
+      ],
+      "effects": [
+        "@jest/globals",
+        "jest-circus",
+        "jest-environment-jsdom"
+      ],
+      "range": "<=30.2.0",
+      "nodes": [
+        "node_modules/@jest/environment"
+      ],
+      "fixAvailable": true
+    },
+    "@jest/fake-timers": {
+      "name": "@jest/fake-timers",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "jest-message-util"
+      ],
+      "effects": [
+        "@jest/environment",
+        "jest-environment-jsdom",
+        "jest-environment-node",
+        "jest-runtime"
+      ],
+      "range": "<=30.2.0",
+      "nodes": [
+        "node_modules/@jest/fake-timers"
+      ],
+      "fixAvailable": true
+    },
+    "@jest/globals": {
+      "name": "@jest/globals",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/environment",
+        "expect"
+      ],
+      "effects": [
+        "jest-runtime"
+      ],
+      "range": "<=30.2.0",
+      "nodes": [
+        "node_modules/@jest/globals"
+      ],
+      "fixAvailable": true
+    },
+    "@jest/reporters": {
+      "name": "@jest/reporters",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/console",
+        "@jest/test-result",
+        "@jest/transform",
+        "jest-haste-map",
+        "jest-resolve"
+      ],
+      "effects": [],
+      "range": "<=30.2.0",
+      "nodes": [
+        "node_modules/@jest/reporters"
+      ],
+      "fixAvailable": true
+    },
+    "@jest/test-result": {
+      "name": "@jest/test-result",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/console"
+      ],
+      "effects": [
+        "@jest/test-sequencer",
+        "jest-circus",
+        "jest-cli",
+        "jest-jasmine2",
+        "jest-runtime",
+        "jest-watcher"
+      ],
+      "range": "25.4.0 - 30.2.0",
+      "nodes": [
+        "node_modules/@jest/test-result",
+        "node_modules/jest-watch-typeahead/node_modules/@jest/test-result"
+      ],
+      "fixAvailable": true
+    },
+    "@jest/test-sequencer": {
+      "name": "@jest/test-sequencer",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/test-result",
+        "jest-haste-map",
+        "jest-runtime"
+      ],
+      "effects": [
+        "jest-config"
+      ],
+      "range": "<=30.2.0",
+      "nodes": [
+        "node_modules/@jest/test-sequencer"
+      ],
+      "fixAvailable": true
+    },
+    "@jest/transform": {
+      "name": "@jest/transform",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "jest-haste-map",
+        "micromatch"
+      ],
+      "effects": [
+        "@jest/reporters",
+        "babel-jest",
+        "jest-runner",
+        "jest-runtime",
+        "jest-snapshot"
+      ],
+      "range": "<=30.2.0",
+      "nodes": [
+        "node_modules/@jest/transform"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "@svgr/plugin-svgo": {
+      "name": "@svgr/plugin-svgo",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "svgo"
+      ],
+      "effects": [
+        "@svgr/webpack"
+      ],
+      "range": "<=5.5.0",
+      "nodes": [
+        "node_modules/@svgr/plugin-svgo"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "@svgr/webpack": {
+      "name": "@svgr/webpack",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@svgr/plugin-svgo"
+      ],
+      "effects": [
+        "react-scripts"
+      ],
+      "range": "4.0.0 - 5.5.0",
+      "nodes": [
+        "node_modules/@svgr/webpack"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "@tootallnate/once": {
+      "name": "@tootallnate/once",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1119438,
+          "name": "@tootallnate/once",
+          "dependency": "@tootallnate/once",
+          "title": "@tootallnate/once vulnerable to Incorrect Control Flow Scoping",
+          "url": "https://github.com/advisories/GHSA-vpq2-c234-7xj6",
+          "severity": "low",
+          "cwe": [
+            "CWE-705"
+          ],
+          "cvss": {
+            "score": 3.3,
+            "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": "<2.0.1"
+        }
+      ],
+      "effects": [
+        "http-proxy-agent"
+      ],
+      "range": "<2.0.1",
+      "nodes": [
+        "node_modules/@tootallnate/once"
+      ],
+      "fixAvailable": true
+    },
+    "@typescript-eslint/eslint-plugin": {
+      "name": "@typescript-eslint/eslint-plugin",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@typescript-eslint/parser",
+        "@typescript-eslint/type-utils",
+        "@typescript-eslint/utils"
+      ],
+      "effects": [],
+      "range": "4.0.1-alpha.0 - 8.2.1-alpha.25",
+      "nodes": [
+        "node_modules/@typescript-eslint/eslint-plugin"
+      ],
+      "fixAvailable": true
+    },
+    "@typescript-eslint/experimental-utils": {
+      "name": "@typescript-eslint/experimental-utils",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@typescript-eslint/utils"
+      ],
+      "effects": [],
+      "range": ">=5.9.2-alpha.0",
+      "nodes": [
+        "node_modules/@typescript-eslint/experimental-utils"
+      ],
+      "fixAvailable": true
+    },
+    "@typescript-eslint/parser": {
+      "name": "@typescript-eslint/parser",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@typescript-eslint/typescript-estree"
+      ],
+      "effects": [
+        "@typescript-eslint/eslint-plugin",
+        "eslint-config-react-app"
+      ],
+      "range": "3.10.2-alpha.0 - 8.2.1-alpha.25",
+      "nodes": [
+        "node_modules/@typescript-eslint/parser"
+      ],
+      "fixAvailable": true
+    },
+    "@typescript-eslint/type-utils": {
+      "name": "@typescript-eslint/type-utils",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@typescript-eslint/typescript-estree",
+        "@typescript-eslint/utils"
+      ],
+      "effects": [
+        "@typescript-eslint/eslint-plugin"
+      ],
+      "range": "5.9.2-alpha.0 - 8.2.1-alpha.25",
+      "nodes": [
+        "node_modules/@typescript-eslint/type-utils"
+      ],
+      "fixAvailable": true
+    },
+    "@typescript-eslint/typescript-estree": {
+      "name": "@typescript-eslint/typescript-estree",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "globby"
+      ],
+      "effects": [
+        "@typescript-eslint/parser",
+        "@typescript-eslint/type-utils",
+        "@typescript-eslint/utils"
+      ],
+      "range": "3.10.2-alpha.0 - 8.2.1-alpha.25",
+      "nodes": [
+        "node_modules/@typescript-eslint/typescript-estree"
+      ],
+      "fixAvailable": true
+    },
+    "@typescript-eslint/utils": {
+      "name": "@typescript-eslint/utils",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@typescript-eslint/typescript-estree"
+      ],
+      "effects": [
+        "@typescript-eslint/eslint-plugin",
+        "@typescript-eslint/experimental-utils",
+        "@typescript-eslint/type-utils",
+        "eslint-plugin-testing-library"
+      ],
+      "range": "<=8.2.1-alpha.25",
+      "nodes": [
+        "node_modules/@typescript-eslint/utils"
+      ],
+      "fixAvailable": true
+    },
+    "babel-jest": {
+      "name": "babel-jest",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/transform"
+      ],
+      "effects": [
+        "jest-config",
+        "react-scripts"
+      ],
+      "range": "24.2.0-alpha.0 - 30.2.0",
+      "nodes": [
+        "node_modules/babel-jest"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "bfj": {
+      "name": "bfj",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "jsonpath"
+      ],
+      "effects": [],
+      "range": "7.1.0 - 9.1.2",
+      "nodes": [
+        "node_modules/bfj"
+      ],
+      "fixAvailable": true
+    },
+    "braces": {
+      "name": "braces",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1240992,
+          "name": "braces",
+          "dependency": "braces",
+          "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+          "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+          "severity": "high",
+          "cwe": [
+            "CWE-674"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<=3.0.3"
+        }
+      ],
+      "effects": [
+        "chokidar",
+        "micromatch"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/braces"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "chokidar": {
+      "name": "chokidar",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "braces"
+      ],
+      "effects": [
+        "fork-ts-checker-webpack-plugin",
+        "tailwindcss",
+        "webpack-dev-server"
+      ],
+      "range": "2.0.0 - 3.6.0",
+      "nodes": [
+        "node_modules/chokidar"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "css-blank-pseudo": {
+      "name": "css-blank-pseudo",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss-selector-parser"
+      ],
+      "effects": [
+        "postcss-preset-env"
+      ],
+      "range": "3.0.0 - 7.0.0",
+      "nodes": [
+        "node_modules/css-blank-pseudo"
+      ],
+      "fixAvailable": true
+    },
+    "css-has-pseudo": {
+      "name": "css-has-pseudo",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss-selector-parser"
+      ],
+      "effects": [
+        "postcss-preset-env"
+      ],
+      "range": "<=7.0.0",
+      "nodes": [
+        "node_modules/css-has-pseudo"
+      ],
+      "fixAvailable": true
+    },
+    "css-minimizer-webpack-plugin": {
+      "name": "css-minimizer-webpack-plugin",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "cssnano",
+        "serialize-javascript"
+      ],
+      "effects": [],
+      "range": "<=7.0.4",
+      "nodes": [
+        "node_modules/css-minimizer-webpack-plugin"
+      ],
+      "fixAvailable": true
+    },
+    "css-select": {
+      "name": "css-select",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "nth-check"
+      ],
+      "effects": [
+        "svgo"
+      ],
+      "range": "<=3.1.0",
+      "nodes": [
+        "node_modules/svgo/node_modules/css-select"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "cssnano": {
+      "name": "cssnano",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "cssnano-preset-default"
+      ],
+      "effects": [
+        "css-minimizer-webpack-plugin"
+      ],
+      "range": "4.0.0-nightly.2020.1.9 - 6.1.2",
+      "nodes": [
+        "node_modules/cssnano"
+      ],
+      "fixAvailable": true
+    },
+    "cssnano-preset-default": {
+      "name": "cssnano-preset-default",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss-calc",
+        "postcss-merge-longhand",
+        "postcss-merge-rules",
+        "postcss-minify-selectors",
+        "postcss-unique-selectors"
+      ],
+      "effects": [
+        "cssnano"
+      ],
+      "range": "<=7.0.0",
+      "nodes": [
+        "node_modules/cssnano-preset-default"
+      ],
+      "fixAvailable": true
+    },
+    "eslint-config-react-app": {
+      "name": "eslint-config-react-app",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@typescript-eslint/parser"
+      ],
+      "effects": [],
+      "range": ">=6.0.0-next.64",
+      "nodes": [
+        "node_modules/eslint-config-react-app"
+      ],
+      "fixAvailable": true
+    },
+    "eslint-plugin-testing-library": {
+      "name": "eslint-plugin-testing-library",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@typescript-eslint/utils"
+      ],
+      "effects": [],
+      "range": "5.0.5 - 7.0.0-beta.6",
+      "nodes": [
+        "node_modules/eslint-plugin-testing-library"
+      ],
+      "fixAvailable": true
+    },
+    "eslint-webpack-plugin": {
+      "name": "eslint-webpack-plugin",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "micromatch"
+      ],
+      "effects": [
+        "react-scripts"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/eslint-webpack-plugin"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "expect": {
+      "name": "expect",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "jest-message-util"
+      ],
+      "effects": [
+        "@jest/globals",
+        "jest-circus",
+        "jest-jasmine2",
+        "jest-snapshot"
+      ],
+      "range": "21.0.0-beta.1 - 30.2.0",
+      "nodes": [
+        "node_modules/expect"
+      ],
+      "fixAvailable": true
+    },
+    "fast-glob": {
+      "name": "fast-glob",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "micromatch"
+      ],
+      "effects": [
+        "globby"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/fast-glob"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "fork-ts-checker-webpack-plugin": {
+      "name": "fork-ts-checker-webpack-plugin",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "chokidar"
+      ],
+      "effects": [
+        "react-dev-utils"
+      ],
+      "range": "0.4.7 - 4.0.0-beta.5 || 6.0.0-alpha.1 - 9.0.3",
+      "nodes": [
+        "node_modules/fork-ts-checker-webpack-plugin"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "globby": {
+      "name": "globby",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "fast-glob"
+      ],
+      "effects": [
+        "@typescript-eslint/typescript-estree",
+        "react-dev-utils"
+      ],
+      "range": ">=8.0.0",
+      "nodes": [
+        "node_modules/globby"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "http-proxy-agent": {
+      "name": "http-proxy-agent",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        "@tootallnate/once"
+      ],
+      "effects": [
+        "jsdom"
+      ],
+      "range": "4.0.1",
+      "nodes": [
+        "node_modules/http-proxy-agent"
+      ],
+      "fixAvailable": true
+    },
+    "http-proxy-middleware": {
+      "name": "http-proxy-middleware",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "micromatch"
+      ],
+      "effects": [
+        "webpack-dev-server"
+      ],
+      "range": ">=0.3.0",
+      "nodes": [
+        "node_modules/http-proxy-middleware"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "jest": {
+      "name": "jest",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/core",
+        "jest-cli"
+      ],
+      "effects": [
+        "jest-watch-typeahead"
+      ],
+      "range": "24.2.0-alpha.0 - 30.2.0",
+      "nodes": [
+        "node_modules/jest"
+      ],
+      "fixAvailable": true
+    },
+    "jest-circus": {
+      "name": "jest-circus",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/environment",
+        "@jest/test-result",
+        "expect",
+        "jest-message-util",
+        "jest-runtime",
+        "jest-snapshot"
+      ],
+      "effects": [
+        "jest-config"
+      ],
+      "range": "20.1.0-alpha.1 - 30.2.0",
+      "nodes": [
+        "node_modules/jest-circus"
+      ],
+      "fixAvailable": true
+    },
+    "jest-cli": {
+      "name": "jest-cli",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/core",
+        "@jest/test-result",
+        "jest-config"
+      ],
+      "effects": [
+        "jest"
+      ],
+      "range": "23.5.0 - 30.2.0",
+      "nodes": [
+        "node_modules/jest-cli"
+      ],
+      "fixAvailable": true
+    },
+    "jest-config": {
+      "name": "jest-config",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/test-sequencer",
+        "babel-jest",
+        "jest-circus",
+        "jest-environment-jsdom",
+        "jest-environment-node",
+        "jest-jasmine2",
+        "jest-resolve",
+        "jest-runner",
+        "micromatch"
+      ],
+      "effects": [
+        "jest-cli"
+      ],
+      "range": "18.1.0 - 30.2.0",
+      "nodes": [
+        "node_modules/jest-config"
+      ],
+      "fixAvailable": true
+    },
+    "jest-environment-jsdom": {
+      "name": "jest-environment-jsdom",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/environment",
+        "@jest/fake-timers",
+        "jsdom"
+      ],
+      "effects": [
+        "jest-config",
+        "jest-runner"
+      ],
+      "range": "24.2.0-alpha.0 - 30.2.0",
+      "nodes": [
+        "node_modules/jest-environment-jsdom"
+      ],
+      "fixAvailable": true
+    },
+    "jest-environment-node": {
+      "name": "jest-environment-node",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/environment",
+        "@jest/fake-timers"
+      ],
+      "effects": [
+        "jest-runner"
+      ],
+      "range": "24.2.0-alpha.0 - 30.2.0",
+      "nodes": [
+        "node_modules/jest-environment-node"
+      ],
+      "fixAvailable": true
+    },
+    "jest-haste-map": {
+      "name": "jest-haste-map",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "micromatch"
+      ],
+      "effects": [
+        "@jest/reporters",
+        "@jest/test-sequencer",
+        "jest-resolve",
+        "jest-runtime",
+        "jest-snapshot"
+      ],
+      "range": "18.1.0 - 30.2.0",
+      "nodes": [
+        "node_modules/jest-haste-map"
+      ],
+      "fixAvailable": true
+    },
+    "jest-jasmine2": {
+      "name": "jest-jasmine2",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/environment",
+        "@jest/test-result",
+        "expect",
+        "jest-message-util",
+        "jest-runtime",
+        "jest-snapshot"
+      ],
+      "effects": [
+        "jest-config"
+      ],
+      "range": "18.5.0-alpha.7da3df39 - 30.2.0",
+      "nodes": [
+        "node_modules/jest-jasmine2"
+      ],
+      "fixAvailable": true
+    },
+    "jest-message-util": {
+      "name": "jest-message-util",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "micromatch"
+      ],
+      "effects": [
+        "@jest/console",
+        "@jest/fake-timers",
+        "expect",
+        "jest-circus",
+        "jest-jasmine2",
+        "jest-runner",
+        "jest-runtime",
+        "jest-snapshot"
+      ],
+      "range": "18.5.0-alpha.7da3df39 - 30.2.0",
+      "nodes": [
+        "node_modules/jest-message-util",
+        "node_modules/jest-watch-typeahead/node_modules/jest-message-util"
+      ],
+      "fixAvailable": true
+    },
+    "jest-resolve": {
+      "name": "jest-resolve",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "jest-haste-map"
+      ],
+      "effects": [
+        "@jest/core",
+        "@jest/reporters",
+        "jest-config",
+        "jest-runner",
+        "jest-runtime"
+      ],
+      "range": "18.1.0 - 19.0.2 || 24.2.0-alpha.0 - 24.5.0 || 27.1.0 - 30.2.0",
+      "nodes": [
+        "node_modules/jest-resolve"
+      ],
+      "fixAvailable": true
+    },
+    "jest-resolve-dependencies": {
+      "name": "jest-resolve-dependencies",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "jest-snapshot"
+      ],
+      "effects": [],
+      "range": "27.0.0-next.0 - 30.2.0",
+      "nodes": [
+        "node_modules/jest-resolve-dependencies"
+      ],
+      "fixAvailable": true
+    },
+    "jest-runner": {
+      "name": "jest-runner",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/console",
+        "@jest/environment",
+        "@jest/test-result",
+        "@jest/transform",
+        "jest-environment-jsdom",
+        "jest-environment-node",
+        "jest-haste-map",
+        "jest-message-util",
+        "jest-resolve",
+        "jest-runtime"
+      ],
+      "effects": [
+        "@jest/core",
+        "jest-config"
+      ],
+      "range": "21.0.0-alpha.1 - 30.2.0",
+      "nodes": [
+        "node_modules/jest-runner"
+      ],
+      "fixAvailable": true
+    },
+    "jest-runtime": {
+      "name": "jest-runtime",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/environment",
+        "@jest/fake-timers",
+        "@jest/globals",
+        "@jest/test-result",
+        "@jest/transform",
+        "jest-haste-map",
+        "jest-message-util",
+        "jest-resolve",
+        "jest-snapshot"
+      ],
+      "effects": [
+        "@jest/test-sequencer",
+        "jest-circus",
+        "jest-jasmine2",
+        "jest-runner"
+      ],
+      "range": "18.1.0 - 30.2.0",
+      "nodes": [
+        "node_modules/jest-runtime"
+      ],
+      "fixAvailable": true
+    },
+    "jest-snapshot": {
+      "name": "jest-snapshot",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/transform",
+        "expect",
+        "jest-haste-map",
+        "jest-message-util"
+      ],
+      "effects": [
+        "jest-circus",
+        "jest-jasmine2",
+        "jest-resolve-dependencies",
+        "jest-runtime"
+      ],
+      "range": "23.3.0 - 30.2.0",
+      "nodes": [
+        "node_modules/jest-snapshot"
+      ],
+      "fixAvailable": true
+    },
+    "jest-watch-typeahead": {
+      "name": "jest-watch-typeahead",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "jest",
+        "jest-watcher"
+      ],
+      "effects": [],
+      "range": "0.6.0 - 2.2.2",
+      "nodes": [
+        "node_modules/jest-watch-typeahead"
+      ],
+      "fixAvailable": true
+    },
+    "jest-watcher": {
+      "name": "jest-watcher",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@jest/test-result"
+      ],
+      "effects": [],
+      "range": "25.4.0 - 30.2.0",
+      "nodes": [
+        "node_modules/jest-watch-typeahead/node_modules/jest-watcher",
+        "node_modules/jest-watcher"
+      ],
+      "fixAvailable": true
+    },
+    "jsdom": {
+      "name": "jsdom",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        "http-proxy-agent"
+      ],
+      "effects": [
+        "jest-environment-jsdom"
+      ],
+      "range": "16.6.0 - 17.0.0",
+      "nodes": [
+        "node_modules/jsdom"
+      ],
+      "fixAvailable": true
+    },
+    "jsonpath": {
+      "name": "jsonpath",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "underscore"
+      ],
+      "effects": [
+        "bfj"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/jsonpath"
+      ],
+      "fixAvailable": true
+    },
+    "micromatch": {
+      "name": "micromatch",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "braces"
+      ],
+      "effects": [
+        "@jest/core",
+        "@jest/transform",
+        "eslint-webpack-plugin",
+        "fast-glob",
+        "http-proxy-middleware",
+        "jest-config",
+        "jest-haste-map",
+        "jest-message-util",
+        "tailwindcss"
+      ],
+      "range": ">=0.2.0",
+      "nodes": [
+        "node_modules/micromatch"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "node-forge": {
+      "name": "node-forge",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1240912,
+          "name": "node-forge",
+          "dependency": "node-forge",
+          "title": "node-forge RSA PKCS#1 v1.5 signature verification accepts extra nested DigestAlgorithm elements",
+          "url": "https://github.com/advisories/GHSA-86w9-cpqp-85rv",
+          "severity": "high",
+          "cwe": [
+            "CWE-347"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+          },
+          "range": "<=1.4.0"
+        }
+      ],
+      "effects": [
+        "selfsigned"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/node-forge"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "nth-check": {
+      "name": "nth-check",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1095141,
+          "name": "nth-check",
+          "dependency": "nth-check",
+          "title": "Inefficient Regular Expression Complexity in nth-check",
+          "url": "https://github.com/advisories/GHSA-rp65-9cf3-cjxr",
+          "severity": "high",
+          "cwe": [
+            "CWE-1333"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<2.0.1"
+        }
+      ],
+      "effects": [
+        "css-select"
+      ],
+      "range": "<2.0.1",
+      "nodes": [
+        "node_modules/svgo/node_modules/nth-check"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "postcss": {
+      "name": "postcss",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1109574,
+          "name": "postcss",
+          "dependency": "postcss",
+          "title": "PostCSS line return parsing error",
+          "url": "https://github.com/advisories/GHSA-7fh5-64p2-3v2j",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-74",
+            "CWE-144"
+          ],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N"
+          },
+          "range": "<8.4.31"
+        },
+        {
+          "source": 1117015,
+          "name": "postcss",
+          "dependency": "postcss",
+          "title": "PostCSS has XSS via Unescaped </style> in its CSS Stringify Output",
+          "url": "https://github.com/advisories/GHSA-qx2v-qp2m-jg93",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-79"
+          ],
+          "cvss": {
+            "score": 6.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+          },
+          "range": "<8.5.10"
+        },
+        {
+          "source": 1124252,
+          "name": "postcss",
+          "dependency": "postcss",
+          "title": "PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments",
+          "url": "https://github.com/advisories/GHSA-6g55-p6wh-862q",
+          "severity": "high",
+          "cwe": [
+            "CWE-22",
+            "CWE-200"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+          },
+          "range": "<=8.5.11"
+        },
+        {
+          "source": 1130709,
+          "name": "postcss",
+          "dependency": "postcss",
+          "title": "PostCSS: incomplete fix of GHSA-6g55-p6wh-862q — attacker-controlled sourceMappingURL reads arbitrary .map files when `from` is unset",
+          "url": "https://github.com/advisories/GHSA-fxqj-rqcc-2cmp",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-22",
+            "CWE-200"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<=8.5.22"
+        },
+        {
+          "source": 1139510,
+          "name": "postcss",
+          "dependency": "postcss",
+          "title": "PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure",
+          "url": "https://github.com/advisories/GHSA-r28c-9q8g-f849",
+          "severity": "high",
+          "cwe": [
+            "CWE-22"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+          },
+          "range": "<=8.5.17"
+        }
+      ],
+      "effects": [
+        "resolve-url-loader"
+      ],
+      "range": "<=8.5.22",
+      "nodes": [
+        "node_modules/resolve-url-loader/node_modules/postcss"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "postcss-attribute-case-insensitive": {
+      "name": "postcss-attribute-case-insensitive",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss-selector-parser"
+      ],
+      "effects": [
+        "postcss-preset-env"
+      ],
+      "range": "<=7.0.0",
+      "nodes": [
+        "node_modules/postcss-attribute-case-insensitive"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-calc": {
+      "name": "postcss-calc",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss-selector-parser"
+      ],
+      "effects": [
+        "cssnano-preset-default"
+      ],
+      "range": "6.0.0 - 10.0.2",
+      "nodes": [
+        "node_modules/postcss-calc"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-custom-selectors": {
+      "name": "postcss-custom-selectors",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss-selector-parser"
+      ],
+      "effects": [
+        "postcss-preset-env"
+      ],
+      "range": "5.0.0 - 8.0.2",
+      "nodes": [
+        "node_modules/postcss-custom-selectors"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-dir-pseudo-class": {
+      "name": "postcss-dir-pseudo-class",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss-selector-parser"
+      ],
+      "effects": [],
+      "range": "<=9.0.0",
+      "nodes": [
+        "node_modules/postcss-dir-pseudo-class"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-focus-visible": {
+      "name": "postcss-focus-visible",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss-selector-parser"
+      ],
+      "effects": [],
+      "range": "6.0.2 - 10.0.0",
+      "nodes": [
+        "node_modules/postcss-focus-visible"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-focus-within": {
+      "name": "postcss-focus-within",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss-selector-parser"
+      ],
+      "effects": [],
+      "range": "5.0.2 - 9.0.0",
+      "nodes": [
+        "node_modules/postcss-focus-within"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-merge-longhand": {
+      "name": "postcss-merge-longhand",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "stylehacks"
+      ],
+      "effects": [],
+      "range": "3.0.0 - 6.0.5",
+      "nodes": [
+        "node_modules/postcss-merge-longhand"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-merge-rules": {
+      "name": "postcss-merge-rules",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss-selector-parser"
+      ],
+      "effects": [],
+      "range": "2.1.0 - 7.0.4",
+      "nodes": [
+        "node_modules/postcss-merge-rules"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-minify-selectors": {
+      "name": "postcss-minify-selectors",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss-selector-parser"
+      ],
+      "effects": [
+        "cssnano-preset-default"
+      ],
+      "range": "1.4.0 - 7.0.4",
+      "nodes": [
+        "node_modules/postcss-minify-selectors"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-nested": {
+      "name": "postcss-nested",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss-selector-parser"
+      ],
+      "effects": [],
+      "range": "2.0.3 - 6.2.0",
+      "nodes": [
+        "node_modules/postcss-nested"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-nesting": {
+      "name": "postcss-nesting",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@csstools/selector-specificity",
+        "postcss-selector-parser"
+      ],
+      "effects": [
+        "postcss-preset-env"
+      ],
+      "range": "0.1.0 || 10.0.0 - 13.0.0",
+      "nodes": [
+        "node_modules/postcss-nesting"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-preset-env": {
+      "name": "postcss-preset-env",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@csstools/postcss-cascade-layers",
+        "@csstools/postcss-is-pseudo-class",
+        "css-blank-pseudo",
+        "css-has-pseudo",
+        "postcss-attribute-case-insensitive",
+        "postcss-custom-selectors",
+        "postcss-dir-pseudo-class",
+        "postcss-focus-visible",
+        "postcss-focus-within",
+        "postcss-nesting",
+        "postcss-pseudo-class-any-link",
+        "postcss-selector-not"
+      ],
+      "effects": [],
+      "range": "<=9.6.0",
+      "nodes": [
+        "node_modules/postcss-preset-env"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-pseudo-class-any-link": {
+      "name": "postcss-pseudo-class-any-link",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss-selector-parser"
+      ],
+      "effects": [],
+      "range": "0.2.1 - 10.0.0",
+      "nodes": [
+        "node_modules/postcss-pseudo-class-any-link"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-selector-not": {
+      "name": "postcss-selector-not",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss-selector-parser"
+      ],
+      "effects": [
+        "postcss-preset-env"
+      ],
+      "range": "6.0.0 - 8.0.0",
+      "nodes": [
+        "node_modules/postcss-selector-not"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-selector-parser": {
+      "name": "postcss-selector-parser",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1241232,
+          "name": "postcss-selector-parser",
+          "dependency": "postcss-selector-parser",
+          "title": "PostCSS: Quadratic complexity in flat selector parsing allows CPU exhaustion",
+          "url": "https://github.com/advisories/GHSA-rj75-hqrm-r3gf",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-400",
+            "CWE-407"
+          ],
+          "cvss": {
+            "score": 5.9,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<7.1.6"
+        }
+      ],
+      "effects": [
+        "@csstools/postcss-cascade-layers",
+        "@csstools/postcss-is-pseudo-class",
+        "@csstools/selector-specificity",
+        "css-blank-pseudo",
+        "css-has-pseudo",
+        "postcss-attribute-case-insensitive",
+        "postcss-calc",
+        "postcss-custom-selectors",
+        "postcss-dir-pseudo-class",
+        "postcss-focus-visible",
+        "postcss-focus-within",
+        "postcss-merge-rules",
+        "postcss-minify-selectors",
+        "postcss-nested",
+        "postcss-nesting",
+        "postcss-pseudo-class-any-link",
+        "postcss-selector-not",
+        "postcss-unique-selectors",
+        "stylehacks",
+        "tailwindcss"
+      ],
+      "range": "<7.1.6",
+      "nodes": [
+        "node_modules/postcss-selector-parser"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "postcss-unique-selectors": {
+      "name": "postcss-unique-selectors",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss-selector-parser"
+      ],
+      "effects": [
+        "cssnano-preset-default"
+      ],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 5.0.0-rc.0 - 7.0.3",
+      "nodes": [
+        "node_modules/postcss-unique-selectors"
+      ],
+      "fixAvailable": true
+    },
+    "react-dev-utils": {
+      "name": "react-dev-utils",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "fork-ts-checker-webpack-plugin",
+        "globby"
+      ],
+      "effects": [
+        "react-scripts"
+      ],
+      "range": "6.0.0-next.03604a46 - 6.0.0-next.a671462c || >=6.0.6-next.9b4009d7",
+      "nodes": [
+        "node_modules/react-dev-utils"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "react-scripts": {
+      "name": "react-scripts",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "@svgr/webpack",
+        "babel-jest",
+        "css-minimizer-webpack-plugin",
+        "eslint-config-react-app",
+        "eslint-webpack-plugin",
+        "jest",
+        "jest-resolve",
+        "jest-watch-typeahead",
+        "react-dev-utils",
+        "resolve-url-loader",
+        "tailwindcss",
+        "webpack-dev-server",
+        "workbox-webpack-plugin"
+      ],
+      "effects": [],
+      "range": ">=0.1.0",
+      "nodes": [
+        "node_modules/react-scripts"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "resolve-url-loader": {
+      "name": "resolve-url-loader",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss"
+      ],
+      "effects": [
+        "react-scripts"
+      ],
+      "range": "0.0.1-experiment-postcss || 3.0.0-alpha.1 - 4.0.0",
+      "nodes": [
+        "node_modules/resolve-url-loader"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "rollup-plugin-terser": {
+      "name": "rollup-plugin-terser",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "serialize-javascript"
+      ],
+      "effects": [
+        "workbox-build"
+      ],
+      "range": "3.0.0 || >=4.0.4",
+      "nodes": [
+        "node_modules/rollup-plugin-terser"
+      ],
+      "fixAvailable": true
+    },
+    "selfsigned": {
+      "name": "selfsigned",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "node-forge"
+      ],
+      "effects": [
+        "webpack-dev-server"
+      ],
+      "range": "1.1.1 - 4.0.1",
+      "nodes": [
+        "node_modules/selfsigned"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "serialize-javascript": {
+      "name": "serialize-javascript",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1113686,
+          "name": "serialize-javascript",
+          "dependency": "serialize-javascript",
+          "title": "Serialize JavaScript is Vulnerable to RCE via RegExp.flags and Date.prototype.toISOString()",
+          "url": "https://github.com/advisories/GHSA-5c6j-r48x-rmvq",
+          "severity": "high",
+          "cwe": [
+            "CWE-96"
+          ],
+          "cvss": {
+            "score": 8.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": "<=7.0.2"
+        },
+        {
+          "source": 1119440,
+          "name": "serialize-javascript",
+          "dependency": "serialize-javascript",
+          "title": "Serialize JavaScript has CPU Exhaustion Denial of Service via crafted array-like objects",
+          "url": "https://github.com/advisories/GHSA-qj8w-gfj5-8c6v",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-400",
+            "CWE-834"
+          ],
+          "cvss": {
+            "score": 5.9,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": ">=5.0.0 <7.0.5"
+        }
+      ],
+      "effects": [
+        "css-minimizer-webpack-plugin",
+        "rollup-plugin-terser"
+      ],
+      "range": "<=7.0.4",
+      "nodes": [
+        "node_modules/rollup-plugin-terser/node_modules/serialize-javascript",
+        "node_modules/serialize-javascript"
+      ],
+      "fixAvailable": true
+    },
+    "sockjs": {
+      "name": "sockjs",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "uuid"
+      ],
+      "effects": [
+        "webpack-dev-server"
+      ],
+      "range": ">=0.3.17",
+      "nodes": [
+        "node_modules/sockjs"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "stylehacks": {
+      "name": "stylehacks",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "postcss-selector-parser"
+      ],
+      "effects": [
+        "postcss-merge-longhand"
+      ],
+      "range": "<=7.0.4",
+      "nodes": [
+        "node_modules/stylehacks"
+      ],
+      "fixAvailable": true
+    },
+    "svgo": {
+      "name": "svgo",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1139520,
+          "name": "svgo",
+          "dependency": "svgo",
+          "title": "SVGO removeScripts plugin leaves some executable scripts intact",
+          "url": "https://github.com/advisories/GHSA-2p49-hgcm-8545",
+          "severity": "high",
+          "cwe": [
+            "CWE-79",
+            "CWE-184"
+          ],
+          "cvss": {
+            "score": 8.2,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:L/A:N"
+          },
+          "range": ">=1.0.0 <2.8.3"
+        },
+        {
+          "source": 1193737,
+          "name": "svgo",
+          "dependency": "svgo",
+          "title": "SVGO: removeScripts allows executable links through namespace and control-character bypasses",
+          "url": "https://github.com/advisories/GHSA-w27v-7q3p-w38r",
+          "severity": "high",
+          "cwe": [
+            "CWE-79",
+            "CWE-184"
+          ],
+          "cvss": {
+            "score": 8.2,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:L/A:N"
+          },
+          "range": ">=1.0.0 <2.8.4"
+        },
+        {
+          "source": 1193740,
+          "name": "svgo",
+          "dependency": "svgo",
+          "title": "SVGO: removeScripts incompletely sanitizes executable HTML in SVG foreignObject elements",
+          "url": "https://github.com/advisories/GHSA-4vpr-x523-8j87",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-79"
+          ],
+          "cvss": {
+            "score": 6.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+          },
+          "range": ">=1.0.0 <2.8.4"
+        },
+        "css-select"
+      ],
+      "effects": [
+        "@svgr/plugin-svgo"
+      ],
+      "range": "1.0.0 - 2.8.3",
+      "nodes": [
+        "node_modules/svgo"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "tailwindcss": {
+      "name": "tailwindcss",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "chokidar",
+        "fast-glob",
+        "micromatch",
+        "postcss-nested",
+        "postcss-selector-parser"
+      ],
+      "effects": [
+        "react-scripts"
+      ],
+      "range": "<=0.0.0-oxide-insiders.ff2c25f || 0.5.0 - 3.4.19",
+      "nodes": [
+        "node_modules/tailwindcss"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "underscore": {
+      "name": "underscore",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1117689,
+          "name": "underscore",
+          "dependency": "underscore",
+          "title": "Underscore has unlimited recursion in _.flatten and _.isEqual, potential for DoS attack",
+          "url": "https://github.com/advisories/GHSA-qpx9-hpmf-5gmw",
+          "severity": "high",
+          "cwe": [
+            "CWE-674",
+            "CWE-770"
+          ],
+          "cvss": {
+            "score": 5.9,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<=1.13.7"
+        }
+      ],
+      "effects": [
+        "jsonpath"
+      ],
+      "range": "<=1.13.7",
+      "nodes": [
+        "node_modules/underscore"
+      ],
+      "fixAvailable": true
+    },
+    "uuid": {
+      "name": "uuid",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1119441,
+          "name": "uuid",
+          "dependency": "uuid",
+          "title": "uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
+          "url": "https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-787",
+            "CWE-1285"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+          },
+          "range": "<11.1.1"
+        }
+      ],
+      "effects": [
+        "sockjs"
+      ],
+      "range": "<11.1.1",
+      "nodes": [
+        "node_modules/uuid"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "webpack-dev-middleware": {
+      "name": "webpack-dev-middleware",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1240027,
+          "name": "webpack-dev-middleware",
+          "dependency": "webpack-dev-middleware",
+          "title": "webpack-dev-middleware vulnerable to Path Traversal via non-slash-terminated publicPath",
+          "url": "https://github.com/advisories/GHSA-g84c-rxfj-3j2c",
+          "severity": "high",
+          "cwe": [
+            "CWE-22"
+          ],
+          "cvss": {
+            "score": 7.4,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:N/A:N"
+          },
+          "range": "<7.4.5"
+        }
+      ],
+      "effects": [
+        "webpack-dev-server"
+      ],
+      "range": "<7.4.5",
+      "nodes": [
+        "node_modules/webpack-dev-middleware"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "webpack-dev-server": {
+      "name": "webpack-dev-server",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1108429,
+          "name": "webpack-dev-server",
+          "dependency": "webpack-dev-server",
+          "title": "webpack-dev-server users' source code may be stolen when they access a malicious web site with non-Chromium based browser",
+          "url": "https://github.com/advisories/GHSA-9jgg-88mc-972h",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-346"
+          ],
+          "cvss": {
+            "score": 6.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N"
+          },
+          "range": "<=5.2.0"
+        },
+        {
+          "source": 1108430,
+          "name": "webpack-dev-server",
+          "dependency": "webpack-dev-server",
+          "title": "webpack-dev-server users' source code may be stolen when they access a malicious web site",
+          "url": "https://github.com/advisories/GHSA-4v9v-hfq4-rm2v",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-749"
+          ],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:N/A:N"
+          },
+          "range": "<=5.2.0"
+        },
+        {
+          "source": 1119074,
+          "name": "webpack-dev-server",
+          "dependency": "webpack-dev-server",
+          "title": "webpack-dev-server vulnerable to cross-origin source code exposure on non-HTTPS origins",
+          "url": "https://github.com/advisories/GHSA-79cf-xcqc-c78w",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-749"
+          ],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:N/A:N"
+          },
+          "range": "<=5.2.3"
+        },
+        {
+          "source": 1121087,
+          "name": "webpack-dev-server",
+          "dependency": "webpack-dev-server",
+          "title": "webpack-dev-server vulnerable to HMR WebSocket interception via permissive user proxies",
+          "url": "https://github.com/advisories/GHSA-mx8g-39q3-5c79",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-346",
+            "CWE-441"
+          ],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": "<5.2.5"
+        },
+        {
+          "source": 1123965,
+          "name": "webpack-dev-server",
+          "dependency": "webpack-dev-server",
+          "title": "webpack-dev-server vulnerable to cross-site request forgery via internal developer endpoints",
+          "url": "https://github.com/advisories/GHSA-f5vj-f2hx-8m93",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-352",
+            "CWE-749"
+          ],
+          "cvss": {
+            "score": 4.7,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:N/I:N/A:L"
+          },
+          "range": "<=5.2.5"
+        },
+        {
+          "source": 1123966,
+          "name": "webpack-dev-server",
+          "dependency": "webpack-dev-server",
+          "title": "webpack-dev-server vulnerable to denial of service via a malformed Host or Origin header",
+          "url": "https://github.com/advisories/GHSA-m28w-2pqf-7qgj",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-20",
+            "CWE-248"
+          ],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": "<=5.2.5"
+        },
+        "chokidar",
+        "http-proxy-middleware",
+        "selfsigned",
+        "sockjs",
+        "webpack-dev-middleware"
+      ],
+      "effects": [
+        "react-scripts"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/webpack-dev-server"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "0.0.0",
+        "isSemVerMajor": true
+      }
+    },
+    "workbox-build": {
+      "name": "workbox-build",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "rollup-plugin-terser"
+      ],
+      "effects": [
+        "workbox-webpack-plugin"
+      ],
+      "range": "5.0.0-alpha.0 - 7.0.0",
+      "nodes": [
+        "node_modules/workbox-build"
+      ],
+      "fixAvailable": true
+    },
+    "workbox-webpack-plugin": {
+      "name": "workbox-webpack-plugin",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "workbox-build"
+      ],
+      "effects": [],
+      "range": "5.0.0-alpha.0 - 7.0.0",
+      "nodes": [
+        "node_modules/workbox-webpack-plugin"
+      ],
+      "fixAvailable": true
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 3,
+      "moderate": 28,
+      "high": 63,
+      "critical": 0,
+      "total": 94
+    },
+    "dependencies": {
+      "prod": 1409,
+      "dev": 0,
+      "optional": 2,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 1410
+    }
+  }
+}

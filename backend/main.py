@@ -61,7 +61,7 @@ async def _shutdown() -> None:
 
 
 # Serve React build in HuggingFace Spaces (single-port deployment).
-# Local dev: frontend runs on :3000 via npm start — this block is skipped entirely
+# Local dev: frontend runs on :3000 via Vite (npm run dev) — this block is skipped entirely
 # when HF_SPACES is not set, so no import of aiofiles/StaticFiles happens locally.
 import os
 from pathlib import Path
@@ -72,9 +72,9 @@ if _FRONTEND_BUILD.exists() and os.getenv("HF_SPACES") == "true":
     from fastapi.staticfiles import StaticFiles
     from fastapi.responses import FileResponse
 
-    _static_dir = _FRONTEND_BUILD / "static"
-    if _static_dir.exists():
-        app.mount("/static", StaticFiles(directory=str(_static_dir)), name="static")
+    _assets_dir = _FRONTEND_BUILD / "assets"  # Vite output (hashed JS/CSS)
+    if _assets_dir.exists():
+        app.mount("/assets", StaticFiles(directory=str(_assets_dir)), name="assets")
 
     @app.get("/", include_in_schema=False)
     async def _serve_root() -> FileResponse:
