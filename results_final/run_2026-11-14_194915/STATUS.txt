@@ -1,0 +1,16 @@
+[19:49:15] START benchmark_llm_off
+[21:14:17] OK    benchmark_llm_off
+[21:14:17] START benchmark_llm_on
+[22:50:19] OK    benchmark_llm_on
+[22:50:19] START benchmark_spacy_on
+[22:51:09] OK    benchmark_spacy_on
+[22:51:11] Neo4j reachable
+[22:51:14] START poison_off
+[22:51:33] OK    poison_off
+[22:51:34] START poison_on
+[22:51:59] OK    poison_on
+[22:51:59] START poison_obama_off
+[22:52:18] OK    poison_obama_off
+[22:52:18] START poison_obama_on
+[22:52:41] OK    poison_obama_on
+[22:52:41] START injection_off

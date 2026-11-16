@@ -1,0 +1,3 @@
+[16:26:01] START guard
+[18:02:30] OK    guard
+[18:02:30] START hardening

@@ -1,0 +1,7 @@
+[18:07:37] START off
+[18:24:37] OK    off
+[18:24:37] START on
+[18:44:25] OK    on
+[18:44:26] START full
+[19:11:12] OK    full
+[19:11:12] ALL DONE. Send me: evaluation/security/results/final_2026-11-15_180737/SUMMARIES.txt

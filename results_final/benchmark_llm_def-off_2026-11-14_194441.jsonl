@@ -1,0 +1,1 @@
+{"tcs": 0.6933, "n_facts": 5, "n_inconsistencies": 1, "n_high": 1, "n_cross_article": 0, "cross_severities": [], "predicted_fake": true, "article_id": null, "guard": null, "phase": "article", "bench_idx": 0, "expected_fake": false, "explanation_present": false}

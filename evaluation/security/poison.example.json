@@ -1,0 +1,43 @@
+{
+  "_README": "Scenario file for run_poisoning.py. Copy to poison.json and adapt. The entity below is FICTIONAL on purpose: Wikidata and the Reference KG know nothing about it, so the external sources cannot flag the poison articles (the attacker's best case, and the case the trust tiers are designed for). 'legit' is the true article that gets discredited; 'poison' articles carry shifted dates for the same role. 'utility' checks that a human-confirmed article still exposes a genuinely contradicting one when the defences are on.",
+  "scenarios": [
+    {
+      "name": "fictional-governor",
+      "target": "Mara Voss",
+      "legit": {
+        "title": "Mara Voss: Governor of Northvale",
+        "text": "Mara Voss became Governor of Northvale in March 2012. She was re-elected in November 2014.",
+        "publication_date": "2020-01-01"
+      },
+      "poison": [
+        {
+          "title": "Mara Voss profile (1)",
+          "text": "Mara Voss became Governor of Northvale in March 2004. She was re-elected in November 2008.",
+          "publication_date": "2020-01-01"
+        },
+        {
+          "title": "Mara Voss profile (2)",
+          "text": "Mara Voss became Governor of Northvale in March 2005. She was re-elected in November 2009.",
+          "publication_date": "2020-01-01"
+        },
+        {
+          "title": "Mara Voss profile (3)",
+          "text": "Mara Voss became Governor of Northvale in March 2003. She was re-elected in November 2007.",
+          "publication_date": "2020-01-01"
+        }
+      ]
+    }
+  ],
+  "utility": {
+    "trusted": {
+      "title": "Tomas Reyd: Mayor of Eastmere",
+      "text": "Tomas Reyd became Mayor of Eastmere in June 2010.",
+      "publication_date": "2020-01-01"
+    },
+    "conflicting": {
+      "title": "Tomas Reyd: a different account",
+      "text": "Tomas Reyd became Mayor of Eastmere in June 2016.",
+      "publication_date": "2020-01-01"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+22:50:20 security                     INFO  30 articles | pipeline=spacy | defences={'cross_pipeline': True, 'prompt_hardening': True, 'trust_tiers': True} -> C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\results\benchmark_spacy_def-on_2026-11-14_225020.jsonl
+22:50:28 security                     INFO  [1/30] TCS=0.925 facts=6 pred_fake=False expected_fake=False
+22:50:28 security                     INFO  [2/30] TCS=0.9 facts=9 pred_fake=False expected_fake=False
+22:50:29 security                     INFO  [3/30] TCS=0.91 facts=5 pred_fake=False expected_fake=False
+22:50:29 security                     INFO  [4/30] TCS=0.9 facts=6 pred_fake=False expected_fake=False
+22:50:29 security                     INFO  [5/30] TCS=0.8929 facts=7 pred_fake=False expected_fake=False
+22:50:31 security                     INFO  [6/30] TCS=0.9 facts=9 pred_fake=False expected_fake=False
+22:50:31 security                     INFO  [7/30] TCS=0.9 facts=6 pred_fake=False expected_fake=False
+22:50:31 security                     INFO  [8/30] TCS=0.9 facts=6 pred_fake=False expected_fake=False
+22:50:32 security                     INFO  [9/30] TCS=0.9571 facts=7 pred_fake=False expected_fake=False
+22:50:32 security                     INFO  [10/30] TCS=0.85 facts=4 pred_fake=False expected_fake=False
+22:50:32 security                     INFO  [11/30] TCS=0.1933 facts=3 pred_fake=True expected_fake=True
+22:50:32 security                     INFO  [12/30] TCS=0.6667 facts=6 pred_fake=True expected_fake=True
+22:50:34 security                     INFO  [13/30] TCS=0.5 facts=3 pred_fake=True expected_fake=True
+22:50:34 security                     INFO  [14/30] TCS=0.91 facts=5 pred_fake=False expected_fake=True
+22:50:34 backend.pipeline.orchestrator WARNING Empty TKG — article contains no verifiable temporal facts.
+22:50:34 security                     INFO  [15/30] TCS=0.5 facts=0 pred_fake=False expected_fake=True
+22:50:35 security                     INFO  [16/30] TCS=0.925 facts=8 pred_fake=False expected_fake=True
+22:50:35 security                     INFO  [17/30] TCS=0.94 facts=5 pred_fake=False expected_fake=True
+22:50:35 security                     INFO  [18/30] TCS=0.6673 facts=5 pred_fake=True expected_fake=True
+22:50:57 security                     INFO  [19/30] TCS=0.91 facts=5 pred_fake=False expected_fake=True
+22:50:59 security                     INFO  [20/30] TCS=0.0 facts=4 pred_fake=True expected_fake=True
+22:51:01 security                     INFO  [21/30] TCS=0.0 facts=2 pred_fake=True expected_fake=True
+22:51:01 security                     INFO  [22/30] TCS=0.0 facts=1 pred_fake=True expected_fake=True
+22:51:01 security                     INFO  [23/30] TCS=0.1156 facts=4 pred_fake=True expected_fake=True
+22:51:01 security                     INFO  [24/30] TCS=0.8875 facts=4 pred_fake=False expected_fake=True
+22:51:03 security                     INFO  [25/30] TCS=0.9 facts=3 pred_fake=False expected_fake=True
+22:51:03 security                     INFO  [26/30] TCS=0.8929 facts=14 pred_fake=False expected_fake=False
+22:51:03 security                     INFO  [27/30] TCS=0.6224 facts=7 pred_fake=True expected_fake=False
+22:51:04 security                     INFO  [28/30] TCS=0.8875 facts=8 pred_fake=False expected_fake=False
+22:51:06 security                     INFO  [29/30] TCS=0.9455 facts=11 pred_fake=False expected_fake=False
+22:51:08 security                     INFO  [30/30] TCS=0.8588 facts=17 pred_fake=False expected_fake=False
+
+=== Benchmark | pipeline=spacy | defences=on | n=30 ===
+  P=0.889  R=0.533  F1=0.667  Acc=0.733  (TP=8 FP=1 FN=7 TN=14)
+  mean TCS: true=0.8828  fake=0.541
+
+Raw rows: C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\results\benchmark_spacy_def-on_2026-11-14_225020.jsonl

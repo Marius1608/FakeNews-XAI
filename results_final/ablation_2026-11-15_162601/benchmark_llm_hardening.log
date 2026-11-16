@@ -1,0 +1,97 @@
+18:02:30 security                     INFO  100 articles | pipeline=llm | defences={'cross_pipeline': False, 'prompt_hardening': True, 'trust_tiers': False} -> C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\results\benchmark_llm_def-hardening_2026-11-15_180230.jsonl
+W1115 18:02:39.620000 22760 venv\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:   1%|          | 2/311 [00:00<00:22, 13.70it/s]Loading weights:   9%|8         | 27/311 [00:00<00:02, 122.27it/s]Loading weights:  14%|#3        | 43/311 [00:00<00:02, 133.11it/s]Loading weights:  19%|#8        | 58/311 [00:00<00:01, 128.72it/s]Loading weights:  23%|##3       | 72/311 [00:00<00:01, 127.18it/s]Loading weights:  28%|##7       | 86/311 [00:00<00:01, 126.89it/s]Loading weights:  32%|###1      | 99/311 [00:00<00:01, 125.74it/s]Loading weights:  36%|###6      | 112/311 [00:00<00:01, 124.16it/s]Loading weights:  41%|####      | 126/311 [00:01<00:01, 127.50it/s]Loading weights:  45%|####5     | 141/311 [00:01<00:01, 128.75it/s]Loading weights:  50%|####9     | 154/311 [00:01<00:01, 127.09it/s]Loading weights:  54%|#####3    | 167/311 [00:01<00:01, 127.74it/s]Loading weights:  58%|#####7    | 180/311 [00:01<00:01, 127.83it/s]Loading weights:  62%|######2   | 193/311 [00:01<00:00, 126.10it/s]Loading weights:  67%|######6   | 208/311 [00:01<00:00, 124.66it/s]Loading weights:  71%|#######1  | 221/311 [00:01<00:00, 123.00it/s]Loading weights:  76%|#######5  | 236/311 [00:01<00:00, 127.79it/s]Loading weights:  81%|########  | 251/311 [00:02<00:00, 132.90it/s]Loading weights:  85%|########5 | 265/311 [00:02<00:00, 125.68it/s]Loading weights:  89%|########9 | 278/311 [00:02<00:00, 123.11it/s]Loading weights:  94%|#########3| 291/311 [00:02<00:00, 121.01it/s]Loading weights: 100%|##########| 311/311 [00:02<00:00, 127.02it/s]
+18:03:28 security                     INFO  [1/100] TCS=0.6933 facts=5 pred_fake=True expected_fake=False
+18:04:15 security                     INFO  [2/100] TCS=0.7854 facts=6 pred_fake=False expected_fake=False
+Traceback (most recent call last):
+  File "C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\run_defense_benchmark.py", line 108, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\run_defense_benchmark.py", line 61, in main
+    result = orch.run(to_article(e))
+  File "C:\Users\pante\Desktop\FakeNews-XAI\backend\pipeline\orchestrator.py", line 150, in run
+    facts = self.extractor.extract(article)
+  File "C:\Users\pante\Desktop\FakeNews-XAI\backend\pipeline\extraction\spacy_llm_extractor.py", line 216, in extract
+    raw_response = generate_json(messages)
+  File "C:\Users\pante\Desktop\FakeNews-XAI\backend\pipeline\extraction\spacy_llm_extractor.py", line 146, in generate_json
+    outputs = _qwen_model.generate(
+        **inputs,
+    ...<3 lines>...
+        pad_token_id=_qwen_tokenizer.eos_token_id,
+    )
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\torch\utils\_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\transformers\generation\utils.py", line 2989, in generate
+    result = decoding_method(
+        self,
+    ...<5 lines>...
+        **model_kwargs,
+    )
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\transformers\generation\utils.py", line 3217, in _sample
+    outputs = model_forward(**model_inputs, return_dict=True)
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\torch\nn\modules\module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\torch\nn\modules\module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\transformers\utils\generic.py", line 943, in wrapper
+    output = func(self, *args, **kwargs)
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\transformers\models\qwen3\modeling_qwen3.py", line 469, in forward
+    outputs: BaseModelOutputWithPast = self.model(
+                                       ~~~~~~~~~~^
+        input_ids=input_ids,
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\torch\nn\modules\module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\torch\nn\modules\module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\transformers\utils\generic.py", line 1081, in wrapper
+    output = func(self, *args, **kwargs)
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\transformers\utils\output_capturing.py", line 287, in wrapper
+    outputs = func(self, *args, **kwargs)
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\transformers\models\qwen3\modeling_qwen3.py", line 405, in forward
+    hidden_states = decoder_layer(
+        hidden_states,
+    ...<5 lines>...
+        **kwargs,
+    )
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\transformers\modeling_layers.py", line 111, in __call__
+    return super().__call__(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\torch\nn\modules\module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\torch\nn\modules\module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\transformers\models\qwen3\modeling_qwen3.py", line 299, in forward
+    hidden_states, _ = self.self_attn(
+                       ~~~~~~~~~~~~~~^
+        hidden_states=hidden_states,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\torch\nn\modules\module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\torch\nn\modules\module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\transformers\models\qwen3\modeling_qwen3.py", line 244, in forward
+    query_states = self.q_norm(self.q_proj(hidden_states).view(hidden_shape)).transpose(1, 2)
+                   ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\torch\nn\modules\module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\torch\nn\modules\module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\pante\Desktop\FakeNews-XAI\venv\Lib\site-packages\transformers\models\qwen3\modeling_qwen3.py", line 60, in forward
+    hidden_states = hidden_states.to(torch.float32)
+KeyboardInterrupt

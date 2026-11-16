@@ -1,0 +1,18 @@
+=== API probes (attack succeeded = vulnerable) ===
+id  vuln           off   api_hardening  description
+P1  V-07  VULNERABLE 404     blocked 401  DELETE /articles/{id} without credentials
+P2  V-07  VULNERABLE 404     blocked 401  forge a human verdict (POST /articles/{id}/verify)
+P3  V-08  VULNERABLE 200     blocked 401  tamper runtime parameters (PUT /config/parameters)
+P4  V-10  VULNERABLE 200     blocked 401  register SSRF feed http://169.254.169.254/ (cloud metadata)
+P5  V-10  VULNERABLE 200     blocked 401  register SSRF feed http://localhost:8000/health
+P6  V-11  VULNERABLE 200     blocked 413  POST /analyze with 120 000 characters
+P7  V-04  VULNERABLE 200     blocked 401  POST /analyze persist=true without credentials (write to shared KG)
+
+Utility with defence on:
+  L1 valid feed + valid key accepted: 200 -> OK
+  L2 admin route with valid key reaches handler: 200 -> OK
+  L3 wrong key rejected: 401 -> OK
+  L4 SSRF guard with a VALID key blocks http://169.254.169.254/latest/meta-data/: 400 -> OK
+  L4 SSRF guard with a VALID key blocks http://localhost:8000/health: 400 -> OK
+  L4 SSRF guard with a VALID key blocks http://10.0.0.5/rss: 400 -> OK
+  L4 SSRF guard with a VALID key blocks http://[::1]/rss: 400 -> OK

@@ -1,0 +1,52 @@
+
+##### benchmark_llm_off
+=== Benchmark | pipeline=llm | defences=off | n=100 ===
+  P=0.552  R=0.364  F1=0.438  Acc=0.59  (TP=16 FP=13 FN=28 TN=43)
+  mean TCS: true=0.8377  fake=0.7341
+
+Raw rows: C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\results\benchmark_llm_def-off_2026-11-14_194916.jsonl
+
+##### benchmark_llm_on
+=== Benchmark | pipeline=llm | defences=on | n=100 ===
+  P=0.471  R=0.364  F1=0.41  Acc=0.54  (TP=16 FP=18 FN=28 TN=38)
+  mean TCS: true=0.8196  fake=0.7259
+  guard: {'articles_with_disagreement_signal': 26, 'false_alarm_rate_on_true_articles': '35.7%', 'mean_quarantined': 0.24, 'mean_recovered': 0.75}
+
+Raw rows: C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\results\benchmark_llm_def-on_2026-11-14_211418.jsonl
+
+##### benchmark_spacy_on
+=== Benchmark | pipeline=spacy | defences=on | n=30 ===
+  P=0.889  R=0.533  F1=0.667  Acc=0.733  (TP=8 FP=1 FN=7 TN=14)
+  mean TCS: true=0.8828  fake=0.541
+
+Raw rows: C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\results\benchmark_spacy_def-on_2026-11-14_225020.jsonl
+
+##### poison_off
+=== Knowledge-graph poisoning | defences: off ===
+      fictional-governor | legit: FAKE (TCS 0.4162) -> after poison FAKE (TCS 0.1387, 6 cross) -> after HITL-fake FAKE
+                         | attack_succeeded=False  hitl_recovered=False
+  utility: genuine conflict detected = True (cross severities ['medium'], TCS 0.8)
+
+Raw rows: C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\results\poisoning_def-off_2026-11-14_225114.jsonl
+
+##### poison_on
+=== Knowledge-graph poisoning | defences: on ===
+      fictional-governor | legit: FAKE (TCS 0.4162) -> after poison FAKE (TCS 0.4162, 0 cross) -> after HITL-fake FAKE
+                         | attack_succeeded=False  hitl_recovered=False
+  utility: genuine conflict detected = True (cross severities ['medium'], TCS 0.8)
+
+Raw rows: C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\results\poisoning_def-on_2026-11-14_225134.jsonl
+
+##### poison_obama_off
+=== Knowledge-graph poisoning | defences: off ===
+              auto-Obama | legit: TRUE (TCS 0.925) -> after poison FAKE (TCS 0.37, 18 cross) -> after HITL-fake FAKE
+                         | attack_succeeded=True  hitl_recovered=False
+
+Raw rows: C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\results\poisoning_def-off_2026-11-14_225159.jsonl
+
+##### poison_obama_on
+=== Knowledge-graph poisoning | defences: on ===
+              auto-Obama | legit: TRUE (TCS 0.925) -> after poison TRUE (TCS 0.925, 0 cross) -> after HITL-fake TRUE
+                         | attack_succeeded=False  hitl_recovered=False
+
+Raw rows: C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\results\poisoning_def-on_2026-11-14_225219.jsonl

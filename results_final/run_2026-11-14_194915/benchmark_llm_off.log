@@ -1,0 +1,110 @@
+19:49:16 security                     INFO  100 articles | pipeline=llm | defences={'cross_pipeline': False, 'prompt_hardening': False, 'trust_tiers': False} -> C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\results\benchmark_llm_def-off_2026-11-14_194916.jsonl
+W1114 19:49:25.560000 28520 venv\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:   1%|          | 2/311 [00:00<00:19, 16.18it/s]Loading weights:   8%|8         | 26/311 [00:00<00:02, 135.81it/s]Loading weights:  13%|#3        | 41/311 [00:00<00:01, 137.17it/s]Loading weights:  18%|#8        | 56/311 [00:00<00:01, 130.82it/s]Loading weights:  23%|##2       | 70/311 [00:00<00:01, 130.96it/s]Loading weights:  27%|##7       | 84/311 [00:00<00:01, 128.77it/s]Loading weights:  32%|###1      | 98/311 [00:00<00:01, 130.49it/s]Loading weights:  36%|###6      | 112/311 [00:00<00:01, 124.36it/s]Loading weights:  41%|####      | 126/311 [00:01<00:01, 126.52it/s]Loading weights:  46%|####5     | 142/311 [00:01<00:01, 118.51it/s]Loading weights:  51%|#####     | 158/311 [00:01<00:01, 126.07it/s]Loading weights:  56%|#####5    | 174/311 [00:01<00:01, 129.62it/s]Loading weights:  60%|######    | 188/311 [00:01<00:00, 130.52it/s]Loading weights:  65%|######4   | 202/311 [00:01<00:00, 128.64it/s]Loading weights:  69%|######9   | 215/311 [00:01<00:00, 126.61it/s]Loading weights:  74%|#######3  | 230/311 [00:01<00:00, 125.18it/s]Loading weights:  78%|#######8  | 243/311 [00:01<00:00, 125.05it/s]Loading weights:  83%|########2 | 258/311 [00:02<00:00, 126.10it/s]Loading weights:  88%|########8 | 274/311 [00:02<00:00, 132.48it/s]Loading weights:  93%|#########2| 288/311 [00:02<00:00, 124.63it/s]Loading weights:  97%|#########7| 302/311 [00:02<00:00, 125.62it/s]Loading weights: 100%|##########| 311/311 [00:02<00:00, 128.97it/s]
+19:50:12 security                     INFO  [1/100] TCS=0.6933 facts=5 pred_fake=True expected_fake=False
+19:51:00 security                     INFO  [2/100] TCS=0.7854 facts=6 pred_fake=False expected_fake=False
+19:51:46 security                     INFO  [3/100] TCS=0.97 facts=5 pred_fake=False expected_fake=False
+19:52:40 security                     INFO  [4/100] TCS=0.194 facts=5 pred_fake=True expected_fake=False
+19:53:22 security                     INFO  [5/100] TCS=0.3233 facts=5 pred_fake=True expected_fake=False
+19:54:17 security                     INFO  [6/100] TCS=1.0 facts=6 pred_fake=False expected_fake=False
+19:54:56 security                     INFO  [7/100] TCS=0.7887 facts=5 pred_fake=False expected_fake=False
+19:55:41 security                     INFO  [8/100] TCS=0.2667 facts=5 pred_fake=True expected_fake=False
+19:56:19 security                     INFO  [9/100] TCS=0.6667 facts=4 pred_fake=True expected_fake=False
+19:56:56 security                     INFO  [10/100] TCS=0.6933 facts=5 pred_fake=True expected_fake=False
+19:57:25 security                     INFO  [11/100] TCS=0.6667 facts=4 pred_fake=True expected_fake=True
+19:57:40 security                     INFO  [12/100] TCS=0.6667 facts=2 pred_fake=True expected_fake=True
+19:58:01 security                     INFO  [13/100] TCS=0.95 facts=3 pred_fake=False expected_fake=True
+19:58:22 security                     INFO  [14/100] TCS=1.0 facts=1 pred_fake=False expected_fake=True
+19:58:38 security                     INFO  [15/100] TCS=1.0 facts=2 pred_fake=False expected_fake=True
+19:59:10 security                     INFO  [16/100] TCS=0.9625 facts=4 pred_fake=False expected_fake=True
+19:59:25 security                     INFO  [17/100] TCS=0.0 facts=2 pred_fake=True expected_fake=True
+19:59:39 security                     INFO  [18/100] TCS=0.0 facts=2 pred_fake=True expected_fake=True
+20:00:03 security                     INFO  [19/100] TCS=1.0 facts=3 pred_fake=False expected_fake=True
+20:00:12 security                     INFO  [20/100] TCS=1.0 facts=1 pred_fake=False expected_fake=True
+20:00:34 security                     INFO  [21/100] TCS=1.0 facts=1 pred_fake=False expected_fake=True
+20:00:42 security                     INFO  [22/100] TCS=0.0 facts=1 pred_fake=True expected_fake=True
+20:00:57 security                     INFO  [23/100] TCS=0.3083 facts=2 pred_fake=True expected_fake=True
+20:01:25 security                     INFO  [24/100] TCS=0.8021 facts=4 pred_fake=False expected_fake=True
+20:01:41 security                     INFO  [25/100] TCS=0.6667 facts=2 pred_fake=True expected_fake=True
+20:02:42 security                     INFO  [26/100] TCS=1.0 facts=5 pred_fake=False expected_fake=False
+20:03:45 security                     INFO  [27/100] TCS=0.925 facts=6 pred_fake=False expected_fake=False
+20:04:44 security                     INFO  [28/100] TCS=0.925 facts=4 pred_fake=False expected_fake=False
+20:05:28 security                     INFO  [29/100] TCS=0.97 facts=5 pred_fake=False expected_fake=False
+20:06:42 security                     INFO  [30/100] TCS=0.85 facts=9 pred_fake=False expected_fake=False
+20:08:05 security                     INFO  [31/100] TCS=0.925 facts=10 pred_fake=False expected_fake=False
+20:09:24 security                     INFO  [32/100] TCS=0.88 facts=10 pred_fake=False expected_fake=False
+20:10:29 security                     INFO  [33/100] TCS=0.4812 facts=8 pred_fake=True expected_fake=False
+20:11:47 security                     INFO  [34/100] TCS=0.7552 facts=8 pred_fake=False expected_fake=False
+20:13:12 security                     INFO  [35/100] TCS=0.6517 facts=10 pred_fake=True expected_fake=False
+20:14:07 security                     INFO  [36/100] TCS=0.9571 facts=7 pred_fake=False expected_fake=False
+20:15:32 security                     INFO  [37/100] TCS=0.9333 facts=9 pred_fake=False expected_fake=False
+20:17:13 security                     INFO  [38/100] TCS=0.975 facts=12 pred_fake=False expected_fake=False
+20:18:32 security                     INFO  [39/100] TCS=0.9571 facts=7 pred_fake=False expected_fake=False
+20:19:44 security                     INFO  [40/100] TCS=0.9333 facts=9 pred_fake=False expected_fake=False
+20:21:05 security                     INFO  [41/100] TCS=0.8833 facts=9 pred_fake=False expected_fake=False
+20:22:15 security                     INFO  [42/100] TCS=0.9571 facts=7 pred_fake=False expected_fake=False
+20:23:09 security                     INFO  [43/100] TCS=1.0 facts=4 pred_fake=False expected_fake=False
+20:23:48 security                     INFO  [44/100] TCS=1.0 facts=3 pred_fake=False expected_fake=False
+20:24:49 security                     INFO  [45/100] TCS=1.0 facts=4 pred_fake=False expected_fake=False
+20:25:33 security                     INFO  [46/100] TCS=0.88 facts=5 pred_fake=False expected_fake=False
+20:27:04 security                     INFO  [47/100] TCS=0.6937 facts=8 pred_fake=True expected_fake=False
+20:28:36 security                     INFO  [48/100] TCS=0.6481 facts=12 pred_fake=True expected_fake=False
+20:29:32 security                     INFO  [49/100] TCS=0.8929 facts=7 pred_fake=False expected_fake=False
+20:30:40 security                     INFO  [50/100] TCS=0.9062 facts=8 pred_fake=False expected_fake=False
+20:31:51 security                     INFO  [51/100] TCS=0.6344 facts=8 pred_fake=True expected_fake=True
+20:32:32 security                     INFO  [52/100] TCS=1.0 facts=3 pred_fake=False expected_fake=True
+20:33:25 security                     INFO  [53/100] TCS=1.0 facts=5 pred_fake=False expected_fake=True
+20:34:11 security                     INFO  [54/100] TCS=0.2 facts=5 pred_fake=True expected_fake=True
+20:34:41 security                     INFO  [55/100] TCS=0.95 facts=3 pred_fake=False expected_fake=True
+20:35:29 security                     INFO  [56/100] TCS=0.97 facts=5 pred_fake=False expected_fake=True
+20:36:47 security                     INFO  [57/100] TCS=0.97 facts=10 pred_fake=False expected_fake=True
+20:38:01 security                     INFO  [58/100] TCS=0.8929 facts=7 pred_fake=False expected_fake=True
+20:38:35 security                     INFO  [59/100] TCS=1.0 facts=3 pred_fake=False expected_fake=True
+20:39:36 security                     INFO  [60/100] TCS=0.6167 facts=6 pred_fake=True expected_fake=True
+20:40:19 security                     INFO  [61/100] TCS=0.5 facts=4 pred_fake=True expected_fake=True
+20:41:11 security                     INFO  [62/100] TCS=0.85 facts=5 pred_fake=False expected_fake=True
+20:41:54 security                     INFO  [63/100] TCS=1.0 facts=3 pred_fake=False expected_fake=False
+20:42:40 security                     INFO  [64/100] TCS=0.95 facts=6 pred_fake=False expected_fake=False
+20:43:40 security                     INFO  [65/100] TCS=0.925 facts=4 pred_fake=False expected_fake=False
+20:44:53 security                     INFO  [66/100] TCS=1.0 facts=6 pred_fake=False expected_fake=False
+20:45:59 security                     INFO  [67/100] TCS=0.3333 facts=6 pred_fake=True expected_fake=True
+20:47:30 security                     INFO  [68/100] TCS=1.0 facts=7 pred_fake=False expected_fake=False
+20:48:28 security                     INFO  [69/100] TCS=0.9357 facts=7 pred_fake=False expected_fake=False
+20:49:06 security                     INFO  [70/100] TCS=0.8407 facts=5 pred_fake=False expected_fake=True
+20:49:47 security                     INFO  [71/100] TCS=0.91 facts=5 pred_fake=False expected_fake=True
+20:50:39 security                     INFO  [72/100] TCS=0.9 facts=6 pred_fake=False expected_fake=False
+20:51:30 security                     INFO  [73/100] TCS=0.5139 facts=6 pred_fake=True expected_fake=True
+20:52:11 security                     INFO  [74/100] TCS=0.97 facts=5 pred_fake=False expected_fake=True
+20:53:20 security                     INFO  [75/100] TCS=0.9 facts=6 pred_fake=False expected_fake=False
+20:54:00 security                     INFO  [76/100] TCS=0.8021 facts=4 pred_fake=False expected_fake=True
+20:54:52 security                     INFO  [77/100] TCS=0.9 facts=6 pred_fake=False expected_fake=False
+20:56:14 security                     INFO  [78/100] TCS=0.925 facts=8 pred_fake=False expected_fake=True
+20:57:16 security                     INFO  [79/100] TCS=0.9357 facts=7 pred_fake=False expected_fake=False
+20:59:03 security                     INFO  [80/100] TCS=0.8833 facts=9 pred_fake=False expected_fake=False
+20:59:34 security                     INFO  [81/100] TCS=1.0 facts=3 pred_fake=False expected_fake=True
+21:00:11 security                     INFO  [82/100] TCS=0.925 facts=4 pred_fake=False expected_fake=False
+21:00:50 security                     INFO  [83/100] TCS=0.925 facts=2 pred_fake=False expected_fake=True
+21:01:51 security                     INFO  [84/100] TCS=0.9571 facts=7 pred_fake=False expected_fake=False
+21:03:00 security                     INFO  [85/100] TCS=0.4416 facts=8 pred_fake=True expected_fake=False
+21:03:23 security                     INFO  [86/100] TCS=0.95 facts=3 pred_fake=False expected_fake=True
+21:04:01 security                     INFO  [87/100] TCS=0.6 facts=5 pred_fake=True expected_fake=True
+21:04:47 security                     INFO  [88/100] TCS=0.7583 facts=6 pred_fake=False expected_fake=False
+21:05:51 security                     INFO  [89/100] TCS=0.3792 facts=8 pred_fake=True expected_fake=True
+21:06:53 security                     INFO  [90/100] TCS=0.9786 facts=7 pred_fake=False expected_fake=False
+21:07:17 security                     INFO  [91/100] TCS=0.95 facts=3 pred_fake=False expected_fake=True
+21:07:51 security                     INFO  [92/100] TCS=1.0 facts=4 pred_fake=False expected_fake=False
+21:08:35 security                     INFO  [93/100] TCS=0.875 facts=6 pred_fake=False expected_fake=True
+21:09:31 security                     INFO  [94/100] TCS=0.5833 facts=6 pred_fake=True expected_fake=False
+21:09:55 security                     INFO  [95/100] TCS=0.0 facts=2 pred_fake=True expected_fake=True
+21:10:41 security                     INFO  [96/100] TCS=0.7113 facts=5 pred_fake=True expected_fake=False
+21:11:06 security                     INFO  [97/100] TCS=0.95 facts=3 pred_fake=False expected_fake=True
+21:11:50 security                     INFO  [98/100] TCS=0.94 facts=5 pred_fake=False expected_fake=False
+21:12:48 security                     INFO  [99/100] TCS=0.7708 facts=4 pred_fake=False expected_fake=True
+21:14:16 backend.pipeline.verification.wikidata WARNING Wikidata SPARQL failed for Q2686321: HTTPSConnectionPool(host='query.wikidata.org', port=443): Read timed out. (read timeout=30)
+21:14:16 security                     INFO  [100/100] TCS=0.925 facts=6 pred_fake=False expected_fake=False
+
+=== Benchmark | pipeline=llm | defences=off | n=100 ===
+  P=0.552  R=0.364  F1=0.438  Acc=0.59  (TP=16 FP=13 FN=28 TN=43)
+  mean TCS: true=0.8377  fake=0.7341
+
+Raw rows: C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\results\benchmark_llm_def-off_2026-11-14_194916.jsonl

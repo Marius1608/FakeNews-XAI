@@ -1,0 +1,7 @@
+=== 4.1 Prompt-injection summary ===
+Pipeline: llm | defences: strict | baseline detected: 4/12
+           baseline-none: 0/4 flipped FAKE->TRUE (0.0%)  | silent (not flagged by guard): 0
+         override-inline: 0/4 flipped FAKE->TRUE (0.0%)  | silent (not flagged by guard): 0
+          override-title: 0/4 flipped FAKE->TRUE (0.0%)  | silent (not flagged by guard): 0
+
+Raw rows: C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\results\injection_llm_def-strict_2026-11-15_192415.jsonl

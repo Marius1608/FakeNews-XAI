@@ -1,0 +1,157 @@
+21:14:18 security                     INFO  100 articles | pipeline=llm | defences={'cross_pipeline': True, 'prompt_hardening': True, 'trust_tiers': True} -> C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\results\benchmark_llm_def-on_2026-11-14_211418.jsonl
+W1114 21:14:26.448000 30716 venv\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:   1%|          | 2/311 [00:00<00:17, 17.63it/s]Loading weights:   8%|8         | 26/311 [00:00<00:02, 131.03it/s]Loading weights:  14%|#3        | 42/311 [00:00<00:01, 136.45it/s]Loading weights:  18%|#8        | 56/311 [00:00<00:01, 133.86it/s]Loading weights:  23%|##2       | 70/311 [00:00<00:01, 130.29it/s]Loading weights:  27%|##7       | 84/311 [00:00<00:01, 132.36it/s]Loading weights:  32%|###1      | 99/311 [00:00<00:01, 131.20it/s]Loading weights:  36%|###6      | 113/311 [00:00<00:01, 125.27it/s]Loading weights:  41%|####      | 126/311 [00:01<00:01, 121.43it/s]Loading weights:  46%|####5     | 143/311 [00:01<00:01, 120.42it/s]Loading weights:  51%|#####     | 158/311 [00:01<00:01, 122.27it/s]Loading weights:  56%|#####6    | 175/311 [00:01<00:01, 119.99it/s]Loading weights:  62%|######1   | 192/311 [00:01<00:00, 131.55it/s]Loading weights:  66%|######6   | 206/311 [00:01<00:00, 132.01it/s]Loading weights:  71%|#######   | 220/311 [00:01<00:00, 120.61it/s]Loading weights:  76%|#######5  | 235/311 [00:01<00:00, 127.69it/s]Loading weights:  80%|########  | 249/311 [00:01<00:00, 128.71it/s]Loading weights:  85%|########4 | 264/311 [00:02<00:00, 129.78it/s]Loading weights:  89%|########9 | 278/311 [00:02<00:00, 124.96it/s]Loading weights:  94%|#########3| 291/311 [00:02<00:00, 122.35it/s]Loading weights: 100%|##########| 311/311 [00:02<00:00, 128.20it/s]
+21:15:08 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 3 supported, 0 quarantined, 1 recovered, suppression in sentences []
+21:15:14 security                     INFO  [1/100] TCS=0.6933 facts=5 pred_fake=True expected_fake=False
+21:15:57 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 0 supported, 2 quarantined, 3 recovered, suppression in sentences []
+21:15:57 security                     INFO  [2/100] TCS=0.9786 facts=7 pred_fake=False expected_fake=False
+21:16:43 security                     INFO  [3/100] TCS=0.97 facts=5 pred_fake=False expected_fake=False
+21:17:26 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 1 supported, 0 quarantined, 0 recovered, suppression in sentences []
+21:17:35 security                     INFO  [4/100] TCS=0.4387 facts=5 pred_fake=True expected_fake=False
+21:18:19 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 0 supported, 2 quarantined, 2 recovered, suppression in sentences []
+21:18:50 backend.pipeline.verification.wikidata WARNING Wikidata SPARQL failed for Q19673: HTTPSConnectionPool(host='query.wikidata.org', port=443): Read timed out. (read timeout=30)
+21:18:52 security                     INFO  [5/100] TCS=0.5911 facts=6 pred_fake=True expected_fake=False
+21:19:51 security                     INFO  [6/100] TCS=0.6837 facts=7 pred_fake=True expected_fake=False
+21:20:37 security                     INFO  [7/100] TCS=0.6333 facts=6 pred_fake=True expected_fake=False
+21:21:22 security                     INFO  [8/100] TCS=0.7113 facts=5 pred_fake=True expected_fake=False
+21:22:01 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 2 supported, 0 quarantined, 0 recovered, suppression in sentences []
+21:22:07 security                     INFO  [9/100] TCS=0.7333 facts=5 pred_fake=True expected_fake=False
+21:22:51 security                     INFO  [10/100] TCS=0.65 facts=6 pred_fake=True expected_fake=False
+21:23:20 security                     INFO  [11/100] TCS=0.6667 facts=4 pred_fake=True expected_fake=True
+21:23:37 security                     INFO  [12/100] TCS=0.3333 facts=2 pred_fake=True expected_fake=True
+21:23:59 security                     INFO  [13/100] TCS=0.95 facts=3 pred_fake=False expected_fake=True
+21:24:20 security                     INFO  [14/100] TCS=1.0 facts=1 pred_fake=False expected_fake=True
+21:24:37 security                     INFO  [15/100] TCS=1.0 facts=2 pred_fake=False expected_fake=True
+21:25:06 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 2 supported, 1 quarantined, 1 recovered, suppression in sentences []
+21:25:09 security                     INFO  [16/100] TCS=0.9625 facts=4 pred_fake=False expected_fake=True
+21:25:24 security                     INFO  [17/100] TCS=0.0 facts=2 pred_fake=True expected_fake=True
+21:25:45 security                     INFO  [18/100] TCS=0.0 facts=3 pred_fake=True expected_fake=True
+21:26:17 security                     INFO  [19/100] TCS=0.225 facts=4 pred_fake=True expected_fake=True
+21:26:34 security                     INFO  [20/100] TCS=0.2833 facts=2 pred_fake=True expected_fake=True
+21:26:48 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 1 supported, 1 quarantined, 1 recovered, suppression in sentences []
+21:26:50 security                     INFO  [21/100] TCS=0.0 facts=2 pred_fake=True expected_fake=True
+21:27:05 security                     INFO  [22/100] TCS=1.0 facts=2 pred_fake=False expected_fake=True
+21:27:20 security                     INFO  [23/100] TCS=0.3083 facts=2 pred_fake=True expected_fake=True
+21:27:50 security                     INFO  [24/100] TCS=0.8021 facts=4 pred_fake=False expected_fake=True
+21:28:06 security                     INFO  [25/100] TCS=1.0 facts=2 pred_fake=False expected_fake=True
+21:29:14 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 2 supported, 0 quarantined, 6 recovered, suppression in sentences [7]
+21:29:16 security                     INFO  [26/100] TCS=1.0 facts=9 pred_fake=False expected_fake=False
+21:30:21 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 0 supported, 0 quarantined, 1 recovered, suppression in sentences []
+21:30:34 security                     INFO  [27/100] TCS=0.6685 facts=9 pred_fake=True expected_fake=False
+21:31:40 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 2 supported, 0 quarantined, 1 recovered, suppression in sentences []
+21:31:52 security                     INFO  [28/100] TCS=0.9357 facts=7 pred_fake=False expected_fake=False
+21:32:35 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 3 supported, 0 quarantined, 4 recovered, suppression in sentences []
+21:32:40 security                     INFO  [29/100] TCS=0.9833 facts=9 pred_fake=False expected_fake=False
+21:34:07 security                     INFO  [30/100] TCS=0.85 facts=11 pred_fake=False expected_fake=False
+21:35:39 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 3 supported, 0 quarantined, 1 recovered, suppression in sentences []
+21:36:02 security                     INFO  [31/100] TCS=0.9423 facts=13 pred_fake=False expected_fake=False
+21:37:29 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 7 supported, 0 quarantined, 1 recovered, suppression in sentences []
+21:37:33 security                     INFO  [32/100] TCS=0.8875 facts=12 pred_fake=False expected_fake=False
+21:38:26 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 4 supported, 0 quarantined, 3 recovered, suppression in sentences []
+21:38:36 security                     INFO  [33/100] TCS=0.7519 facts=9 pred_fake=False expected_fake=False
+21:40:00 security                     INFO  [34/100] TCS=0.8017 facts=10 pred_fake=False expected_fake=False
+21:41:38 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 4 supported, 0 quarantined, 2 recovered, suppression in sentences []
+21:41:46 security                     INFO  [35/100] TCS=0.7243 facts=13 pred_fake=True expected_fake=False
+21:42:38 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 4 supported, 0 quarantined, 1 recovered, suppression in sentences []
+21:42:42 security                     INFO  [36/100] TCS=0.9437 facts=8 pred_fake=False expected_fake=False
+21:44:06 security                     INFO  [37/100] TCS=0.9167 facts=9 pred_fake=False expected_fake=False
+21:45:42 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 7 supported, 1 quarantined, 0 recovered, suppression in sentences []
+21:45:52 security                     INFO  [38/100] TCS=0.9138 facts=11 pred_fake=False expected_fake=False
+21:47:19 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 2 supported, 1 quarantined, 1 recovered, suppression in sentences []
+21:47:22 security                     INFO  [39/100] TCS=0.7809 facts=9 pred_fake=False expected_fake=False
+21:48:34 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 2 supported, 0 quarantined, 6 recovered, suppression in sentences []
+21:48:39 security                     INFO  [40/100] TCS=0.6446 facts=14 pred_fake=True expected_fake=False
+21:50:08 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 5 supported, 1 quarantined, 0 recovered, suppression in sentences []
+21:50:08 security                     INFO  [41/100] TCS=0.8667 facts=9 pred_fake=False expected_fake=False
+21:51:25 security                     INFO  [42/100] TCS=0.9786 facts=7 pred_fake=False expected_fake=False
+21:52:22 security                     INFO  [43/100] TCS=1.0 facts=4 pred_fake=False expected_fake=False
+21:53:04 security                     INFO  [44/100] TCS=1.0 facts=3 pred_fake=False expected_fake=False
+21:54:24 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 3 supported, 0 quarantined, 2 recovered, suppression in sentences [1]
+21:54:31 security                     INFO  [45/100] TCS=1.0 facts=6 pred_fake=False expected_fake=False
+21:55:41 security                     INFO  [46/100] TCS=0.3854 facts=8 pred_fake=True expected_fake=False
+21:57:14 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 5 supported, 0 quarantined, 1 recovered, suppression in sentences []
+21:57:21 security                     INFO  [47/100] TCS=0.6017 facts=11 pred_fake=True expected_fake=False
+21:58:53 security                     INFO  [48/100] TCS=0.8636 facts=11 pred_fake=False expected_fake=False
+21:59:55 security                     INFO  [49/100] TCS=0.8929 facts=7 pred_fake=False expected_fake=False
+22:01:31 security                     INFO  [50/100] TCS=0.91 facts=10 pred_fake=False expected_fake=False
+22:02:50 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 1 supported, 0 quarantined, 2 recovered, suppression in sentences []
+22:02:54 security                     INFO  [51/100] TCS=0.882 facts=10 pred_fake=False expected_fake=True
+22:03:44 security                     INFO  [52/100] TCS=0.97 facts=5 pred_fake=False expected_fake=True
+22:04:41 security                     INFO  [53/100] TCS=0.94 facts=5 pred_fake=False expected_fake=True
+22:05:31 security                     INFO  [54/100] TCS=0.2 facts=5 pred_fake=True expected_fake=True
+22:06:03 security                     INFO  [55/100] TCS=0.95 facts=3 pred_fake=False expected_fake=True
+22:07:10 security                     INFO  [56/100] TCS=0.9357 facts=7 pred_fake=False expected_fake=True
+22:08:36 security                     INFO  [57/100] TCS=0.955 facts=10 pred_fake=False expected_fake=True
+22:10:01 security                     INFO  [58/100] TCS=0.8929 facts=7 pred_fake=False expected_fake=True
+22:10:59 security                     INFO  [59/100] TCS=0.94 facts=5 pred_fake=False expected_fake=True
+22:11:54 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 1 supported, 0 quarantined, 1 recovered, suppression in sentences []
+22:12:00 security                     INFO  [60/100] TCS=0.925 facts=8 pred_fake=False expected_fake=True
+22:12:40 security                     INFO  [61/100] TCS=0.5 facts=4 pred_fake=True expected_fake=True
+22:13:39 security                     INFO  [62/100] TCS=0.85 facts=6 pred_fake=False expected_fake=True
+22:14:30 security                     INFO  [63/100] TCS=0.9625 facts=4 pred_fake=False expected_fake=False
+22:15:18 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 1 supported, 1 quarantined, 1 recovered, suppression in sentences []
+22:15:18 security                     INFO  [64/100] TCS=0.95 facts=6 pred_fake=False expected_fake=False
+22:16:18 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 0 supported, 1 quarantined, 1 recovered, suppression in sentences []
+22:16:21 security                     INFO  [65/100] TCS=0.925 facts=6 pred_fake=False expected_fake=False
+22:17:45 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 3 supported, 0 quarantined, 1 recovered, suppression in sentences []
+22:17:53 security                     INFO  [66/100] TCS=0.8148 facts=10 pred_fake=False expected_fake=False
+22:18:58 security                     INFO  [67/100] TCS=0.95 facts=6 pred_fake=False expected_fake=True
+22:20:18 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 1 supported, 0 quarantined, 5 recovered, suppression in sentences []
+22:20:19 security                     INFO  [68/100] TCS=0.97 facts=10 pred_fake=False expected_fake=False
+22:21:20 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 1 supported, 0 quarantined, 1 recovered, suppression in sentences []
+22:21:28 security                     INFO  [69/100] TCS=0.9437 facts=8 pred_fake=False expected_fake=False
+22:22:13 security                     INFO  [70/100] TCS=0.7113 facts=5 pred_fake=True expected_fake=True
+22:22:55 security                     INFO  [71/100] TCS=0.91 facts=5 pred_fake=False expected_fake=True
+22:23:55 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 2 supported, 1 quarantined, 1 recovered, suppression in sentences []
+22:23:55 security                     INFO  [72/100] TCS=0.8929 facts=7 pred_fake=False expected_fake=False
+22:24:48 security                     INFO  [73/100] TCS=0.8 facts=6 pred_fake=False expected_fake=True
+22:25:35 security                     INFO  [74/100] TCS=0.7811 facts=6 pred_fake=False expected_fake=True
+22:27:18 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 3 supported, 0 quarantined, 4 recovered, suppression in sentences []
+22:27:21 security                     INFO  [75/100] TCS=0.925 facts=8 pred_fake=False expected_fake=False
+22:28:11 security                     INFO  [76/100] TCS=0.8021 facts=4 pred_fake=False expected_fake=True
+22:28:58 security                     INFO  [77/100] TCS=0.94 facts=5 pred_fake=False expected_fake=False
+22:30:06 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 1 supported, 0 quarantined, 1 recovered, suppression in sentences []
+22:30:09 security                     INFO  [78/100] TCS=0.9143 facts=7 pred_fake=False expected_fake=True
+22:31:31 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 2 supported, 1 quarantined, 1 recovered, suppression in sentences [7]
+22:31:33 security                     INFO  [79/100] TCS=0.895 facts=10 pred_fake=False expected_fake=False
+22:33:30 security                     INFO  [80/100] TCS=0.8667 facts=9 pred_fake=False expected_fake=False
+22:33:57 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 1 supported, 0 quarantined, 4 recovered, suppression in sentences []
+22:33:59 security                     INFO  [81/100] TCS=1.0 facts=7 pred_fake=False expected_fake=True
+22:34:40 security                     INFO  [82/100] TCS=0.925 facts=4 pred_fake=False expected_fake=False
+22:35:19 security                     INFO  [83/100] TCS=1.0 facts=2 pred_fake=False expected_fake=True
+22:36:25 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 0 supported, 1 quarantined, 1 recovered, suppression in sentences []
+22:36:27 security                     INFO  [84/100] TCS=0.875 facts=6 pred_fake=False expected_fake=False
+22:37:42 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 5 supported, 2 quarantined, 1 recovered, suppression in sentences []
+22:37:42 security                     INFO  [85/100] TCS=0.45 facts=8 pred_fake=True expected_fake=False
+22:38:14 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 1 supported, 2 quarantined, 1 recovered, suppression in sentences []
+22:38:16 security                     INFO  [86/100] TCS=1.0 facts=3 pred_fake=False expected_fake=True
+22:38:54 security                     INFO  [87/100] TCS=0.6 facts=5 pred_fake=True expected_fake=True
+22:39:48 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 5 supported, 1 quarantined, 3 recovered, suppression in sentences []
+22:39:48 security                     INFO  [88/100] TCS=0.9667 facts=9 pred_fake=False expected_fake=False
+22:40:52 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 5 supported, 2 quarantined, 0 recovered, suppression in sentences []
+22:40:52 security                     INFO  [89/100] TCS=0.6852 facts=6 pred_fake=True expected_fake=True
+22:42:00 security                     INFO  [90/100] TCS=0.5925 facts=7 pred_fake=True expected_fake=False
+22:42:23 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 1 supported, 0 quarantined, 1 recovered, suppression in sentences []
+22:42:25 security                     INFO  [91/100] TCS=0.95 facts=3 pred_fake=False expected_fake=True
+22:42:58 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 1 supported, 1 quarantined, 2 recovered, suppression in sentences [1]
+22:42:59 security                     INFO  [92/100] TCS=0.5556 facts=3 pred_fake=True expected_fake=False
+22:43:42 security                     INFO  [93/100] TCS=0.875 facts=6 pred_fake=False expected_fake=True
+22:44:39 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 4 supported, 0 quarantined, 2 recovered, suppression in sentences []
+22:44:41 security                     INFO  [94/100] TCS=0.6797 facts=8 pred_fake=True expected_fake=False
+22:45:12 security                     INFO  [95/100] TCS=0.3167 facts=3 pred_fake=True expected_fake=True
+22:46:16 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 2 supported, 1 quarantined, 1 recovered, suppression in sentences []
+22:46:19 security                     INFO  [96/100] TCS=0.7748 facts=7 pred_fake=False expected_fake=False
+22:46:52 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 3 supported, 0 quarantined, 2 recovered, suppression in sentences []
+22:46:56 security                     INFO  [97/100] TCS=0.4333 facts=6 pred_fake=True expected_fake=True
+22:47:55 security                     INFO  [98/100] TCS=0.7389 facts=6 pred_fake=True expected_fake=False
+22:49:03 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 5 supported, 1 quarantined, 0 recovered, suppression in sentences []
+22:49:03 security                     INFO  [99/100] TCS=0.7396 facts=4 pred_fake=True expected_fake=True
+22:50:10 backend.pipeline.defense.consistency_guard WARNING Consistency guard: 1 supported, 0 quarantined, 0 recovered, suppression in sentences []
+22:50:18 security                     INFO  [100/100] TCS=0.925 facts=6 pred_fake=False expected_fake=False
+
+=== Benchmark | pipeline=llm | defences=on | n=100 ===
+  P=0.471  R=0.364  F1=0.41  Acc=0.54  (TP=16 FP=18 FN=28 TN=38)
+  mean TCS: true=0.8196  fake=0.7259
+  guard: {'articles_with_disagreement_signal': 26, 'false_alarm_rate_on_true_articles': '35.7%', 'mean_quarantined': 0.24, 'mean_recovered': 0.75}
+
+Raw rows: C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\results\benchmark_llm_def-on_2026-11-14_211418.jsonl

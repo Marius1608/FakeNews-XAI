@@ -1,0 +1,8 @@
+
+##### guard
+=== Benchmark | pipeline=llm | defences=guard | n=100 ===
+  P=0.6  R=0.477  F1=0.532  Acc=0.63  (TP=21 FP=14 FN=23 TN=42)
+  mean TCS: true=0.853  fake=0.6643
+  guard: {'articles_with_disagreement_signal': 26, 'false_alarm_rate_on_true_articles': '28.6%', 'mean_quarantined': 0.23, 'mean_recovered': 0.89}
+
+Raw rows: C:\Users\pante\Desktop\FakeNews-XAI\evaluation\security\results\benchmark_llm_def-guard_2026-11-15_162601.jsonl
