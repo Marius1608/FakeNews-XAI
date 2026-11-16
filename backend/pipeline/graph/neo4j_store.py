@@ -112,6 +112,7 @@ class Neo4jTKGStore(AbstractTKGStore):
             "confidence":       fact.extraction_confidence,
             "extractor":        fact.extractor,
             "article_id":       article_id,
+            "trust_tier":       getattr(fact, "trust_tier", 0),  # provenance, see defense/trust.py
         }
 
         # MERGE entity nodes so the same entity is never duplicated across articles
@@ -133,7 +134,8 @@ class Neo4jTKGStore(AbstractTKGStore):
                 source_sentence_idx: $sentence_idx,
                 confidence:        $confidence,
                 extractor:         $extractor,
-                article_id:        $article_id
+                article_id:        $article_id,
+                trust_tier:        $trust_tier
             }]->(o)
         """, **params)
 
@@ -208,6 +210,44 @@ class Neo4jTKGStore(AbstractTKGStore):
             facts = [_record_to_fact(r) for r in result]
         logger.debug(
             f"get_facts_for_entity('{entity_name}'): {len(facts)} facts retrieved"
+        )
+        return facts
+
+    def get_facts_for_entity_trusted(self, entity_name: str, min_len: int = 4) -> list[TemporalFact]:
+        """Defence 5.2: like get_facts_for_entity but with word-boundary matching.
+
+        A name matches when it is equal, or occurs in the other as whole words and the
+        shorter name has at least `min_len` characters (mirrors trust.names_match_strict).
+        Each fact carries `article_id`, `trust_tier` and the article's `human_verdict`.
+        """
+        self._ensure_connected()
+        name_lower = entity_name.lower().strip()
+        query = f"""
+            MATCH (s:Entity)-[r:TEMPORAL_RELATION]->(o:Entity)
+            WHERE (
+                  toLower(s.text) = $name
+               OR (size($name) >= $min_len
+                   AND (' ' + toLower(s.text) + ' ') CONTAINS (' ' + $name + ' '))
+               OR (size(s.text) >= $min_len
+                   AND (' ' + $name + ' ') CONTAINS (' ' + toLower(s.text) + ' '))
+            ) OR (
+                  toLower(o.text) = $name
+               OR (size($name) >= $min_len
+                   AND (' ' + toLower(o.text) + ' ') CONTAINS (' ' + $name + ' '))
+               OR (size(o.text) >= $min_len
+                   AND (' ' + $name + ' ') CONTAINS (' ' + toLower(o.text) + ' '))
+            )
+            OPTIONAL MATCH (a:Article {{article_id: r.article_id}})
+            RETURN {_FACT_RETURN},
+                r.article_id AS article_id,
+                coalesce(r.trust_tier, 0) AS trust_tier,
+                a.human_verdict AS human_verdict
+        """
+        with self._driver.session(database=NEO4J_DATABASE) as session:
+            result = session.run(query, name=name_lower, min_len=min_len)
+            facts = [_record_to_trusted_fact(r) for r in result]
+        logger.debug(
+            f"get_facts_for_entity_trusted('{entity_name}'): {len(facts)} facts retrieved"
         )
         return facts
 
@@ -309,7 +349,20 @@ class Neo4jTKGStore(AbstractTKGStore):
                 "annotator": annotator,
                 "verified_at": datetime.now().isoformat(),
             })
-            return result.single() is not None
+            saved = result.single() is not None
+            if saved:
+                # Defence 5.2: the human verdict now feeds the trust tier of the article's facts
+                session.run(
+                    """
+                    MATCH ()-[r:TEMPORAL_RELATION {article_id: $article_id}]->()
+                    SET r.trust_tier = CASE
+                        WHEN $verdict = 'fake' THEN -1
+                        WHEN coalesce(r.trust_tier, 0) < 1 THEN 1
+                        ELSE r.trust_tier END
+                    """,
+                    article_id=article_id, verdict=verdict,
+                )
+            return saved
 
     def summary(self) -> dict:
         self._ensure_connected()
@@ -381,3 +434,12 @@ def _record_to_fact(record) -> TemporalFact:
         extraction_confidence=record.get("confidence") or 1.0,
         extractor=record.get("extractor") or "unknown",
     )
+
+
+def _record_to_trusted_fact(record) -> TemporalFact:
+    """A fact plus its provenance (article id, trust tier, human verdict)."""
+    fact = _record_to_fact(record)
+    fact.article_id = record.get("article_id")          # type: ignore[attr-defined]
+    fact.trust_tier = record.get("trust_tier") or 0     # type: ignore[attr-defined]
+    fact.human_verdict = record.get("human_verdict")    # type: ignore[attr-defined]
+    return fact

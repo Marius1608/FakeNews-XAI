@@ -11,6 +11,8 @@ from typing import Any, Optional
 
 import spacy
 
+from backend import defense_config
+from backend.pipeline.defense import prompt_hardening
 from backend.pipeline.extraction.base import AbstractExtractor
 from backend.pipeline.extraction.temporal_parser import TemporalParser
 from backend.pipeline.graph.models import (
@@ -182,7 +184,6 @@ class SpacyLLMExtractor(AbstractExtractor):
 
     def extract(self, article: Article) -> list[TemporalFact]:
         doc = self.nlp(article.text)
-        article.sentence_spans = [(s.start_char, s.end_char) for s in doc.sents]
 
         pub_date_str = (
             article.publication_date.strftime("%Y-%m-%d")
@@ -196,16 +197,21 @@ class SpacyLLMExtractor(AbstractExtractor):
                 continue
 
             user_prompt = USER_PROMPT_TEMPLATE.format(
-                title=article.title,
+                title="Untitled" if defense_config.is_enabled("title_isolation") else article.title,
                 pub_date=pub_date_str,
                 text=sent.text,
             )
 
-            messages: list[dict] = [{"role": "system", "content": SYSTEM_PROMPT}]
+            # Defence 5.1 (first layer): mark the article as data, not instructions
+            hardened = defense_config.is_enabled("prompt_hardening")
+            wrap = prompt_hardening.wrap_message if hardened else (lambda m: m)
+            system_prompt = prompt_hardening.harden_system(SYSTEM_PROMPT) if hardened else SYSTEM_PROMPT
+
+            messages: list[dict] = [{"role": "system", "content": system_prompt}]
             for user_msg, asst_msg in zip(EXAMPLE_INPUTS, EXAMPLE_OUTPUTS):
-                messages.append({"role": "user", "content": user_msg})
+                messages.append({"role": "user", "content": wrap(user_msg)})
                 messages.append({"role": "assistant", "content": asst_msg})
-            messages.append({"role": "user", "content": user_prompt})
+            messages.append({"role": "user", "content": wrap(user_prompt)})
 
             raw_response = generate_json(messages)
             if not raw_response:

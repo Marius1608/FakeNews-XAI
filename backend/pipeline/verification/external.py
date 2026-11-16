@@ -94,6 +94,8 @@ class ExternalVerificationResult:
     wikidata_queries: int = 0
     web_search_queries: int = 0
     rss_verifications: list[dict] = field(default_factory=list)
+    # Facts matched by an independent source with no contradiction (used for trust tiers)
+    verified_facts: list = field(default_factory=list)
 
 
 class ExternalVerifier:
@@ -148,7 +150,11 @@ class ExternalVerifier:
         logger.info(f"External verification: {len(verifiable)} eligible facts out of {tkg.fact_count} total.")
 
         for fact in verifiable:
-            result.inconsistencies.extend(self._verify_fact(fact, result, prefetched_facts={}))
+            matched_before = result.facts_matched
+            fact_incs = self._verify_fact(fact, result, prefetched_facts={})
+            result.inconsistencies.extend(fact_incs)
+            if result.facts_matched > matched_before and not fact_incs:
+                result.verified_facts.append(fact)
 
         # Wikipedia secondary pass: check GENERIC facts from PERSON entities
         # These are excluded from EXTERNALLY_VERIFIABLE_RELATIONS but may still

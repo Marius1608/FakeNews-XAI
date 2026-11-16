@@ -433,6 +433,58 @@ Results are saved to `evaluation/results/` as JSON.
 
 ---
 
+## Tests and Security Evaluation
+
+### Running the tests
+
+```bash
+python -m pytest backend/tests -q        # expected: 106 passed, 1 skipped
+python -m pytest backend/tests/test_defenses.py -q   # defence tests only (65)
+```
+
+### Defence modes (`--defenses`)
+
+| Mode | What is enabled |
+|---|---|
+| `off` | Original system, no defences (the "before") |
+| `on` | Guard + trust tiers (recommended) |
+| `strict` | Guard + trust tiers + title isolation |
+| `complete` | All defences of chapter 5 |
+| `api` | API-level defences only (auth, limits, path handling) |
+| `full` | `on` + prompt hardening |
+| `guard` | Extraction guard only (ablation) |
+| `hardening` | Prompt hardening only (ablation) |
+| `tiers` | Trust tiers only (ablation) |
+
+Common flags of `run_defense_benchmark.py` and `run_injection.py`: `--pipeline {llm,spacy}`,
+`--defenses <mode>`, `--limit N`, and (benchmark only) `--seed`, `--with-explainer`, `-v`.
+Run `python evaluation/security/run_defense_benchmark.py --help` for the full list.
+
+### Reproducing the final runs
+
+```bash
+bash evaluation/security/run_final.sh     # off / on / full injection runs, 12 articles each (~35 min per mode on GPU)
+bash evaluation/security/run_strict.sh    # title-isolation check (strict), ~10 min
+python evaluation/security/probe_api.py   # model-free API probes, ~5 s, no server/Neo4j needed
+```
+
+`run_final.sh` and `run_strict.sh` read `.env` from the repo root and write to
+`evaluation/security/results/<run>_<timestamp>/` (gitignored). `payloads.json` and
+`poison.json` are operator-authored attack sets: copy the `*.example.json` files and keep the
+real ones out of version control.
+
+### Final results
+
+The final, report-cited outputs are copied to **`results_final/`** (final/strict runs, the
+`run_*` benchmark folders, ablation, poisoning, Pipeline A and B benchmark/injection `.jsonl`).
+
+### Admin routes
+
+Admin routes (defence configuration / runtime settings) fail closed: they are unreachable
+unless **`ADMIN_API_KEY`** is set in `.env`, and requests must send it as the `X-API-Key` header.
+
+---
+
 ## Configuration (.env)
 
 | Variable | Default | Description |

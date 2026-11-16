@@ -7,13 +7,14 @@ import uuid
 from datetime import datetime
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Header, HTTPException
 from pydantic import BaseModel, Field
 
 from backend.pipeline.graph.models import Article
 from backend.routers.analyze import InconsistencyResponse, _to_inconsistency_response
 from backend.dependencies import explainer, get_orchestrator
 from backend.pipeline.orchestrator import _generate_auto_title
+from backend.pipeline.defense import api_guard
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["batch"])
@@ -64,8 +65,10 @@ class BatchResponse(BaseModel):
 
 
 @router.post("/analyze-batch", response_model=BatchResponse)
-async def analyze_batch(req: BatchRequest) -> BatchResponse:
+async def analyze_batch(req: BatchRequest, x_api_key: Optional[str] = Header(default=None)) -> BatchResponse:
     """Analyze multiple articles. Persist to Neo4j and run cross-article verification when enabled."""
+    api_guard.check_text_size(*[a.text for a in req.articles], n_articles=len(req.articles))  # 5.3 (V-11)
+    api_guard.check_persist(req.persist, x_api_key)                                        # 5.3 (V-04)
     from backend.config import AVAILABLE_MODELS, NEO4J_ENABLED
 
     if req.pipeline not in ("spacy", "llm"):

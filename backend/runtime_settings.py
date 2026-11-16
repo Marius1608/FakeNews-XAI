@@ -85,6 +85,10 @@ def add_custom_feed(url: str) -> None:
     parsed = urlparse(url)
     if parsed.scheme not in ("http", "https") or not parsed.netloc:
         raise ValueError(f"Invalid feed URL: '{url}'. Must be a well-formed http(s) URL.")
+    from backend import defense_config
+    if defense_config.is_enabled("api_hardening"):   # defence 5.3 (SSRF)
+        from backend.pipeline.defense import api_guard
+        api_guard.assert_public_feed_url(url)
     with _rss_lock:
         _custom_feeds.append(url)
 

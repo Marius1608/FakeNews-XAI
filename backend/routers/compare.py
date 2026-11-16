@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import dataclasses
 import logging
 from datetime import datetime
 from typing import Optional
@@ -44,7 +43,6 @@ class PipelineResult(BaseModel):
     fact_annotations: list[dict]
     timeline: list[dict]
     processing_time_ms: float
-    sentences: list[dict] = Field(default_factory=list, description="Sentence spans {start, end} used for sentence_idx")
 
 
 class CompareResponse(BaseModel):
@@ -64,6 +62,8 @@ _explainer = explainer
 @router.post("/compare", response_model=CompareResponse)
 async def compare_pipelines(req: CompareRequest) -> CompareResponse:
     """Run two pipeline/model combinations on the same article and compare them."""
+    from backend.pipeline.defense import api_guard
+    api_guard.check_text_size(req.text, getattr(req, "title", "") or "")   # defence 5.3 (V-11)
     from backend.config import AVAILABLE_MODELS
 
     # Validate pipeline_a
@@ -100,10 +100,6 @@ async def compare_pipelines(req: CompareRequest) -> CompareResponse:
     if not article.title:
         article.title = _generate_auto_title(req.text)
 
-    # Separate copies: each extractor writes its own sentence_spans (models may segment differently)
-    article_a = dataclasses.replace(article)
-    article_b = dataclasses.replace(article)
-
     resolved_model_a = req.model_a or AVAILABLE_MODELS[req.pipeline_a]["default"]
     resolved_model_b = req.model_b or AVAILABLE_MODELS[req.pipeline_b]["default"]
 
@@ -127,7 +123,7 @@ async def compare_pipelines(req: CompareRequest) -> CompareResponse:
         try:
             orch_a = get_orchestrator(req.pipeline_a, req.model_a)
             result_a = orch_a.run(
-                article_a,
+                article,
                 persistent_store=store,
                 persist=False,
                 enable_cross_article=False,
@@ -140,7 +136,7 @@ async def compare_pipelines(req: CompareRequest) -> CompareResponse:
         try:
             orch_b = get_orchestrator(req.pipeline_b, req.model_b)
             result_b = orch_b.run(
-                article_b,
+                article,
                 persistent_store=store,
                 persist=False,
                 enable_cross_article=False,
@@ -157,7 +153,7 @@ async def compare_pipelines(req: CompareRequest) -> CompareResponse:
     expl_a = _explainer.explain_structured(result_a)
     expl_b = _explainer.explain_structured(result_b)
 
-    def _to_pipeline_result(result, explanation, pipeline_name, model_name, art) -> PipelineResult:
+    def _to_pipeline_result(result, explanation, pipeline_name, model_name) -> PipelineResult:
         return PipelineResult(
             pipeline=f"{pipeline_name}:{model_name}",
             model=model_name,
@@ -171,11 +167,10 @@ async def compare_pipelines(req: CompareRequest) -> CompareResponse:
             fact_annotations=explanation["fact_annotations"],
             timeline=result.timeline,
             processing_time_ms=result.processing_time_ms,
-            sentences=[{"start": s, "end": e} for s, e in art.sentence_spans],
         )
 
-    res_a = _to_pipeline_result(result_a, expl_a, req.pipeline_a, resolved_model_a, article_a)
-    res_b = _to_pipeline_result(result_b, expl_b, req.pipeline_b, resolved_model_b, article_b)
+    res_a = _to_pipeline_result(result_a, expl_a, req.pipeline_a, resolved_model_a)
+    res_b = _to_pipeline_result(result_b, expl_b, req.pipeline_b, resolved_model_b)
 
     delta = res_a.score - res_b.score
     agreement = _compute_agreement(result_a.score, result_b.score)

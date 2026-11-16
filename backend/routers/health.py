@@ -6,6 +6,7 @@ from fastapi import APIRouter
 
 from urllib.parse import urlparse
 
+from backend import defense_config
 from backend.config import (
     AVAILABLE_MODELS, NEO4J_DATABASE, NEO4J_ENABLED, NEO4J_URI, QWEN_MODEL_ID, SPACY_MODEL,
 )
@@ -21,6 +22,7 @@ async def health_check() -> dict:
         "components": {
             "pipeline_a": {"model": SPACY_MODEL, "type": "spacy"},
             "pipeline_b": {"model": QWEN_MODEL_ID, "type": "qwen"},
+            "defenses": defense_config.snapshot(),
             # host only — never expose credentials
             "neo4j": {
                 "enabled": NEO4J_ENABLED,

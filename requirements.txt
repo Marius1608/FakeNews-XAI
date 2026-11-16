@@ -21,7 +21,8 @@ python-multipart==0.0.32
 
 # File upload extraction
 python-docx==1.2.0
-pypdf==6.21.2  # replaces PyPDF2 (unmaintained, PYSEC-2026-1835)
+pypdf>=6.21.4  # replaces PyPDF2 (unmaintained, PYSEC-2026-1835)
+opentelemetry-api>=1.45.2
 
 # HTTP and env
 requests==2.34.2

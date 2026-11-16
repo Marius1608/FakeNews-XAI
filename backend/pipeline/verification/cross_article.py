@@ -7,7 +7,8 @@ from datetime import datetime
 from difflib import SequenceMatcher
 from typing import Optional
 
-from backend import runtime_settings
+from backend import defense_config, runtime_settings
+from backend.pipeline.defense import trust
 from backend.pipeline.graph.base_store import AbstractTKGStore
 from backend.pipeline.graph.models import (
     Inconsistency, InconsistencyType, Severity, TemporalFact,
@@ -34,10 +35,17 @@ class CrossArticleVerifier:
         exclusively to prior articles.
         """
         inconsistencies: list[Inconsistency] = []
+        # Defence 5.2 (trust-tiered KG): read provenance, ignore rejected facts, cap unverified ones
+        use_tiers = defense_config.is_enabled("trust_tiers") and hasattr(
+            self.store, "get_facts_for_entity_trusted")
+        unverified_articles: set = set()
 
         for fact in current_facts:
             entity_name = fact.subject.text.lower().strip()
-            stored_facts = self.store.get_facts_for_entity(entity_name)
+            stored_facts = (
+                self.store.get_facts_for_entity_trusted(entity_name)
+                if use_tiers else self.store.get_facts_for_entity(entity_name)
+            )
 
             logger.debug(
                 f"C3c: entity='{fact.subject.text}' ({fact.predicate.value}) "
@@ -53,6 +61,8 @@ class CrossArticleVerifier:
                 f for f in stored_facts
                 if getattr(f, "article_id", None) != current_article_id
             ]
+            if use_tiers:
+                other_facts = [f for f in other_facts if trust.is_usable_reference(f)]
 
             logger.debug(
                 f"  → {len(other_facts)} facts from prior articles eligible for comparison"
@@ -71,6 +81,10 @@ class CrossArticleVerifier:
                     conflict = _check_date_conflict(fact, stored)
                     if conflict:
                         logger.debug(f"  → DATE CONFLICT: {conflict.description}")
+                        if use_tiers:
+                            conflict = trust.apply_tier(conflict, stored)
+                            if trust.effective_tier(stored) < trust.TIER_HUMAN:
+                                unverified_articles.add(getattr(stored, "article_id", None))
                         inconsistencies.append(conflict)
 
                 # check 2: same entity holds different positions at overlapping times
@@ -80,7 +94,7 @@ class CrossArticleVerifier:
                     and _overlapping_time(fact, stored)
                     and not _objects_similar(fact.object.text, stored.object.text)
                 ):
-                    inconsistencies.append(
+                    _pos_conflict = (
                         Inconsistency(
                             inconsistency_type=InconsistencyType.DATE_MISMATCH,
                             severity=Severity.HIGH,
@@ -95,6 +109,18 @@ class CrossArticleVerifier:
                             evidence=f"Article {current_article_id} vs stored facts",
                         )
                     )
+                    if use_tiers:
+                        _pos_conflict = trust.apply_tier(_pos_conflict, stored)
+                        if trust.effective_tier(stored) < trust.TIER_HUMAN:
+                            unverified_articles.add(getattr(stored, "article_id", None))
+                    inconsistencies.append(_pos_conflict)
+
+        if use_tiers:
+            note = trust.burst_note(unverified_articles)
+            if note:
+                for inc in inconsistencies:
+                    if inc.description.startswith("[unverified stored fact]"):
+                        inc.evidence = f"{inc.evidence or ''} | {note}"
 
         logger.info(
             f"Cross-article verification: {len(inconsistencies)} conflicts found "

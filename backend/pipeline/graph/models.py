@@ -44,6 +44,8 @@ class InconsistencyType(str, Enum):
     IMPLICIT_CONTRADICTION = "implicit_contradiction"
     FUTURE_AS_PAST = "future_as_past"
     ENTITY_INCONSISTENCY = "entity_inconsistency"
+    # Raised by the cross-pipeline consistency guard (defence 5.1), always LOW
+    EXTRACTION_DISAGREEMENT = "extraction_disagreement"
 
 
 class Severity(str, Enum):
@@ -129,10 +131,6 @@ class Article:
     # Ground truth label: "true", "false", etc.
     label: Optional[str] = None
     dataset: Optional[str] = None
-    # Sentence boundaries as (start_char, end_char), set by the C1 extractor from
-    # spaCy's doc.sents — the same segmentation that defines source_sentence_idx,
-    # so the UI can highlight exactly the sentence a fact/inconsistency refers to
-    sentence_spans: list[tuple[int, int]] = field(default_factory=list)
 
 
 # C3: Verification output

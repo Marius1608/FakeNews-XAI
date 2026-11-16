@@ -6,7 +6,8 @@ import logging
 import time
 from typing import Optional
 
-from backend import runtime_settings
+from backend import defense_config, runtime_settings
+from backend.pipeline.defense import consistency_guard, trust
 from backend.pipeline.extraction.base import AbstractExtractor
 from backend.pipeline.graph.base_store import AbstractTKGStore
 from backend.pipeline.graph.builder import TKGBuilder
@@ -90,6 +91,13 @@ class PipelineOrchestrator:
         return self._extractor
 
     @property
+    def guard_extractor(self) -> AbstractExtractor:
+        """Deterministic witness for the cross-pipeline guard (defence 5.1): Pipeline A."""
+        if getattr(self, "_guard_extractor", None) is None:
+            self._guard_extractor = _get_extractor_class("spacy")()
+        return self._guard_extractor
+
+    @property
     def llm_explainer(self):
         """Lazy-load: LLMExplainer instance created on first access."""
         if not hasattr(self, "_llm_explainer"):
@@ -140,6 +148,16 @@ class PipelineOrchestrator:
 
         # C1: extraction
         facts = self.extractor.extract(article)
+
+        # Defence 5.1: reconcile the LLM extractor with the deterministic one
+        guard_report = None
+        if self.extractor_name == "llm" and defense_config.is_enabled("cross_pipeline"):
+            det_facts = self.guard_extractor.extract(article)
+            pub_year = article.publication_date.year if article.publication_date else None
+            facts, guard_report = consistency_guard.apply_guard(
+                facts, det_facts, publication_year=pub_year)
+            logger.info(f"Guard: {guard_report.to_dict()}")
+
         logger.info(f"C1 done — {len(facts)} facts extracted ({self.extractor_name})")
 
         # C2: TKG construction
@@ -163,6 +181,10 @@ class PipelineOrchestrator:
 
         all_facts = tkg.get_all_facts()
         all_inconsistencies = internal.inconsistencies + external.inconsistencies
+        if guard_report is not None:
+            guard_signal = consistency_guard.guard_inconsistency(guard_report)
+            if guard_signal is not None:
+                all_inconsistencies.append(guard_signal)
 
         # C3c: cross-article verification (optional, requires Neo4j)
         cross_article_incs: list = []
@@ -194,10 +216,18 @@ class PipelineOrchestrator:
         result.article_id = article_id
         result.cross_article_inconsistencies = cross_article_incs
         result.rss_verifications = external.rss_verifications
+        result.guard = guard_report.to_dict() if guard_report is not None else None  # type: ignore[attr-defined]
 
         # Persist facts after scoring (only when persist=True; store may still be used for Wikidata cache)
         if store is not None and do_persist:
             try:
+                # Defence 5.2: provenance is always recorded (read only when the defence is on)
+                trust.assign_tiers(
+                    all_facts,
+                    external.verified_facts,
+                    article_flagged_fake=bool(all_facts)
+                    and result.score < runtime_settings.get_value("fake_threshold"),
+                )
                 store.add_facts(
                     all_facts,
                     article_id=article_id,
@@ -211,6 +241,14 @@ class PipelineOrchestrator:
         # XAI: LLM explanation (optional, requires Qwen)
         if self.llm_explainer.is_available():
             explanation = self.llm_explainer.explain(result, article_text=article.text, article_title=article.title)
+            if explanation and defense_config.is_enabled("cross_pipeline"):
+                check = consistency_guard.check_explanation(
+                    explanation, result.facts, result.inconsistencies, article.publication_date,
+                )
+                if not check.ok:
+                    logger.warning(
+                        f"Explanation rejected, dates not backed by evidence: {check.unsupported}")
+                    explanation = None
             if explanation:
                 result.explanation_text = explanation
                 logger.info("XAI done — LLM explanation generated")

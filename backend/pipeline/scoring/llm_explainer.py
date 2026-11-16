@@ -5,6 +5,8 @@ from __future__ import annotations
 import logging
 from typing import Optional
 
+from backend import defense_config
+from backend.pipeline.defense import prompt_hardening
 from backend.pipeline.extraction.spacy_llm_extractor import _load_qwen, generate_json
 from backend.pipeline.graph.models import TCSResult, TemporalFact
 
@@ -39,8 +41,12 @@ class LLMExplainer:
     def explain(self, result: TCSResult, article_text: str = "", article_title: str = "") -> Optional[str]:
         """Generate an XAI explanation from a TCSResult."""
         context = self._build_context(result, article_text, article_title)
+        system_prompt = EXPLANATION_SYSTEM_PROMPT
+        if defense_config.is_enabled("prompt_hardening"):  # defence 5.1, first layer
+            system_prompt = prompt_hardening.harden_system(system_prompt)
+            context = prompt_hardening.wrap_message("Explain this analysis:\n" + context)
         messages = [
-            {"role": "system", "content": EXPLANATION_SYSTEM_PROMPT},
+            {"role": "system", "content": system_prompt},
             {"role": "user", "content": context},
         ]
         response = generate_json(messages)
